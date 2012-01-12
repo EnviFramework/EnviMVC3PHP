@@ -1,0 +1,72 @@
+<?php
+/**
+ * @package Envi3
+ * @subpackage
+ * @sinse 0.1
+ * @author     Akito<akito-artisan@five-foxes.com>
+ */
+
+
+/**
+ * ファイルベースのArtisanSmartyレンダラー
+ *
+ * Smartyの制約として、Smartyのディレクトリにパスを通す
+ *
+ * @sinse 0.1
+ * @package Envi
+ * @subpackage EnviMVC
+ */
+require 'ArtisanSmarty.class.php';
+class EnviSmartyRenderer extends Smarty
+{
+    public $_system_conf;
+    public $_compile_id;
+
+    public function __construct()
+    {
+        $this->_compile_id  = Request::getThisModule();
+        $this->_system_conf = Envi::singleton()->_system_conf;
+        $this->setting(Request::getThisModule());
+    }
+
+
+    public function setting($module_dir)
+    {
+        $this->compile_dir  = $this->_system_conf['DIRECTORY']['templatec'];
+        $this->etc_dir      = $this->_system_conf['DIRECTORY']['templateetc'];
+        $this->config_dir   = $this->_system_conf['DIRECTORY']['config'];
+        $this->template_dir = $module_dir.$this->_system_conf['DIRECTORY']['template'];
+    }
+
+    /**
+     * templateに値を格納する
+     *
+     * @param string $key 格納する名前
+     * @param mixed $value 値
+     * @return void
+     */
+    public function setAttribute($name, $value)
+    {
+        $this->assign($name, $value);
+    }
+
+    public function display($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    {
+        parent::display($file_name, $cache_id, $this->_compile_id);
+    }
+
+    public function is_cached($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    {
+        return parent::is_cached($file_name, $cache_id, $this->_compile_id);
+    }
+
+    public function clear_cache($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    {
+        return parent::clear_cache($file_name, $cache_id, $this->_compile_id);
+    }
+
+    public function displayRef($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    {
+        return parent::fetch($file_name, $cache_id, $this->_compile_id);
+    }
+}
