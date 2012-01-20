@@ -5,10 +5,22 @@ all:
     ext: "php"
     top_url: "http://<?php echo $_SERVER["HTTP_HOST"];?>"
     ssl_top_url: "https://<?php echo $_SERVER["HTTP_HOST"];?>"
+    dispatch_url: "http://<?php echo $_SERVER["HTTP_HOST"].$_SERVER["SCRIPT_NAME"];?>"
+    ssl_dispatch_url: "https://<?php echo $_SERVER["HTTP_HOST"].$_SERVER["SCRIPT_NAME"];?>"
     use_i18n: false
     default_i18n: "ja"
     renderer: "renderer/EnviSmartyRenderer.php"
-    use_databases: true
+    auto_load_cache: true
+
+  FILTER:
+    input_filter:
+      EnviInputFilter:
+        class_name: "EnviInputFilter"
+        resource: "<?php echo ENVI_BASE_DIR."filters".DIRECTORY_SEPARATOR."EnviInputFilter.php";?>"
+    output_filter:
+      EnviInputFilter:
+        class_name: "EnviOutputFilter"
+        resource: "<?php echo ENVI_BASE_DIR."filters".DIRECTORY_SEPARATOR."EnviOutputFilter.php";?>"
   I18N:
     ja: "ja.yml"
   DIRECTORY:
@@ -26,36 +38,31 @@ all:
     actions: "actions/"
     views: "views/"
     templates: "templates/"
-# 常にオートロードされる
+
+# DI コンテナ
+  EXTENSION:
+    # 別ファイルに記述する場合は下記のように
+    # load_yml: true
+    # load_yml_resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.'main_di_container.yml';?>"
+    # ここに記述する場合は下記のように記述可能
+    extensions:
+      DBConnection:
+        # ここをtrueにすると、リクエストごとにロードされ、オブジェクトが生成されます
+        constant: true
+        class:
+          resource: "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>EnviDB.php"
+          class_name: "DBInstance"
+          singleton: true
+        router:
+          resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.'databases.yml';?>"
+          
+# 常にオートロードされるディレクトリ
   AUTOLOAD_CONSTANT:
 #    1: "<?php echo $base;?>lib/commons/"
-# コールされた時にオートロードされる
+# コールされた時にオートロードされるディレクトリ
   AUTOLOAD:
-#    1: "<?php echo $base;?>lib/models/"
-#    2: "<?php echo $base;?>lib/manager/"
-
-  DATABASE:
-    default_master:
-      class_name: DB
-      params:
-        dsn: ""
-        connection_pool: true
-        initialize_query: "set names utf8;"
-    default_slave:
-      class_name: DB
-      params:
-        dsn: ""
-        connection_pool: true
-        initialize_query: "set names utf8;"
-    default_stage:
-      class_name: DB
-      params:
-        dsn: ""
-        connection_pool: true
-        initialize_query: "set names utf8;"
-  TEMPLATE:
-    template_conf: "template.yml"
-    template_list_conf: "template_list.yml"
+    1: "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>"
+    2: "<?php echo ENVI_BASE_DIR.'plugins'.DIRECTORY_SEPARATOR;?>"
 
   MEMCACHE:
     default_host   : "127.0.0.1"

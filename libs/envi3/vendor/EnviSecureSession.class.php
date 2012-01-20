@@ -34,6 +34,9 @@ class EnviSecureSession
         'e' => 'e/',
         'f' => 'f/',
     );
+    private static  $_envi_system_value = "__ENVI_USER__";
+    private static  $_attribute = array();
+    private static  $_is_login = '_is_login';
 
     public $_system_conf;
     public $sess_base_save_path;
@@ -149,13 +152,42 @@ class EnviSecureSession
         session_start();
     }
 
-    public function sessionRestart()
+    public function getAttribute($key)
     {
-        $file = session_save_path().DIRECTORY_SEPARATOR.'.sess_'.session_id();
-        session_write_close();
-        if (is_file($file)) {
-            unlink($file);
-        }
-        $this->_defineSession($this->sess_base_save_path, $session_name, $gc_maxlifetime, $cookie_lifetime);
+        $key = $key[0];
+        return isset($_SESSION[self::$_envi_system_value][$key]) ? $_SESSION[self::$_envi_system_value][$key] : NULL;
     }
+    public function hasAttribute($key)
+    {
+        $key = $key[0];
+        return isset($_SESSION[self::$_envi_system_value][$key]);
+    }
+    public function setAttribute($key, $value)
+    {
+        $_SESSION[self::$_envi_system_value][$key] = $value;
+    }
+
+    public function removeAttribute($key)
+    {
+        unset($_SESSION[self::$_envi_system_value][$key]);
+    }
+
+    public function cleanAttributes()
+    {
+        $_SESSION[self::$_envi_system_value] = array();
+    }
+
+    public function login()
+    {
+        $_SESSION[self::$_is_login] = true;
+    }
+    public function logout()
+    {
+        $_SESSION[self::$_is_login] = false;
+    }
+    public function isLogin()
+    {
+        return isset($_SESSION[self::$_is_login]) ? $_SESSION[self::$_is_login] : false;
+    }
+
 }

@@ -15,11 +15,11 @@
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 
-class enviUser
+class EnviUser
 {
 
     private static $_system_conf;
-    private static  $_envi_system_value = "__ENVI_USER__";
+    private static  $_envi_system_value = '__ENVI_USER__';
     private static  $_attribute = array();
     private static  $_is_login = '_is_login';
     public static $session;
@@ -35,9 +35,9 @@ class enviUser
      */
     public static function sessionStart()
     {
-        $session_manager = Envi()->getConfiguration('SESSION', 'session_manager');
+        $session_manager = Envi::singleton()->getConfiguration('SESSION', 'session_manager');
         self::$session = new $session_manager;
-        self::$session->_system_conf = Envi()->getConfigurationAll();
+        self::$session->_system_conf = Envi::singleton()->getConfigurationAll();
         self::$session->sessionStart();
         self::$_is_session_start = true;
     }

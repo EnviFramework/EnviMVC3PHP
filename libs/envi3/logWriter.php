@@ -89,8 +89,7 @@ class logWriter
     public static function singleton()
     {
         if (!isset(self::$instance)) {
-            $className = __CLASS__;
-            self::$instance = new $className();
+            self::$instance = new logWriter();
         }
         return self::$instance;
     }
@@ -121,7 +120,7 @@ class logWriter
                 'time'        => time(),
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
-                'performance' => $this->_getPerformance(),
+                'performance' => $this->getExecutionTime(),
             );
             if ($this->_system_conf['system']['value_request_log_type'] == self::PURSER_TEXT) {
                 $replace = array(
@@ -149,11 +148,13 @@ class logWriter
             $this->_writeValiableLog('request', $replace);
         }
     }
+    /* ----------------------------------------- */
 
     /**
-     * デバッグメッセージ
+     * +-- デバッグメッセージ
      *
-     * @param string $message (optional) メッセージ
+     * @access public
+     * @params string $message メッセージ OPTIONAL:'debugMeaage'
      * @return void
      */
     public function debug($message = 'debug Meaage')
@@ -169,15 +170,17 @@ class logWriter
             'line'        => $debug['line'],
             'file'        => $debug['file'],
             'level'       => self::ETYPE_DEBUG,
-            'performance' => $this->_getPerformance(),
+            'performance' => $this->getExecutionTime(),
         );
         $this->_write($res);
     }
+    /* ----------------------------------------- */
 
     /**
-     * インフォメーションメッセージ
+     * +-- インフォメーションメッセージ
      *
-     * @param string $message (optional) メッセージ
+     * @access public
+     * @params string $message メッセージ OPTIONAL:'infomation Meaage'
      * @return void
      */
     public function info($message = 'infomation Meaage')
@@ -192,15 +195,17 @@ class logWriter
             'line'        => $debug['line'],
             'file'        => $debug['file'],
             'level'       => self::ETYPE_INFO,
-            'performance' => $this->_getPerformance(),
+            'performance' => $this->getExecutionTime(),
         );
         $this->_write($res);
     }
+    /* ----------------------------------------- */
 
     /**
-     * 忠告レベルのエラーメッセージ
+     * +-- 忠告レベルのエラーメッセージ
      *
-     * @param string $message (optional) メッセージ
+     * @access public
+     * @params string $message メッセージ OPTIONAL:'notice Meaage'
      * @return void
      */
     public function notice($message = 'notice Meaage')
@@ -215,15 +220,17 @@ class logWriter
             'line'        => $debug['line'],
             'file'        => $debug['file'],
             'level'       => self::ETYPE_NOTICE,
-            'performance' => $this->_getPerformance(),
+            'performance' => $this->getExecutionTime(),
         );
         $this->_write($res);
     }
+    /* ----------------------------------------- */
 
     /**
-     * 警告レベルのエラーメッセージ
+     * +-- 警告レベルのエラーメッセージ
      *
-     * @param string $message (optional) メッセージ
+     * @access public
+     * @params string $message メッセージ OPTIONAL:'warningMeaage'
      * @return void
      */
     public function warning($message = 'warning Meaage')
@@ -238,15 +245,17 @@ class logWriter
             'line'        => $debug['line'],
             'file'        => $debug['file'],
             'level'       => self::ETYPE_WARNING,
-            'performance' => $this->_getPerformance(),
+            'performance' => $this->getExecutionTime(),
         );
         $this->_write($res);
     }
+    /* ----------------------------------------- */
 
     /**
-     * 深刻なエラーメッセージ
+     * +-- 深刻なエラーメッセージ
      *
-     * @param string $message (optional) メッセージ
+     * @access public
+     * @params string $message メッセージ OPTIONAL:'fatalMeaage'
      * @return void
      */
     public function fatal($message = 'fatal Meaage')
@@ -261,17 +270,35 @@ class logWriter
             'line'        => $debug['line'],
             'file'        => $debug['file'],
             'level'       => self::ETYPE_FATAL,
-            'performance' => $this->_getPerformance(),
+            'performance' => $this->getExecutionTime(),
         );
         $this->_write($res);
     }
+    /* ----------------------------------------- */
 
     /**
-     * エラーオブジェクトから、ログを記録する
+     * +-- パフォーマンスを取得する
      *
-     * @param object &$error_obj
+     * @access public
+     * @return float
      */
-    public function setErrorByRef(&$error_obj)
+    public function getExecutionTime()
+    {
+        $res = (microtime(true) - $this->_performance);
+        if (strpos($res, 'E') !== false) {
+            $res = 0;
+        }
+        return $res;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- エラーオブジェクトから、ログを記録する
+     *
+     * @param object $error_obj
+     * @return void
+     */
+    public function setErrorByRef($error_obj)
     {
         if (method_exists($error_obj, 'getMessage')) {
             if ($this->_system_conf['system']['value_error_logging_level'][3] == 0) {
@@ -284,7 +311,7 @@ class logWriter
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
                 'level'       => self::ETYPE_WARNING,
-                'performance' => $this->_getPerformance(),
+                'performance' => $this->getExecutionTime(),
             );
             $this->_write($res);
         }
@@ -300,7 +327,7 @@ class logWriter
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
                 'level'       => self::ETYPE_INFO,
-                'performance' => $this->_getPerformance(),
+                'performance' => $this->getExecutionTime(),
             );
             $this->_write($res);
         }
@@ -316,12 +343,13 @@ class logWriter
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
                 'level'       => self::ETYPE_DEBUG,
-                'performance' => $this->_getPerformance(),
+                'performance' => $this->getExecutionTime(),
             );
             $this->_write($res);
         }
     }
-
+    /* ----------------------------------------- */
+// +---------------------------------------------
     /**
      * スクリプトの最後で呼ぶ
      *
@@ -341,12 +369,12 @@ class logWriter
 
         $gc = debug_backtrace();
         $debug = $gc[0];
-        if (array_key_exists('class', $debug) ? $debug['class'] != 'LWManager' : true) {
+        if (isset($debug['class']) ? $debug['class'] != 'LWManager' : true) {
             $res = array(
                 'time'        => time(),
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
-                'performance' => $this->_getPerformance(),
+                'performance' => $this->getExecutionTime(),
             );
         } else {
             $debug = $gc[1];
@@ -354,7 +382,7 @@ class logWriter
                 'time'        => time(),
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
-                'performance' => $this->_getPerformance(),
+                'performance' => $this->getExecutionTime(),
             );
         }
 
@@ -418,7 +446,7 @@ class logWriter
     }
 
     /**#@+
-    * @access public
+     * @access provate
     */
 
     /**
@@ -428,7 +456,7 @@ class logWriter
      * @param array $res (OPTIONAL)
      * @return void
      */
-    public function _writeValiableLog($mode = 'request', $res = array())
+    private function _writeValiableLog($mode = 'request', $res = array())
     {
         if ($this->_system_conf[$mode]['value_track_'.$mode.'_type'][0]) {
             $md5list = explode(',', $this->_system_conf[$mode]['value_md5_server_key']);
@@ -552,7 +580,7 @@ class logWriter
      * @param array &$res
      * @return void
      */
-    public function _write(&$res)
+    private function _write(&$res)
     {
         if ($this->_system_conf['system']['value_error_log_type'] == self::PURSER_TEXT) {
                 /**
@@ -607,7 +635,7 @@ class logWriter
      * @param string $mode
      * @return void
      */
-    public function _logging(&$message, $mode)
+    private function _logging(&$message, $mode)
     {
         if (is_array($message)) {
             if (count($message) == 0) {
@@ -673,7 +701,7 @@ class logWriter
      * @param integer $masize ログファイルの最大サイズ
      * @return void
      */
-    public function _logRotate($fpath, $maxsize)
+    private function _logRotate($fpath, $maxsize)
     {
         if (is_file($fpath) ? filesize($fpath) > $maxsize : false) {
             $i = 0;
@@ -691,7 +719,7 @@ class logWriter
      * @param array|boolean $limit
      * @return string
      */
-    public function _parseArrayList(&$array, $md5_list = array(), $limit = false)
+    private function _parseArrayList(&$array, $md5_list = array(), $limit = false)
     {
         $res = '';
         $md5_list = array_flip($md5_list);
@@ -701,9 +729,9 @@ class logWriter
             if ($limit === false) {
                 foreach ($array as $key => $value) {
                     if (is_array($value)) {
-                        $res .= "[{$key}]=>".$this->_parseArrayList($value, array_key_exists($key, $md5_list) !== false ? array_keys($value) : array());
+                        $res .= "[{$key}]=>".$this->_parseArrayList($value, isset($md5_list[$key]) !== false ? array_keys($value) : array());
                     } else {
-                        $res .= "[{$key}]=>"."'".(array_key_exists($key, $md5_list) !== false ? md5($value) : $value)."'";
+                        $res .= "[{$key}]=>"."'".(isset($md5_list[$key]) !== false ? md5($value) : $value)."'";
                     }
                 }
 
@@ -714,9 +742,9 @@ class logWriter
                     }
 
                     if (is_array($array[$key])) {
-                        $res .= "[{$key}]=>".$this->_parseArrayList($array[$key], array_key_exists($key, $md5_list) !== false ? array_keys($array[$key]) : array());
+                        $res .= "[{$key}]=>".$this->_parseArrayList($array[$key], isset($md5_list[$key]) !== false ? array_keys($array[$key]) : array());
                     } else {
-                        $res .= "[{$key}]=>"."'".(array_key_exists($key, $md5_list) !== false ? md5($array[$key]) : $array[$key])."'";
+                        $res .= "[{$key}]=>"."'".(isset($md5_list[$key]) !== false ? md5($array[$key]) : $array[$key])."'";
                     }
                 }
             }
@@ -724,7 +752,7 @@ class logWriter
         return $res;
     }
 
-    public function _getArrayList(&$array, $md5_list = array(), $limit = false)
+    private function _getArrayList(&$array, $md5_list = array(), $limit = false)
     {
         $res = array();
         $md5_list = array_flip($md5_list);
@@ -734,18 +762,18 @@ class logWriter
             if ($limit === false) {
                 foreach ($array as $key => $value) {
                     if (is_array($value)) {
-                        $res[$key]= $this->_getArrayList($value, array_key_exists($key, $md5_list) !== false ? array_keys($value) : array());
+                        $res[$key]= $this->_getArrayList($value, isset($md5_list[$key]) !== false ? array_keys($value) : array());
                     } else {
-                        $res[$key]= (array_key_exists($key, $md5_list) !== false ? md5($value) : $value);
+                        $res[$key]= (isset($md5_list[$key]) !== false ? md5($value) : $value);
                     }
                 }
 
             } else {
                 foreach ($limit as $key) {
                     if (is_array($array[$key])) {
-                        $res[$key] = $this->_getArrayList($value, array_key_exists($key, $md5_list) !== false ? array_keys($value) : array());
+                        $res[$key] = $this->_getArrayList($value, isset($md5_list[$key]) !== false ? array_keys($value) : array());
                     } else {
-                        $res[$key] = (array_key_exists($key, $md5_list) !== false ? md5($value) : $value);
+                        $res[$key] = (isset($md5_list[$key]) !== false ? md5($value) : $value);
                     }
                 }
             }
@@ -765,14 +793,13 @@ class logWriter
     {
         /** 設定ファイル読み込み */
         $dir = ENVI_MVC_CACHE_PATH;
-        $bk_file = $dir.__CLASS__.ENVI_ENV.Envi()->getApp().'baf';
+        $bk_file = $dir.__CLASS__.ENVI_ENV.Envi::singleton()->getApp().'.envicc';
         if (is_file($bk_file)) {
             $this->_system_conf = unserialize(file_get_contents($bk_file));
             return;
         }
-        $gc_conf = Envi()->getConfigurationAll();
 
-        $this->_system_conf = $gc_conf['LOGGER'];
+        $this->_system_conf = Envi::singleton()->getConfiguration('LOGGER');
 
         /** /設定ファイル読み込み */
 
@@ -844,26 +871,13 @@ class logWriter
             substr(decbin($this->_system_conf['system']['value_request_logging_type']>>4), -1, 1),
         );
 
-        $filename = $dir.__CLASS__.ENVI_ENV.'baf';
-        $handle = @ fopen($filename, 'w');
+        $handle = @ fopen($bk_file, 'w');
         $writestring = serialize($this->_system_conf);
         @ fwrite($handle, $writestring);
         @ fclose($handle);
     }
 
-    /**
-     * パフォーマンスを取得する
-     *
-     * @return float
-     */
-    private function _getPerformance()
-    {
-        $res = (array_sum(explode(' ', microtime())) - $this->_performance);
-        if (strstr($res, 'E') !== false) {
-            $res = 0;
-        }
-        return $res;
-    }
+
     /**
      * Xmlを作成する
      *
@@ -899,4 +913,5 @@ class logWriter
         return $res;
     }
     /**#@-*/
+// -------------------------------------------------------------
 }

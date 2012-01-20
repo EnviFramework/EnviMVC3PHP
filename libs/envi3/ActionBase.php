@@ -41,14 +41,14 @@ abstract class Envi_ActionBase
     }
 
     /**
-     * validate()でENVI_MVC_SUCCESSが返った場合の処理。
+     * validate()でEnvi::SUCCESSもしくはtrueが返った場合の処理。
      *
      * @see validate()
      * @abstract
      */
     public function execute()
     {
-        return ENVI_MVC_SUCCESS;
+        return Envi::SUCCESS;
     }
 
     /**
@@ -68,7 +68,7 @@ abstract class Envi_ActionBase
      *
      * バリデータを通して、処理を分岐させる。
      *
-     * @return ENVI_MVC_DEFAULT | ENVI_MVC_ERROR | ENVI_MVC_SUCCESS
+     * @return Envi::DEFAULT | Envi::ERROR | Envi::SUCCESS | boolean
      *
      * @abstract
      */
@@ -78,25 +78,25 @@ abstract class Envi_ActionBase
     }
 
     /**
-     * validate()でENVI_MVC_DEFAULTが返った場合の処理。
+     * validate()でEnvi::DEFAULTが返った場合の処理。
      *
      * @see validate()
      * @abstract
      */
     public function defaultAccess()
     {
-        return ENVI_MVC_DEFAULT;
+        return Envi::DEFAULT_ACCESS;
     }
 
     /**
-     * validate()でENVI_MVC_ERRORが返った場合の処理。
+     * validate()でEnvi::ERRORもしくはfalseが返った場合の処理。
      *
      * @see validate()
      * @abstract
      */
     public function handleError()
     {
-        return ENVI_MVC_ERROR;
+        return Envi::ERROR;
     }
 
     /**

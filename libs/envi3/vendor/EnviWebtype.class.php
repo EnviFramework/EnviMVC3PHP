@@ -6,14 +6,6 @@
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 
-/**
- * アクセス者の情報を解析
- *
- * @package Envi
- * @sinse 0.1
- * @todo
- */
-
 define("ENVI_WEBTYPE_PC",      "pc");
 define("ENVI_WEBTYPE_AU",      "au");
 define("ENVI_WEBTYPE_TUKA",     "t");
@@ -35,6 +27,12 @@ define("ENVI_WEBTYPE_BAIDU",    "baidu");
 define("ENVI_WEBTYPE_DEBUG",    "debug");
 
 
+/**
+ * アクセス者の情報を解析
+ *
+ * @package Envi3
+ * @sinse 0.1
+ */
 class EnviWebtype
 {
     public $Envi_hdml_smaf_map;

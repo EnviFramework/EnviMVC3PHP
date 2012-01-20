@@ -28,7 +28,7 @@ class EnviMemcache
         if (isset(self::$connection[$name])) {
             return self::$connection[$name];
         }
-        $system_conf = Envi::singleton()->_system_conf['MEMCACHE'];
+        $system_conf = Envi::singleton()->getConfiguration('MEMCACHE');
         self::$connection[$name] = new Memcache;
         self::$connection[$name]->connect($system_conf["{$name}_host"], $system_conf["{$name}_port"]);
         self::$prefix[$name] = $system_conf["{$name}_prefix"];

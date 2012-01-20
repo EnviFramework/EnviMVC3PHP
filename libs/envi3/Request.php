@@ -17,7 +17,8 @@
  */
 class Request
 {
-    private static $_attribute = array();
+    private static $_ext_path_info = array();
+    private static $_attribute     = array();
 
     private static $_error_code    = array();
     private static $_error_message = array();
@@ -111,7 +112,7 @@ class Request
      */
     public static function initialize()
     {
-        $_system_conf = Envi()->getConfigurationAll();
+        $_system_conf = Envi::singleton()->getConfigurationAll();
         // デフォルト指定
         self::$_request_module_name = $_system_conf['SYSTEM']['default_module'];
         self::$_request_action_name = $_system_conf['SYSTEM']['default_action'];
@@ -144,6 +145,7 @@ class Request
             self::$_request_action_name = mb_ereg_replace("\\.".$_system_conf['SYSTEM']['ext'].'$', '', array_shift($exp_pathinfo));
         }
 
+        self::$_ext_path_info = $exp_pathinfo;
         // 余剰のパスインフォは$_GET扱いに
         if (count($exp_pathinfo)) {
             while (count($exp_pathinfo)) {
@@ -157,6 +159,18 @@ class Request
         }
         self::$_module_name = self::$_request_module_name;
         self::$_action_name = self::$_request_action_name;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- パースしたパスインフォで、フレームワークで使用されなかった分を取得する
+     *
+     * @access public
+     * @return array
+     */
+    public function getPathInfo()
+    {
+        return self::$_ext_path_info;
     }
     /* ----------------------------------------- */
 
@@ -194,12 +208,12 @@ class Request
         }
 
         if (func_num_args() === 1) {
-            return array_key_exists($key, self::$_attribute) ? self::$_attribute[$key] : null;
+            return isset(self::$_attribute[$key]) ? self::$_attribute[$key] : null;
         }
         $fga = func_get_args();
         $data = self::$_attribute;
         foreach ($fga as $id => $node) {
-            if (is_array($data) && array_key_exists($node, $data)) {
+            if (is_array($data) && isset($data[$node])) {
                 $data = $data[$node];
                 continue;
             }
@@ -207,14 +221,26 @@ class Request
         }
         return $data;
     }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- Attributeした情報をすべて返す
+     *
+     * @access public
+     * @static
+     * @return array
+     */
     public static function getAttributeAll()
     {
         return self::$_attribute;
     }
+    /* ----------------------------------------- */
 
     /**
      * +-- Attributeされているか確認します
      *
+     * @access public
+     * @static
      * @param string $name Attribute名
      * @return boolean
      */
@@ -227,6 +253,8 @@ class Request
     /**
      * +-- Attributeされているデータを削除します
      *
+     * @access public
+     * @static
      * @param string $name Attribute名
      * @return void
      */
@@ -241,6 +269,8 @@ class Request
     /**
      * +-- Attributeされているデータを全削除します
      *
+     * @access public
+     * @static
      * @param string $name Attribute名
      * @return void
      */
@@ -251,8 +281,10 @@ class Request
     /* ----------------------------------------- */
 
     /**
-     * $_GETもしくは、$_POSTから値を取得します。
+     * +-- $_GETもしくは、$_POSTから値を取得します。
      *
+     * @access public
+     * @static
      * @param string|array|int $name
      * @param mixed $default_parameter
      * @param int $post_only
@@ -269,8 +301,10 @@ class Request
     }
 
     /**
-     * 存在する値かどうかを確認する
+     * +-- 存在する値かどうかを確認する
      *
+     * @access public
+     * @static
      * @param string|array|int $name
      * @param int $post_only
      * @return boolean
@@ -285,10 +319,21 @@ class Request
             return isset($_GET[$name]);
         }
     }
+    /* ----------------------------------------- */
+
 
 
     /**
-     * エラーをセットする
+     * +-- エラーをセットする
+     *
+     * Validatorクラスから呼ばれるので、あまり使わないかも
+     *
+     * @access public
+     * @static
+     * @params エラー名 $name
+     * @params 引っかかったValidator $validator
+     * @params エラーコード $code
+     * @params エラーメッセージ $message
      * @return void
      */
     public static function setError($name, $validator, $code, $message)
@@ -296,10 +341,15 @@ class Request
         self::$_error_code[$name][$validator]    = $code;
         self::$_error_message[$name][$validator] = $message;
     }
+    /* ----------------------------------------- */
+
 
     /**
-     * エラーを全て取得
-     * @return void
+     * +-- エラーを全て取得
+     *
+     * @access public
+     * @static
+     * @return array
      */
     public static function getErrors()
     {
@@ -314,39 +364,60 @@ class Request
         $res['count'] = $i;
         return $res;
     }
+    /* ----------------------------------------- */
 
 
     /**
-     * エラーを全て取得
-     * @return void
+     * +-- エラーを全てリファレンスで取得
+     *
+     * @access public
+     * @static
+     * @return array
      */
     public static function &getErrorsByRef()
     {
         return self::$_error_message;
     }
+    /* ----------------------------------------- */
 
     /**
-     * エラーを指定して取得
+     * +-- エラーを指定して取得
      *
-     * @param string $name なまえ
+     * @access public
+     * @static
+     * @params string $name エラー名
      * @return array
      */
     public static function getError($name)
     {
         return isset(self::$_error_message[$name]) ? array('message' => self::$_error_message[$name], 'code' => self::$_error_code[$name]) : null;
     }
+    /* ----------------------------------------- */
 
     /**
-     * エラーかどうか
+     * +-- エラーがあるかどうか
      *
+     * @access public
+     * @static
      * @return boolean
      */
     public static function hasErrors()
     {
         return count(self::$_error_message) > 0;
     }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 指定したエラーがあるかどうか
+     *
+     * @access public
+     * @static
+     * @params string $name エラー名
+     * @return boolean
+     */
     public static function hasError($name)
     {
         return isset(self::$_error_message[$name]);
     }
+    /* ----------------------------------------- */
 }

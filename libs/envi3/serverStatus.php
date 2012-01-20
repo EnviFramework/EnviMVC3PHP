@@ -5,7 +5,6 @@
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
-
 if (!defined('ENVI_SERVER_STATUS_CONF')) {
     define('ENVI_SERVER_STATUS_CONF',
         realpath(dirname(__FILE__)
@@ -42,10 +41,9 @@ class serverStatus
 
     public static function &singleton()
     {
-        if (self::$instance instanceof serverStatus) {
-            return self::$instance;
+        if (!isset(self::$instance)) {
+            self::$instance = new serverStatus();
         }
-        self::$instance = new serverStatus();
         return self::$instance;
     }
 

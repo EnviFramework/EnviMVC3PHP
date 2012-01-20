@@ -90,10 +90,7 @@ class Controller
      */
     final public static function kill($kill = '', $is_shutDown = true)
     {
-        if ($is_shutDown) {
-            $this->_shutDown();
-        }
-        throw new killException($kill);
+        Envi()->kill($kill, $is_shutDown);
     }
     /* ----------------------------------------- */
 
@@ -135,11 +132,12 @@ class Controller
     final public static function go()
     {
         self::$_is_action_chain = true;
-        $_attribute = Request::$_attribute;
+        $_attribute = Request::getAttributeAll();
         foreach (self::$_action_chain as $key => $value) {
             ob_start();
-            $this->forward($value[0], $value[1]);
-            Request::$_attribute = $_attribute;
+            self::forward($value[0], $value[1]);
+
+            Request::setAttributeAll($_attribute);
             $res[$key] = ob_get_contents();
             ob_clean();
         }

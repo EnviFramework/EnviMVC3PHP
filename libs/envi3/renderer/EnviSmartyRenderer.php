@@ -35,7 +35,9 @@ class EnviSmartyRenderer extends Smarty
         $this->compile_dir  = $this->_system_conf['DIRECTORY']['templatec'];
         $this->etc_dir      = $this->_system_conf['DIRECTORY']['templateetc'];
         $this->config_dir   = $this->_system_conf['DIRECTORY']['config'];
-        $this->template_dir = $module_dir.$this->_system_conf['DIRECTORY']['template'];
+        $this->template_dir = $module_dir.'templates';
+        $this->assign('Envi', Envi::singleton());
+        $this->assign('base_url', Envi::singleton()->getBaseUrl());
     }
 
     /**

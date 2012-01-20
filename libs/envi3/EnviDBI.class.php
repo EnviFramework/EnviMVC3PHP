@@ -18,6 +18,6 @@ class EnviDBI
 {
     public static function getConnection($db_key)
     {
-        return Envi()->getDBConnection($db_key);
+        return extension()->DBConnection()->getInstance($db_key);
     }
 }

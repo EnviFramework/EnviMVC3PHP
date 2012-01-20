@@ -639,10 +639,10 @@ class validator
 
         if (!strstr($validation_name, '[')) {
             if (($post_only == 3 || $post_only == 1 || is_bool($post_only)) &&
-                (array_key_exists($validation_name, $_POST) !== false ? $_POST[$validation_name] !== "" : false)) {
+                (isset($_POST[$validation_name]) !== false ? $_POST[$validation_name] !== "" : false)) {
                 $res = $_POST[$validation_name];
             } elseif (($post_only == 3 || $post_only == 2 || $post_only === false) &&
-                (array_key_exists($validation_name, $_GET) !== false ? $_GET[$validation_name] !== "" : false)) {
+                (isset($_GET[$validation_name]) !== false ? $_GET[$validation_name] !== "" : false)) {
                 $res = $_GET[$validation_name];
             } else {
                 $res = $this->_empty_form_data;
@@ -652,10 +652,10 @@ class validator
             $regs = array();
             preg_match_all("/([^\\[]*)\\[([^\\]]*)\\]/", $validation_name, $regs);
             if (($post_only == 3 || $post_only == 1 || is_bool($post_only)) &&
-                (array_key_exists($regs[1][0], $_POST) !== false ? $_POST[$regs[1][0]] !== "" : false)) {
+                (isset($_POST[$regs[1][0]]) !== false ? $_POST[$regs[1][0]] !== "" : false)) {
                 $res = $_POST[$regs[1][0]];
             } elseif (($post_only == 3 || $post_only == 2 || $post_only === false) &&
-                (array_key_exists($regs[1][0], $_GET) !== false ? $_GET[$regs[1][0]] !== "" : false)) {
+                (isset($_GET[$regs[1][0]]) !== false ? $_GET[$regs[1][0]] !== "" : false)) {
                 $res = $_GET[$regs[1][0]];
             } else {
                 $res = $this->_empty_form_data;
@@ -1547,8 +1547,8 @@ class ValidatorError
     public function __construct()
     {
         $this->_error_message =& Request::getErrorsByRef();
-        if (Envi()->getConfiguration('SYSTEM', 'use_i18n')) {
-            $this->_error_list = Envi()->getI18n('validator');
+        if (Envi::singleton()->getConfiguration('SYSTEM', 'use_i18n')) {
+            $this->_error_list = Envi::singleton()->getI18n('validator');
         }
     }
 

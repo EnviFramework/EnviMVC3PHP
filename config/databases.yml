@@ -1,0 +1,16 @@
+all:
+  default_master:
+    params:
+      dsn: ""
+      connection_pool: true
+      initialize_query: "set names utf8;"
+  default_slave:
+    params:
+      dsn: ""
+      connection_pool: true
+      initialize_query: "set names utf8;"
+  default_stage:
+    params:
+      dsn: ""
+      connection_pool: true
+      initialize_query: "set names utf8;"
