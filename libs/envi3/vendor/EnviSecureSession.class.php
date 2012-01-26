@@ -108,9 +108,15 @@ class EnviSecureSession
 
     public function newSession()
     {
-        list($usec, $sec) = explode(' ', microtime());
-        mt_srand((float)$sec + ((float)$usec * 100000));
-        $session_id = sha1(mt_rand().microtime());
+        $session_id = hash('sha512', mt_rand().microtime());
+        $str = '';
+        $rand = mt_rand(15, 30);
+        while ($rand--) {
+            $str .= chr(mt_rand(1,126));
+        }
+        $session_id .= hash('sha512', $str);
+        $session_id = substr($session_id, 0, 1).base64_encode(pack('h*', $session_id)).substr($session_id, -1, 1);
+        $session_id = str_replace(array('+', '='), '', $session_id);
         session_id($session_id);
         return $session_id;
     }
