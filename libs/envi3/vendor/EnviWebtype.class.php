@@ -5,26 +5,11 @@
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
-define("ENVI_WEBTYPE_PC",      "pc");
-define("ENVI_WEBTYPE_AU",      "au");
-define("ENVI_WEBTYPE_TUKA",     "t");
-define("ENVI_WEBTYPE_IDO",      "ido");
-define("ENVI_WEBTYPE_VODAFONE", "v");
-define("ENVI_WEBTYPE_DOCOMO",   "d");
-define("ENVI_WEBTYPE_PHS",      "phs");
-define("ENVI_WEBTYPE_LMODE",    "l");
-define("ENVI_WEBTYPE_PSP",    "psp");
-define("ENVI_WEBTYPE_IPHONE",    "iPhone");
-define("ENVI_WEBTYPE_ANDROID",    "android");
-define("ENVI_WEBTYPE_OHTER",    "other");
 
-
-
-define("ENVI_WEBTYPE_BAIDU",    "baidu");
-
-
-define("ENVI_WEBTYPE_DEBUG",    "debug");
-
+function EnviWebType()
+{
+    return EnviWebType::singleton();
+}
 
 /**
  * アクセス者の情報を解析
@@ -33,8 +18,22 @@ define("ENVI_WEBTYPE_DEBUG",    "debug");
  * @subpackage EnviMVCVendorExtension
  * @sinse 0.1
  */
-class EnviWebtype
+class EnviWebType
 {
+    const PC =      "pc";
+    const AU =      "au";
+    const TUKA =     "t";
+    const IDO =      "ido";
+    const VODAFONE = "v";
+    const DOCOMO =   "d";
+    const PHS =      "phs";
+    const LMODE =    "l";
+    const PSP =      "psp";
+    const IPHONE =   "iPhone";
+    const ANDROID =  "android";
+    const OHTER =    "other";
+    const DEBUG =    "debug";
+
     public $Envi_hdml_smaf_map;
     public $Envi_hdml_aud_map;
     public $Envi_hdml_grf_map;
@@ -44,6 +43,14 @@ class EnviWebtype
     public $remote_host;
 
     private static $instance;
+
+    /**
+     * +-- シングルトン
+     *
+     * @access public
+     * @static
+     * @return EnviWebType
+     */
     public static function singleton()
     {
         if (!isset(self::$instance)) {
@@ -53,6 +60,12 @@ class EnviWebtype
         return self::$instance;
     }
 
+    /**
+     * +-- コンストラクタ
+     *
+     * @access public
+     * @return void
+     */
     public function __construct()
     {
     //TUKAデバイスマップ
@@ -91,29 +104,29 @@ class EnviWebtype
         $this->remote_host = @gethostbyaddr($_SERVER["REMOTE_ADDR"]);
     }
 
-    public function getUserinfo()
+    public function getUserInfo()
     {
         if (isset($this->_cash["getUserinfo"])) {
             return $this->_cash["getUserinfo"];
         }
         $user_agent =& $_SERVER['HTTP_USER_AGENT'];
         if (stristr($_SERVER["HTTP_USER_AGENT"], "KDDI") && stristr($_SERVER["HTTP_USER_AGENT"], "Opera")) {
-            $web = ENVI_WEBTYPE_OHTER;
+            $web = self::OHTER;
         } elseif (stristr($_SERVER["HTTP_USER_AGENT"], "iPhone")) {
-            $web = ENVI_WEBTYPE_IPHONE;
+            $web = self::IPHONE;
         } elseif (strstr($_SERVER["HTTP_USER_AGENT"], "Android")) {
-            $web = ENVI_WEBTYPE_ANDROID;
+            $web = self::ANDROID;
         } elseif (mb_eregi('KDDI|UP\.Browser', $_SERVER["HTTP_USER_AGENT"])) {
-            $web = ENVI_WEBTYPE_AU;
+            $web = self::AU;
         } elseif (mb_eregi('J-PHONE|Vodafone|MOT|SoftBank', $_SERVER["HTTP_USER_AGENT"])) {
-            $web = ENVI_WEBTYPE_VODAFONE;
+            $web = self::VODAFONE;
         } elseif (stristr($_SERVER["HTTP_USER_AGENT"], "Docomo")) {
-            $web = ENVI_WEBTYPE_DOCOMO;
+            $web = self::DOCOMO;
         } elseif (strstr($_SERVER["HTTP_USER_AGENT"], "PlayStation Portable")) {
-            $web = ENVI_WEBTYPE_PSP;
+            $web = self::PSP;
         } else {
             // それ以外はPCよん
-            $web = ENVI_WEBTYPE_PC;
+            $web = self::PC;
         }
 
         $this->_cash["getUserinfo"] = $web;
@@ -128,52 +141,49 @@ class EnviWebtype
         $user_agent =& $_SERVER['HTTP_USER_AGENT'];
         $remote_host = $this->remote_host;
         if (strstr($_SERVER["HTTP_USER_AGENT"], "KDDI") && strstr($_SERVER["HTTP_USER_AGENT"], "Opera")) {
-            $web = ENVI_WEBTYPE_OHTER;
+            $web = self::OHTER;
         } elseif (strstr($_SERVER["HTTP_USER_AGENT"], "iPhone")) {
-            $web = ENVI_WEBTYPE_IPHONE;
-            // $web = ENVI_WEBTYPE_PC;
+            $web = self::IPHONE;
+            // $web = self::PC;
         } elseif (strstr($_SERVER["HTTP_USER_AGENT"], "Android")) {
-            $web = ENVI_WEBTYPE_ANDROID;
-            // $web = ENVI_WEBTYPE_PC;
+            $web = self::ANDROID;
+            // $web = self::PC;
         } elseif (ereg("\.(ido|ezweb)\.ne\.jp$", $remote_host)) {
             if (isset($_SERVER["HTTP_X_UP_SUBNO"])) {
                 // EZweb WAP2.0 端末用の処理
                 if (isset($_SERVER['HTTP_X_UP_DEVCAP_MULTIMEDIA'])) {
-                    $web = ENVI_WEBTYPE_AU;
+                    $web = self::AU;
                 } else {
-                    // $web = ENVI_WEBTYPE_TUKA;
-                    $web = ENVI_WEBTYPE_PC;
+                    // $web = self::TUKA;
+                    $web = self::PC;
                 }
             } else {
                 // EZweb 旧端末用の処理
-                // $web = ENVI_WEBTYPE_IDO;
-                $web = ENVI_WEBTYPE_PC;
+                // $web = self::IDO;
+                $web = self::PC;
             }
         } elseif (strstr($user_agent, "Googlebot-Mobile")) {
-            $web = ENVI_WEBTYPE_VODAFONE;
+            $web = self::VODAFONE;
         } elseif ($remote_host  === 'pdxcgw.pdx.ne.jp') {
             // H" 用の処理
-            $web = ENVI_WEBTYPE_PHS;
+            $web = self::PHS;
         } elseif (mb_ereg("\.docomo\.ne\.jp$", $remote_host)) {
             // i-mode 用の処理
-            $web = ENVI_WEBTYPE_DOCOMO;
+            $web = self::DOCOMO;
         } elseif (mb_ereg("\.jp-[ckqt]\.ne\.jp$", $remote_host) || mb_ereg("\.softbank\.ne\.jp", $remote_host)) {
             // J-SKY 用の処理
-            $web = ENVI_WEBTYPE_VODAFONE;
+            $web = self::VODAFONE;
         } elseif (mb_ereg("\.pipopa\.ne\.jp$", $remote_host)) {
             // L-mode 用の処理
-            $web = ENVI_WEBTYPE_LMODE;
-        } elseif ($_SERVER['REMOTE_ADDR'] === "113.159.58.172" && false) {
+            $web = self::LMODE;
+        } elseif ($_SERVER['REMOTE_ADDR'] === "") {
             //特定IPはデバッグに
-            $_SERVER['HTTP_USER_AGENT'] = 'SoftBank/1.0/943SH/SHJ001/SN359302031015743 Browser/NetFront/3.5 Profile/MIDP-2.0 Configuration/CLDC-1.1';
-            $_SERVER['REMOTE_ADDR'] = '202.253.96.245';
-
-            $web = ENVI_WEBTYPE_OHTER;
+            $web = self::DEBUG;
         } elseif (strstr($_SERVER["HTTP_USER_AGENT"], "PlayStation Portable")) {
-            $web = ENVI_WEBTYPE_PSP;
+            $web = self::PSP;
         } else {
             // それ以外はPCよん
-            $web = ENVI_WEBTYPE_PC;
+            $web = self::PC;
         }
         $this->_cash["getWeb"] = $web;
         return $web;
@@ -187,7 +197,7 @@ class EnviWebtype
         $info["remote_host"] = $this->remote_host;
         $info['web'] = $this->getWeb();
         switch ($info['web']) {
-            case ENVI_WEBTYPE_DEBUG:
+            case self::DEBUG:
             //デバッグの処理
                 $get_user        = $this->getUserinfo();
                 $info['browser'] = $get_user['browser'];
@@ -199,7 +209,7 @@ class EnviWebtype
                 $info['pcm']     = true;
                 $info['grf']     = true;
             break;
-            case ENVI_WEBTYPE_PC:
+            case self::PC:
             //PCの処理
                 $get_user = $this->getUserinfo();
                 $info['b_type']  = "html";
@@ -211,7 +221,7 @@ class EnviWebtype
                 $info['pcm']     = true;
                 $info['grf']     = true;
             break;
-            case ENVI_WEBTYPE_VODAFONE:
+            case self::VODAFONE:
             //Vodafoneの処理
                 $user_agent = split("[/ ]", $_SERVER['HTTP_USER_AGENT']);
                 $info['b_type'] = "html";
@@ -252,7 +262,7 @@ class EnviWebtype
                 list($info['width'], $info['higth']) = explode('*', $_SERVER['HTTP_X_JPHONE_DISPLAY']);
                 $info['device']                      = $_SERVER['HTTP_X_JPHONE_MSNAME'];
             break;
-            case ENVI_WEBTYPE_DOCOMO:
+            case self::DOCOMO:
             //DOCOMOの場合
                 $info['uid']     = $_SERVER["REMOTE_ADDR"];
                 $info['b_type']  = "html";
@@ -266,8 +276,8 @@ class EnviWebtype
                     $info['size'] = 12000;
                 }
             break;
-            case ENVI_WEBTYPE_AU:
-            case ENVI_WEBTYPE_TUKA:
+            case self::AU:
+            case self::TUKA:
             //EZWEBの場合
                 $info['uid']    = $_SERVER['HTTP_X_UP_SUBNO'];
                 $info['size']   = $_SERVER['HTTP_X_UP_DEVCAP_MAX_PDU'];
@@ -311,7 +321,7 @@ class EnviWebtype
                     $info['smaf'] = $this->Envi_hdml_smaf_map["$device"];
                 }
             break;
-            case ENVI_WEBTYPE_IDO:
+            case self::IDO:
                 //旧KDDI端末
                 ini_set("default_mimetype", "text/x-hdml");    // HDML mime-types is text/x-hdml
                 ini_set("default_charset", "Shift_JIS");    // HDML charset is Shift_JIS
@@ -328,7 +338,7 @@ class EnviWebtype
                 $info['smaf'] = isset($this->Envi_hdml_smaf_map[$dev]) ? $this->Envi_hdml_smaf_map[$dev] : 16;
 
             break;
-            case ENVI_WEBTYPE_LMODE:
+            case self::LMODE:
             //L-modeの場合
                 $user_agent      =  split("[/]", $_SERVER['HTTP_USER_AGENT']);
                 $info['size']    = $user_agent[5];
