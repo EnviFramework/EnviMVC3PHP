@@ -15,7 +15,7 @@
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 
-class EnviUser
+class User
 {
 
     private static $_system_conf;
