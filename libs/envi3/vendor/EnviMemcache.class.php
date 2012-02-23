@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Envi3
- * @subpackage
+ * @subpackage EnviMVCVendorExtension
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
@@ -9,7 +9,8 @@
 /**
  * Memcache
  *
- * @package Envi
+ * @package Envi3
+ * @subpackage EnviMVCVendorExtension
  * @sinse 0.1
  */
 

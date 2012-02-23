@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Envi3
- * @subpackage EnviMVC
+ * @subpackage EnviMVCVendorExtension
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Envi3
- * @subpackage
+ * @subpackage EnviMVCVendorExtension
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
@@ -11,8 +11,8 @@
  *
  * @access private
  * @since 2005/11/10 10:22
- * @package Envi
- * @subpackage EnviMVC
+ * @package Envi3
+ * @subpackage EnviMVCVendorExtension
  */
 class pankuzuNavigator
 {

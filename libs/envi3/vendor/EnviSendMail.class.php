@@ -1,12 +1,21 @@
 <?php
 /**
  * @package Envi3
- * @subpackage
+ * @subpackage EnviMVCVendorExtension
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 
 define("ENVI_SENDMAIL_VERSION", "1.0");
+
+/**
+ * メールの送信
+ *
+ * @package Envi3
+ * @subpackage EnviMVCVendorExtension
+ * @sinse 0.1
+ * @author     Akito<akito-artisan@five-foxes.com>
+ */
 class EnviSendMail
 {
     /**

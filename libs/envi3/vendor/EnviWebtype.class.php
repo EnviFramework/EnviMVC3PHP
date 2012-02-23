@@ -1,11 +1,10 @@
 <?php
 /**
  * @package Envi3
- * @subpackage
+ * @subpackage EnviMVCVendorExtension
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
-
 define("ENVI_WEBTYPE_PC",      "pc");
 define("ENVI_WEBTYPE_AU",      "au");
 define("ENVI_WEBTYPE_TUKA",     "t");
@@ -31,6 +30,7 @@ define("ENVI_WEBTYPE_DEBUG",    "debug");
  * アクセス者の情報を解析
  *
  * @package Envi3
+ * @subpackage EnviMVCVendorExtension
  * @sinse 0.1
  */
 class EnviWebtype
