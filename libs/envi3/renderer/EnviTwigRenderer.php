@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Envi3
- * @subpackage
+ * @subpackage EnviMVCRenderer
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
@@ -12,8 +12,8 @@
  * ファイルベースのTwigレンダラー
  *
  * @sinse 0.1
- * @package Envi
- * @subpackage EnviMVC
+ * @package Envi3
+ * @subpackage EnviMVCRenderer
  */
 
 $ds = DIRECTORY_SEPARATOR;
