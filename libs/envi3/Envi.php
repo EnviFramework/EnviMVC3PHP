@@ -219,7 +219,7 @@ class Envi
         );
         $auto_load_classes_cache = ENVI_MVC_CACHE_PATH.self::$app_key.ENVI_ENV.'.auto_load_files.envicc';
         if (!$debug && is_file($auto_load_classes_cache)) {
-            $this->auto_load_classes = unserialize(file_get_contents($auto_load_classes_cache));
+            $this->auto_load_classes = $this->unserialize(file_get_contents($auto_load_classes_cache));
         } else {
             foreach ($this->autoload_dirs as $dir) {
                 if (is_dir($dir)) {
@@ -235,7 +235,7 @@ class Envi
                     }
                 }
             }
-            file_put_contents($auto_load_classes_cache, serialize($this->auto_load_classes));
+            file_put_contents($auto_load_classes_cache, $this->serialize($this->auto_load_classes));
         }
     }
     /* ----------------------------------------- */
@@ -290,9 +290,9 @@ class Envi
                 }
             }
             file_put_contents($load_extension_constant, $cache);
-            file_put_contents($load_extension, serialize($extension));
+            file_put_contents($load_extension, $this->serialize($extension));
         } else {
-            $extension = unserialize(file_get_contents($load_extension));
+            $extension = $this->unserialize(file_get_contents($load_extension));
         }
 
         include $load_extension_constant;
@@ -485,9 +485,9 @@ class Envi
 
             $buff = spyc_load($buff);
             $res = isset($buff[ENVI_ENV]) ? array_merge($buff['all'], $buff[ENVI_ENV]) : $buff['all'];
-            file_put_contents(ENVI_MVC_CACHE_PATH.$file.ENVI_ENV.'.envicc', serialize($res));
+            file_put_contents(ENVI_MVC_CACHE_PATH.$file.ENVI_ENV.'.envicc', $this->serialize($res));
         } else {
-            $res      = unserialize(file_get_contents(ENVI_MVC_CACHE_PATH.$file.ENVI_ENV.'.envicc'));
+            $res      = $this->unserialize(file_get_contents(ENVI_MVC_CACHE_PATH.$file.ENVI_ENV.'.envicc'));
         }
         return $res;
     }
@@ -755,6 +755,24 @@ class Envi
     }
     /* ----------------------------------------- */
 
+    public function serialize($data)
+    {
+        static $is_message_pack;
+        if ($is_message_pack === NULL) {
+            $is_message_pack = is_callable("msgpack_pack");
+        }
+        return $is_message_pack ? msgpack_pack($data) : serialize($data);
+    }
+
+
+    public function unserialize($data)
+    {
+        static $is_message_pack;
+        if ($is_message_pack === NULL) {
+            $is_message_pack = is_callable("msgpack_pack");
+        }
+        return $is_message_pack ? msgpack_unpack($data) : unserialize($data);
+    }
 }
 
 
