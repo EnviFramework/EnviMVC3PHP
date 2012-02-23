@@ -24,7 +24,7 @@ define('ENVI_SERVER_STATUS_CONF', realpath('../env/ServerStatus.conf'));
 require('../libs/envi3/Envi.php');
 
 // 環境
-define('ENVI_ENV', serverStatus()->getServerStatus());
+define('ENVI_ENV', EnviServerStatus()->getServerStatus());
 
 try {
     Envi::dispatch('main', true);

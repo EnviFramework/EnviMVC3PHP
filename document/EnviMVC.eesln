@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--EmEditor Solution file-->
+<Solution>
+	<Projects>
+		<Project RelativePath="EnviMVCCore.eeproj"/>
+	</Projects>
+
+	<GlobalOptions>
+		<SelectedType Value="2"/>
+		<SelectedPath Value="C:\repo\git\enviMVC3PHP\libs\envi3\logWriter.php"/>
+		<SelectedProject Value="C:\repo\git\enviMVC3PHP\document\EnviMVCCore.eeproj"/>
+		<StartUpProject Value="C:\repo\git\enviMVC3PHP\document\EnviMVCCore.eeproj"/>
+	</GlobalOptions>
+</Solution>

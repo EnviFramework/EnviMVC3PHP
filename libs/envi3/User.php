@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Envi3
- * @subpackage
+ * @subpackage EnviMVCCore
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
@@ -10,7 +10,7 @@
  * ユーザークラス
  *
  * @package Envi3
- * @subpackage EnviMVC
+ * @subpackage EnviMVCCore
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */

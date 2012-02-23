@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Envi3
- * @subpackage
+ * @subpackage EnviMVCCore
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
@@ -9,12 +9,12 @@
 
 /**
  * @package Envi3
- * @subpackage View基底クラス
+ * @subpackage EnviMVCCore
  * @abstract
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
-abstract class Envi_ViewBase
+abstract class EnviViewBase
 {
     public $renderer;
 

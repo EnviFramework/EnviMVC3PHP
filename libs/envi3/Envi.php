@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Envi3
- * @subpackage EnviMVC
+ * @subpackage EnviMVCCore
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
@@ -21,7 +21,7 @@ require ENVI_BASE_DIR.'extension.php';
 /**
  * +-- Redirect用の例外
  * @package Envi3
- * @subpackage EnviMVC
+ * @subpackage EnviMVCCore
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */

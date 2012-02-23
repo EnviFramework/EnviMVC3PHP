@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Envi3
- * @subpackage logWriter
+ * @subpackage EnviMVCCore
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
@@ -21,7 +21,7 @@
  * 更に詳しい情報は、@link{http://php.five-foxes.com/}に記述して置きます。
  *
  * @package Envi3
- * @subpackage logWriter
+ * @subpackage EnviMVCCore
  * @author     Akito<akito-artisan@five-foxes.com>
  * @sinse 0.1
  */

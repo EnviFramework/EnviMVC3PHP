@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Envi3
- * @subpackage
+ * @subpackage EnviMVCCore
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
@@ -20,12 +20,17 @@ if (!defined('ENVI_SERVER_STATUS_CONF')) {
     );
 }
 
-function serverStatus()
+function EnviServerStatus()
 {
-    return serverStatus::singleton();
+    return EnviServerStatus::singleton();
 }
-
-class serverStatus
+/**
+ * @package Envi3
+ * @subpackage EnviMVCCore
+ * @sinse 0.1
+ * @author     Akito<akito-artisan@five-foxes.com>
+ */
+class EnviServerStatus
 {
     const DEVELOPER  = 'dev';
     const STAGE      = 'stg';

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Envi3
- * @subpackage EnviMVC
+ * @subpackage EnviMVCCore
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
@@ -76,7 +76,7 @@ function validator()
  * - "preg"             => パール互換の正規表現にマッチするか(OPTION:正規表現)
  *
  * @package Envi3
- * @subpackage EnviMVC
+ * @subpackage EnviMVCCore
  * @sinse 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
