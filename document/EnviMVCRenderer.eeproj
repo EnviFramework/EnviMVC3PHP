@@ -2,5 +2,7 @@
 <!--EmEditor Project file-->
 <Project>
 <Files>
+	<File RelativePath="..\libs\envi3\renderer\EnviSmartyRenderer.php"/>
+	<File RelativePath="..\libs\envi3\renderer\EnviTwigRenderer.php"/>
 </Files>
 </Project>

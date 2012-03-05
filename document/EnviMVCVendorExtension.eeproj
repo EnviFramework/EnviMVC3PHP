@@ -2,5 +2,14 @@
 <!--EmEditor Project file-->
 <Project>
 <Files>
+	<File RelativePath="..\libs\envi3\vendor\EnviCheckproxy.class.php"/>
+	<File RelativePath="..\libs\envi3\vendor\EnviDB.php"/>
+	<File RelativePath="..\libs\envi3\vendor\EnviMemcache.class.php"/>
+	<File RelativePath="..\libs\envi3\vendor\EnviMemcacheSession.class.php"/>
+	<File RelativePath="..\libs\envi3\vendor\EnviSecureSession.class.php"/>
+	<File RelativePath="..\libs\envi3\vendor\EnviSendMail.class.php"/>
+	<File RelativePath="..\libs\envi3\vendor\EnviWebtype.class.php"/>
+	<File RelativePath="..\libs\envi3\vendor\OrMapBase.class.php"/>
+	<File RelativePath="..\libs\envi3\vendor\pankuzuNavigator.class.php"/>
 </Files>
 </Project>

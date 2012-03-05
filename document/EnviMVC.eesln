@@ -3,12 +3,14 @@
 <Solution>
 	<Projects>
 		<Project RelativePath="EnviMVCCore.eeproj"/>
+		<Project RelativePath="EnviMVCRenderer.eeproj"/>
+		<Project RelativePath="EnviMVCVendorExtension.eeproj"/>
 	</Projects>
 
 	<GlobalOptions>
-		<SelectedType Value="2"/>
-		<SelectedPath Value="C:\repo\git\enviMVC3PHP\libs\envi3\logWriter.php"/>
-		<SelectedProject Value="C:\repo\git\enviMVC3PHP\document\EnviMVCCore.eeproj"/>
+		<SelectedType Value="0"/>
+		<SelectedPath Value="C:\repo\git\enviMVC3PHP\document\EnviMVCRenderer.eeproj"/>
+		<SelectedProject Value="C:\repo\git\enviMVC3PHP\document\EnviMVCRenderer.eeproj"/>
 		<StartUpProject Value="C:\repo\git\enviMVC3PHP\document\EnviMVCCore.eeproj"/>
 	</GlobalOptions>
 </Solution>
