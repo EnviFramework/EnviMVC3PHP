@@ -47,7 +47,7 @@ class EnviServerStatus
     public static function &singleton()
     {
         if (!isset(self::$instance)) {
-            self::$instance = new serverStatus();
+            self::$instance = new EnviServerStatus();
         }
         return self::$instance;
     }

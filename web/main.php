@@ -12,10 +12,10 @@
 define('LW_START_MTIMESTAMP', microtime(true));
 
 // コンフィグファイルのパス
-define('ENVI_MVC_APPKEY_PATH',     realpath('../config/'));
+define('ENVI_MVC_APPKEY_PATH',     realpath('../config/').DIRECTORY_SEPARATOR);
 
 // キャッシュディレクトリのパス
-define('ENVI_MVC_CACHE_PATH',     realpath('../cache/'));
+define('ENVI_MVC_CACHE_PATH',     realpath('../cache/').DIRECTORY_SEPARATOR);
 
 // 環境ファイルのパス
 define('ENVI_SERVER_STATUS_CONF', realpath('../env/ServerStatus.conf'));

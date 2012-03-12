@@ -3,7 +3,7 @@ all:
     # ここをtrueにすると、リクエストごとにロードされ、オブジェクトが生成されます
     constant: true
     class:
-      resource: "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>EnviDB.php"
+      resource: "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>EnviDBI.class.php"
       class_name: "DBInstance"
       singleton: true
     router:

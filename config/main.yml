@@ -9,7 +9,7 @@ all:
     ssl_dispatch_url: "https://<?php echo $_SERVER["HTTP_HOST"].$_SERVER["SCRIPT_NAME"];?>"
     use_i18n: false
     default_i18n: "ja"
-    renderer: "renderer/EnviSmartyRenderer.php"
+    renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviSmartyRenderer.php"
     auto_load_cache: true
 
   FILTER:
@@ -58,11 +58,10 @@ all:
           
 # 常にオートロードされるディレクトリ
   AUTOLOAD_CONSTANT:
-#    1: "<?php echo $base;?>lib/commons/"
+    1: "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>"
 # コールされた時にオートロードされるディレクトリ
   AUTOLOAD:
-    1: "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>"
-    2: "<?php echo ENVI_BASE_DIR.'plugins'.DIRECTORY_SEPARATOR;?>"
+    1: "<?php echo ENVI_BASE_DIR.'plugins'.DIRECTORY_SEPARATOR;?>"
 
   MEMCACHE:
     default_host   : "127.0.0.1"
@@ -369,7 +368,7 @@ all:
       # <?php echo logWriter::REQUEST_SESSION;?>: $_SESSION
       # <?php echo logWriter::REQUEST_GLOBALS;?>: $GLOBALS
       # <?php echo logWriter::REQUEST_ALL;?>    : 上記全て
-      value_track_request_type: <?php echo logWriter::REQUEST_SERVER;?>|<?php echo logWriter::REQUEST_COOKIE;?>|<?php echo logWriter::REQUEST_POST;?>|<?php echo logWriter::REQUEST_GET;?>|<?php echo logWriter::REQUEST_FILE;?>|<?php echo logWriter::REQUEST_SESSION;?>
+      value_track_request_type: <?php echo logWriter::REQUEST_SERVER|logWriter::REQUEST_COOKIE|logWriter::REQUEST_POST|logWriter::REQUEST_GET|logWriter::REQUEST_FILE|logWriter::REQUEST_SESSION;?>
 
       #----------------------------------------------------------------------------------
 
@@ -491,7 +490,7 @@ all:
       # <?php echo logWriter::REQUEST_SESSION;?>: $_SESSION
       # <?php echo logWriter::REQUEST_GLOBALS;?>: $GLOBALS
       # <?php echo logWriter::REQUEST_ALL;?>: 上記全て
-      value_track_response_type: <?php echo logWriter::REQUEST_SERVER;?>|<?php echo logWriter::REQUEST_COOKIE;?>|<?php echo logWriter::REQUEST_POST;?>|<?php echo logWriter::REQUEST_GET;?>|<?php echo logWriter::REQUEST_FILE;?>|<?php echo logWriter::REQUEST_SESSION;?>
+      value_track_response_type: <?php echo logWriter::REQUEST_SERVER|logWriter::REQUEST_COOKIE|logWriter::REQUEST_POST|logWriter::REQUEST_GET|logWriter::REQUEST_FILE|logWriter::REQUEST_SESSION;?>
 
       #----------------------------------------------------------------------------------
 

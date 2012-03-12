@@ -7,12 +7,12 @@
  */
 
 define('ENVI_BASE_DIR', dirname(__FILE__).DIRECTORY_SEPARATOR);
-require ENVI_BASE_DIR.'serverStatus.php';
-require ENVI_BASE_DIR.'ActionBase.php';
-require ENVI_BASE_DIR.'ViewBase.php';
+require ENVI_BASE_DIR.'EnviServerStatus.php';
+require ENVI_BASE_DIR.'EnviActionBase.php';
+require ENVI_BASE_DIR.'EnviViewBase.php';
 require ENVI_BASE_DIR.'Controller.php';
 require ENVI_BASE_DIR.'Request.php';
-require ENVI_BASE_DIR.'EnviUser.php';
+require ENVI_BASE_DIR.'User.php';
 require ENVI_BASE_DIR.'validator.php';
 require ENVI_BASE_DIR.'logWriter.php';
 require ENVI_BASE_DIR.'extension.php';
