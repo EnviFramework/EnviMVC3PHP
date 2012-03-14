@@ -110,7 +110,13 @@ class EnviException extends Exception
 {
     public function __construct($message, $code = 0, Exception $previous = null)
     {
-        parent::__construct($message, $code, $previous);
+        if (Envi::$debug) {
+            echo "{$message} EnviException[{$code}]";
+            var_dump($this);
+        } else {
+            header('HTTP/1.0 403 Forbidden');
+        }
+        // parent::__construct($message, $code, $previous);
     }
 }
 /* ----------------------------------------- */
@@ -188,15 +194,17 @@ class Envi
             $autoload_constant_dir = $this->_system_conf['AUTOLOAD_CONSTANT'];
             $autoload_constant = array();
             $autoload_constant[] = $this->_system_conf['SYSTEM']['renderer'];
-            foreach ($autoload_constant_dir as $dir) {
-                if (is_dir($dir)) {
-                    if ($dh = opendir($dir)) {
-                        while (($file = readdir($dh)) !== false) {
-                            if (strpos($file, '.php')) {
-                                $autoload_constant[] = $dir.$file;
+            if ($autoload_constant_dir){
+                foreach ($autoload_constant_dir as $dir) {
+                    if (is_dir($dir)) {
+                        if ($dh = opendir($dir)) {
+                            while (($file = readdir($dh)) !== false) {
+                                if (strpos($file, '.php')) {
+                                    $autoload_constant[] = $dir.$file;
+                                }
                             }
+                            closedir($dh);
                         }
-                        closedir($dh);
                     }
                 }
             }

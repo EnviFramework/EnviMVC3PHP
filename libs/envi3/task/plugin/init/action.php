@@ -27,4 +27,5 @@ $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DI
 $text = str_replace(array('%%module_name%%', '%%action_name%%'), array($module_name, $action_name), $text);
 if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."actions".DIRECTORY_SEPARATOR.$action_name.'Action.class.php')) {
     file_put_contents($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."actions".DIRECTORY_SEPARATOR.$action_name.'Action.class.php', $text);
+    touch($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR.$action_name.'.tpl');
 }

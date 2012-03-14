@@ -25,7 +25,7 @@ class EnviSmartyRenderer extends Smarty
     public function __construct()
     {
         $this->_compile_id  = Request::getThisModule();
-        $this->_system_conf = Envi::singleton()->_system_conf;
+        $this->_system_conf = Envi()->getConfigurationAll();
         $this->setting(Request::getThisModule());
     }
 
@@ -35,7 +35,7 @@ class EnviSmartyRenderer extends Smarty
         $this->compile_dir  = $this->_system_conf['DIRECTORY']['templatec'];
         $this->etc_dir      = $this->_system_conf['DIRECTORY']['templateetc'];
         $this->config_dir   = $this->_system_conf['DIRECTORY']['config'];
-        $this->template_dir = $module_dir.'templates';
+        $this->template_dir = $this->_system_conf['DIRECTORY']['modules'].$module_dir.DIRECTORY_SEPARATOR.'templates';
         $this->assign('Envi', Envi::singleton());
         $this->assign('base_url', Envi::singleton()->getBaseUrl());
     }

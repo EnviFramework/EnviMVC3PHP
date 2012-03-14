@@ -150,6 +150,7 @@ class User
         if (!self::$_is_session_start) {
             self::sessionStart();
         }
-        return call_user_func(array(self::$session, 'getAttribute'), func_get_args());
+        $arr = func_get_args();
+        return call_user_func(array(self::$session, 'getAttribute'), $arr);
     }
 }
