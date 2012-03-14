@@ -612,17 +612,24 @@ all:
     session_manager: "EnviSecureSession"
     sess_base_save_path: "<?php echo realpath(ENVI_BASE_DIR."..{$ds}..{$ds}var{$ds}session").$ds;?>"
 
-stg:
-  DATABASE:
-    default_master:
-      class_name: DB
-      params:
-        dsn: ""
-        connection_pool: true
-        initialize_query: "set names utf8;"
-    default_slave:
-      class_name: DB
-      params:
-        dsn: ""
-        connection_pool: true
-        initialize_query: "set names utf8;"
+# ŠÂ‹«‚²‚Æ‚Ì’l
+dev:
+  SESSION:
+    use: true
+    cookie_name: "gibson"
+    gc_lifetime: 1200000
+    cookie_lifetime: 1200000
+    session_manager_path: "<?php echo ENVI_BASE_DIR."libs{$ds}EnviSecureSession.php";?>"
+    session_manager: "EnviSecureSession"
+    sess_base_save_path: "<?php echo realpath(ENVI_BASE_DIR."..{$ds}..{$ds}var{$ds}session").$ds;?>"
+
+
+prod:
+  SESSION:
+    use: true
+    cookie_name: "fender"
+    gc_lifetime: 1200000
+    cookie_lifetime: 1200000
+    session_manager_path: "<?php echo ENVI_BASE_DIR."libs{$ds}EnviSecureSession.php";?>"
+    session_manager: "EnviSecureSession"
+    sess_base_save_path: "<?php echo realpath(ENVI_BASE_DIR."..{$ds}..{$ds}var{$ds}session").$ds;?>"

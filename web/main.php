@@ -1,5 +1,7 @@
 <?php
 /**
+ * DocumentRootのインデックスファイル
+ *
  * @package Envi3
  * @subpackage EnviMVC
  * @sinse 0.1
