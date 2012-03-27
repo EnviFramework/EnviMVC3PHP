@@ -2,15 +2,18 @@ all:
   default_master:
     params:
       dsn: ""
-      connection_pool: true
+      instance_pool: true
+      connection_pool: false
       initialize_query: "set names utf8;"
   default_slave:
     params:
       dsn: ""
-      connection_pool: true
+      instance_pool: true
+      connection_pool: false
       initialize_query: "set names utf8;"
   default_stage:
     params:
       dsn: ""
-      connection_pool: true
+      instance_pool: true
+      connection_pool: false
       initialize_query: "set names utf8;"

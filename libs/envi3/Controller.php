@@ -17,9 +17,11 @@
  */
 class Controller
 {
-    private static $_action_chain = array();
+    private static $_action_chain      = array();
+    private static $_action_chain_data = array();
     private static $_system_conf;
-    private static $_is_action_chain = false;
+    private static $_is_action_chain   = false;
+    private static $_action_chain_name = NULL;
 
     /**
      * +-- アクションチェインの中かどうか
@@ -102,12 +104,14 @@ class Controller
      * @static
      * @params string $name チェイン名
      * @params string $action アクション名
-     * @params string $module モジュール名 OPTIONAL:null
+     * @params string $module モジュール名 OPTIONAL:NULL
+     * @params string $data チェイン先に渡すデータ OPTIONAL:NULL
      * @return void
      */
-    final public static function setActionChain($name, $action, $module = null)
+    final public static function setActionChain($name, $action, $module = NULL, $data = NULL)
     {
-        self::$_action_chain[$name] = array($action, $module);
+        self::$_action_chain[$name]      = array($action, $module);
+        self::$_action_chain_data[$name] = $data;
     }
     /* ----------------------------------------- */
 
@@ -120,6 +124,7 @@ class Controller
     final public static function unsetActionChain($name)
     {
         unset(self::$_action_chain[$name]);
+        unset(self::$_action_chain_data[$name]);
     }
 
     /**
@@ -133,16 +138,36 @@ class Controller
     {
         self::$_is_action_chain = true;
         $_attribute = Request::getAttributeAll();
+        $post_data = $_POST;
         foreach (self::$_action_chain as $key => $value) {
+            self::$_action_chain_name = $key;
+            if (!is_null(self::$_action_chain_data[$key])) {
+                $_POST = array_merge($_POST, self::$_action_chain_data[$key]);
+            }
             ob_start();
             self::forward($value[0], $value[1]);
-
-            Request::setAttributeAll($_attribute);
             $res[$key] = ob_get_contents();
             ob_clean();
+            Request::setAttributeAll($_attribute);
+            $_POST = $post_data;
         }
-        self::$_action_chain = array();
-        self::$_is_action_chain = false;
+
+        self::$_action_chain      = array();
+        self::$_action_chain_data = array();
+        self::$_is_action_chain   = false;
+        self::$_action_chain_name = NULL;
         return $res;
+    }
+
+    /**
+     * アクションチェイン中、その実行プロセス名を返す
+     *
+     * @final
+     * @access public
+     * @return string
+     */
+    final public static function getActionChainName()
+    {
+        return self::$_action_chain_name;
     }
 }

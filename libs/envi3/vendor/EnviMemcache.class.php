@@ -24,7 +24,7 @@ class EnviMemcache
      * Connection取得
      *
      */
-    public function getConnection($name = 'default')
+    public static function getConnection($name = 'default')
     {
         if (isset(self::$connection[$name])) {
             return self::$connection[$name];
@@ -46,7 +46,7 @@ class EnviMemcache
      * 他の項目をキャッシュするための場所を確保するためにサーバから 削除されてしまうこともあります)。
      * (zlib を使用して) その場でのデータの圧縮を行いたい場合は、 flag の値として、定数 MEMCACHE_COMPRESSED を指定します。
      */
-    public function set($key, $var, $flag = false, $expire = 3600, $name= 'default')
+    public static function set($key, $var, $expire = 3600, $name= 'default', $flag = false)
     {
         $con = self::getConnection($name);
         $key = self::$prefix[$name].$key;
@@ -54,7 +54,7 @@ class EnviMemcache
         return $con->set($key, $var, $flag, $expire);
     }
 
-    public function get($key, $flag = false,  $name= 'default')
+    public static function get($key,  $name= 'default', $flag = false)
     {
         $con = self::getConnection($name);
         $key = self::$prefix[$name].$key;
@@ -65,7 +65,7 @@ class EnviMemcache
         return self::$cache[$name][$key];
     }
 
-    public function has($key, $flag = false,  $name= 'default')
+    public static function has($key, $name= 'default', $flag = false)
     {
         $con = self::getConnection($name);
         $key = self::$prefix[$name].$key;
@@ -76,7 +76,7 @@ class EnviMemcache
         return self::$cache[$name][$key] !== FALSE;
     }
 
-    public function delete($key, $name= 'default')
+    public static function delete($key, $name= 'default')
     {
         $con = self::getConnection($name);
         $key = self::$prefix[$name].$key;

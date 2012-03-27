@@ -55,10 +55,10 @@ class DB
      */
     public static function getConnection($param, $instance_name)
     {
-        if ($param['connection_pool']) {
+        if ($param['instance_pool']) {
             if (!isset(self::$connections[$instance_name])) {
                 parse_str($param['dsn'], $conf);
-                self::$connections[$instance_name] = self::connect($conf);
+                self::$connections[$instance_name] = self::connect($conf, '', '', $param['connection_pool']);
                 if ($param['initialize_query']) {
                     self::$connections[$instance_name]->query($param['initialize_query']);
                 }
@@ -66,7 +66,7 @@ class DB
             return self::$connections[$instance_name];
         }
         parse_str($param['dsn'], $conf);
-        $dbi = self::connect($conf);
+        $dbi = self::connect($conf, '', '', $param['connection_pool']);
         if ($param['initialize_query']) {
             $dbi->query($param['initialize_query']);
         }
@@ -84,13 +84,22 @@ class DB
      * @params  $password OPTIONAL:false
      * @return EnviDBIBase
      */
-    public static function connect($dsn, $user = false, $password = false)
+    public static function connect($dsn, $user = false, $password = false, $is_pool = false)
     {
-        if ($user === false) {
-            return new EnviDBIBase($dsn, '', '');
+        if ($is_pool) {
+            if ($user === false) {
+                return new EnviDBIBase($dsn, '', '', $pass, array(PDO::ATTR_PERSISTENT => true));
+            } else {
+                return new EnviDBIBase($dsn, $user, $password, $pass, array(PDO::ATTR_PERSISTENT => true));
+            }
         } else {
-            return new EnviDBIBase($dsn, $user, $password);
+            if ($user === false) {
+                return new EnviDBIBase($dsn, '', '');
+            } else {
+                return new EnviDBIBase($dsn, $user, $password);
+            }
         }
+
     }
     /* ----------------------------------------- */
 
