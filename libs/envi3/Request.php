@@ -380,6 +380,29 @@ class Request
     }
     /* ----------------------------------------- */
 
+
+    /**
+     * +-- エラーコードを全てリファレンスで取得
+     *
+     * @access public
+     * @static
+     * @return array
+     */
+    public static function &getErrorCodesByRef()
+    {
+        return self::$_error_code;
+    }
+    /* ----------------------------------------- */
+
+    public static function setErrorsAll($data)
+    {
+        self::$_error_message = $data;
+    }
+
+    public static function setErrorCodesAll($data)
+    {
+        self::$_error_code = $data;
+    }
     /**
      * +-- エラーを指定して取得
      *

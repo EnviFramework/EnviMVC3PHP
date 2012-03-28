@@ -137,7 +137,9 @@ class Controller
     final public static function go()
     {
         self::$_is_action_chain = true;
-        $_attribute = Request::getAttributeAll();
+        $_attribute     = Request::getAttributeAll();
+        $_error_message = Request::getErrorsByRef();
+        $_error_code    = Request::getErrorCodesByRef();
         $post_data = $_POST;
         foreach (self::$_action_chain as $key => $value) {
             self::$_action_chain_name = $key;
@@ -149,6 +151,8 @@ class Controller
             $res[$key] = ob_get_contents();
             ob_clean();
             Request::setAttributeAll($_attribute);
+            Request::setErrorsAll($_error_message);
+            Request::setErrorCodesAll($_error_code);
             $_POST = $post_data;
         }
 
