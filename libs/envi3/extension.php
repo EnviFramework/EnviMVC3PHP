@@ -9,7 +9,7 @@
 /**
  * DI登録されたエクステンションのロード
  *
- * extention()->エクステンション名<br />
+ * extention()->エクステンション名()<br />
  * でオブジェクトを取得できます。
  *
  * @package Envi3
@@ -44,21 +44,63 @@ class extension
     }
     /* ----------------------------------------- */
 
+    /**
+     * +-- エクステンションのオブジェクト取得(magicmethod)
+     *
+     * @access public
+     * @params  $name
+     * @params  $arguments
+     * @return object
+     */
     public function __call($name, $arguments)
     {
-        if (!isset($this->extensions[$name]) && isset($this->configuration[$name])) {
-            $class_name = $this->configuration[$name]['class']['class_name'];
-            include_once $this->configuration[$name]['class']['resource'];
-            if (!isset($this->configuration[$name]['class']['singleton']) || !$this->configuration[$name]['class']['singleton']) {
-                return new $class_name(Envi::singleton()->parseYml(basename($this->configuration[$name]['router']['resource']), dirname($this->configuration[$name]['router']['resource']).DIRECTORY_SEPARATOR));
+        if (!isset($this->configuration[$name])) {
+            throw new EnviException($name.' extensionが見つかりませんでした');
+        }
+        $class_name = $this->configuration[$name]['class']['class_name'];
+
+        if (!isset($this->configuration[$name]['class']['singleton']) || !$this->configuration[$name]['class']['singleton']) {
+            if (!isset($this->extensions[$name])) {
+                include_once $this->configuration[$name]['class']['resource'];
+                $this->extensions[$name] = array();
             }
-            $this->extensions[$name] = new $class_name(Envi::singleton()->parseYml(basename($this->configuration[$name]['router']['resource']), dirname($this->configuration[$name]['router']['resource']).DIRECTORY_SEPARATOR));
+            $c = count($this->extensions[$name]);
+            $this->extensions[$name][$c] = $class_name(Envi::singleton()->parseYml(basename($this->configuration[$name]['router']['resource']), dirname($this->configuration[$name]['router']['resource']).DIRECTORY_SEPARATOR));
+            return $this->extensions[$name][$c];
         } elseif (!isset($this->extensions[$name])) {
-            throw new EnviException('extensionが見つかりませんでした');
+            include_once $this->configuration[$name]['class']['resource'];
+            $this->extensions[$name] = new $class_name(Envi::singleton()->parseYml(basename($this->configuration[$name]['router']['resource']), dirname($this->configuration[$name]['router']['resource']).DIRECTORY_SEPARATOR));
         }
         return $this->extensions[$name];
     }
+    /* ----------------------------------------- */
 
+    /**
+     * +-- メインのAction実行が完了したタイミングで、暗黙的に実行されるMethodを実行
+     *
+     * @access public
+     * @return void
+     */
+    public function executeLastShutdownMethod()
+    {
+        foreach ($this->extensions as $name => $val) {
+            $shutdownMethod = false;
+            if (isset($this->configuration[$name]['class']['lastShutdownMethod'])) {
+                $shutdownMethod = $this->configuration[$name]['class']['lastShutdownMethod'];
+            }
+            if (!$shutdownMethod) {
+                continue;
+            }
+            if (is_array($val)) {
+                foreach ($val as $obj) {
+                    $obj->$shutdownMethod();
+                }
+            } else {
+                $val->$shutdownMethod();
+            }
+        }
+    }
+    /* ----------------------------------------- */
 
     public static function _singleton($configuration = NULL)
     {

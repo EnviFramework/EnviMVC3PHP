@@ -794,8 +794,9 @@ class logWriter
         /** 設定ファイル読み込み */
         $dir = ENVI_MVC_CACHE_PATH;
         $bk_file = $dir.__CLASS__.ENVI_ENV.Envi::singleton()->getApp().'.envicc';
-        if (is_file($bk_file)) {
-            $this->_system_conf = unserialize(file_get_contents($bk_file));
+        $autoload_constant_cache = $dir.Envi()->getApp().ENVI_ENV.'.autoload_constant.envicc';
+        if (is_file($bk_file) && !Envi()->isDebug() && filemtime($bk_file) > filemtime($autoload_constant_cache)) {
+            $this->_system_conf = Envi()->unserialize(file_get_contents($bk_file));
             return;
         }
 
@@ -872,7 +873,7 @@ class logWriter
         );
 
         $handle = @ fopen($bk_file, 'w');
-        $writestring = serialize($this->_system_conf);
+        $writestring = Envi()->serialize($this->_system_conf);
         @ fwrite($handle, $writestring);
         @ fclose($handle);
     }

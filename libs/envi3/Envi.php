@@ -6,6 +6,7 @@
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 
+
 define('ENVI_BASE_DIR', dirname(__FILE__).DIRECTORY_SEPARATOR);
 require ENVI_BASE_DIR.'EnviServerStatus.php';
 require ENVI_BASE_DIR.'EnviActionBase.php';
@@ -615,8 +616,7 @@ class Envi
             }
 
             // イニシャライズ
-            $res = $action->$initialize();
-            if ($res === false) {
+            if ($action->$initialize() === false) {
                 return false;
             }
 
@@ -634,9 +634,14 @@ class Envi
                 $res = $action->$execute();
             }
 
-            if (!$action->$shutdown()) {
+            if ($action->$shutdown() === false) {
                 return true;
             }
+
+            if ($is_first) {
+                extension()->executeLastShutdownMethod();
+            }
+
             if ($res === self::NONE || !$res) {
                 return true;
             }

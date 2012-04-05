@@ -88,9 +88,9 @@ class DB
     {
         if ($is_pool) {
             if ($user === false) {
-                return new EnviDBIBase($dsn, '', '', $pass, array(PDO::ATTR_PERSISTENT => true));
+                return new EnviDBIBase($dsn, '', '',  array(PDO::ATTR_PERSISTENT => true));
             } else {
-                return new EnviDBIBase($dsn, $user, $password, $pass, array(PDO::ATTR_PERSISTENT => true));
+                return new EnviDBIBase($dsn, $user, $password, array(PDO::ATTR_PERSISTENT => true));
             }
         } else {
             if ($user === false) {
