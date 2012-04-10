@@ -2,7 +2,7 @@
 /**
  * @package Envi3
  * @subpackage EnviMVCCore
- * @sinse 0.1
+ * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 
@@ -77,7 +77,7 @@ function validator()
  *
  * @package Envi3
  * @subpackage EnviMVCCore
- * @sinse 0.1
+ * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 class validator
@@ -1481,7 +1481,7 @@ class validator
 /**
  * @package Envi3
  * @subpackage EnviMVC
- * @sinse 0.1
+ * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 class ValidatorError

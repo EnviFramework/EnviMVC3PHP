@@ -2,7 +2,7 @@
 /**
  * @package Envi3
  * @subpackage
- * @sinse 0.1
+ * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 
@@ -12,7 +12,7 @@
  *
  * Smartyの制約として、Smartyのディレクトリにパスを通す
  *
- * @sinse 0.1
+ * @since 0.1
  * @package Envi
  * @subpackage EnviMVC
  */

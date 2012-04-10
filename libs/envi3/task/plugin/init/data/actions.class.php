@@ -2,7 +2,7 @@
 /**
  * @package
  * @subpackage
- * @sinse 0.1
+ * @since 0.1
  * @author
  */
 
@@ -10,7 +10,7 @@
 /**
  * @package
  * @subpackage
- * @sinse 0.1
+ * @since 0.1
  * @author
  */
 

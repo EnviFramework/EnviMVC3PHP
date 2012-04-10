@@ -2,7 +2,7 @@
 /**
  * @package Envi3
  * @subpackage EnviMVCCore
- * @sinse 0.1
+ * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 
@@ -23,7 +23,7 @@ require ENVI_BASE_DIR.'extension.php';
  * +-- Redirect用の例外
  * @package Envi3
  * @subpackage EnviMVCCore
- * @sinse 0.1
+ * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 class redirectException extends Exception
@@ -47,7 +47,7 @@ class redirectException extends Exception
  * +-- 処理中断用の例外
  * @package Envi3
  * @subpackage EnviMVC
- * @sinse 0.1
+ * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 class killException extends Exception
@@ -63,7 +63,7 @@ class killException extends Exception
  * +-- 404エラー
  * @package Envi3
  * @subpackage EnviMVC
- * @sinse 0.1
+ * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 class Envi404Exception extends Exception
@@ -83,7 +83,7 @@ class Envi404Exception extends Exception
  * +-- 403エラー
  * @package Envi3
  * @subpackage EnviMVC
- * @sinse 0.1
+ * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 class Envi403Exception extends Exception
@@ -104,7 +104,7 @@ class Envi403Exception extends Exception
  * +-- 汎用的な例外
  * @package Envi3
  * @subpackage EnviMVC
- * @sinse 0.1
+ * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 class EnviException extends Exception
@@ -189,7 +189,6 @@ class Envi
         self::$debug     = $debug;
         self::$app_key   = $app;
         $this->_system_conf      = $this->parseYml($app.'.yml');
-
         $autoload_constant_cache = ENVI_MVC_CACHE_PATH.$app.ENVI_ENV.'.autoload_constant.envicc';
         if ($debug || !is_file($autoload_constant_cache)) {
             $autoload_constant_dir = $this->_system_conf['AUTOLOAD_CONSTANT'];
@@ -246,6 +245,19 @@ class Envi
             }
             file_put_contents($auto_load_classes_cache, $this->serialize($this->auto_load_classes));
         }
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- テスト用
+     *
+     * @access public
+     * @static
+     * @return void
+     */
+    public static function _free()
+    {
+        self::$instance = NULL;
     }
     /* ----------------------------------------- */
 
@@ -486,6 +498,9 @@ class Envi
     public function parseYml($file, $dir = ENVI_MVC_APPKEY_PATH)
     {
         if (!is_file(ENVI_MVC_CACHE_PATH.$file.ENVI_ENV.'.envicc') || (self::$debug && @filemtime(ENVI_MVC_APPKEY_PATH.$file) > @filemtime($dir.$file.ENVI_ENV.'.envicc'))) {
+            if (!is_file($dir.$file)) {
+                throw new EnviException('not such file '.$dir.$file);
+            }
             include_once ENVI_BASE_DIR.'spyc.php';
             ob_start();
             include $dir.$file;

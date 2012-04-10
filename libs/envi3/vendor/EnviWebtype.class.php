@@ -2,7 +2,7 @@
 /**
  * @package Envi3
  * @subpackage EnviMVCVendorExtension
- * @sinse 0.1
+ * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 
@@ -16,7 +16,7 @@ function EnviWebType()
  *
  * @package Envi3
  * @subpackage EnviMVCVendorExtension
- * @sinse 0.1
+ * @since 0.1
  */
 class EnviWebType
 {

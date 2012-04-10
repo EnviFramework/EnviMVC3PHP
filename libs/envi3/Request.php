@@ -2,7 +2,7 @@
 /**
  * @package Envi3
  * @subpackage EnviMVCCore
- * @sinse 0.1
+ * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 
@@ -11,7 +11,7 @@
  * リクエストを管理するクラス
  *
  * @access public
- * @sinse 0.1
+ * @since 0.1
  * @package Envi3
  * @subpackage EnviMVCCore
  */

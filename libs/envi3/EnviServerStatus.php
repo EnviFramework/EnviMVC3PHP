@@ -2,7 +2,7 @@
 /**
  * @package Envi3
  * @subpackage EnviMVCCore
- * @sinse 0.1
+ * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 if (!defined('ENVI_SERVER_STATUS_CONF')) {
@@ -27,7 +27,7 @@ function EnviServerStatus()
 /**
  * @package Envi3
  * @subpackage EnviMVCCore
- * @sinse 0.1
+ * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
 class EnviServerStatus
