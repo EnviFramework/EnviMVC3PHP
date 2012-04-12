@@ -46,7 +46,7 @@ all:
     # load_yml_resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.'main_di_container.yml';?>"
     # ここに記述する場合は下記のように記述可能
     extensions:
-      DBConnection:
+      DBI:
         # ここをtrueにすると、リクエストごとにロードされ、オブジェクトが生成されます
         constant: true
         class:

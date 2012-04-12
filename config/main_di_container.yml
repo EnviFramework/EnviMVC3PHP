@@ -1,5 +1,5 @@
 all:
-  DBConnection:
+  DBI:
     # ここをtrueにすると、リクエストごとにロードされ、オブジェクトが生成されます
     constant: true
     class:
