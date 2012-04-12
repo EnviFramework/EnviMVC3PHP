@@ -24,7 +24,7 @@ abstract class OrMapBase
     {
         $table_name = $this->table_name;
         $pkeys      = $this->pkeys;
-        $dbi = $con ? $con : extension()->DBConnection()->getInstance($this->default_instance_name);
+        $dbi = $con ? $con : extension()->DBI()->getInstance($this->default_instance_name);
 
         if (!isset($this->_from_hydrate[$pkeys[0]])) {
             $dbi->autoExecute($table_name, $this->to_save, DB::AUTOQUERY_INSERT);
