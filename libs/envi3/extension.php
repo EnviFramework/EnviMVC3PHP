@@ -110,6 +110,11 @@ class extension
         return self::$instance;
     }
 
+    public function free()
+    {
+        $this->extensions = array();
+    }
+
 }
 
 

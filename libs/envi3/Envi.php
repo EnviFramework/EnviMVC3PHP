@@ -426,67 +426,6 @@ class Envi
     /* ----------------------------------------- */
 
 
-    /**
-     * +-- 処理を振り分ける
-     *
-     * @access public
-     * @static
-     * @params string $app アプリキー
-     * @params boolean $debug OPTIONAL:false
-     * @return void
-     */
-    public static function dispatch($app, $debug = false)
-    {
-        try {
-            ob_start();
-            $envi = self::singleton($app, $debug);
-            // リクエストモジュールの初期化
-            Request::initialize();
-            include ENVI_MVC_CACHE_PATH.self::$app_key.ENVI_ENV.'.autoload_constant.envicc';
-            $envi->loadExtension();
-            $filters = $envi->getConfiguration('FILTER');
-            if (isset($filters['input_filter'])) {
-                foreach ($filters['input_filter'] as $input_filters) {
-                    include_once $input_filters['resource'];
-                    $class_name = $input_filters['class_name'];
-                    $input_filter = new $class_name;
-                    $input_filter->execute();
-                    unset($input_filter);
-                }
-            }
-            $envi->_run(true);
-            $contents = ob_get_contents();
-            ob_end_clean();
-            if (isset($filters['output_filter'])) {
-                foreach ($filters['output_filter'] as $output_filters) {
-                    include_once $output_filters['resource'];
-                    $class_name = $output_filters['class_name'];
-                    $output_filter = new $class_name;
-                    $output_filter->execute($contents);
-                    unset($output_filter);
-                }
-            }
-            echo $contents;
-        } catch (redirectException $e) {
-            throw $e;
-        } catch (killException $e) {
-            throw $e;
-        } catch (PDOException $e) {
-            Envi::getLogger()->fatal($e->getMessage());
-            Envi::getLogger()->fatal($e->getFile().' line on '.$e->getLine());
-            if (!$debug) {
-                header('HTTP/1.0 500 Internal Server Error');
-            }
-            throw $e;
-        } catch (Exception $e) {
-            Envi::getLogger()->fatal($e->getMessage());
-            Envi::getLogger()->fatal($e->getFile().' line on '.$e->getLine());
-            if (!$debug) {
-                header('HTTP/1.0 500 Internal Server Error');
-            }
-            throw $e;
-        }
-    }
 
     /**
      * +-- YAMLファイルをパースする
@@ -532,6 +471,90 @@ class Envi
     /* ----------------------------------------- */
 
     /**
+     * +-- 処理を中断する
+     *
+     * @access public
+     * @params  $kill OPTIONAL:''
+     * @params  $is_shutDown OPTIONAL:true
+     * @return void
+     */
+    public function kill($kill = '', $is_shutDown = true)
+    {
+        if ($is_shutDown) {
+            $this->is_shutDown = $is_shutDown;
+        }
+        throw new killException($kill);
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- 処理を振り分ける
+     *
+     * main.phpなどからコールされる
+     *
+     * @access public
+     * @static
+     * @params string $app アプリキー
+     * @params boolean $debug OPTIONAL:false
+     * @return void
+     */
+    public static function dispatch($app, $debug = false)
+    {
+        try {
+            ob_start();
+            $envi = self::singleton($app, $debug);
+            // リクエストモジュールの初期化
+            Request::initialize();
+            include_once ENVI_MVC_CACHE_PATH.self::$app_key.ENVI_ENV.'.autoload_constant.envicc';
+            $envi->loadExtension();
+            $filters = $envi->getConfiguration('FILTER');
+            if (isset($filters['input_filter'])) {
+                foreach ($filters['input_filter'] as $input_filters) {
+                    include_once $input_filters['resource'];
+                    $class_name = $input_filters['class_name'];
+                    $input_filter = new $class_name;
+                    $input_filter->execute();
+                    unset($input_filter);
+                }
+            }
+            $envi->_run(true);
+            $contents = ob_get_contents();
+            ob_end_clean();
+            if (isset($filters['output_filter'])) {
+                foreach ($filters['output_filter'] as $output_filters) {
+                    include_once $output_filters['resource'];
+                    $class_name = $output_filters['class_name'];
+                    $output_filter = new $class_name;
+                    $output_filter->execute($contents);
+                    unset($output_filter);
+                }
+            }
+            echo $contents;
+        } catch (redirectException $e) {
+            throw $e;
+        } catch (killException $e) {
+            throw $e;
+        } catch (PDOException $e) {
+            Envi::getLogger()->fatal($e->getMessage());
+            Envi::getLogger()->fatal($e->getFile().' line on '.$e->getLine());
+            if (!$debug) {
+                header('HTTP/1.0 500 Internal Server Error');
+            }
+            throw $e;
+        } catch (Exception $e) {
+            Envi::getLogger()->fatal($e->getMessage());
+            Envi::getLogger()->fatal($e->getFile().' line on '.$e->getLine());
+            if (!$debug) {
+                header('HTTP/1.0 500 Internal Server Error');
+            }
+            throw $e;
+        }
+    }
+    /* ----------------------------------------- */
+
+
+    /**
      * Performerから呼ばれる、実処理メソッド
      *
      * @final
@@ -565,9 +588,10 @@ class Envi
 
         // アクションの存在確認
         $action_class_path = $action_dir.Request::getThisAction().'Action.class.php';
-        $action_sf = ucwords(Request::getThisAction());
+        $action_sf         = ucwords(Request::getThisAction());
 
         if (is_file($action_class_path)) {
+            // 1ファイル1アクションのパターン
             if (dirname($action_class_path) !== realpath($action_dir)) {
                 throw new EnviException('Actionのパスが変です。', 10002);
             }
@@ -595,26 +619,55 @@ class Envi
                 $handleError    = 'handleError';
                 $shutdown       = 'shutdown';
             }
-        } elseif (is_file($action_dir.'actions.class.php')) {
-            $action_class_path = $action_dir.'actions.class.php';
-            include_once($action_class_path);
-            $action = Request::getThisModule().'Actions';
-            $action         = new $action;
-            if (method_exists($action, "execute{$action_sf}")) {
-                $validate       = "validate{$action_sf}";
-                $execute        = "execute{$action_sf}";
-                $defaultAccess  = "defaultAccess{$action_sf}";
-                $handleError    = "handleError{$action_sf}";
-                $isPrivate  = method_exists($action, "isPrivate{$action_sf}") ? "isPrivate{$action_sf}" : "isPrivate";
-                $isSSL      = method_exists($action, "isSSL{$action_sf}") ? "isSSL{$action_sf}" : "isSSL";
-                $isSecure   = method_exists($action, "isSecure{$action_sf}") ? "isSecure{$action_sf}" : "isSecure";
-                $initialize = method_exists($action, "initialize{$action_sf}") ? "initialize{$action_sf}" : "initialize";
-                $shutdown   = method_exists($action, "shutdown{$action_sf}") ? "shutdown{$action_sf}" : "shutdown";
-            } else {
-                throw new Envi404Exception("execute{$action_sf}がないです", 10003);
-            }
         } else {
-            throw new Envi404Exception('Actionがないです。', 10004);
+            $sub_action            = mb_ereg_replace('^([a-z0-9]+).*$', '\1', Request::getThisAction());
+            $action_sub_class_path = $action_dir.$sub_action.'Actions.class.php';
+
+            if (is_file($action_sub_class_path)) {
+                // 1ファイルに複数アクションがあるパターン
+                if (dirname($action_sub_class_path) !== realpath($action_dir)) {
+                    throw new EnviException('Actionのパスが変です。', 10002);
+                }
+                include_once($action_sub_class_path);
+                $action = $sub_action.'Actions';
+                $action = new $action;
+                $action_sub_sf = ucwords(mb_ereg_replace("^{$sub_action}", '', Request::getThisAction()));
+                if (method_exists($action, "execute{$action_sub_sf}")) {
+                    $isPrivate  = method_exists($action, "isPrivate{$action_sub_sf}") ? "isPrivate{$action_sub_sf}" : "isPrivate";
+                    $isSSL      = method_exists($action, "isSSL{$action_sub_sf}") ? "isSSL{$action_sub_sf}" : "isSSL";
+                    $isSecure   = method_exists($action, "isSecure{$action_sub_sf}") ? "isSecure{$action_sub_sf}" : "isSecure";
+                    $initialize = method_exists($action, "initialize{$action_sub_sf}") ? "initialize{$action_sub_sf}" : "initialize";
+                    $shutdown   = method_exists($action, "shutdown{$action_sub_sf}") ? "shutdown{$action_sub_sf}" : "shutdown";
+                    $validate       = "validate{$action_sub_sf}";
+                    $execute        = "execute{$action_sub_sf}";
+                    $defaultAccess  = "defaultAccess{$action_sub_sf}";
+                    $handleError    = "handleError{$action_sub_sf}";
+                } else {
+                    throw new Envi404Exception("execute{$action_sub_sf}がないです", 10003);
+                }
+
+            } elseif (is_file($action_dir.'actions.class.php')) {
+                // actions.class.phpにまとめて書くパターン
+                $action_class_path = $action_dir.'actions.class.php';
+                include_once($action_class_path);
+                $action = Request::getThisModule().'Actions';
+                $action         = new $action;
+                if (method_exists($action, "execute{$action_sf}")) {
+                    $validate       = "validate{$action_sf}";
+                    $execute        = "execute{$action_sf}";
+                    $defaultAccess  = "defaultAccess{$action_sf}";
+                    $handleError    = "handleError{$action_sf}";
+                    $isPrivate  = method_exists($action, "isPrivate{$action_sf}") ? "isPrivate{$action_sf}" : "isPrivate";
+                    $isSSL      = method_exists($action, "isSSL{$action_sf}") ? "isSSL{$action_sf}" : "isSSL";
+                    $isSecure   = method_exists($action, "isSecure{$action_sf}") ? "isSecure{$action_sf}" : "isSecure";
+                    $initialize = method_exists($action, "initialize{$action_sf}") ? "initialize{$action_sf}" : "initialize";
+                    $shutdown   = method_exists($action, "shutdown{$action_sf}") ? "shutdown{$action_sf}" : "shutdown";
+                } else {
+                    throw new Envi404Exception("execute{$action_sf}がないです", 10003);
+                }
+            } else {
+                throw new Envi404Exception('Actionがないです。', 10004);
+            }
         }
         try {
             // アクション開始
@@ -731,14 +784,8 @@ class Envi
             throw $e;
         }
     }
+    /* ----------------------------------------- */
 
-    public function kill($kill = '', $is_shutDown = true)
-    {
-        if ($is_shutDown) {
-            $this->is_shutDown = $is_shutDown;
-        }
-        throw new killException($kill);
-    }
 
     /**
      * +-- オートロードする
