@@ -689,6 +689,7 @@ class Envi
             }
 
             // バリデートする
+            $res = true;
             if (method_exists($action, $validate)) {
                 $res = $action->$validate();
             }
