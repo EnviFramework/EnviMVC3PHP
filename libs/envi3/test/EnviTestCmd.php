@@ -5,7 +5,6 @@
  * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
-
 /**
  * バッチ用の設定
  *
@@ -13,6 +12,7 @@
 $start_time = microtime(true);
 set_time_limit(0);
 ini_set('memory_limit', -1);
+umask();
 
 
 // 引数の整形
@@ -25,6 +25,8 @@ foreach ($argv as $k => $item) {
 ksort($argv);
 
 $fargv = array_flip($argv);
+
+define('ENVI_BASE_DIR', realpath(dirname(__FILE__).'/../').DIRECTORY_SEPARATOR);
 
 /** 関数定義 */
 
@@ -90,8 +92,6 @@ function debug_msg($msg)
 /* ----------------------------------------- */
 
 
-
-
 /**
  * @package Envi
  * @subpackage EnviTest
@@ -101,31 +101,24 @@ function debug_msg($msg)
 class EnviTest
 {
     public $system_conf;
+    private static $instance;
+
+    /**
+     * +-- コンストラクタ
+     *
+     * @access public
+     * @params  $file
+     * @return void
+     */
     public function __construct($file)
     {
         $this->system_conf = $this->parseYml(basename($file), dirname($file).DIRECTORY_SEPARATOR);
     }
-
-
-    public function sendOKMessage($msg)
-    {
-        cecho("[OK]", "36", $msg);
-    }
-
-
-    public function sendNGMessage($msg)
-    {
-        cecho("[NG]", "31", $msg);
-    }
-
-    public function sendErrorMessage($msg)
-    {
-        cecho("[ERROR]", "31", $msg);
-    }
-
+    /* ----------------------------------------- */
 
     public function execute()
     {
+        global $start_time;
         include_once $this->system_conf['scenario']['path'];
         $scenario              = new $this->system_conf['scenario']['class_name'];
         $scenario->system_conf = $this->system_conf;
@@ -137,22 +130,25 @@ class EnviTest
             $test_obj->system_conf = $this->system_conf;
             $methods = isset($test_val['methods']) && count($test_val['methods']) ?
                 $test_val['methods'] : get_class_methods($test_val['class_name']);
-            $test_obj->initialize();
             foreach ($methods as $method) {
                 if (!strpos($method, 'Test')) {
                     continue;
                 }
+                $test_obj->initialize();
                 try{
                     $test_obj->$method();
                     $this->sendOKMessage($test_val['class_name'].'::'.$method);
                 } catch (EnviTestException $e) {
-                    $this->sendNGMessage($test_val['class_name'].'::'.$method.'  '.$e->getMessage());
+                    $trace = $e->getTrace();
+                    $this->sendNGMessage($test_val['class_name'].'::'.$method." line on {$trace[0]['line']}".'  '.$e->getMessage());
                 } catch (exception $e) {
-                    $this->sendErrorMessage($test_val['class_name'].'::'.$method.'  '.$e);
+                    $this->sendErrorMessage($test_val['class_name'].'::'.$method." line on {$trace[0]['line']}".'  '.$e);
                 }
+                $test_obj->shutdown();
+                $test_obj->free();
             }
-            $test_obj->shutdown();
         }
+        echo round(microtime(true) - $start_time, 5)." : test end \r\n";
     }
 
     public function parseYml($file, $dir = ENVI_MVC_APPKEY_PATH)
@@ -170,6 +166,43 @@ class EnviTest
         $res = isset($buff['test']) ? array_merge($buff['all'], $buff['test']) : $buff['all'];
         return $res;
     }
+
+    /**
+     * +-- シングルトン
+     *
+     * @access public
+     * @static
+     * @params  $app OPTIONAL:false
+     * @params  $debug OPTIONAL:false
+     * @return Envi
+     */
+    public static function singleton($app = false)
+    {
+        if (!isset(self::$instance)) {
+            $className = __CLASS__;
+            self::$instance = new $className($app);
+        }
+        return self::$instance;
+    }
+    /* ----------------------------------------- */
+
+
+    private function sendOKMessage($msg)
+    {
+        cecho("[OK]", "36", $msg);
+    }
+
+
+    private function sendNGMessage($msg)
+    {
+        cecho("[NG]", "31", $msg);
+    }
+
+    private function sendErrorMessage($msg)
+    {
+        cecho("[ERROR]", "31", $msg);
+    }
+
 }
 
 
@@ -186,6 +219,6 @@ if (isOption('-h') || isOption('--help') || isOption('-?') || !isset($argv[1])) 
 
 
 // 実行
-$EnviTest = new EnviTest($argv[1]);
+$EnviTest = EnviTest::singleton($argv[1]);
 $EnviTest->execute();
 

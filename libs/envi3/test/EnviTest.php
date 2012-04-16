@@ -11,32 +11,6 @@
  *
  */
 
-// コンフィグファイルのパス
-if  (!defined('ENVI_MVC_APPKEY_PATH')) {
-    define('ENVI_MVC_APPKEY_PATH',     realpath($scenario_dir.'/config/').DIRECTORY_SEPARATOR);
-}
-
-// キャッシュディレクトリのパス
-if  (!defined('ENVI_MVC_CACHE_PATH')) {
-    define('ENVI_MVC_CACHE_PATH',     realpath($scenario_dir.'/cache/').DIRECTORY_SEPARATOR);
-}
-
-// 環境ファイルのパス
-if  (!defined('ENVI_SERVER_STATUS_CONF')) {
-    define('ENVI_SERVER_STATUS_CONF', realpath($scenario_dir.'/env/ServerStatus.conf'));
-}
-
-// 実行時間計測用
-if  (!defined('LW_START_MTIMESTAMP')) {
-    define('LW_START_MTIMESTAMP', microtime(true));
-}
-
-// Envi3の読み込み
-require(dirname(__FILE__).'/../Envi.php');
-
-// 環境
-define('ENVI_ENV', EnviServerStatus()->getServerStatus());
-
 /* ----------------------------------------- */
 
 class EnviTestException extends exception
@@ -46,15 +20,130 @@ class EnviTestException extends exception
 
 
 
+class extension
+{
+    private $configuration;
+    private $extensions;
+    private static $instance;
+
+    /**
+     * +-- コンストラクタ
+     *
+     * @access private
+     * @params  $configuration
+     * @return void
+     */
+    private function __construct()
+    {
+        $this->configuration = EnviTest::singleton()->system_conf['extension'];
+        foreach ($this->configuration as $name => $v) {
+            if (!$v['constant']) {
+                continue;
+            }
+            include_once $v['class']['resource'];
+            $class_name = $v['class']['class_name'];
+            $this->extensions[$name] = new $class_name(EnviTest::singleton()->parseYml(basename($v['router']['resource']), dirname($v['router']['resource']).DIRECTORY_SEPARATOR));
+        }
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- エクステンションのオブジェクト取得(magicmethod)
+     *
+     * @access public
+     * @params  $name
+     * @params  $arguments
+     * @return object
+     */
+    public function __call($name, $arguments)
+    {
+        if (!isset($this->configuration[$name])) {
+            throw new EnviTestException($name.' extensionが見つかりませんでした');
+        }
+        $class_name = $this->configuration[$name]['class']['class_name'];
+
+        if (!isset($this->configuration[$name]['class']['singleton']) || !$this->configuration[$name]['class']['singleton']) {
+            if (!isset($this->extensions[$name])) {
+                include_once $this->configuration[$name]['class']['resource'];
+                $this->extensions[$name] = array();
+            }
+            $c = count($this->extensions[$name]);
+            $this->extensions[$name][$c] = $class_name(EnviTest::singleton()->parseYml(basename($this->configuration[$name]['router']['resource']), dirname($this->configuration[$name]['router']['resource']).DIRECTORY_SEPARATOR));
+            return $this->extensions[$name][$c];
+        } elseif (!isset($this->extensions[$name])) {
+            include_once $this->configuration[$name]['class']['resource'];
+            $this->extensions[$name] = new $class_name(EnviTest::singleton()->parseYml(basename($this->configuration[$name]['router']['resource']), dirname($this->configuration[$name]['router']['resource']).DIRECTORY_SEPARATOR));
+        }
+        return $this->extensions[$name];
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- メインのAction実行が完了したタイミングで、暗黙的に実行されるMethodを実行
+     *
+     * @access public
+     * @return void
+     */
+    public function executeLastShutdownMethod()
+    {
+        foreach ($this->extensions as $name => $val) {
+            $shutdownMethod = false;
+            if (isset($this->configuration[$name]['class']['lastShutdownMethod'])) {
+                $shutdownMethod = $this->configuration[$name]['class']['lastShutdownMethod'];
+            }
+            if (!$shutdownMethod) {
+                continue;
+            }
+            if (is_array($val)) {
+                foreach ($val as $obj) {
+                    $obj->$shutdownMethod();
+                }
+            } else {
+                $val->$shutdownMethod();
+            }
+        }
+    }
+    /* ----------------------------------------- */
+
+    public static function _singleton($configuration = NULL)
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new extension($configuration);
+        }
+        return self::$instance;
+    }
+
+    public function free()
+    {
+        $this->extensions = array();
+    }
+
+}
+
+
+function extension()
+{
+    return extension::_singleton();
+}
+
 class EnviTestAssert
 {
     public function assertArrayHasKey($key, $search, $message = '')
     {
-        if (!(array_key_exists($key, $search) !== false)) {
-            throw new EnviTestException(__METHOD__.' '.$message);
+        if (!(is_array($search) && array_key_exists($key, $search) !== false)) {
+            throw new EnviTestException(__METHOD__.' '.join(' ',func_get_args()));
         }
         return true;
     }
+
+    public function assertArray($a, $message = '')
+    {
+        if (!(is_array($a))) {
+            throw new EnviTestException(__METHOD__.' '.join(' ',func_get_args()));
+        }
+        return true;
+    }
+
 
     public function assertClassHasAttribute()
     {
@@ -72,15 +161,18 @@ class EnviTestAssert
     {
 
     }
-    public function assertCount()
+    public function assertCount($count, $array, $message = '')
     {
-
+        if (!(count($array) === $count)) {
+            throw new EnviTestException(__METHOD__.' '.join(' ',func_get_args()));
+        }
+        return true;
     }
 
     public function assertEmpty($a, $message = '')
     {
         if (!empty($a)) {
-            throw new EnviTestException(__METHOD__.' '.$message);
+            throw new EnviTestException(__METHOD__.' '.join(' ',func_get_args()));
         }
         return true;
     }
@@ -93,7 +185,15 @@ class EnviTestAssert
     public function assertEquals($a, $b, $message = '')
     {
         if (!($a === $b)) {
-            throw new EnviTestException(__METHOD__.' '.$message);
+            throw new EnviTestException(__METHOD__.' '.join(' ',func_get_args()));
+        }
+        return true;
+    }
+
+    public function assertNotEquals($a, $b, $message = '')
+    {
+        if (!($a !== $b)) {
+            throw new EnviTestException(__METHOD__.' '.join(' ',func_get_args()));
         }
         return true;
     }
@@ -101,7 +201,7 @@ class EnviTestAssert
     public function assertFalse($a, $message = '')
     {
         if (!($a === false)) {
-            throw new EnviTestException(__METHOD__.' '.$message);
+            throw new EnviTestException(__METHOD__.' '.join(' ',func_get_args()));
         }
         return true;
     }
@@ -109,7 +209,7 @@ class EnviTestAssert
     public function assertFileEquals($a, $b, $message = '')
     {
         if (!(file_get_contents($a) === file_get_contents($b))) {
-            throw new EnviTestException(__METHOD__.' '.$message);
+            throw new EnviTestException(__METHOD__.' '.join(' ',func_get_args()));
         }
         return true;
     }
@@ -117,7 +217,7 @@ class EnviTestAssert
     public function assertFileExists($a, $message = '')
     {
         if (!(file_exists($a))) {
-            throw new EnviTestException(__METHOD__.' '.$message);
+            throw new EnviTestException(__METHOD__.' '.join(' ',func_get_args()));
         }
         return true;
     }
@@ -125,7 +225,7 @@ class EnviTestAssert
     public function assertGreaterThan($a, $b, $message = '')
     {
         if (!($a > $b)) {
-            throw new EnviTestException(__METHOD__.' '.$message);
+            throw new EnviTestException(__METHOD__.' '.join(' ',func_get_args()));
         }
         return true;
     }
@@ -133,7 +233,7 @@ class EnviTestAssert
     public function assertGreaterThanOrEqual($a, $b, $message = '')
     {
         if (!($a >= $b)) {
-            throw new EnviTestException(__METHOD__.' '.$message);
+            throw new EnviTestException(__METHOD__.' '.join(' ',func_get_args()));
         }
         return true;
     }
@@ -141,7 +241,7 @@ class EnviTestAssert
     public function assertInstanceOf($a, $b)
     {
         if (!($a instanceof $b)) {
-            throw new EnviTestException(__METHOD__.' '.$message);
+            throw new EnviTestException(__METHOD__.' '.join(' ',func_get_args()));
         }
         return true;
     }
@@ -154,7 +254,7 @@ class EnviTestAssert
     public function assertLessThan($a, $b, $message = '')
     {
         if (!($a < $b)) {
-            throw new EnviTestException(__METHOD__.' '.$message);
+            throw new EnviTestException(__METHOD__.' '.join(' ',func_get_args()));
         }
         return true;
     }
@@ -162,7 +262,7 @@ class EnviTestAssert
     public function assertLessThanOrEqual($a, $b, $message = '')
     {
         if (!($a <= $b)) {
-            throw new EnviTestException(__METHOD__.' '.$message);
+            throw new EnviTestException(__METHOD__.' '.join(' ',func_get_args()));
         }
         return true;
     }
@@ -170,7 +270,7 @@ class EnviTestAssert
     public function assertNull($a, $message = '')
     {
         if (!($a === NULL)) {
-            throw new EnviTestException(__METHOD__.' '.$message);
+            throw new EnviTestException(__METHOD__.' '.join(' ',func_get_args()));
         }
         return true;
     }
@@ -229,9 +329,13 @@ class EnviTestAssert
     public function assertTrue($a)
     {
         if (!($a === true)) {
-            throw new EnviTestException(__METHOD__.' '.$message);
+            throw new EnviTestException(__METHOD__.' '.join(' ',func_get_args()));
         }
         return true;
+    }
+
+    public function free()
+    {
     }
 
 
@@ -246,17 +350,62 @@ class EnviTestAssert
  */
 abstract class EnviTestCase extends EnviTestAssert
 {
-    public $_GET = array();
-    public $_POST = array();
-    public $_SERVER = array();
-    public $_COOKIE = array();
-    public $_ENV = array();
+    public $get         = array();
+    public $post        = array();
+    public $headers     = array();
+    public $cookie      = array();
+    public $request_method = 'POST';
+    private $request_url = '';
 
     public $system_conf;
 
     public function __construct()
     {
     }
+
+    private function getContext($request_method, $post, $headers_arr, $cookie)
+    {
+
+        $headers_arr_sub = array();
+        foreach ($headers_arr as $k => $value) {
+            $headers_arr_sub[strtolower($k)] = trim($value);
+        }
+        $headers_arr = $headers_arr_sub;
+        unset($headers_arr_sub);
+
+        if (count($cookie)) {
+            $headers_arr['cookie'] = "";
+            foreach ($cookie as $k => $v) {
+                $headers_arr['cookie'] = " $k=$v;";
+            }
+        }
+        $headers = array();
+        foreach ($headers_arr as $k => $value) {
+            $headers[] = "{$k}: $value";
+        }
+
+        if ($request_method === 'GET') {
+            $opts = array(
+                'http' => array(
+                    'method' => $request_method,
+                    'header'=> join("\r\n", $headers)."\r\n"
+                )
+            );
+        } else {
+            $data_url       = http_build_query ($post);
+            $data_length    = strlen ($data_url);
+            $headers[] = 'Content-Length: '.$data_length;
+            $opts = array(
+                'http' => array(
+                    'method' => $request_method,
+                    'header'=> join("\r\n", $headers)."\r\n",
+                    'content' => $data_url
+                )
+            );
+        }
+        return stream_context_create($opts);
+    }
+
 
     abstract public function initialize();
 
@@ -268,54 +417,32 @@ abstract class EnviTestCase extends EnviTestAssert
      * @access private
      * @return string
      */
-    final protected function emulateExecute()
+    final protected function emulateExecute($_request_method = false)
     {
-        $_GET    = (array)$this->system_conf['parameter']['_GET'];
-        $_POST   = (array)$this->system_conf['parameter']['_POST'];
-        $_SERVER = (array)$this->system_conf['parameter']['_SERVER'];
-        $_COOKIE = (array)$this->system_conf['parameter']['_COOKIE'];
-        $_ENV    = (array)$this->system_conf['parameter']['_ENV'];
+        $get         = (array)$this->system_conf['parameter']['get'];
+        $post        = (array)$this->system_conf['parameter']['post'];
+        $headers     = (array)$this->system_conf['parameter']['headers'];
+        $cookie      = (array)$this->system_conf['parameter']['cookie'];
+        $request_method    = $this->system_conf['parameter']['request_method'];
 
-        $_GET    = array_merge($_GET, $this->_GET);
-        $_POST   = array_merge($_POST, $this->_GET);
-        $_SERVER = array_merge($_SERVER, $this->_SERVER);
-        $_COOKIE = array_merge($_COOKIE, $this->_COOKIE);
-        $_ENV    = array_merge($_COOKIE, $this->_ENV);
-
-        $_SERVER['REQUEST_TIME'] = time();
-        if (count($_POST)) {
-            $_SERVER['REQUEST_METHOD'] = 'POST';
-        }
-
-        if (isset($_SERVER['PATH_INFO'])) {
-            $_SERVER['REQUEST_URI'] = $_SERVER['PHP_SELF'].$_SERVER['PATH_INFO'];
-        }
-
-
-        header_remove();
-        ob_start();
-
-        try {
-            Envi::dispatch($this->system_conf['app']['app_key'], true);
-        } catch (redirectException $e) {
-
-        } catch (killException $e) {
-
-        } catch (PDOException $e) {
-            throw $e;
-        } catch (Exception $e) {
-            throw $e;
-        }
-        Envi::_free();
-        $contents = ob_get_contents();
-        ob_end_clean();
-        return array(headers_list(), $contents);
+        $get    = array_merge($get, $this->get);
+        $post   = array_merge($post, $this->post);
+        $headers = array_merge($headers, $this->headers);
+        $cookie = array_merge($cookie, $this->cookie);
+        $request_method    = $_request_method ? $_request_method : $request_method;
+        $context = $this->getContext($request_method, $post, $headers, $cookie);
+        $query_string = count($get) ? '?'.http_build_query($get) : '';
+        // echo $this->request_url.$query_string."\n";
+        // $aa = debug_backtrace();
+        // var_dump($aa[0]['file'].$aa[0]['line']);
+        $contents = file_get_contents($this->request_url.$query_string, false, $context);
+        return array($http_response_header, $contents);
     }
 
 
     final public function setModuleAction($module, $action)
     {
-        $_SERVER['PATH_INFO'] = "/{$module}/{$action}";
+        $this->request_url = $this->system_conf['app']['url']."/{$module}/{$action}";
     }
 
 
