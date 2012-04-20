@@ -36,6 +36,8 @@ abstract class OrMapBase
             if (!isset($this->to_save[$pkeys[0]])) {
                 $this->to_save[$pkeys[0]] = $dbi->lastInsertId();
             }
+            $this->_from_hydrate = $this->to_save;
+            $this->_is_modify = false;
             return true;
         }
         if (!$this->_is_modify) {
@@ -51,7 +53,6 @@ abstract class OrMapBase
         $dbi->autoExecute($table_name, $this->to_save, DB::AUTOQUERY_UPDATE, $sql);
         $this->_from_hydrate = $this->to_save;
         $this->_is_modify = false;
-
     }
 
     public function __set($name, $value)
