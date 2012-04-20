@@ -5,6 +5,12 @@
  * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
+/**
+ * @package Envi3
+ * @subpackage EnviMVCVendorExtension
+ * @since 0.1
+ * @author     Akito<akito-artisan@five-foxes.com>
+ */
 
 abstract class OrMapBase
 {

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package Envi
+ * @package Envi3
  * @subpackage EnviTest
  * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
@@ -93,7 +93,7 @@ function debug_msg($msg)
 
 
 /**
- * @package Envi
+ * @package Envi3
  * @subpackage EnviTest
  * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>

@@ -1,5 +1,6 @@
 <?php
 /**
+ * EnviMVCのメイン処理
  * @package Envi3
  * @subpackage EnviMVCCore
  * @since 0.1
@@ -28,6 +29,15 @@ require ENVI_BASE_DIR.'extension.php';
  */
 class redirectException extends Exception
 {
+    /**
+     * +-- コンストラクタ
+     *
+     * @access public
+     * @params  $message
+     * @params  $code OPTIONAL:0
+     * @params Exception $previous OPTIONAL:null
+     * @return void
+     */
     public function __construct($message, $code = 0, Exception $previous = null)
     {
         if (Envi()->getConfiguration('SYSTEM', 'use_i18n')) {
@@ -39,6 +49,7 @@ class redirectException extends Exception
 
         // parent::__construct($message, $code, $previous);
     }
+    /* ----------------------------------------- */
 
 }
 /* ----------------------------------------- */
@@ -52,10 +63,20 @@ class redirectException extends Exception
  */
 class killException extends Exception
 {
+    /**
+     * +-- コンストラクタ
+     *
+     * @access public
+     * @params  $message
+     * @params  $code OPTIONAL:0
+     * @params Exception $previous OPTIONAL:null
+     * @return void
+     */
     public function __construct($message, $code = 0, Exception $previous = null)
     {
         // parent::__construct($message, $code, $previous);
     }
+    /* ----------------------------------------- */
 }
 /* ----------------------------------------- */
 
@@ -68,6 +89,15 @@ class killException extends Exception
  */
 class Envi404Exception extends Exception
 {
+    /**
+     * +-- コンストラクタ
+     *
+     * @access public
+     * @params  $message
+     * @params  $code OPTIONAL:0
+     * @params Exception $previous OPTIONAL:null
+     * @return void
+     */
     public function __construct($message, $code = 0, Exception $previous = null)
     {
         if (Envi::$debug) {
@@ -77,6 +107,7 @@ class Envi404Exception extends Exception
         }
         // parent::__construct($message, $code, $previous);
     }
+    /* ----------------------------------------- */
 }
 /* ----------------------------------------- */
 /**
@@ -88,6 +119,15 @@ class Envi404Exception extends Exception
  */
 class Envi403Exception extends Exception
 {
+    /**
+     * +-- コンストラクタ
+     *
+     * @access public
+     * @params  $message
+     * @params  $code OPTIONAL:0
+     * @params Exception $previous OPTIONAL:null
+     * @return void
+     */
     public function __construct($message, $code = 0, Exception $previous = null)
     {
         if (Envi::$debug) {
@@ -97,6 +137,7 @@ class Envi403Exception extends Exception
         }
         // parent::__construct($message, $code, $previous);
     }
+    /* ----------------------------------------- */
 }
 /* ----------------------------------------- */
 
@@ -109,6 +150,15 @@ class Envi403Exception extends Exception
  */
 class EnviException extends Exception
 {
+    /**
+     * +-- コンストラクタ
+     *
+     * @access public
+     * @params  $message
+     * @params  $code OPTIONAL:0
+     * @params Exception $previous OPTIONAL:null
+     * @return void
+     */
     public function __construct($message, $code = 0, Exception $previous = null)
     {
         if (Envi::$debug) {
@@ -119,6 +169,7 @@ class EnviException extends Exception
         }
         // parent::__construct($message, $code, $previous);
     }
+    /* ----------------------------------------- */
 }
 /* ----------------------------------------- */
 
@@ -148,7 +199,7 @@ function Envi($app = false, $debug = false)
 
 
 /**
- *
+ * EnviMVCのメイン処理
  *
  * @access public
  * @since 0.1
@@ -180,8 +231,8 @@ class Envi
      * +-- コンストラクタ
      *
      * @access private
-     * @params  $app
-     * @params  $debug OPTIONAL:false
+     * @params string $app
+     * @params boolean $debug OPTIONAL:false
      * @return void
      */
     private function __construct($app, $debug = false)
@@ -267,8 +318,8 @@ class Envi
      *
      * @access public
      * @static
-     * @params  $app OPTIONAL:false
-     * @params  $debug OPTIONAL:false
+     * @params boolean|string $app OPTIONAL:false
+     * @params boolean $debug OPTIONAL:false
      * @return Envi
      */
     public static function singleton($app = false, $debug = false)
@@ -384,8 +435,9 @@ class Envi
     /**
      * +-- 国際化データを返します
      *
-     * @param stging $key キー
      * @access public
+     * @params  $key
+     * @params  $string_key OPTIONAL:NULL
      * @return array
      */
     public function getI18n($key, $string_key = NULL)
@@ -398,7 +450,7 @@ class Envi
      * +-- テキスト取得
      *
      * @access public
-     * @params  $string_key
+     * @params string $string_key
      * @params array $replace
      * @return string
      */
@@ -426,12 +478,12 @@ class Envi
     /* ----------------------------------------- */
 
 
-
     /**
      * +-- YAMLファイルをパースする
      *
      * @access public
      * @params  $file
+     * @params  $dir OPTIONAL:ENVI_MVC_APPKEY_PATH
      * @return array
      */
     public function parseYml($file, $dir = ENVI_MVC_APPKEY_PATH)
@@ -460,7 +512,6 @@ class Envi
      * +-- ベースのURLを返す
      *
      * @access public
-     * @params
      * @return string
      */
     public function getBaseUrl()
@@ -554,11 +605,13 @@ class Envi
     /* ----------------------------------------- */
 
 
+
     /**
-     * Performerから呼ばれる、実処理メソッド
+     * +-- Performerから呼ばれる、実処理メソッド
      *
      * @final
-     * @access private
+     * @access public
+     * @params  $is_first OPTIONAL:false
      * @return mixed
      */
     final public function _run($is_first = false)
@@ -831,6 +884,13 @@ class Envi
     }
     /* ----------------------------------------- */
 
+    /**
+     * +-- 汎用serialize
+     *
+     * @access public
+     * @params  $data
+     * @return string
+     */
     public function serialize($data)
     {
         static $is_message_pack;
@@ -839,8 +899,15 @@ class Envi
         }
         return $is_message_pack ? msgpack_pack($data) : serialize($data);
     }
+    /* ----------------------------------------- */
 
-
+    /**
+     * +-- 汎用unserialize
+     *
+     * @access public
+     * @params  $data
+     * @return array
+     */
     public function unserialize($data)
     {
         static $is_message_pack;
@@ -849,6 +916,7 @@ class Envi
         }
         return $is_message_pack ? msgpack_unpack($data) : unserialize($data);
     }
+    /* ----------------------------------------- */
 }
 
 

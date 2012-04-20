@@ -1,5 +1,9 @@
 <?php
 /**
+ * アクション基底クラス
+ *
+ * アクションを書くときは必ずこのクラスを継承すること。
+ *
  * @package Envi3
  * @subpackage EnviMVCCore
  * @since 0.1
@@ -14,6 +18,7 @@
  * @since 0.1
  * @package Envi3
  * @subpackage EnviMVCCore
+ * @author     Akito<akito-artisan@five-foxes.com>
  */
 abstract class EnviActionBase
 {

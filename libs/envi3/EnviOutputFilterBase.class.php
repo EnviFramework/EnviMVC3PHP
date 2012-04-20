@@ -1,5 +1,6 @@
 <?php
 /**
+ * OutFilter基底クラス
  * @package Envi3
  * @subpackage EnviMVCCore
  * @since 0.1
@@ -31,24 +32,29 @@ abstract class EnviOutputFilterBase
     /* ----------------------------------------- */
 
     /**
-     * 一番初めに呼ばれる、メソッド
+     * +-- 一番初めに呼ばれる、メソッド
      *
-     * @return bool falseを返すと、そこで処理が止まります。
-     * @abstract
+     * falseを返すと、そこで処理が止まります。
+     *
+     * @access public
+     * @return boolean
      */
     public function initialize()
     {
         return true;
     }
+    /* ----------------------------------------- */
+
 
     /**
-     * フィルタの実行
+     * +-- フィルタの実行
      *
-     *
-     * @abstract
+     * @access public
+     * @params staring &$contents
+     * @return void
      */
     public function execute(&$contents)
     {
     }
-
+    /* ----------------------------------------- */
 }

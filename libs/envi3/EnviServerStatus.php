@@ -1,5 +1,7 @@
 <?php
 /**
+ * サーバーステータスの取得
+ *
  * @package Envi3
  * @subpackage EnviMVCCore
  * @since 0.1
@@ -20,11 +22,20 @@ if (!defined('ENVI_SERVER_STATUS_CONF')) {
     );
 }
 
+/**
+ * +-- シングルトン用
+ *
+ * @return EnviServerStatus
+ */
 function EnviServerStatus()
 {
     return EnviServerStatus::singleton();
 }
+/* ----------------------------------------- */
+
 /**
+ * サーバーステータスの取得
+ *
  * @package Envi3
  * @subpackage EnviMVCCore
  * @since 0.1
@@ -38,12 +49,25 @@ class EnviServerStatus
 
     private $_stutus_conf;
     private static  $instance;
-
+    /**
+     * +-- コンストラクタ
+     *
+     * @access private
+     * @return void
+     */
     private function __construct()
     {
         $this->_stutus_conf = file_get_contents(ENVI_SERVER_STATUS_CONF);
     }
+    /* ----------------------------------------- */
 
+    /**
+     * +-- シングルトン
+     *
+     * @access public
+     * @static
+     * @return EnviServerStatus
+     */
     public static function &singleton()
     {
         if (!isset(self::$instance)) {
@@ -51,6 +75,7 @@ class EnviServerStatus
         }
         return self::$instance;
     }
+    /* ----------------------------------------- */
 
     /**
      * サーバーステータスを取得する

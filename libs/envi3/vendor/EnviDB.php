@@ -1,5 +1,7 @@
 <?php
 /**
+ * DB処理
+ *
  * @package Envi3
  * @subpackage EnviMVCVendorExtension
  * @since 0.1
@@ -17,11 +19,26 @@
 class DBInstance
 {
     private $_system_conf;
+    /**
+     * +-- コンストラクタ
+     *
+     * @access public
+     * @params  $config
+     * @return void
+     */
     public function __construct($config)
     {
         $this->_system_conf = $config;
     }
+    /* ----------------------------------------- */
 
+    /**
+     * +-- instanceの取得
+     *
+     * @access public
+     * @params  $db_key
+     * @return DBIBase
+     */
     public function getInstance($db_key)
     {
         if (!isset($this->_system_conf[$db_key])) {
@@ -29,11 +46,16 @@ class DBInstance
         }
         return DB::getConnection($this->_system_conf[$db_key]['params'], $db_key);
     }
+    /* ----------------------------------------- */
 }
 
 /**
  * pearDB風のインスタンスを提供するためのラッパー
  *
+ * @package Envi3
+ * @subpackage EnviMVCVendorExtension
+ * @since 0.1
+ * @author     Akito<akito-artisan@five-foxes.com>
  */
 class DB
 {
@@ -119,8 +141,9 @@ class DB
 
 
 /**
+ * DBの処理
  * @package Envi3
- * @subpackage EnviMVC
+ * @subpackage EnviMVCVendorExtension
  * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */

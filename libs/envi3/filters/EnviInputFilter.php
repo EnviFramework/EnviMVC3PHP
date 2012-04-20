@@ -1,5 +1,6 @@
 <?php
 /**
+ * インプットFilterサンプル
  * @package Envi3
  * @subpackage EnviMVC
  * @since 0.1
