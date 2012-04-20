@@ -20,6 +20,11 @@ abstract class OrMapBase
         $this->to_save       = $arr;
     }
 
+    public function toArray()
+    {
+        return $this->to_save;
+    }
+
     public function save($con = NULL)
     {
         $table_name = $this->table_name;
@@ -38,8 +43,9 @@ abstract class OrMapBase
         }
 
         $and = '';
+        $sql = '';
         foreach ($pkeys as $v) {
-            $sql = " {$and} {$v}=".$dbi->quoteSmart($this->_from_hydrate[$v]);
+            $sql .= " {$and} {$v}=".$dbi->quoteSmart($this->_from_hydrate[$v]);
             $and = ' AND ';
         }
         $dbi->autoExecute($table_name, $this->to_save, DB::AUTOQUERY_UPDATE, $sql);
