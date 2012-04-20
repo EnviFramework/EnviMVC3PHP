@@ -49,6 +49,8 @@ abstract class OrMapBase
             $and = ' AND ';
         }
         $dbi->autoExecute($table_name, $this->to_save, DB::AUTOQUERY_UPDATE, $sql);
+        $this->_from_hydrate = $this->to_save;
+        $this->_is_modify = false;
 
     }
 
