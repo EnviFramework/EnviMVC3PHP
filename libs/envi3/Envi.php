@@ -328,7 +328,6 @@ class Envi
             if (!$app) {
                 throw new Envi404Exception('アプリキーの指定がないです。', 90001);
             }
-            $className = __CLASS__;
             self::$instance = new Envi($app, $debug);
         }
         return self::$instance;

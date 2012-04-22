@@ -161,14 +161,38 @@ class EnviTestAssert
      * +-- 配列にキーがあるかどうか
      *
      * @access public
-     * @params  $key
-     * @params  $search
+     * @params string $key
+     * @params array $array
      * @params  $message OPTIONAL:''
      * @return boolean
      */
-    public function assertArrayHasKey($key, $search, $message = '')
+    public function assertArrayHasKey($key, $array, $message = '')
     {
-        if (!(is_array($search) && array_key_exists($key, $search) !== false)) {
+        if (!(!is_array($key) && is_array($array))) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if (!(array_key_exists($key, $array) !== false)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 配列にキーがないかどうか
+     *
+     * @access public
+     * @params string $key
+     * @params array $array
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertArrayNotHasKey($key, $array, $message = '')
+    {
+        if (!(!is_array($key) && is_array($array))) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if ((array_key_exists($key, $array) !== false)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         return true;
@@ -180,13 +204,38 @@ class EnviTestAssert
      *
      * @access public
      * @params  $value
-     * @params  $search
+     * @params array $array
      * @params  $message OPTIONAL:''
      * @return boolean
      */
-    public function assertArrayHasValue($value, $search, $message = '')
+    public function assertArrayHasValue($value, $array, $message = '')
     {
-        if (!(is_array($search) && array_search($value, $search) !== false)) {
+        if (!is_array($array)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if (!(array_search($value, $array) !== false)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- 配列に値がないかどうか
+     *
+     * @access public
+     * @params  $value
+     * @params  $array
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertArrayNotHasValue($value, $array, $message = '')
+    {
+        if (!is_array($array)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if ((array_search($value, $array) !== false)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         return true;
@@ -211,24 +260,131 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
 
-    public function assertClassHasAttribute()
+    /**
+     * +-- $className::attribute_name が存在しない場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $attribute_name
+     * @params  $class_name
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertClassHasAttribute($attribute_name, $class_name, $message = '')
     {
-
-    }
-    public function assertClassHasStaticAttribute()
-    {
-
-    }
-    public function assertContains()
-    {
-
-    }
-    public function assertContainsOnly()
-    {
+        $array = get_class_methods($class_name);
+        if (!is_array($array)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if (!(array_search($attribute_name, $array) !== false)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
     }
 
     /**
-     * +-- 配列のカウントの数があっているかどうか
+     * +-- $className::attribute_name が存在しない場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $attribute_name
+     * @params  $class_name
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertClassNotHasAttribute($attribute_name, $class_name, $message = '')
+    {
+        $array = get_class_methods($class_name);
+        if (!is_array($array)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if ((array_search($attribute_name, $array) !== false)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
+    }
+
+    /**
+     * +-- $valueが$array要素でない場合エラーを返します。
+     *
+     * assertArrayHasValueとの違いは、$valueにstring以外使用でき無い点です
+     *
+     * @access public
+     * @params  $value
+     * @params  $array
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertContains($value, $array, $message = '')
+    {
+        if (!is_array($array)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if (!(!is_array($value) && array_search($value, $array) !== false)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
+    }
+
+
+    /**
+     * +-- $valueが$array要素の場合エラーを返します。
+     *
+     * assertArrayNotHasValueとの違いは、$valueにstring以外使用でき無い点です
+     *
+     * @access public
+     * @params  $value
+     * @params  $array
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertNotContains($value, $array, $message = '')
+    {
+        if (!is_array($array)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if ((!is_array($value) && array_search($value, $array) !== false)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
+    }
+
+    public function assertContainsOnly($type, $array, $message)
+    {
+        if (!(is_array($array) && !is_array($value))) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        foreach ($array as $value) {
+            if (!(gettype($value) === $type)) {
+                throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+            }
+        }
+        return true;
+    }
+
+    /**
+     * +-- $arrayの中身の型が $type だけではない場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $type
+     * @params  $array
+     * @params  $message
+     * @return boolean
+     */
+    public function assertNotContainsOnly($type, $array, $message)
+    {
+        if (!(is_array($array) && !is_array($value))) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        foreach ($array as $value) {
+            if (!(gettype($value) === $type)) {
+                throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+            }
+        }
+        return true;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- $array の要素数が $count でない場合にエラー $message を報告します。
      *
      * @access public
      * @params  $count
@@ -238,7 +394,31 @@ class EnviTestAssert
      */
     public function assertCount($count, $array, $message = '')
     {
-        if (!(is_array($array) && count($array) === $count)) {
+        if (!is_array($array)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if (!(count($array) === $count)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- $array の要素数が $count の場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $count
+     * @params  $array
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertNotCount($count, $array, $message = '')
+    {
+        if (!is_array($array)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if ((count($array) === $count)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         return true;
@@ -261,11 +441,24 @@ class EnviTestAssert
         return true;
     }
     /* ----------------------------------------- */
-
-    public function assertEqualXMLStructure()
+    /**
+     * +-- 空でかどうか
+     *
+     * @access public
+     * @params  $a
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertNotEmpty($a, $message = '')
     {
-
+        if (empty($a)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
     }
+    /* ----------------------------------------- */
+
+
 
     /**
      * +-- 同じかどうか
@@ -278,7 +471,7 @@ class EnviTestAssert
      */
     public function assertEquals($a, $b, $message = '')
     {
-        if (!($a === $b)) {
+        if (!($a == $b)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         return true;
@@ -296,7 +489,7 @@ class EnviTestAssert
      */
     public function assertNotEquals($a, $b, $message = '')
     {
-        if (!($a !== $b)) {
+        if (($a == $b)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         return true;
@@ -339,6 +532,24 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
+     * +-- 同じファイルでないかどうか
+     *
+     * @access public
+     * @params  $a
+     * @params  $b
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertFileNotEquals($a, $b, $message = '')
+    {
+        if ((file_get_contents($a) === file_get_contents($b))) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
+    }
+    /* ----------------------------------------- */
+
+    /**
      * +-- ファイルが存在するかどうか
      *
      * @access public
@@ -349,6 +560,23 @@ class EnviTestAssert
     public function assertFileExists($a, $message = '')
     {
         if (!(file_exists($a))) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- ファイルが存在しないかどうか
+     *
+     * @access public
+     * @params  $a
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertNotFileExists($a, $message = '')
+    {
+        if ((file_exists($a))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         return true;
@@ -392,26 +620,84 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- instanceの確認
+     * +-- $actual が $expected のインスタンスでない場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $a
-     * @params  $b
+     * @params  $expected
+     * @params  $actual
      * @return boolean
      */
-    public function assertInstanceOf($a, $b)
+    public function assertInstanceOf($expected, $actual, $message)
     {
-        if (!($a instanceof $b)) {
+        if (!!is_array($expected)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if (!($actual instanceof $expected)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         return true;
     }
     /* ----------------------------------------- */
 
-    public function assertInternalType($a, $b)
-    {
 
+    /**
+     * +-- $actual が $expected のインスタンスの場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $expected
+     * @params  $actual
+     * @return boolean
+     */
+    public function assertNotInstanceOf($expected, $actual, $message)
+    {
+        if (!!is_array($expected)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if (($actual instanceof $expected)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
     }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- $actual の型が $expected でない場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $expected
+     * @params  $actual
+     * @return boolean
+     */
+    public function assertInternalType($expected, $actual)
+    {
+        if (!!is_array($expected)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if (!(gettype($actual) === $expected)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
+    }
+    /* ----------------------------------------- */
+    /**
+     * +-- $actual の型が $expected の場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $expected
+     * @params  $actual
+     * @return boolean
+     */
+    public function assertNotInternalType($expected, $actual)
+    {
+        if (!!is_array($expected)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if ((gettype($actual) === $expected)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
+    }
+    /* ----------------------------------------- */
 
     /**
      * +-- $a<$bかどうか
@@ -466,58 +752,350 @@ class EnviTestAssert
     }
     /* ----------------------------------------- */
 
-    public function assertObjectHasAttribute()
+    /**
+     * +-- $object->attribute_name が存在しない場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $attribute_name
+     * @params  $object
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertObjectHasAttribute($attribute_name, $object, $message = '')
     {
-
+        if (!!is_array($attribute_name)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if (!(method_exists($object, $attribute_name) === true)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
     }
-    public function assertRegExp()
+    /* ----------------------------------------- */
+
+    /**
+     * +-- $object->attribute_name が存在する場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $attribute_name
+     * @params  $object
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertObjectNotHasAttribute($attribute_name, $object, $message = '')
     {
-
+        if (!!is_array($attribute_name)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if ((method_exists($object, $attribute_name) === true)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
     }
-    public function assertStringMatchesFormat()
+    /* ----------------------------------------- */
+
+    /**
+     * +-- $string が正規表現 $pattern にマッチしない場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $pattern
+     * @params  $string
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertRegExp($pattern, $string, $message = '')
     {
-
+        if (!!is_array($pattern) || !!is_array($string)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if (!(mb_ereg($pattern, $string) === true)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
     }
-    public function assertStringMatchesFormatFile()
+    /* ----------------------------------------- */
+
+    /**
+     * +-- $string が正規表現 $pattern にマッチする場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $pattern
+     * @params  $string
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertNotRegExp($format, $string, $message = '')
     {
-
+        if (!!is_array($format) || !!is_array($string)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if ((mb_ereg($format, $string) === true)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
     }
-    public function assertSame()
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- $string が書式文字列 $format にマッチしない場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $pattern
+     * @params  $string
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertStringMatchesFormat($pattern, $string, $message = '')
     {
-
+        if (!!is_array($pattern) || !!is_array($string)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if (!(sprintf($pattern, $string) === true)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
     }
-    public function assertSelectCount()
+    /* ----------------------------------------- */
+
+    /**
+     * +-- $string が書式文字列 $format にマッチする場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $pattern
+     * @params  $string
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertStringNotMatchesFormat($pattern, $string, $message = '')
     {
-
+        if (!!is_array($pattern) || !!is_array($string)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if ((sprintf($pattern, $string) === true)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
     }
-    public function assertSelectEquals()
+    /* ----------------------------------------- */
+
+    /**
+     * +-- $string が $formatFile の内容にマッチしない場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $format_file
+     * @params  $string
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertStringMatchesFormatFile($format_file, $string, $message = '')
     {
-
+        if (!!is_array($format_file) || !!is_array($string) || is_file($format_file)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if (!(file_get_contents($format_file) === $string)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
     }
-    public function assertSelectRegExp()
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- $string が $formatFile の内容にマッチする場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $format_file
+     * @params  $string
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertStringNotMatchesFormatFile($format_file, $string, $message = '')
     {
-
+        if (!!is_array($format_file) || !!is_array($string) || is_file($format_file)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if ((file_get_contents($format_file) === $string)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
     }
-    public function assertStringEndsWith()
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 型と、値が同じかどうか
+     *
+     * @access public
+     * @params  $a
+     * @params  $b
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertSame($a, $b, $message = '')
     {
-
+        if (!($a === $b)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
     }
-    public function assertStringEqualsFile()
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 型と、値が違うかどうか
+     *
+     * @access public
+     * @params  $a
+     * @params  $b
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertNotSame($a, $b, $message = '')
     {
-
+        if (($a === $b)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
     }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- $string が $suffix で終わっていない場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $suffix
+     * @params  $string
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertStringEndsWith($suffix, $string, $message = '')
+    {
+        if (!!is_array($suffix) || !!is_array($string)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if (!(mb_strpos($string, $suffix) === mb_strlen($string))) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
+    }
+
+    /**
+     * +-- $string が $suffix で終わっている場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $suffix
+     * @params  $string
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertStringNotEndsWith($suffix, $string, $message = '')
+    {
+        if (!!is_array($suffix) || !!is_array($string)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if ((mb_strpos($string, $suffix) === mb_strlen($string))) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
+    }
+
+    /**
+     * +-- expected_file で指定したファイルの内容に $string が含まれない場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $expected_file
+     * @params  $string
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertStringEqualsFile($expected_file, $string, $message = '')
+    {
+        if (!!is_array($expected_file) || !!is_array($string)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if (!(mb_strpos($string, file_get_contents($expected_file)) !== false)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- expected_file で指定したファイルの内容に $string が含まれる場合にエラー $message を報告します。
+     *
+     * @access public
+     * @params  $expected_file
+     * @params  $string
+     * @params  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertStringNotEqualsFile($suffix, $string, $message = '')
+    {
+        if (!!is_array($expected_file) || !!is_array($string)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if ((mb_strpos($string, file_get_contents($expected_file)) !== false)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
+    }
+
+    /**
+     * +-- $string が $suffix で始まっていない場合にエラー $message を報告します。
+     *
+     * @access public
+     * @return boolean
+     */
     public function assertStringStartsWith()
     {
-
+        if (!!is_array($suffix) || !!is_array($string)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if (!(mb_strpos($string, $suffix) === 0)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
     }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- $string が $suffix で始まっている場合にエラー $message を報告します。
+     *
+     * @access public
+     * @return boolean
+     */
+    public function assertStringNotStartsWith()
+    {
+        if (!!is_array($suffix) || !!is_array($string)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if (!(mb_strpos($string, $suffix) === 0)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
+    }
+    /* ----------------------------------------- */
+
     public function assertTag()
     {
 
     }
-    public function assertThat()
+    /**
+     * +-- $valueが$containにマッチしない
+     *
+     * @access public
+     * @params  $value
+     * @params EnviTestContain $contain
+     * @return boolean
+     */
+    public function assertThat($value, EnviTestContain $contain)
     {
-
+        if (!($contain->execute($value))) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
     }
+    /* ----------------------------------------- */
     /**
      * +-- trueかどうか
      *
@@ -558,9 +1136,24 @@ class EnviTestAssert
         return $str;
     }
     /* ----------------------------------------- */
+}
 
+
+/**
+ * assertThatで使用するContainの継承元クラス
+ *
+ * @package Envi3
+ * @subpackage EnviTest
+ * @abstract
+ * @since 0.1
+ * @author     fumikazu.kitagawa<kitagawa-f@klab.jp>
+ */
+abstract class EnviTestContain
+{
+    abstract public function execute($value);
 
 }
+/* ----------------------------------------- */
 
 
 /**
