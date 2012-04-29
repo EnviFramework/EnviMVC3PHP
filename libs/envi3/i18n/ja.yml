@@ -30,7 +30,7 @@ all:
     url: "{form}のようなURLは存在しません。"
     telephone: "{form}の入力は正しくありません。"
     postcodeformat: "{form}のような郵便番号はありません。"
-    whitelist: "{form}のを入力してください。"
+    whitelist: "{form}を正しく入力してください。"
     date: "{form}が正しい日付になっていません。"
     time: "{form}が正しい時間になっていません。"
     array: "{form}を正しく入力してください。"

@@ -11,17 +11,17 @@
  * @since 0.1
  * @author     Akito<akito-artisan@five-foxes.com>
  */
-
 abstract class OrMapBase
 {
     protected $_from_hydrate, $to_save;
-    protected $_is_modify = false;
+    protected $_is_modify = true;
     protected $table_name,$pkeys;
 
     protected $default_instance_name = 'default_master';
 
     public function hydrate($arr)
     {
+        $this->_is_modify = false;
         $this->_from_hydrate = $arr;
         $this->to_save       = $arr;
     }
@@ -58,6 +58,24 @@ abstract class OrMapBase
         }
         $dbi->autoExecute($table_name, $this->to_save, DB::AUTOQUERY_UPDATE, $sql);
         $this->_from_hydrate = $this->to_save;
+        $this->_is_modify = false;
+    }
+
+    public function delete($con = NULL)
+    {
+        $arr = array();
+        $sql = "DELETE FROM {$this->table_name} WHERE ";
+        $and = '';
+        foreach ($this->pkeys as $pkey) {
+            $sql .= $and.$pkey.' = ?';
+            $and = ' AND ';
+            if (!isset($this->_from_hydrate[$pkey])) {
+                return false;
+            }
+            $arr[] = $this->_from_hydrate[$pkey];
+        }
+        $dbi = $con ? $con : extension()->DBI()->getInstance($this->default_instance_name);
+        $dbi->query($sql, $arr);
         $this->_is_modify = false;
     }
 

@@ -1136,24 +1136,9 @@ class EnviTestAssert
         return $str;
     }
     /* ----------------------------------------- */
-}
 
-
-/**
- * assertThatで使用するContainの継承元クラス
- *
- * @package Envi3
- * @subpackage EnviTest
- * @abstract
- * @since 0.1
- * @author     fumikazu.kitagawa<kitagawa-f@klab.jp>
- */
-abstract class EnviTestContain
-{
-    abstract public function execute($value);
 
 }
-/* ----------------------------------------- */
 
 
 /**
