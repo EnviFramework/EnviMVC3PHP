@@ -660,7 +660,7 @@ class Envi
                 $validate       = "validate{$action_sf}";
                 $execute        = "execute{$action_sf}";
                 $defaultAccess  = "defaultAccess{$action_sf}";
-                $handleError   = method_exists($action, "handleError{$action_sf}") ? "handleError{$action_sf}" : "handleError";
+                $handleError    = "handleError{$action_sf}";
             } else {
                 $isPrivate      = 'isPrivate';
                 $isSSL          = 'isSSL';
@@ -694,7 +694,7 @@ class Envi
                     $validate       = "validate{$action_sub_sf}";
                     $execute        = "execute{$action_sub_sf}";
                     $defaultAccess  = "defaultAccess{$action_sub_sf}";
-                    $handleError   = method_exists($action, "handleError{$action_sub_sf}") ? "handleError{$action_sub_sf}" : "handleError";
+                    $handleError    = "handleError{$action_sub_sf}";
                 } else {
                     throw new Envi404Exception("execute{$action_sub_sf}がないです", 10003);
                 }
@@ -709,7 +709,7 @@ class Envi
                     $validate       = "validate{$action_sf}";
                     $execute        = "execute{$action_sf}";
                     $defaultAccess  = "defaultAccess{$action_sf}";
-                    $handleError   = method_exists($action, "handleError{$action_sf}") ? "handleError{$action_sf}" : "handleError";
+                    $handleError    = "handleError{$action_sf}";
                     $isPrivate  = method_exists($action, "isPrivate{$action_sf}") ? "isPrivate{$action_sf}" : "isPrivate";
                     $isSSL      = method_exists($action, "isSSL{$action_sf}") ? "isSSL{$action_sf}" : "isSSL";
                     $isSecure   = method_exists($action, "isSecure{$action_sf}") ? "isSecure{$action_sf}" : "isSecure";
