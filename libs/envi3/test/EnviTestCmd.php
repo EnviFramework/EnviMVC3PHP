@@ -92,6 +92,8 @@ function debug_msg($msg)
 /* ----------------------------------------- */
 
 
+
+
 /**
  * @package Envi3
  * @subpackage EnviTest
@@ -116,7 +118,68 @@ class EnviTest
     }
     /* ----------------------------------------- */
 
-    public function execute()
+
+
+
+    final public function run()
+    {
+        global $start_time;
+        include_once $this->system_conf['scenario']['path'];
+        $scenario              = new $this->system_conf['scenario']['class_name'];
+        $scenario->system_conf = $this->system_conf;
+
+        $arr = $scenario->execute();
+        foreach ($arr as $test_val) {
+            if (($child_process_id = pcntl_fork()) === 0) {
+                // 子プロセス
+                $child_process_id = getmypid();
+                $this->executeMulti($test_val);
+                exit(0);
+            } elseif ($child_process_id === -1) {
+                throw new Exception('Failed fork process.');
+            }
+            $this->process[] = $child_process_id;
+        }
+
+
+        foreach ($this->process as $child_process_id) {
+            pcntl_waitpid($child_process_id, $status);
+        }
+
+        echo round(microtime(true) - $start_time, 5)." : test end \r\n";
+    }
+
+
+    public function executeMulti($test_val)
+    {
+        include_once $test_val['class_path'];
+        $test_obj = new $test_val['class_name'];
+        $test_obj->system_conf = $this->system_conf;
+        $methods = isset($test_val['methods']) && count($test_val['methods']) ?
+            $test_val['methods'] : get_class_methods($test_val['class_name']);
+        foreach ($methods as $method) {
+            if (!strpos($method, 'Test')) {
+                continue;
+            }
+            $test_obj->initialize();
+            try{
+                $test_obj->$method();
+                $this->sendOKMessage($test_val['class_name'].'::'.$method);
+            } catch (EnviTestException $e) {
+                $trace = $e->getTrace();
+                $this->sendNGMessage($test_val['class_name'].'::'.$method." line on {$trace[0]['line']}".'  '.$e->getMessage());
+            } catch (exception $e) {
+                $this->sendErrorMessage($test_val['class_name'].'::'.$method." line on {$trace[0]['line']}".'  '.$e);
+            }
+            $test_obj->shutdown();
+            $test_obj->free();
+        }
+
+    }
+
+
+
+    public function executeSingle()
     {
         global $start_time;
         include_once $this->system_conf['scenario']['path'];
@@ -211,6 +274,7 @@ if (isOption('-h') || isOption('--help') || isOption('-?') || !isset($argv[1])) 
     // ヘルプ表示
     cecho('Name:', 33);
     cecho('    EnviTest.php <テスト用yamlファイルのパス>');
+    cecho('    --multi,-m,-?                        ', 32, '\n         マルチスレッド実行');
     cecho('    --help,-h,-?                         ', 32, '\n         このヘルプメッセージを表示します。');
     cecho('    --debug                              ', 32, '\n         デバッグモードで実行します。');
     exit;
@@ -220,5 +284,9 @@ if (isOption('-h') || isOption('--help') || isOption('-?') || !isset($argv[1])) 
 
 // 実行
 $EnviTest = EnviTest::singleton($argv[1]);
-$EnviTest->execute();
+if (isOption('-m') || isOption('--multi')) {
+    $EnviTest->run();
+} else {
+    $EnviTest->executeSingle();
+}
 
