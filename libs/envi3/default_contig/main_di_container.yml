@@ -1,0 +1,11 @@
+all:
+  <?php $app_name = substr(basename(__FILE__), 0, strlen(basename(__FILE__))-strlen('_di_container.yml')); ?>
+  DBI:
+    ## ここをtrueにすると、リクエストごとにロードされ、オブジェクトが生成されます
+    constant: true
+    class:
+      resource: "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>EnviDB.php"
+      class_name: "DBInstance"
+      singleton: true
+    router:
+      resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.$app_name.'_databases.yml';?>"

@@ -1,19 +1,19 @@
 all:
   default_master:
     params:
-      dsn: ""
+      dsn: "phptype=mysql&username=exampleuser&password=example&hostspec=localhost&database=example_master"
       instance_pool: true
       connection_pool: false
       initialize_query: "set names utf8;"
   default_slave:
     params:
-      dsn: ""
+      dsn: "phptype=mysql&username=exampleuser&password=example&hostspec=localhost&database=example_slave"
       instance_pool: true
       connection_pool: false
       initialize_query: "set names utf8;"
   default_stage:
     params:
-      dsn: ""
+      dsn: "phptype=mysql&username=exampleuser&password=example&hostspec=localhost&database=example_stage"
       instance_pool: true
       connection_pool: false
       initialize_query: "set names utf8;"
