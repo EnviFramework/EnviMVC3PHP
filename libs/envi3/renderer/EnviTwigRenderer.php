@@ -33,6 +33,7 @@ class EnviTwigRenderer
 
     public function __construct()
     {
+        $this->_system_conf = Envi()->getConfigurationAll();
         Twig_Autoloader::register();
         $this->setting(Request::getThisModule());
     }
@@ -43,12 +44,19 @@ class EnviTwigRenderer
         $this->compile_dir  = $this->_system_conf['DIRECTORY']['templatec'];
         $this->etc_dir      = $this->_system_conf['DIRECTORY']['templateetc'];
         $this->config_dir   = $this->_system_conf['DIRECTORY']['config'];
-        $this->template_dir = $module_dir.$this->_system_conf['DIRECTORY']['template'];
+        $this->template_dir = $this->_system_conf['DIRECTORY']['modules'].$module_dir.DIRECTORY_SEPARATOR.$this->_system_conf['DIRECTORY']['templates'];
 
         $this->loader = new Twig_Loader_Filesystem($this->template_dir);
+        if (isset($this->_system_conf['DIRECTORY']['base_templates'])) {
+            $this->loader->addPath($this->_system_conf['DIRECTORY']['base_templates']);
+        }
         $this->twig   = new Twig_Environment($this->loader, array(
-          'cache' => $this->compile_dir,
-        ));
+            'cache' => $this->compile_dir,
+            'debug' => true,
+            ));
+
+        $this->_attributer = array();
+
     }
 
     /**

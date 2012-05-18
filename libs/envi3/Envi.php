@@ -33,9 +33,9 @@ class redirectException extends Exception
      * +-- コンストラクタ
      *
      * @access public
-     * @params  $message
-     * @params  $code OPTIONAL:0
-     * @params Exception $previous OPTIONAL:null
+     * @param  $message
+     * @param  $code OPTIONAL:0
+     * @param Exception $previous OPTIONAL:null
      * @return void
      */
     public function __construct($message, $code = 0, Exception $previous = null)
@@ -67,9 +67,9 @@ class killException extends Exception
      * +-- コンストラクタ
      *
      * @access public
-     * @params  $message
-     * @params  $code OPTIONAL:0
-     * @params Exception $previous OPTIONAL:null
+     * @param  $message
+     * @param  $code OPTIONAL:0
+     * @param Exception $previous OPTIONAL:null
      * @return void
      */
     public function __construct($message, $code = 0, Exception $previous = null)
@@ -93,9 +93,9 @@ class Envi404Exception extends Exception
      * +-- コンストラクタ
      *
      * @access public
-     * @params  $message
-     * @params  $code OPTIONAL:0
-     * @params Exception $previous OPTIONAL:null
+     * @param  $message
+     * @param  $code OPTIONAL:0
+     * @param Exception $previous OPTIONAL:null
      * @return void
      */
     public function __construct($message, $code = 0, Exception $previous = null)
@@ -123,9 +123,9 @@ class Envi403Exception extends Exception
      * +-- コンストラクタ
      *
      * @access public
-     * @params  $message
-     * @params  $code OPTIONAL:0
-     * @params Exception $previous OPTIONAL:null
+     * @param  $message
+     * @param  $code OPTIONAL:0
+     * @param Exception $previous OPTIONAL:null
      * @return void
      */
     public function __construct($message, $code = 0, Exception $previous = null)
@@ -154,9 +154,9 @@ class EnviException extends Exception
      * +-- コンストラクタ
      *
      * @access public
-     * @params  $message
-     * @params  $code OPTIONAL:0
-     * @params Exception $previous OPTIONAL:null
+     * @param  $message
+     * @param  $code OPTIONAL:0
+     * @param Exception $previous OPTIONAL:null
      * @return void
      */
     public function __construct($message, $code = 0, Exception $previous = null)
@@ -186,8 +186,8 @@ if (!defined('ENVI_MVC_CACHE_PATH')) {
 /**
  * +-- Envi
  *
- * @params  $app OPTIONAL:false
- * @params  $debug OPTIONAL:false
+ * @param  $app OPTIONAL:false
+ * @param  $debug OPTIONAL:false
  * @return Envi
  */
 function Envi($app = false, $debug = false)
@@ -231,8 +231,8 @@ class Envi
      * +-- コンストラクタ
      *
      * @access private
-     * @params string $app
-     * @params boolean $debug OPTIONAL:false
+     * @param string $app
+     * @param boolean $debug OPTIONAL:false
      * @return void
      */
     private function __construct($app, $debug = false)
@@ -318,8 +318,8 @@ class Envi
      *
      * @access public
      * @static
-     * @params boolean|string $app OPTIONAL:false
-     * @params boolean $debug OPTIONAL:false
+     * @param boolean|string $app OPTIONAL:false
+     * @param boolean $debug OPTIONAL:false
      * @return Envi
      */
     public static function singleton($app = false, $debug = false)
@@ -402,8 +402,8 @@ class Envi
      * +-- コンフィグデータを返します
      *
      * @access public
-     * @params string $key
-     * @params string $key2 可変長引数です。OPTIONAL:....
+     * @param string $key
+     * @param string $key2 可変長引数です。OPTIONAL:....
      * @return mixed
      */
     public function getConfiguration($key)
@@ -436,8 +436,8 @@ class Envi
      * +-- 国際化データを返します
      *
      * @access public
-     * @params  $key
-     * @params  $string_key OPTIONAL:NULL
+     * @param  $key
+     * @param  $string_key OPTIONAL:NULL
      * @return array
      */
     public function getI18n($key, $string_key = NULL)
@@ -450,8 +450,8 @@ class Envi
      * +-- テキスト取得
      *
      * @access public
-     * @params string $string_key
-     * @params array $replace
+     * @param string $string_key
+     * @param array $replace
      * @return string
      */
     public function getText($string_key, array $replace)
@@ -482,8 +482,8 @@ class Envi
      * +-- YAMLファイルをパースする
      *
      * @access public
-     * @params  $file
-     * @params  $dir OPTIONAL:ENVI_MVC_APPKEY_PATH
+     * @param  $file
+     * @param  $dir OPTIONAL:ENVI_MVC_APPKEY_PATH
      * @return array
      */
     public function parseYml($file, $dir = ENVI_MVC_APPKEY_PATH)
@@ -525,8 +525,8 @@ class Envi
      * +-- 処理を中断する
      *
      * @access public
-     * @params  $kill OPTIONAL:''
-     * @params  $is_shutDown OPTIONAL:true
+     * @param  $kill OPTIONAL:''
+     * @param  $is_shutDown OPTIONAL:true
      * @return void
      */
     public function kill($kill = '', $is_shutDown = true)
@@ -546,8 +546,8 @@ class Envi
      *
      * @access public
      * @static
-     * @params string $app アプリキー
-     * @params boolean $debug OPTIONAL:false
+     * @param string $app アプリキー
+     * @param boolean $debug OPTIONAL:false
      * @return void
      */
     public static function dispatch($app, $debug = false)
@@ -611,7 +611,7 @@ class Envi
      *
      * @final
      * @access public
-     * @params  $is_first OPTIONAL:false
+     * @param  $is_first OPTIONAL:false
      * @return mixed
      */
     final public function _run($is_first = false)
@@ -845,7 +845,7 @@ class Envi
      * +-- オートロードする
      *
      * @access public
-     * @params string $class_name
+     * @param string $class_name
      * @return void
      */
     public function autoload($class_name)
@@ -875,7 +875,7 @@ class Envi
      * +-- マジックメソッド
      *
      * @access public
-     * @params
+     * @param
      * @return void
      */
     public function __wakeup()
@@ -888,7 +888,7 @@ class Envi
      * +-- 汎用serialize
      *
      * @access public
-     * @params  $data
+     * @param  $data
      * @return string
      */
     public function serialize($data)
@@ -905,7 +905,7 @@ class Envi
      * +-- 汎用unserialize
      *
      * @access public
-     * @params  $data
+     * @param  $data
      * @return array
      */
     public function unserialize($data)

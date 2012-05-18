@@ -44,7 +44,7 @@ class extension
      * +-- コンストラクタ
      *
      * @access private
-     * @params  $configuration
+     * @param  $configuration
      * @return void
      */
     private function __construct()
@@ -65,8 +65,8 @@ class extension
      * +-- エクステンションのオブジェクト取得(magicmethod)
      *
      * @access public
-     * @params  $name
-     * @params  $arguments
+     * @param  $name
+     * @param  $arguments
      * @return object
      */
     public function __call($name, $arguments)
@@ -161,9 +161,9 @@ class EnviTestAssert
      * +-- 配列にキーがあるかどうか
      *
      * @access public
-     * @params string $key
-     * @params array $array
-     * @params  $message OPTIONAL:''
+     * @param string $key
+     * @param array $array
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertArrayHasKey($key, $array, $message = '')
@@ -182,9 +182,9 @@ class EnviTestAssert
      * +-- 配列にキーがないかどうか
      *
      * @access public
-     * @params string $key
-     * @params array $array
-     * @params  $message OPTIONAL:''
+     * @param string $key
+     * @param array $array
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertArrayNotHasKey($key, $array, $message = '')
@@ -203,9 +203,9 @@ class EnviTestAssert
      * +-- 配列に値があるかどうか
      *
      * @access public
-     * @params  $value
-     * @params array $array
-     * @params  $message OPTIONAL:''
+     * @param  $value
+     * @param array $array
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertArrayHasValue($value, $array, $message = '')
@@ -225,9 +225,9 @@ class EnviTestAssert
      * +-- 配列に値がないかどうか
      *
      * @access public
-     * @params  $value
-     * @params  $array
-     * @params  $message OPTIONAL:''
+     * @param  $value
+     * @param  $array
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertArrayNotHasValue($value, $array, $message = '')
@@ -246,8 +246,8 @@ class EnviTestAssert
      * +-- 配列かどうか
      *
      * @access public
-     * @params  $a
-     * @params  $message OPTIONAL:''
+     * @param  $a
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertArray($a, $message = '')
@@ -264,9 +264,9 @@ class EnviTestAssert
      * +-- $className::attribute_name が存在しない場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $attribute_name
-     * @params  $class_name
-     * @params  $message OPTIONAL:''
+     * @param  $attribute_name
+     * @param  $class_name
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertClassHasAttribute($attribute_name, $class_name, $message = '')
@@ -285,9 +285,9 @@ class EnviTestAssert
      * +-- $className::attribute_name が存在しない場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $attribute_name
-     * @params  $class_name
-     * @params  $message OPTIONAL:''
+     * @param  $attribute_name
+     * @param  $class_name
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertClassNotHasAttribute($attribute_name, $class_name, $message = '')
@@ -308,9 +308,9 @@ class EnviTestAssert
      * assertArrayHasValueとの違いは、$valueにstring以外使用でき無い点です
      *
      * @access public
-     * @params  $value
-     * @params  $array
-     * @params  $message OPTIONAL:''
+     * @param  $value
+     * @param  $array
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertContains($value, $array, $message = '')
@@ -331,9 +331,9 @@ class EnviTestAssert
      * assertArrayNotHasValueとの違いは、$valueにstring以外使用でき無い点です
      *
      * @access public
-     * @params  $value
-     * @params  $array
-     * @params  $message OPTIONAL:''
+     * @param  $value
+     * @param  $array
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertNotContains($value, $array, $message = '')
@@ -364,9 +364,9 @@ class EnviTestAssert
      * +-- $arrayの中身の型が $type だけではない場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $type
-     * @params  $array
-     * @params  $message
+     * @param  $type
+     * @param  $array
+     * @param  $message
      * @return boolean
      */
     public function assertNotContainsOnly($type, $array, $message)
@@ -387,9 +387,9 @@ class EnviTestAssert
      * +-- $array の要素数が $count でない場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $count
-     * @params  $array
-     * @params  $message OPTIONAL:''
+     * @param  $count
+     * @param  $array
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertCount($count, $array, $message = '')
@@ -408,9 +408,9 @@ class EnviTestAssert
      * +-- $array の要素数が $count の場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $count
-     * @params  $array
-     * @params  $message OPTIONAL:''
+     * @param  $count
+     * @param  $array
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertNotCount($count, $array, $message = '')
@@ -429,8 +429,8 @@ class EnviTestAssert
      * +-- 空かどうか
      *
      * @access public
-     * @params  $a
-     * @params  $message OPTIONAL:''
+     * @param  $a
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertEmpty($a, $message = '')
@@ -445,8 +445,8 @@ class EnviTestAssert
      * +-- 空でかどうか
      *
      * @access public
-     * @params  $a
-     * @params  $message OPTIONAL:''
+     * @param  $a
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertNotEmpty($a, $message = '')
@@ -464,9 +464,9 @@ class EnviTestAssert
      * +-- 同じかどうか
      *
      * @access public
-     * @params  $a
-     * @params  $b
-     * @params  $message OPTIONAL:''
+     * @param  $a
+     * @param  $b
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertEquals($a, $b, $message = '')
@@ -482,9 +482,9 @@ class EnviTestAssert
      * +-- 違うかどうか
      *
      * @access public
-     * @params  $a
-     * @params  $b
-     * @params  $message OPTIONAL:''
+     * @param  $a
+     * @param  $b
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertNotEquals($a, $b, $message = '')
@@ -500,8 +500,8 @@ class EnviTestAssert
      * +-- falseかどうか
      *
      * @access public
-     * @params  $a
-     * @params  $message OPTIONAL:''
+     * @param  $a
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertFalse($a, $message = '')
@@ -517,9 +517,9 @@ class EnviTestAssert
      * +-- 同じファイルかどうか
      *
      * @access public
-     * @params  $a
-     * @params  $b
-     * @params  $message OPTIONAL:''
+     * @param  $a
+     * @param  $b
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertFileEquals($a, $b, $message = '')
@@ -535,9 +535,9 @@ class EnviTestAssert
      * +-- 同じファイルでないかどうか
      *
      * @access public
-     * @params  $a
-     * @params  $b
-     * @params  $message OPTIONAL:''
+     * @param  $a
+     * @param  $b
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertFileNotEquals($a, $b, $message = '')
@@ -553,8 +553,8 @@ class EnviTestAssert
      * +-- ファイルが存在するかどうか
      *
      * @access public
-     * @params  $a
-     * @params  $message OPTIONAL:''
+     * @param  $a
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertFileExists($a, $message = '')
@@ -570,8 +570,8 @@ class EnviTestAssert
      * +-- ファイルが存在しないかどうか
      *
      * @access public
-     * @params  $a
-     * @params  $message OPTIONAL:''
+     * @param  $a
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertNotFileExists($a, $message = '')
@@ -587,9 +587,9 @@ class EnviTestAssert
      * +-- $a > $b かどうか
      *
      * @access public
-     * @params  $a
-     * @params  $b
-     * @params  $message OPTIONAL:''
+     * @param  $a
+     * @param  $b
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertGreaterThan($a, $b, $message = '')
@@ -605,9 +605,9 @@ class EnviTestAssert
      * +-- $a>=$bかどうか
      *
      * @access public
-     * @params  $a
-     * @params  $b
-     * @params  $message OPTIONAL:''
+     * @param  $a
+     * @param  $b
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertGreaterThanOrEqual($a, $b, $message = '')
@@ -623,8 +623,8 @@ class EnviTestAssert
      * +-- $actual が $expected のインスタンスでない場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $expected
-     * @params  $actual
+     * @param  $expected
+     * @param  $actual
      * @return boolean
      */
     public function assertInstanceOf($expected, $actual, $message)
@@ -644,8 +644,8 @@ class EnviTestAssert
      * +-- $actual が $expected のインスタンスの場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $expected
-     * @params  $actual
+     * @param  $expected
+     * @param  $actual
      * @return boolean
      */
     public function assertNotInstanceOf($expected, $actual, $message)
@@ -664,8 +664,8 @@ class EnviTestAssert
      * +-- $actual の型が $expected でない場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $expected
-     * @params  $actual
+     * @param  $expected
+     * @param  $actual
      * @return boolean
      */
     public function assertInternalType($expected, $actual)
@@ -683,8 +683,8 @@ class EnviTestAssert
      * +-- $actual の型が $expected の場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $expected
-     * @params  $actual
+     * @param  $expected
+     * @param  $actual
      * @return boolean
      */
     public function assertNotInternalType($expected, $actual)
@@ -703,9 +703,9 @@ class EnviTestAssert
      * +-- $a<$bかどうか
      *
      * @access public
-     * @params  $a
-     * @params  $b
-     * @params  $message OPTIONAL:''
+     * @param  $a
+     * @param  $b
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertLessThan($a, $b, $message = '')
@@ -721,9 +721,9 @@ class EnviTestAssert
      * +-- $a<=$bかどうか
      *
      * @access public
-     * @params  $a
-     * @params  $b
-     * @params  $message OPTIONAL:''
+     * @param  $a
+     * @param  $b
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertLessThanOrEqual($a, $b, $message = '')
@@ -739,8 +739,8 @@ class EnviTestAssert
      * +-- Nullかどうか
      *
      * @access public
-     * @params  $a
-     * @params  $message OPTIONAL:''
+     * @param  $a
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertNull($a, $message = '')
@@ -756,9 +756,9 @@ class EnviTestAssert
      * +-- $object->attribute_name が存在しない場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $attribute_name
-     * @params  $object
-     * @params  $message OPTIONAL:''
+     * @param  $attribute_name
+     * @param  $object
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertObjectHasAttribute($attribute_name, $object, $message = '')
@@ -777,9 +777,9 @@ class EnviTestAssert
      * +-- $object->attribute_name が存在する場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $attribute_name
-     * @params  $object
-     * @params  $message OPTIONAL:''
+     * @param  $attribute_name
+     * @param  $object
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertObjectNotHasAttribute($attribute_name, $object, $message = '')
@@ -798,9 +798,9 @@ class EnviTestAssert
      * +-- $string が正規表現 $pattern にマッチしない場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $pattern
-     * @params  $string
-     * @params  $message OPTIONAL:''
+     * @param  $pattern
+     * @param  $string
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertRegExp($pattern, $string, $message = '')
@@ -819,9 +819,9 @@ class EnviTestAssert
      * +-- $string が正規表現 $pattern にマッチする場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $pattern
-     * @params  $string
-     * @params  $message OPTIONAL:''
+     * @param  $pattern
+     * @param  $string
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertNotRegExp($format, $string, $message = '')
@@ -841,9 +841,9 @@ class EnviTestAssert
      * +-- $string が書式文字列 $format にマッチしない場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $pattern
-     * @params  $string
-     * @params  $message OPTIONAL:''
+     * @param  $pattern
+     * @param  $string
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertStringMatchesFormat($pattern, $string, $message = '')
@@ -862,9 +862,9 @@ class EnviTestAssert
      * +-- $string が書式文字列 $format にマッチする場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $pattern
-     * @params  $string
-     * @params  $message OPTIONAL:''
+     * @param  $pattern
+     * @param  $string
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertStringNotMatchesFormat($pattern, $string, $message = '')
@@ -883,9 +883,9 @@ class EnviTestAssert
      * +-- $string が $formatFile の内容にマッチしない場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $format_file
-     * @params  $string
-     * @params  $message OPTIONAL:''
+     * @param  $format_file
+     * @param  $string
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertStringMatchesFormatFile($format_file, $string, $message = '')
@@ -905,9 +905,9 @@ class EnviTestAssert
      * +-- $string が $formatFile の内容にマッチする場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $format_file
-     * @params  $string
-     * @params  $message OPTIONAL:''
+     * @param  $format_file
+     * @param  $string
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertStringNotMatchesFormatFile($format_file, $string, $message = '')
@@ -926,9 +926,9 @@ class EnviTestAssert
      * +-- 型と、値が同じかどうか
      *
      * @access public
-     * @params  $a
-     * @params  $b
-     * @params  $message OPTIONAL:''
+     * @param  $a
+     * @param  $b
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertSame($a, $b, $message = '')
@@ -944,9 +944,9 @@ class EnviTestAssert
      * +-- 型と、値が違うかどうか
      *
      * @access public
-     * @params  $a
-     * @params  $b
-     * @params  $message OPTIONAL:''
+     * @param  $a
+     * @param  $b
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertNotSame($a, $b, $message = '')
@@ -962,9 +962,9 @@ class EnviTestAssert
      * +-- $string が $suffix で終わっていない場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $suffix
-     * @params  $string
-     * @params  $message OPTIONAL:''
+     * @param  $suffix
+     * @param  $string
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertStringEndsWith($suffix, $string, $message = '')
@@ -982,9 +982,9 @@ class EnviTestAssert
      * +-- $string が $suffix で終わっている場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $suffix
-     * @params  $string
-     * @params  $message OPTIONAL:''
+     * @param  $suffix
+     * @param  $string
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertStringNotEndsWith($suffix, $string, $message = '')
@@ -1002,9 +1002,9 @@ class EnviTestAssert
      * +-- expected_file で指定したファイルの内容に $string が含まれない場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $expected_file
-     * @params  $string
-     * @params  $message OPTIONAL:''
+     * @param  $expected_file
+     * @param  $string
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertStringEqualsFile($expected_file, $string, $message = '')
@@ -1024,9 +1024,9 @@ class EnviTestAssert
      * +-- expected_file で指定したファイルの内容に $string が含まれる場合にエラー $message を報告します。
      *
      * @access public
-     * @params  $expected_file
-     * @params  $string
-     * @params  $message OPTIONAL:''
+     * @param  $expected_file
+     * @param  $string
+     * @param  $message OPTIONAL:''
      * @return boolean
      */
     public function assertStringNotEqualsFile($suffix, $string, $message = '')
@@ -1084,8 +1084,8 @@ class EnviTestAssert
      * +-- $valueが$containにマッチしない
      *
      * @access public
-     * @params  $value
-     * @params EnviTestContain $contain
+     * @param  $value
+     * @param EnviTestContain $contain
      * @return boolean
      */
     public function assertThat($value, EnviTestContain $contain)
@@ -1100,7 +1100,7 @@ class EnviTestAssert
      * +-- trueかどうか
      *
      * @access public
-     * @params  $a
+     * @param  $a
      * @return boolean
      */
     public function assertTrue($a)
@@ -1120,7 +1120,7 @@ class EnviTestAssert
      * +-- 配列を文字列にする
      *
      * @access public
-     * @params array $arr
+     * @param array $arr
      * @return string
      */
     public function toString($arr){
@@ -1279,9 +1279,9 @@ class EnviTestScenario
      * +-- DIRECTORYの再帰検索
      *
      * @access public
-     * @params  $dir_name
-     * @params  $node OPTIONAL:0
-     * @params  $arr OPTIONAL:array
+     * @param  $dir_name
+     * @param  $node OPTIONAL:0
+     * @param  $arr OPTIONAL:array
      * @return array
      */
     public function getTestByDir($dir_name, $node = 0, $arr = array())

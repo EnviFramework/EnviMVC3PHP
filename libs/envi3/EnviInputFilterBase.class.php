@@ -23,7 +23,7 @@ abstract class EnviInputFilterBase
      * +-- コンストラクタ
      *
      * @access public
-     * @params
+     * @param
      * @return void
      */
     public function __construct()

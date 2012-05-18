@@ -28,7 +28,7 @@ class extension
      * +-- コンストラクタ
      *
      * @access private
-     * @params  $configuration
+     * @param  $configuration
      * @return void
      */
     private function __construct($configuration)
@@ -48,8 +48,8 @@ class extension
      * +-- エクステンションのオブジェクト取得(magicmethod)
      *
      * @access public
-     * @params  $name
-     * @params  $arguments
+     * @param  $name
+     * @param  $arguments
      * @return object
      */
     public function __call($name, $arguments)
@@ -65,7 +65,7 @@ class extension
                 $this->extensions[$name] = array();
             }
             $c = count($this->extensions[$name]);
-            $this->extensions[$name][$c] = $class_name(Envi::singleton()->parseYml(basename($this->configuration[$name]['router']['resource']), dirname($this->configuration[$name]['router']['resource']).DIRECTORY_SEPARATOR));
+            $this->extensions[$name][$c] = new $class_name(Envi::singleton()->parseYml(basename($this->configuration[$name]['router']['resource']), dirname($this->configuration[$name]['router']['resource']).DIRECTORY_SEPARATOR));
             return $this->extensions[$name][$c];
         } elseif (!isset($this->extensions[$name])) {
             include_once $this->configuration[$name]['class']['resource'];

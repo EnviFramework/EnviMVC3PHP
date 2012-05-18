@@ -78,7 +78,7 @@ class Request
      *
      * @access public
      * @static
-     * @params
+     * @param
      * @return string
      */
     public static function getThisAction()
@@ -92,7 +92,7 @@ class Request
      *
      * @access public
      * @static
-     * @params
+     * @param
      * @return string
      */
     public static function getIi8n()
@@ -330,10 +330,10 @@ class Request
      *
      * @access public
      * @static
-     * @params エラー名 $name
-     * @params 引っかかったValidator $validator
-     * @params エラーコード $code
-     * @params エラーメッセージ $message
+     * @param エラー名 $name
+     * @param 引っかかったValidator $validator
+     * @param エラーコード $code
+     * @param エラーメッセージ $message
      * @return void
      */
     public static function setError($name, $validator, $code, $message)
@@ -408,7 +408,7 @@ class Request
      *
      * @access public
      * @static
-     * @params string $name エラー名
+     * @param string $name エラー名
      * @return array
      */
     public static function getError($name)
@@ -435,7 +435,7 @@ class Request
      *
      * @access public
      * @static
-     * @params string $name エラー名
+     * @param string $name エラー名
      * @return boolean
      */
     public static function hasError($name)

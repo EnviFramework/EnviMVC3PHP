@@ -92,7 +92,7 @@ class logWriter
      * +-- コンストラクタ
      *
      * @access private
-     * @params
+     * @param
      * @return void
      */
     private function __construct()
@@ -148,7 +148,7 @@ class logWriter
      * +-- デバッグメッセージ
      *
      * @access public
-     * @params string $message メッセージ OPTIONAL:'debugMeaage'
+     * @param string $message メッセージ OPTIONAL:'debugMeaage'
      * @return void
      */
     public function debug($message = 'debug Meaage')
@@ -174,7 +174,7 @@ class logWriter
      * +-- インフォメーションメッセージ
      *
      * @access public
-     * @params string $message メッセージ OPTIONAL:'infomation Meaage'
+     * @param string $message メッセージ OPTIONAL:'infomation Meaage'
      * @return void
      */
     public function info($message = 'infomation Meaage')
@@ -199,7 +199,7 @@ class logWriter
      * +-- 忠告レベルのエラーメッセージ
      *
      * @access public
-     * @params string $message メッセージ OPTIONAL:'notice Meaage'
+     * @param string $message メッセージ OPTIONAL:'notice Meaage'
      * @return void
      */
     public function notice($message = 'notice Meaage')
@@ -224,7 +224,7 @@ class logWriter
      * +-- 警告レベルのエラーメッセージ
      *
      * @access public
-     * @params string $message メッセージ OPTIONAL:'warningMeaage'
+     * @param string $message メッセージ OPTIONAL:'warningMeaage'
      * @return void
      */
     public function warning($message = 'warning Meaage')
@@ -249,7 +249,7 @@ class logWriter
      * +-- 深刻なエラーメッセージ
      *
      * @access public
-     * @params string $message メッセージ OPTIONAL:'fatalMeaage'
+     * @param string $message メッセージ OPTIONAL:'fatalMeaage'
      * @return void
      */
     public function fatal($message = 'fatal Meaage')

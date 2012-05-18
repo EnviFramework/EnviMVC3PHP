@@ -23,7 +23,7 @@ abstract class EnviOutputFilterBase
      * +-- コンストラクタ
      *
      * @access public
-     * @params
+     * @param
      * @return void
      */
     public function __construct()
@@ -50,7 +50,7 @@ abstract class EnviOutputFilterBase
      * +-- フィルタの実行
      *
      * @access public
-     * @params staring &$contents
+     * @param staring &$contents
      * @return void
      */
     public function execute(&$contents)

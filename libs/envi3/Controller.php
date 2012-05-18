@@ -86,8 +86,8 @@ class Controller
      * @final
      * @access public
      * @static
-     * @params  $kill OPTIONAL:''
-     * @params  $is_shutDown OPTIONAL:true
+     * @param  $kill OPTIONAL:''
+     * @param  $is_shutDown OPTIONAL:true
      * @return void
      */
     final public static function kill($kill = '', $is_shutDown = true)
@@ -102,10 +102,10 @@ class Controller
      * @final
      * @access public
      * @static
-     * @params string $name チェイン名
-     * @params string $action アクション名
-     * @params string $module モジュール名 OPTIONAL:NULL
-     * @params string $data チェイン先に渡すデータ OPTIONAL:NULL
+     * @param string $name チェイン名
+     * @param string $action アクション名
+     * @param string $module モジュール名 OPTIONAL:NULL
+     * @param string $data チェイン先に渡すデータ OPTIONAL:NULL
      * @return void
      */
     final public static function setActionChain($name, $action, $module = NULL, $data = NULL)
