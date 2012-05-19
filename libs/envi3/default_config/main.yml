@@ -1,6 +1,10 @@
 all:
-# <?php $app_name = substr(basename(__FILE__), 0, strlen(basename(__FILE__))-4); ?>
+  ## <?php $app_name = substr(basename(__FILE__), 0, strlen(basename(__FILE__))-4); ?>　
+
   SYSTEM:
+  ################################
+  # 基本的な振る舞いに関する設定
+  ################################
     default_module: "index"
     default_action: "index"
     ext: "php"
@@ -8,12 +12,19 @@ all:
     ssl_top_url: "https://<?php echo $_SERVER["HTTP_HOST"];?>"
     dispatch_url: "http://<?php echo $_SERVER["HTTP_HOST"].$_SERVER["SCRIPT_NAME"];?>"
     ssl_dispatch_url: "https://<?php echo $_SERVER["HTTP_HOST"].$_SERVER["SCRIPT_NAME"];?>"
+    ## 国際化設定の使用をするかどうか
     use_i18n: false
+    ## defaultの国際化ファイル
     default_i18n: "ja"
-    renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviSmartyRenderer.php"
+    # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviSmartyRenderer.php"
+    # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviTwigRenderer.php"
+    renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviPHPRenderer.php"
     auto_load_cache: true
 
   FILTER:
+  ################################
+  # フィルターの設定
+  ################################
     input_filter:
       EnviInputFilter:
         class_name: "EnviInputFilter"
@@ -23,9 +34,15 @@ all:
         class_name: "EnviOutputFilter"
         resource: "<?php echo ENVI_BASE_DIR."filters".DIRECTORY_SEPARATOR."EnviOutputFilter.php";?>"
   I18N:
+  ################################
+  # 国際化の設定
+  ################################
     ja: "ja.yml"
   DIRECTORY:
-    ## <?php $ds = DIRECTORY_SEPARATOR; $base = realpath(ENVI_BASE_DIR."..{$ds}..{$ds}apps{$ds}{$app_name}").$ds; ?>
+  ################################
+  # ディレクトリに関する設定
+  ################################
+## <?php $ds = DIRECTORY_SEPARATOR; $base = realpath(ENVI_BASE_DIR."..{$ds}..{$ds}apps{$ds}{$app_name}").$ds; ?>　
     base: "<?php echo $base;?>"
     ## 通常のリクエストやforwardで飛ばされるモジュール
     modules: "<?php echo "{$base}modules{$ds}";?>"
@@ -40,11 +57,13 @@ all:
     views: "views/"
     templates: "templates/"
 
-## DI コンテナ
   EXTENSION:
+  ################################
+  # エクステンション(DIContainer)の設定
+  ################################
     ## 別ファイルに記述する場合は下記のように
-    # load_yml: true
-    # load_yml_resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.'{$app_name}_di_container.yml';?>"
+    load_yml: true
+    load_yml_resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.$app_name.'_di_container.yml';?>"
     ## ここに記述する場合は下記のように記述可能
     # extensions:
     #   DBI:
@@ -59,12 +78,17 @@ all:
 
 ## 常にオートロードされるディレクトリ
   AUTOLOAD_CONSTANT:
+## <?php $ds = DIRECTORY_SEPARATOR; $base = realpath(ENVI_BASE_DIR."..{$ds}..{$ds}apps{$ds}{$app_name}").$ds; ?>　
     1: "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>"
+    2: "<?php echo "{$base}libs{$ds}controller{$ds}";?>"
 ## コールされた時にオートロードされるディレクトリ
   AUTOLOAD:
     1: "<?php echo ENVI_BASE_DIR.'plugins'.DIRECTORY_SEPARATOR;?>"
 
   MEMCACHE:
+  ################################
+  # メムキャッシュの設定
+  ################################
     default_host   : "127.0.0.1"
     default_port   : 11211
     default_timeout: 10
@@ -74,12 +98,14 @@ all:
     session_port   : 11211
     session_timeout: 10
     session_prefix: "session_"
-
   LOGGER:
-    ################################
-    # システム設定
-    ################################
+  ################################
+  # ロガーの設定
+  ################################
     system:
+    ################################
+    # ロガーの基本設定
+    ################################
       ## ログの吐き出すタイミング設定                                    -sm1
       ## <?php echo logWriter::LMODE_EACH;?>: メソッドがコールされた時
       ## <?php echo logWriter::LMODE_LAST;?>: shutDownメソッドコール時
@@ -238,11 +264,9 @@ all:
       value_request_log_format: "[%T] %l %q %g %s %S %f %e %f %c %P: %p"
 
 
-
-
     file:
     ################################
-    ## ファイル設定
+    ## ファイルへのログ書き込み設定
     ################################
       <?php $log_file_dir = realpath(ENVI_BASE_DIR."..{$ds}..{$ds}logs").$ds;?>
       ## エラーログのパス                                                -fe1
@@ -283,9 +307,8 @@ all:
 
     db:
     ################################
-    ## DB設定
+    ## DBへのログ書き込み設定
     ################################
-
       ## エラーログ記録テーブル                                          -de1
       value_error_log_table_name: ""
       ## エラーログ記録カラム                                            -de2
@@ -314,10 +337,8 @@ all:
 
     mail:
     ################################
-    ## メール設定
+    ## メールでのログ送信設定
     ################################
-
-
       ## エラーログメールあて先                                          -me1
       value_error_log_mail_to: ""
       ## エラーログメール差出人                                          -me2
@@ -605,6 +626,9 @@ all:
 
 
   SESSION:
+  ################################
+  # セッションの設定
+  ################################
     use: true
     cookie_name: "gibson"
     gc_lifetime: 1200000
@@ -613,7 +637,10 @@ all:
     session_manager: "EnviSecureSession"
     sess_base_save_path: "<?php echo realpath(ENVI_BASE_DIR."..{$ds}..{$ds}var{$ds}session").$ds;?>"
 
-# 環境ごとの値
+################################
+# 環境ごとに変更する値を下記に書くことができます。
+# 以下に簡単な例を示します。
+################################
 dev:
   SESSION:
     use: true
