@@ -652,15 +652,15 @@ class Envi
             $action = Request::getThisAction().'Action';
             $action = new $action;
             if (method_exists($action, "execute{$action_sf}")) {
+                $execute        = "execute{$action_sf}";
+                $validate  = method_exists($action, "validate{$action_sf}") ? "validate{$action_sf}" : "validate";
+                $defaultAccess  = method_exists($action, "defaultAccess{$action_sf}") ? "defaultAccess{$action_sf}" : "defaultAccess";
+                $handleError  = method_exists($action, "handleError{$action_sf}") ? "handleError{$action_sf}" : "handleError";
                 $isPrivate  = method_exists($action, "isPrivate{$action_sf}") ? "isPrivate{$action_sf}" : "isPrivate";
                 $isSSL      = method_exists($action, "isSSL{$action_sf}") ? "isSSL{$action_sf}" : "isSSL";
                 $isSecure   = method_exists($action, "isSecure{$action_sf}") ? "isSecure{$action_sf}" : "isSecure";
                 $initialize = method_exists($action, "initialize{$action_sf}") ? "initialize{$action_sf}" : "initialize";
                 $shutdown   = method_exists($action, "shutdown{$action_sf}") ? "shutdown{$action_sf}" : "shutdown";
-                $validate       = "validate{$action_sf}";
-                $execute        = "execute{$action_sf}";
-                $defaultAccess  = "defaultAccess{$action_sf}";
-                $handleError    = "handleError{$action_sf}";
             } else {
                 $isPrivate      = 'isPrivate';
                 $isSSL          = 'isSSL';
@@ -686,15 +686,15 @@ class Envi
                 $action = new $action;
                 $action_sub_sf = ucwords(mb_ereg_replace("^{$sub_action}", '', Request::getThisAction()));
                 if (method_exists($action, "execute{$action_sub_sf}")) {
+                    $execute        = "execute{$action_sub_sf}";
                     $isPrivate  = method_exists($action, "isPrivate{$action_sub_sf}") ? "isPrivate{$action_sub_sf}" : "isPrivate";
                     $isSSL      = method_exists($action, "isSSL{$action_sub_sf}") ? "isSSL{$action_sub_sf}" : "isSSL";
                     $isSecure   = method_exists($action, "isSecure{$action_sub_sf}") ? "isSecure{$action_sub_sf}" : "isSecure";
                     $initialize = method_exists($action, "initialize{$action_sub_sf}") ? "initialize{$action_sub_sf}" : "initialize";
                     $shutdown   = method_exists($action, "shutdown{$action_sub_sf}") ? "shutdown{$action_sub_sf}" : "shutdown";
-                    $validate       = "validate{$action_sub_sf}";
-                    $execute        = "execute{$action_sub_sf}";
-                    $defaultAccess  = "defaultAccess{$action_sub_sf}";
-                    $handleError    = "handleError{$action_sub_sf}";
+                    $validate  = method_exists($action, "validate{$action_sub_sf}") ? "validate{$action_sub_sf}" : "validate";
+                    $defaultAccess  = method_exists($action, "defaultAccess{$action_sub_sf}") ? "defaultAccess{$action_sub_sf}" : "defaultAccess";
+                    $handleError  = method_exists($action, "handleError{$action_sub_sf}") ? "handleError{$action_sub_sf}" : "handleError";
                 } else {
                     throw new Envi404Exception("execute{$action_sub_sf}がないです", 10003);
                 }
@@ -706,10 +706,10 @@ class Envi
                 $action = Request::getThisModule().'Actions';
                 $action         = new $action;
                 if (method_exists($action, "execute{$action_sf}")) {
-                    $validate       = "validate{$action_sf}";
                     $execute        = "execute{$action_sf}";
-                    $defaultAccess  = "defaultAccess{$action_sf}";
-                    $handleError    = "handleError{$action_sf}";
+                    $validate  = method_exists($action, "validate{$action_sf}") ? "validate{$action_sf}" : "validate";
+                    $defaultAccess  = method_exists($action, "defaultAccess{$action_sf}") ? "defaultAccess{$action_sf}" : "defaultAccess";
+                    $handleError  = method_exists($action, "handleError{$action_sf}") ? "handleError{$action_sf}" : "handleError";
                     $isPrivate  = method_exists($action, "isPrivate{$action_sf}") ? "isPrivate{$action_sf}" : "isPrivate";
                     $isSSL      = method_exists($action, "isSSL{$action_sf}") ? "isSSL{$action_sf}" : "isSSL";
                     $isSecure   = method_exists($action, "isSecure{$action_sf}") ? "isSecure{$action_sf}" : "isSecure";
