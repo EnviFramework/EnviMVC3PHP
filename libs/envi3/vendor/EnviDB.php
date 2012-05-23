@@ -356,7 +356,7 @@ class EnviDBIBase
         while (($row = $pdos->fetchColumn($col)) !== false) {
             $res[] = $row;
         }
-        return count($res) === 0 ? $res : false;
+        return count($res) !== 0 ? $res : false;
     }
     /* ----------------------------------------- */
 
