@@ -352,11 +352,11 @@ class EnviDBIBase
     public function getCol($statement, $col = 0, array $bind = array())
     {
         $pdos = $this->query($statement, $bind);
-
+        $res = array();
         while (($row = $pdos->fetchColumn($col)) !== false) {
             $res[] = $row;
         }
-        return $res;
+        return count($res) === 0 ? $res : false;
     }
     /* ----------------------------------------- */
 
@@ -575,7 +575,11 @@ class EnviDBIBase
         if (is_array($dsn)) {
             $username = $dsn['username'];
             $password = $dsn['password'];
-            $dsn = $dsn['phptype'].':dbname='.$dsn['database'].';host='.$dsn['hostspec'];
+            if (isset($dsn['charset']) && strlen($dsn['charset'])) {
+                $dsn = $dsn['phptype'].':dbname='.$dsn['database'].';host='.$dsn['hostspec'].';charset='.$dsn['charset'];
+            } else {
+                $dsn = $dsn['phptype'].':dbname='.$dsn['database'].';host='.$dsn['hostspec'];
+            }
         }
         $this->PDO = new PDO($dsn, $username, $password, $driver_options);
         // エラーモードを修正する
