@@ -784,25 +784,23 @@ class Envi
             if (dirname($view_class_path) !== realpath($view_dir)) {
                 throw new EnviException('Viewのパスが変です。', 11002);
             }
-            include_once($view_class_path);
-            $view = Request::getThisView().'View';
+            include_once $view_class_path;
+            $view = Request::getThisAction().'View';
             $view = new $view;
             if (method_exists($view, "execute{$action_sf}")) {
                 $initialize     = "initialize{$action_sf}";
                 $execute       = "execute{$action_sf}";
                 $setRenderer    = "setRenderer{$action_sf}";
-
             } else {
                 $initialize     = 'initialize';
                 $execute        = 'execute';
                 $setRenderer    = 'setRenderer';
             }
-
         } elseif (is_file($view_dir.'views.class.php')) {
             $view_class_path = $view_dir.'views.class.php';
             include_once($view_class_path);
             $view = Request::getThisModule().'Views';
-            $view         = new $view;
+            $view = new $view;
             if (method_exists($view, "execute{$action_sf}")) {
                 $initialize     = "initialize{$action_sf}";
                 $execute       = "execute{$action_sf}";
@@ -858,6 +856,7 @@ class Envi
             }
         }
     }
+    /* ----------------------------------------- */
 
     /**
      * +-- マジックメソッド
