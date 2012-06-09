@@ -323,10 +323,10 @@ class Envi
             if ($autoload_constant_dir) {
                 foreach ($autoload_constant_dir as $dir) {
                     if (!is_dir($dir)) {
-                        break;
+                        continue;
                     }
                     if (!($dh = opendir($dir))) {
-                        break;
+                        continue;
                     }
                     while (($file = readdir($dh)) !== false) {
                         if (strpos($file, '.php')) {
@@ -359,10 +359,10 @@ class Envi
         } else {
             foreach ($this->autoload_dirs as $dir) {
                 if (!is_dir($dir)) {
-                    break;
+                    continue;
                 }
                 if (!($dh = opendir($dir))) {
-                    break;
+                    continue;
                 }
                 while (($file = readdir($dh)) !== false) {
                     if (mb_ereg('\.php', $file)) {
