@@ -2,19 +2,33 @@
 /**
  * DB処理
  *
- * @package Envi3
- * @subpackage EnviMVCVendorExtension
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * PHP versions 5
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    GIT: $ Id:$
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 
 /**
  * DIから呼ばれるクラス
  *
- * @package Envi3
- * @subpackage EnviMVCVendorExtension
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @package    Envi3
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class DBInstance
 {
@@ -52,10 +66,15 @@ class DBInstance
 /**
  * pearDB風のインスタンスを提供するためのラッパー
  *
- * @package Envi3
- * @subpackage EnviMVCVendorExtension
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @package    Envi3
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class DB
 {
@@ -142,10 +161,16 @@ class DB
 
 /**
  * DBの処理
- * @package Envi3
- * @subpackage EnviMVCVendorExtension
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ *
+ * @package    Envi3
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class EnviDBIBase
 {

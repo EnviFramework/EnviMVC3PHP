@@ -1,15 +1,36 @@
 <?php
 /**
- * @package Envi3
- * @subpackage EnviMVCVendorExtension
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * PropelPDO風のオブジェクトを作成するベースクラス
+ *
+ * PHP versions 5
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    GIT: $ Id:$
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
+
+
 /**
- * @package Envi3
- * @subpackage EnviMVCVendorExtension
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * PropelPDO風のオブジェクトを作成するベースクラス
+ *
+ * @abstract
+ * @package    Envi3
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 abstract class OrMapBase
 {
@@ -19,19 +40,43 @@ abstract class OrMapBase
 
     protected $default_instance_name = 'default_master';
 
-    public function hydrate($arr)
+    /**
+     * +-- DBからセレクトしたデータをオブジェクトにセットする
+     *
+     * このMethodを使用してセットすると、saveがInsertではなくUpdateになります。
+     *
+     * @access public
+     * @param array $arr
+     * @return void
+     */
+    public function hydrate(array $arr)
     {
         $this->_is_modify = false;
         $this->_from_hydrate = $arr;
         $this->to_save       = $arr;
     }
+    /* ----------------------------------------- */
 
+    /**
+     * +-- データを配列にして返します
+     *
+     * @access public
+     * @return array
+     */
     public function toArray()
     {
         return $this->to_save;
     }
+    /* ----------------------------------------- */
 
-    public function save($con = NULL)
+    /**
+     * +-- DBに保存します
+     *
+     * @access public
+     * @param EnviDBIBase $con OPTIONAL:NULL
+     * @return void
+     */
+    public function save(EnviDBIBase $con = NULL)
     {
         $table_name = $this->table_name;
         $pkeys      = $this->pkeys;
@@ -60,8 +105,16 @@ abstract class OrMapBase
         $this->_from_hydrate = $this->to_save;
         $this->_is_modify = false;
     }
+    /* ----------------------------------------- */
 
-    public function delete($con = NULL)
+    /**
+     * +-- データを削除する
+     *
+     * @access public
+     * @param EnviDBIBase $con OPTIONAL:NULL
+     * @return void
+     */
+    public function delete(EnviDBIBase $con = NULL)
     {
         $arr = array();
         $sql = "DELETE FROM {$this->table_name} WHERE ";
@@ -78,18 +131,45 @@ abstract class OrMapBase
         $dbi->query($sql, $arr);
         $this->_is_modify = false;
     }
+    /* ----------------------------------------- */
 
+
+    /**
+     * +-- マジックメソッド
+     *
+     * @access public
+     * @param  $name
+     * @param  $value
+     * @return void
+     */
     public function __set($name, $value)
     {
         $this->_is_modify = true;
         $this->to_save[$name] = $value;
     }
+    /* ----------------------------------------- */
 
+    /**
+     * +-- マジックメソッド
+     *
+     * @access public
+     * @param  $name
+     * @return integer|string
+     */
     public function __get($name)
     {
         return isset($this->to_save[$name]) ? $this->to_save[$name] : NULL;
     }
+    /* ----------------------------------------- */
 
+    /**
+     * +-- マジックメソッド
+     *
+     * @access public
+     * @param  $name
+     * @param  $arguments
+     * @return mixed
+     */
     public function __call ($name , $arguments)
     {
         if (strPos($name, 'get') === 0) {
@@ -103,5 +183,6 @@ abstract class OrMapBase
         }
         trigger_error('undefined method:'.$name);
     }
+    /* ----------------------------------------- */
 
 }

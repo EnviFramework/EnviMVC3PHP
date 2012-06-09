@@ -3,7 +3,7 @@
  * @package Envi3
  * @subpackage EnviTest
  * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @author     Akito <akito-artisan@five-foxes.com>
  */
 /**
  * バッチ用の設定
@@ -96,7 +96,7 @@ function debug_msg($msg)
  * @package Envi3
  * @subpackage EnviTest
  * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @author     Akito <akito-artisan@five-foxes.com>
  */
 class EnviTest
 {

@@ -3,7 +3,7 @@
  * @package Envi3
  * @subpackage
  * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @author     Akito <akito-artisan@five-foxes.com>
  */
 
 $alias = array(

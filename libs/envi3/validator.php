@@ -1,10 +1,24 @@
 <?php
 /**
- * @package Envi3
+ * 雑多な入力検証を提供する入力検証クラス。
+ *
+ * よく使う入力検証の機能を集めました。
+ * エラーがあれば、エラーオブジェクトを返します。
+ * エラークラスをバンドルしていますが、オリジナルの物を使用することもできます。
+ *
+ * PHP versions 5
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
  * @subpackage EnviMVCCore
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
- */
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    GIT: $ Id:$
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
 
 
 /**
@@ -23,9 +37,9 @@ function validator()
 /**
  * 雑多な入力検証を提供する入力検証クラス。
  *
- * よく使う入力検証の機能を集めました。<br>
- * エラーがあれば、エラーオブジェクトを返します。<br>
- * エラークラスをバンドルしていますが、オリジナルの物を使用することもできます。<br><br>
+ * よく使う入力検証の機能を集めました。
+ * エラーがあれば、エラーオブジェクトを返します。
+ * エラークラスをバンドルしていますが、オリジナルの物を使用することもできます。
  * バリデータのリスト
  * - "number"           => 数値かどうか。小数点も許容します。(OPTION:なし)
  * - "naturalnumber"    => 整数かどうか。0も許容します。(OPTION:なし)
@@ -75,10 +89,15 @@ function validator()
  * - "ereg"             => ルビー互換の正規表現にマッチするか(OPTION:正規表現)
  * - "preg"             => パール互換の正規表現にマッチするか(OPTION:正規表現)
  *
- * @package Envi3
+ * @package    Envi3
  * @subpackage EnviMVCCore
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class validator
 {
@@ -92,7 +111,6 @@ class validator
     const HOUR_TO_SECOND   = 6;
     const METHOD_POST      = 1;
     const METHOD_GET       = 2;
-
 
     private static $_error_object = NULL;
 
@@ -1482,7 +1500,7 @@ class validator
  * @package Envi3
  * @subpackage EnviMVC
  * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @author     Akito <akito-artisan@five-foxes.com>
  */
 class ValidatorError
 {

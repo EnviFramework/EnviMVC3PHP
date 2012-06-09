@@ -1,10 +1,23 @@
 <?php
 /**
- * @package Envi3
+ * DI登録されたエクステンションのロード
+ *
+ * extention()->エクステンション名()<br />
+ * でオブジェクトを取得できます。
+ *
+ * PHP versions 5
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
  * @subpackage EnviMVCCore
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
- */
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    GIT: $ Id:$
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
 
 /**
  * DI登録されたエクステンションのロード
@@ -12,12 +25,16 @@
  * extention()->エクステンション名()<br />
  * でオブジェクトを取得できます。
  *
- * @package Envi3
+ * @package    Envi3
  * @subpackage EnviMVCCore
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
-
 class extension
 {
     private $configuration;

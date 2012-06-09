@@ -1,9 +1,25 @@
 <?php
 /**
- * @package Envi3
+ * ログ記録クラス
+ *
+ * PHPの汎用ログ記録クラスです。
+ * アクセスログ、レベル分けの実行(エラー)ログ、内部ログ、パフォーマンス、実行時間、登録変数
+ * が記録可能です。
+ * 振る舞いは、設定ファイルに依存します。
+ *
+ * PHP versions 5
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
  * @subpackage EnviMVCCore
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    GIT: $ Id:$
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 
 /**
@@ -14,12 +30,16 @@
  * が記録可能です。
  * 振る舞いは、設定ファイルに依存します。
  *
- * @package Envi3
+ * @package    Envi3
  * @subpackage EnviMVCCore
- * @author     Akito<akito-artisan@five-foxes.com>
- * @since 0.1
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
-
 class logWriter
 {
 

@@ -2,11 +2,21 @@
 /**
  * サーバーステータスの取得
  *
- * @package Envi3
+ * PHP versions 5
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
  * @subpackage EnviMVCCore
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    GIT: $ Id:$
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
+
 if (!defined('ENVI_SERVER_STATUS_CONF')) {
     define('ENVI_SERVER_STATUS_CONF',
         realpath(dirname(__FILE__)
@@ -36,10 +46,15 @@ function EnviServerStatus()
 /**
  * サーバーステータスの取得
  *
- * @package Envi3
+ * @package    Envi3
  * @subpackage EnviMVCCore
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class EnviServerStatus
 {
@@ -78,13 +93,16 @@ class EnviServerStatus
     /* ----------------------------------------- */
 
     /**
-     * サーバーステータスを取得する
-     * @return int
+     * +-- サーバーステータスを取得する
+     *
+     * @access public
+     * @return string
      */
     public function getServerStatus()
     {
         return $this->_stutus_conf;
     }
+    /* ----------------------------------------- */
 
 }
 

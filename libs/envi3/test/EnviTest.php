@@ -5,7 +5,7 @@
  * @package Envi3
  * @subpackage EnviTest
  * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @author     Akito <akito-artisan@five-foxes.com>
  */
 
 
@@ -1147,7 +1147,7 @@ class EnviTestAssert
  * @package Envi3
  * @subpackage EnviTest
  * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @author     Akito <akito-artisan@five-foxes.com>
  */
 abstract class EnviTestCase extends EnviTestAssert
 {
@@ -1256,7 +1256,7 @@ abstract class EnviTestCase extends EnviTestAssert
  * @package Envi3
  * @subpackage EnviTest
  * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @author     Akito <akito-artisan@five-foxes.com>
  */
 class EnviTestScenario
 {

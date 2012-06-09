@@ -1,14 +1,47 @@
 <?php
 /**
  * EnviMVCのメイン処理
- * @package Envi3
+ *
+ * フロントのPHP内で、
+ * require
+ * してください。
+ * 必要なコードのlordなどFW動作に必要なことを適宜行います。
+ *
+ * PHP versions 5
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
  * @subpackage EnviMVCCore
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    GIT: $ Id:$
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 
 
 define('ENVI_BASE_DIR', dirname(__FILE__).DIRECTORY_SEPARATOR);
+
+if (!defined('ENVI_MVC_APPKEY_PATH')) {
+    define('ENVI_MVC_APPKEY_PATH', microtime(true));
+}
+
+
+/** ユーザー定義可能な定数 */
+if (!defined('ENVI_MVC_APPKEY_PATH')) {
+    define('ENVI_MVC_APPKEY_PATH',     realpath(ENVI_BASE_DIR.'dsn'.DIRECTORY_SEPARATOR));
+}
+if (!defined('ENVI_MVC_CACHE_PATH')) {
+    define('ENVI_MVC_CACHE_PATH',     realpath(ENVI_BASE_DIR.'cache'.DIRECTORY_SEPARATOR));
+}
+
+if (!defined('ENVI_SERVER_STATUS_CONF')) {
+    define('ENVI_SERVER_STATUS_CONF', realpath(ENVI_BASE_DIR.'env/ServerStatus.conf'));
+}
+
 require ENVI_BASE_DIR.'EnviServerStatus.php';
 require ENVI_BASE_DIR.'EnviActionBase.php';
 require ENVI_BASE_DIR.'EnviViewBase.php';
@@ -20,12 +53,22 @@ require ENVI_BASE_DIR.'logWriter.php';
 require ENVI_BASE_DIR.'extension.php';
 
 
+define('ENVI_ENV', EnviServerStatus()->getServerStatus());
+
 /**
  * +-- Redirect用の例外
- * @package Envi3
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
  * @subpackage EnviMVCCore
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class redirectException extends Exception
 {
@@ -33,8 +76,8 @@ class redirectException extends Exception
      * +-- コンストラクタ
      *
      * @access public
-     * @param  $message
-     * @param  $code OPTIONAL:0
+     * @param string $message
+     * @param integer $code OPTIONAL:0
      * @param Exception $previous OPTIONAL:null
      * @return void
      */
@@ -56,10 +99,19 @@ class redirectException extends Exception
 
 /**
  * +-- 処理中断用の例外
- * @package Envi3
- * @subpackage EnviMVC
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ *
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class killException extends Exception
 {
@@ -67,8 +119,8 @@ class killException extends Exception
      * +-- コンストラクタ
      *
      * @access public
-     * @param  $message
-     * @param  $code OPTIONAL:0
+     * @param string $message
+     * @param integer $code OPTIONAL:0
      * @param Exception $previous OPTIONAL:null
      * @return void
      */
@@ -82,10 +134,19 @@ class killException extends Exception
 
 /**
  * +-- 404エラー
- * @package Envi3
- * @subpackage EnviMVC
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ *
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class Envi404Exception extends Exception
 {
@@ -93,8 +154,8 @@ class Envi404Exception extends Exception
      * +-- コンストラクタ
      *
      * @access public
-     * @param  $message
-     * @param  $code OPTIONAL:0
+     * @param string $message
+     * @param integer $code OPTIONAL:0
      * @param Exception $previous OPTIONAL:null
      * @return void
      */
@@ -112,10 +173,19 @@ class Envi404Exception extends Exception
 /* ----------------------------------------- */
 /**
  * +-- 403エラー
- * @package Envi3
- * @subpackage EnviMVC
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ *
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class Envi403Exception extends Exception
 {
@@ -123,8 +193,8 @@ class Envi403Exception extends Exception
      * +-- コンストラクタ
      *
      * @access public
-     * @param  $message
-     * @param  $code OPTIONAL:0
+     * @param string $message
+     * @param integer $code OPTIONAL:0
      * @param Exception $previous OPTIONAL:null
      * @return void
      */
@@ -143,10 +213,19 @@ class Envi403Exception extends Exception
 
 /**
  * +-- 汎用的な例外
- * @package Envi3
- * @subpackage EnviMVC
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ *
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class EnviException extends Exception
 {
@@ -154,8 +233,8 @@ class EnviException extends Exception
      * +-- コンストラクタ
      *
      * @access public
-     * @param  $message
-     * @param  $code OPTIONAL:0
+     * @param string $message
+     * @param integer $code OPTIONAL:0
      * @param Exception $previous OPTIONAL:null
      * @return void
      */
@@ -163,7 +242,6 @@ class EnviException extends Exception
     {
         if (Envi::$debug) {
             echo "{$message} EnviException[{$code}]";
-            var_dump($this);
         } else {
             header('HTTP/1.0 403 Forbidden');
         }
@@ -172,16 +250,6 @@ class EnviException extends Exception
     /* ----------------------------------------- */
 }
 /* ----------------------------------------- */
-
-
-/** ユーザー定義可能な定数 */
-if (!defined('ENVI_MVC_APPKEY_PATH')) {
-    define('ENVI_MVC_APPKEY_PATH',     realpath(ENVI_BASE_DIR.'dsn'.DIRECTORY_SEPARATOR));
-}
-if (!defined('ENVI_MVC_CACHE_PATH')) {
-    define('ENVI_MVC_CACHE_PATH',     realpath(ENVI_BASE_DIR.'cache'.DIRECTORY_SEPARATOR));
-}
-
 
 /**
  * +-- Envi
@@ -196,15 +264,22 @@ function Envi($app = false, $debug = false)
 }
 /* ----------------------------------------- */
 
-
-
 /**
  * EnviMVCのメイン処理
  *
- * @access public
- * @since 0.1
- * @package Envi3
- * @subpackage Envi3
+ *
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class Envi
 {
@@ -245,18 +320,20 @@ class Envi
             $autoload_constant_dir = $this->_system_conf['AUTOLOAD_CONSTANT'];
             $autoload_constant = array();
             $autoload_constant[] = $this->_system_conf['SYSTEM']['renderer'];
-            if ($autoload_constant_dir){
+            if ($autoload_constant_dir) {
                 foreach ($autoload_constant_dir as $dir) {
-                    if (is_dir($dir)) {
-                        if ($dh = opendir($dir)) {
-                            while (($file = readdir($dh)) !== false) {
-                                if (strpos($file, '.php')) {
-                                    $autoload_constant[] = $dir.$file;
-                                }
-                            }
-                            closedir($dh);
+                    if (!is_dir($dir)) {
+                        break;
+                    }
+                    if (!($dh = opendir($dir))) {
+                        break;
+                    }
+                    while (($file = readdir($dh)) !== false) {
+                        if (strpos($file, '.php')) {
+                            $autoload_constant[] = $dir.$file;
                         }
                     }
+                    closedir($dh);
                 }
             }
             $cache = "<?php\n";
@@ -281,18 +358,20 @@ class Envi
             $this->auto_load_classes = $this->unserialize(file_get_contents($auto_load_classes_cache));
         } else {
             foreach ($this->autoload_dirs as $dir) {
-                if (is_dir($dir)) {
-                    if ($dh = opendir($dir)) {
-                        while (($file = readdir($dh)) !== false) {
-                            if (mb_ereg('\.php', $file)) {
-                                $class_name = mb_ereg_replace("^(.*)\\.php$", "\\1", $file);
-                                $class_name = mb_ereg_replace("^(.*)\\.class$", "\\1", $class_name);
-                                $this->auto_load_classes[$class_name] = $dir.$file;
-                            }
-                        }
-                        closedir($dh);
+                if (!is_dir($dir)) {
+                    break;
+                }
+                if (!($dh = opendir($dir))) {
+                    break;
+                }
+                while (($file = readdir($dh)) !== false) {
+                    if (mb_ereg('\.php', $file)) {
+                        $class_name = mb_ereg_replace("^(.*)\\.php$", "\\1", $file);
+                        $class_name = mb_ereg_replace("^(.*)\\.class$", "\\1", $class_name);
+                        $this->auto_load_classes[$class_name] = $dir.$file;
                     }
                 }
+                closedir($dh);
             }
             file_put_contents($auto_load_classes_cache, $this->serialize($this->auto_load_classes));
         }
@@ -335,42 +414,6 @@ class Envi
     }
     /* ----------------------------------------- */
 
-    /**
-     * +-- DIコンテナ用のエクステンションを読み込む
-     *
-     * @access private
-     * @return void
-     */
-    private function loadExtension()
-    {
-        $load_extension_constant = ENVI_MVC_CACHE_PATH.self::$app_key.ENVI_ENV.'.load_extension_constant.envicc';
-        $load_extension = ENVI_MVC_CACHE_PATH.self::$app_key.ENVI_ENV.'.load_extension.envicc';
-        if (self::$debug || !is_file($load_extension_constant) || !is_file($load_extension)) {
-            $extension = isset($this->_system_conf['EXTENSION']['extensions']) && count((array)$this->_system_conf['EXTENSION']['extensions']) > 0 ?
-                $this->_system_conf['EXTENSION']['extensions'] : array();
-            if ($this->_system_conf['EXTENSION']['load_yml']) {
-                $extension = array_merge(
-                    $extension,
-                    $this->parseYml(basename($this->_system_conf['EXTENSION']['load_yml_resource']), dirname($this->_system_conf['EXTENSION']['load_yml_resource']).DIRECTORY_SEPARATOR)
-                );
-            }
-            $cache = "<?php\n";
-            foreach ($extension as $v) {
-                if ($v['constant'] === true) {
-                    $v = $v['class']['resource'];
-                    $cache .= "include_once '{$v}';\n";
-                }
-            }
-            file_put_contents($load_extension_constant, $cache);
-            file_put_contents($load_extension, $this->serialize($extension));
-        } else {
-            $extension = $this->unserialize(file_get_contents($load_extension));
-        }
-
-        include $load_extension_constant;
-        extension::_singleton($extension);
-    }
-    /* ----------------------------------------- */
 
     /**
      * +-- デバッグモードかどうか
@@ -482,8 +525,8 @@ class Envi
      * +-- YAMLファイルをパースする
      *
      * @access public
-     * @param  $file
-     * @param  $dir OPTIONAL:ENVI_MVC_APPKEY_PATH
+     * @param string $file YAMLファイルのファイル名
+     * @param string $dir YAMLファイルがあるdirectory OPTIONAL:ENVI_MVC_APPKEY_PATH
      * @return array
      */
     public function parseYml($file, $dir = ENVI_MVC_APPKEY_PATH)
@@ -524,9 +567,11 @@ class Envi
     /**
      * +-- 処理を中断する
      *
+     * Controller::kill()と機能は一緒です。
+     *
      * @access public
-     * @param  $kill OPTIONAL:''
-     * @param  $is_shutDown OPTIONAL:true
+     * @param string $kill OPTIONAL:''
+     * @param boolean $is_shutDown OPTIONAL:true
      * @return void
      */
     public function kill($kill = '', $is_shutDown = true)
@@ -542,12 +587,16 @@ class Envi
     /**
      * +-- 処理を振り分ける
      *
-     * main.phpなどからコールされる
+     * main.phpなどからコールされる。
+     * アプリキーとは、メインFW設定YMLの.yml拡張子の前の部分です。
+     * {アプリキー}.yml
+     * こんな感じです。
+     * defaultでは、main.ymlが用意されています。
      *
      * @access public
      * @static
      * @param string $app アプリキー
-     * @param boolean $debug OPTIONAL:false
+     * @param boolean $debug デバッグモードのon/off OPTIONAL:false
      * @return void
      */
     public static function dispatch($app, $debug = false)
@@ -587,14 +636,14 @@ class Envi
         } catch (killException $e) {
             throw $e;
         } catch (PDOException $e) {
-            Envi::getLogger()->fatal($e->getMessage());
+            Envi::getLogger()->fatal($e->__toString());
             Envi::getLogger()->fatal($e->getFile().' line on '.$e->getLine());
             if (!$debug) {
                 header('HTTP/1.0 500 Internal Server Error');
             }
             throw $e;
         } catch (Exception $e) {
-            Envi::getLogger()->fatal($e->getMessage());
+            Envi::getLogger()->fatal($e->__toString());
             Envi::getLogger()->fatal($e->getFile().' line on '.$e->getLine());
             if (!$debug) {
                 header('HTTP/1.0 500 Internal Server Error');
@@ -605,13 +654,14 @@ class Envi
     /* ----------------------------------------- */
 
 
-
     /**
      * +-- Performerから呼ばれる、実処理メソッド
      *
+     * FWの外からコールしないでください。
+     *
      * @final
      * @access public
-     * @param  $is_first OPTIONAL:false
+     * @param boolean $is_first OPTIONAL:false
      * @return mixed
      */
     final public function _run($is_first = false)
@@ -747,7 +797,7 @@ class Envi
                 $res = $action->$validate();
             }
 
-
+            // メイン処理の実行
             if ($res === self::DEFAULT_ACCESS) {
                 $res = $action->$defaultAccess();
             } elseif ($res === self::ERROR || $res === false) {
@@ -756,6 +806,7 @@ class Envi
                 $res = $action->$execute();
             }
 
+            // 終了処理
             if ($action->$shutdown() === false) {
                 return true;
             }
@@ -840,6 +891,46 @@ class Envi
 
 
     /**
+     * +-- DIコンテナ用のエクステンションを読み込む
+     *
+     * @access private
+     * @return void
+     */
+    private function loadExtension()
+    {
+        $load_extension_constant = ENVI_MVC_CACHE_PATH.self::$app_key.ENVI_ENV.'.load_extension_constant.envicc';
+        $load_extension = ENVI_MVC_CACHE_PATH.self::$app_key.ENVI_ENV.'.load_extension.envicc';
+        if (self::$debug || !is_file($load_extension_constant) || !is_file($load_extension)) {
+            $extension = isset($this->_system_conf['EXTENSION']['extensions']) && count((array)$this->_system_conf['EXTENSION']['extensions']) > 0 ?
+                $this->_system_conf['EXTENSION']['extensions'] : array();
+            if ($this->_system_conf['EXTENSION']['load_yml']) {
+                $extension = array_merge(
+                    $extension,
+                    $this->parseYml(basename($this->_system_conf['EXTENSION']['load_yml_resource']), dirname($this->_system_conf['EXTENSION']['load_yml_resource']).DIRECTORY_SEPARATOR)
+                );
+            }
+            if (!is_array($extension)) {
+                $extension = array();
+            }
+            $cache = "<?php\n";
+            foreach ($extension as $v) {
+                if ($v['constant'] === true) {
+                    $v = $v['class']['resource'];
+                    $cache .= "include_once '{$v}';\n";
+                }
+            }
+            file_put_contents($load_extension_constant, $cache);
+            file_put_contents($load_extension, $this->serialize($extension));
+        } else {
+            $extension = $this->unserialize(file_get_contents($load_extension));
+        }
+
+        include $load_extension_constant;
+        extension::_singleton($extension);
+    }
+    /* ----------------------------------------- */
+
+    /**
      * +-- オートロードする
      *
      * @access public
@@ -887,7 +978,7 @@ class Envi
      * +-- 汎用serialize
      *
      * @access public
-     * @param  $data
+     * @param mixed $data
      * @return string
      */
     public function serialize($data)
@@ -904,7 +995,7 @@ class Envi
      * +-- 汎用unserialize
      *
      * @access public
-     * @param  $data
+     * @param string $data
      * @return array
      */
     public function unserialize($data)
@@ -918,7 +1009,12 @@ class Envi
     /* ----------------------------------------- */
 }
 
-
+/**
+ * +-- autoload(magic Method)
+ *
+ * @param  $class_name
+ * @return void
+ */
 function __autoload($class_name) {
     $auto_load_classes = Envi::singleton()->auto_load_classes;
     if (isset($auto_load_classes[$class_name])) {
@@ -926,3 +1022,4 @@ function __autoload($class_name) {
     }
     // Envi::singleton()->autoload($class_name);
 }
+/* ----------------------------------------- */

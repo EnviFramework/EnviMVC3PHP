@@ -4,31 +4,47 @@
  *
  * アクションを書くときは必ずこのクラスを継承すること。
  *
- * @package Envi3
+ * PHP versions 5
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
  * @subpackage EnviMVCCore
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    GIT: $ Id:$
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 
 
 /**
  * アクション基底クラス
  *
+ * アクションを書くときは必ずこのクラスを継承すること。
+ *
  * @abstract
- * @since 0.1
- * @package Envi3
+ * @package    Envi3
  * @subpackage EnviMVCCore
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 abstract class EnviActionBase
 {
     /**
      * +-- コンストラクタ
      *
+     * @abstract
      * @access public
-     * @param
      * @return void
-     */
+    */
     public function __construct()
     {
     }
@@ -37,8 +53,8 @@ abstract class EnviActionBase
     /**
      * 一番初めに呼ばれる、メソッド
      *
-     * @return bool falseを返すと、そこで処理が止まります。
      * @abstract
+     * @return bool falseを返すと、そこで処理が止まります。
      */
     public function initialize()
     {
@@ -48,8 +64,9 @@ abstract class EnviActionBase
     /**
      * validate()でEnvi::SUCCESSもしくはtrueが返った場合の処理。
      *
-     * @see validate()
      * @abstract
+     * @see validate()
+     * @return Envi::DEFAULT | Envi::ERROR | Envi::SUCCESS | boolean
      */
     public function execute()
     {
@@ -59,23 +76,21 @@ abstract class EnviActionBase
     /**
      * Viewに移る前に実行される処理。Killされない限りは、NONEやfalseを返しても実行される
      *
-     * @see validate()
      * @abstract
+     * @return boolean
      */
     public function shutdown()
     {
         return true;
     }
 
-
     /**
      * バリデートする
      *
      * バリデータを通して、処理を分岐させる。
      *
-     * @return Envi::DEFAULT | Envi::ERROR | Envi::SUCCESS | boolean
-     *
      * @abstract
+     * @return Envi::DEFAULT | Envi::ERROR | Envi::SUCCESS | boolean
      */
     public function validate()
     {
@@ -85,8 +100,9 @@ abstract class EnviActionBase
     /**
      * validate()でEnvi::DEFAULTが返った場合の処理。
      *
-     * @see validate()
      * @abstract
+     * @see validate()
+     * @return Envi::DEFAULT | Envi::ERROR | Envi::SUCCESS | boolean
      */
     public function defaultAccess()
     {
@@ -96,8 +112,9 @@ abstract class EnviActionBase
     /**
      * validate()でEnvi::ERRORもしくはfalseが返った場合の処理。
      *
-     * @see validate()
      * @abstract
+     * @see validate()
+     * @return Envi::DEFAULT | Envi::ERROR | Envi::SUCCESS | boolean
      */
     public function handleError()
     {
@@ -108,6 +125,7 @@ abstract class EnviActionBase
      * セキュアなページかどうか。
      *
      * @abstract
+     * @return boolean
      */
     public function isSecure()
     {
@@ -117,6 +135,7 @@ abstract class EnviActionBase
     /**
      * Controllerから直接呼ばれるアクションかどうか？
      *
+     * @abstract
      * @return boolean
      */
     public function isPrivate()
@@ -127,6 +146,7 @@ abstract class EnviActionBase
     /**
      * SSLでのみアクセスされるページかどうか？
      *
+     * @abstract
      * @return boolean
      */
     public function isSSL()

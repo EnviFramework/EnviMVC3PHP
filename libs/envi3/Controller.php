@@ -1,19 +1,42 @@
 <?php
 /**
- * @package Envi3
+ * ActionControllerから、Framework自体の振る舞いを変更する
+ *
+ * ActionControllerから、全て静的にコールされます。
+ * ActionChainの仕組みを利用するなど、FW自体に振る舞いの変更を通知します。
+ *
+ * PHP versions 5
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
  * @subpackage EnviMVCCore
- * @since 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    GIT: $ Id:$
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 
 
 /**
+ * ActionControllerから、Framework自体の振る舞いを変更する
  *
+ * ActionControllerから、全て静的にコールされます。
+ * ActionChainの仕組みを利用するなど、FW自体に振る舞いの変更を通知します。
  *
- * @access public
- * @since 0.1
- * @package Envi3
+ * @category   MVC
+ * @package    Envi3
  * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class Controller
 {
@@ -38,12 +61,14 @@ class Controller
     /* ----------------------------------------- */
 
     /**
-     * 他のアクションに処理を明渡す
+     * +-- 他のアクションに処理を明け渡す
+     *
      * @final
      * @param string $action アクション名
-     * @param string $module モジュール名
+     * @param string $module モジュール名 OPTIONAL:NULL
+     * @return boolean
      */
-    final public static function forward($action, $module = null)
+    final public static function forward($action, $module = NULL)
     {
         $cpm = Request::$_module_name;
         $cpa = Request::$_action_name;
@@ -60,11 +85,21 @@ class Controller
         Request::$_action_name = $cpa;
         return true;
     }
+    /* ----------------------------------------- */
+
 
     /**
-     * 他のURLにリダイレクトする
+     * +-- 他のURLにリダイレクトする
      *
+     * 第二引数の、$dieは、trueで中断、falseで続行します。
+     * defaultはtrueとなります。
+     *
+     * @final
+     * @access public
+     * @static
      * @param string $url リダイレクトするURL
+     * @param boolean $die リダイレクトヘッダ出力後の処理を中断するかどうか。 OPTIONAL:true
+     * @return void
      */
     final public static function redirect($url, $die = true)
     {
@@ -77,11 +112,13 @@ class Controller
         }
         ob_clean();
     }
+    /* ----------------------------------------- */
 
     /**
      * +-- 処理を中断します。
      *
      * Envi内では、exitやdieなどの関数で処理を中断することは推奨されません。
+     * Envi::kill()と機能は一緒です。
      *
      * @final
      * @access public
@@ -116,21 +153,27 @@ class Controller
     /* ----------------------------------------- */
 
     /**
-     * アクションチェインしたアクションを実行リストから削除する
+     * +-- アクションチェインしたアクションを実行リストから削除する
      *
      * @final
+     * @access public
+     * @static
      * @param string $name チェイン名
+     * @return void
      */
     final public static function unsetActionChain($name)
     {
         unset(self::$_action_chain[$name]);
         unset(self::$_action_chain_data[$name]);
     }
+    /* ----------------------------------------- */
 
     /**
-     * アクションを連続して実行して、出力を受け取る
+     * +-- アクションを連続して実行して、出力を受け取る
      *
      * @final
+     * @access public
+     * @static
      * @see setActionChain()
      * @return array
      */
@@ -162,16 +205,19 @@ class Controller
         self::$_action_chain_name = NULL;
         return $res;
     }
+    /* ----------------------------------------- */
 
     /**
-     * アクションチェイン中、その実行プロセス名を返す
+     * +-- アクションチェイン中、その実行プロセス名を返す
      *
      * @final
      * @access public
+     * @static
      * @return string
      */
     final public static function getActionChainName()
     {
         return self::$_action_chain_name;
     }
+    /* ----------------------------------------- */
 }
