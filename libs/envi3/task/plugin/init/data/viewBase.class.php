@@ -11,7 +11,7 @@
  * @author     %%your_name%% <%%your_email%%>
  * @copyright  %%your_project%%
  * @license    %%your_license%%
- * @version    GIT: $ Id:$
+ * @version    GIT: $Id:$
  * @link       %%your_link%%
  * @see        %%your_see%%
  * @since      File available since Release 1.0.0
