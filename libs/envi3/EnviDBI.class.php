@@ -17,6 +17,7 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
+ * @deprecated File deprecated in Release 1.0.0
  */
 
 /**
@@ -24,6 +25,7 @@
  *
  * extensionからの利用をおすすめします。
  *
+ * @category   MVC
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
@@ -33,6 +35,7 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
+ * @deprecated Class deprecated in Release 1.0.0
  */
 class EnviDBI
 {

@@ -1,14 +1,21 @@
 <?php
 /**
- * @package Envi3
- * @subpackage
- * @since 0.1
- * @author     Akito <akito-artisan@five-foxes.com>
- */
-
-/**
  *  Actionの追加タスク
  *
+ *
+ * PHP versions 5
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    GIT: $ Id:$
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      File available since Release 1.0.0
  */
 umask(0);
 if (!isset($argv[4])) {

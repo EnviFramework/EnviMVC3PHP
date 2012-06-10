@@ -2,21 +2,36 @@
 /**
  * テスト用の処理
  *
- * @package Envi3
- * @subpackage EnviTest
- * @since 0.1
+ * PHP versions 5
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
+ * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    GIT: $ Id:$
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      File available since Release 1.0.0
  */
-
 
 
 /**
  * テスト用例外
  *
- * @package Envi3
- * @subpackage EnviTest
- * @since 0.1
- * @author     fumikazu.kitagawa<kitagawa-f@klab.jp>
+ *
+ * @package    Envi3
+ * @category   MVC
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class EnviTestException extends exception
 {
@@ -26,13 +41,21 @@ class EnviTestException extends exception
 if (!defined('ENVI_ENV')) {
     define('ENVI_ENV', 'unittest');
 }
+
 /**
  * test用エクステンションloader
  *
- * @package Envi3
- * @subpackage EnviTest
- * @since 0.1
- * @author     fumikazu.kitagawa<kitagawa-f@klab.jp>
+ *
+ * @package    Envi3
+ * @category   MVC
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class extension
 {
@@ -150,10 +173,16 @@ function extension()
  *
  * EnviTestCaseで継承されます。
  *
- * @package
- * @subpackage
- * @since 0.1
- * @author     fumikazu.kitagawa<kitagawa-f@klab.jp>
+ * @package    Envi3
+ * @category   MVC
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class EnviTestAssert
 {
@@ -1253,10 +1282,17 @@ abstract class EnviTestCase extends EnviTestAssert
 /**
  * シナリオクラスで継承されるクラス
  *
- * @package Envi3
- * @subpackage EnviTest
- * @since 0.1
+ *
+ * @package    Envi3
+ * @category   MVC
+ * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class EnviTestScenario
 {

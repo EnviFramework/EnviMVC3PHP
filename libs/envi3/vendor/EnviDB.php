@@ -14,13 +14,14 @@
  * @version    GIT: $ Id:$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
- * @since      Class available since Release 1.0.0
+ * @since      File available since Release 1.0.0
  */
 
 /**
  * DIから呼ばれるクラス
  *
  * @package    Envi3
+ * @category   MVC
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2012 Artisan Project
