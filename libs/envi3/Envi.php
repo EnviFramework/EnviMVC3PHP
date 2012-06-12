@@ -345,7 +345,10 @@ class Envi
 
         // 国際化
         if ($this->_system_conf['SYSTEM']['use_i18n']) {
-            $this->_i18n = $this->parseYml($this->_system_conf['I18N'][Request::getIi8n()], ENVI_BASE_DIR.'i18n'.DIRECTORY_SEPARATOR);
+            $this->_i18n = $this->parseYml(
+                $this->_system_conf['I18N'][Request::getIi8n()],
+                ENVI_BASE_DIR.'i18n'.DIRECTORY_SEPARATOR
+            );
         }
 
         $this->autoload_dirs = array_merge(
@@ -503,7 +506,11 @@ class Envi
         foreach ($replace as $k => $v) {
             $rep_arr['{%'.$k.'%}'] = $v;
         }
-        return str_replace(array_keys($rep_arr), array_values($rep_arr), $this->getI18n('gettext', $string_key));
+        return str_replace(
+            array_keys($rep_arr),
+            array_values($rep_arr),
+            $this->getI18n('gettext', $string_key)
+        );
     }
     /* ----------------------------------------- */
 
@@ -531,7 +538,11 @@ class Envi
      */
     public function parseYml($file, $dir = ENVI_MVC_APPKEY_PATH)
     {
-        if (!is_file(ENVI_MVC_CACHE_PATH.$file.ENVI_ENV.'.envicc') || (self::$debug && @filemtime(ENVI_MVC_APPKEY_PATH.$file) > @filemtime($dir.$file.ENVI_ENV.'.envicc'))) {
+        if (!is_file(ENVI_MVC_CACHE_PATH.$file.ENVI_ENV.'.envicc') || (
+                self::$debug &&
+                @filemtime(ENVI_MVC_APPKEY_PATH.$file) > @filemtime($dir.$file.ENVI_ENV.'.envicc')
+            )
+            ) {
             if (!is_file($dir.$file)) {
                 throw new EnviException('not such file '.$dir.$file);
             }
