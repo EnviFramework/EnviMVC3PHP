@@ -400,18 +400,12 @@ class Envi
      *
      * @access public
      * @static
-     * @param boolean|string $app OPTIONAL:false
-     * @param boolean $debug OPTIONAL:false
      * @return Envi
      */
-    public static function singleton($app = false, $debug = false)
+    public static function singleton()
     {
         if (!isset(self::$instance)) {
-            if (!$app) {
-                throw new Envi404Exception('アプリキーの指定がないです。', 90001);
-            }
-            $className = __CLASS__;
-            self::$instance = new Envi($app, $debug);
+            throw new EnviException('Dispatch をコールしてください。');
         }
         return self::$instance;
     }
@@ -614,7 +608,14 @@ class Envi
     {
         try {
             ob_start();
-            $envi = self::singleton($app, $debug);
+            // オブジェクトの生成
+            $className = __CLASS__;
+            self::$instance = new Envi($app, $debug);
+            $envi = self::$instance;
+
+            // オートロードレジスト
+            spl_autoload_register(array('Envi', 'autoload'));
+
             // リクエストモジュールの初期化
             Request::initialize();
             include_once ENVI_MVC_CACHE_PATH.self::$app_key.ENVI_ENV.'.autoload_constant.envicc';
@@ -692,7 +693,7 @@ class Envi
         $view_dir   = $module_dir.$this->_system_conf['DIRECTORY']['views'];
 
         if (realpath($module_dir).DIRECTORY_SEPARATOR !== $module_dir) {
-            throw new EnviException('設定ファイルは絶対パスで指定する必要があります。', 10001);
+            throw new EnviException($module_dir.'設定ファイルは絶対パスで指定する必要があります。', 10001);
         }
 
         // モジュール規定のconfig.phpファイルを読み込む
@@ -944,18 +945,16 @@ class Envi
     /**
      * +-- オートロードする
      *
+     * @static
      * @access public
      * @param string $class_name
      * @return void
      */
-    public function autoload($class_name)
+    public static function autoload($class_name)
     {
-        $class_name  = $class_name . '.class.php';
-        foreach ($this->autoload_dirs as $v) {
-            if (is_file($v.$class_name)) {
-                include $v.$class_name;
-                return;
-            }
+        $auto_load_classes = self::singleton()->auto_load_classes;
+        if (isset($auto_load_classes[$class_name])) {
+            include $auto_load_classes[$class_name];
         }
     }
     /* ----------------------------------------- */
@@ -1020,17 +1019,3 @@ class Envi
     /* ----------------------------------------- */
 }
 
-/**
- * +-- autoload(magic Method)
- *
- * @param  $class_name
- * @return void
- */
-function __autoload($class_name) {
-    $auto_load_classes = Envi::singleton()->auto_load_classes;
-    if (isset($auto_load_classes[$class_name])) {
-        include $auto_load_classes[$class_name];
-    }
-    // Envi::singleton()->autoload($class_name);
-}
-/* ----------------------------------------- */
