@@ -40,7 +40,7 @@
 class extension
 {
     private $configuration;
-    private $extensions;
+    private $extensions = array();
     private static $instance;
 
     /**
