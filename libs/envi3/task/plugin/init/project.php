@@ -23,6 +23,7 @@ $arr[] = $base_dir."apps";
 $arr[] = $base_dir."cache";
 $arr[] = $base_dir."config";
 $arr[] = $base_dir."logs";
+$arr[] = $base_dir."tests";
 $ds = DIRECTORY_SEPARATOR;
 foreach ($arr as $item) {
     mkdir($item);
