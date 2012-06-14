@@ -20,6 +20,7 @@
 
 umask(0);
 $arr[] = $base_dir."apps";
+$arr[] = $base_dir."web";
 $arr[] = $base_dir."cache";
 $arr[] = $base_dir."config";
 $arr[] = $base_dir."logs";
@@ -29,3 +30,4 @@ foreach ($arr as $item) {
     mkdir($item);
     echo $item."\n";
 }
+

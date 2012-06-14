@@ -1,5 +1,5 @@
 all:
-  ## <?php $app_name = substr(basename(__FILE__), 0, strlen(basename(__FILE__))-4); ?>　
+  ## <?php $app_name = substr(basename(__FILE__), 0, strlen(basename(__FILE__))-4); ?>
 
   SYSTEM:
   ################################
@@ -42,7 +42,7 @@ all:
   ################################
   # ディレクトリに関する設定
   ################################
-## <?php $ds = DIRECTORY_SEPARATOR; $base = realpath(ENVI_BASE_DIR."..{$ds}..{$ds}apps{$ds}{$app_name}").$ds; ?>　
+## <?php $ds = DIRECTORY_SEPARATOR; $base = realpath(ENVI_BASE_DIR."..{$ds}..{$ds}apps{$ds}{$app_name}").$ds; ?>
     base: "<?php echo $base;?>"
     ## 通常のリクエストやforwardで飛ばされるモジュール
     modules: "<?php echo "{$base}modules{$ds}";?>"
@@ -78,12 +78,15 @@ all:
 
 ## 常にオートロードされるディレクトリ
   AUTOLOAD_CONSTANT:
-## <?php $ds = DIRECTORY_SEPARATOR; $base = realpath(ENVI_BASE_DIR."..{$ds}..{$ds}apps{$ds}{$app_name}").$ds; ?>　
+## <?php $ds = DIRECTORY_SEPARATOR; $base = realpath(ENVI_BASE_DIR."..{$ds}..{$ds}apps{$ds}{$app_name}").$ds; ?>
     1: "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>"
     2: "<?php echo "{$base}libs{$ds}controller{$ds}";?>"
+    3: "<?php echo "{$base}libs{$ds}constant{$ds}";?>"
 ## コールされた時にオートロードされるディレクトリ
   AUTOLOAD:
     1: "<?php echo ENVI_BASE_DIR.'plugins'.DIRECTORY_SEPARATOR;?>"
+    2: "<?php echo "{$base}libs{$ds}common{$ds}";?>"
+    3: "<?php echo "{$base}libs{$ds}models{$ds}";?>"
 
   MEMCACHE:
   ################################

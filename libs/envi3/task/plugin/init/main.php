@@ -42,7 +42,7 @@ $debug = true;
 require('../libs/envi3/Envi.php');
 
 try {
-    Envi::dispatch('main', $debug);
+    Envi::dispatch('%%app_name%%', $debug);
 } catch (redirectException $e) {
 
 } catch (killException $e) {
