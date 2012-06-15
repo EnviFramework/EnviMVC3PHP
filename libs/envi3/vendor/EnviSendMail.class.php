@@ -18,7 +18,6 @@
  * @since      File available since Release 1.0.0
  */
 
-define("ENVI_SENDMAIL_VERSION", "1.0");
 
 /**
  * メールの送信
@@ -49,7 +48,7 @@ class EnviSendMail
      *
      * @var string
      */
-    public $error_to = "auto-mail@five-foxes.com";
+    public $error_to = '';
 
     /**
      * CC送信先の配列を格納
@@ -74,7 +73,7 @@ class EnviSendMail
      * @see $header
      * @var string
      */
-    public $keyword = "Envi MVC Sendmail";
+    public $keyword = 'Envi MVC Sendmail';
 
 
     /**
@@ -82,14 +81,14 @@ class EnviSendMail
      *
      * @var string
      */
-    public $reply = "auto-mail@five-foxes.com";
+    public $reply = '';
 
     /**
      * 送信元 from:
      *
      * @var string
      */
-    public $_from = "auto-mail@five-foxes.com";
+    public $_from = '';
 
 
     /**
@@ -99,7 +98,7 @@ class EnviSendMail
      *
      * @var string
      */
-    public $dev_send = "akito-artisan@five-foxes.com,akito-yume@k.vodafone.ne.jp";
+    public $dev_send = false;
 
     /**
      * ステージ環境の場合の送信先
@@ -108,7 +107,7 @@ class EnviSendMail
      *
      * @var string
      */
-    public $stg_send = "akito-artisan@five-foxes.com";
+    public $stg_send = false;
 
     /**
      * ステージ環境の場合の許可送信先
@@ -116,7 +115,6 @@ class EnviSendMail
      * @var string
      */
     public $stg_allow_send = array(
-        "akito-artisan@five-foxes.com",
     );
 
     /**
@@ -124,7 +122,7 @@ class EnviSendMail
      *
      * @var string
      */
-    public $subject = "";
+    public $subject = '';
 
     /**
      * 本文 body
@@ -134,7 +132,7 @@ class EnviSendMail
      * @see setBody(),$footerpath,$filepath
      * @var string
      */
-    public $body = "";
+    public $body = '';
 
     /**
      * 添付ファイル
@@ -171,7 +169,7 @@ class EnviSendMail
      *
      * @var string
      */
-    public $boundary = "--------SendMimeMailClass";
+    public $boundary = '--------SendMimeMailClass';
 
     /**
      * ServerInfo()オブジェクトを格納
@@ -228,22 +226,21 @@ class EnviSendMail
 
     public $snap_shot;
 
-    public $smarty;
+    public $renderer;
 
     /**
      * コンストラクタ
      *
      * @return void
      */
-    public function __construct($smarty = null)
+    public function __construct($renderer = NULL)
     {
-        if (!is_object($smarty)) {
-            include_once("ArtisanSmarty.class.php");
-            $this->smarty = new Smarty();
+        if (!is_object($renderer)) {
+            $this->renderer = new renderer();
         } else {
-            $this->smarty = $smarty;
+            $this->renderer = $renderer;
         }
-        $this->boundary = uniqid("--------phpSendMail_".ENVI_SENDMAIL_VERSION);
+        $this->boundary = uniqid('--------EnviSendMail_1.0');
         $this->_ServerInfo = EnviServerStatus();
     }
 
@@ -263,7 +260,7 @@ class EnviSendMail
      */
     public function sendMailSubmit()
     {
-        mb_language("japanese");
+        mb_language('japanese');
         if (!$this->_makeHeader()) {
             return false;
         }
@@ -296,7 +293,6 @@ class EnviSendMail
                 $this->_header
             );
         } else {
-            file_get_contents("http://wiki.five-foxes.com/mb_send_mail.php?to=".urlencode($this->_to)."&subject=".urlencode($this->subject)."&message=".urlencode($this->body."\r\n※本サーバーのメール機能が不調なため、別なサーバーからも同時送信しています。\r\n同じメールが2通届いた場合は、お手数ですが、一通破棄してください。")."&additional_headers=".urlencode($this->_header));
             //添付無しの場合は、シンプルに
             $result = mb_send_mail(
                 $this->_to,
@@ -316,8 +312,8 @@ class EnviSendMail
      */
     private function _makeHeader()
     {
-        $is_dev = ($this->_ServerInfo->getServerStatus() == EnviServerStatus::DEVELOPER);
-        $is_stg = ($this->_ServerInfo->getServerStatus() == EnviServerStatus::STAGE);
+        $is_dev = (ENVI_ENV == EnviServerStatus::DEVELOPER);
+        $is_stg = (ENVI_ENV == EnviServerStatus::STAGE);
         if (!count((array)$this->to_array)) {
             return false;
         } elseif ($is_dev && $this->dev_send !== false) {
@@ -334,9 +330,9 @@ class EnviSendMail
                 }
             }
             $this->to_array = $to_array_tmp;
-            $this->_to = join(",", (array)$this->to_array);
+            $this->_to = join(',', (array)$this->to_array);
         } else {
-            $this->_to = join(",", (array)$this->to_array);
+            $this->_to = join(',', (array)$this->to_array);
         }
 
         if (count((array)$this->cc_array)) {
@@ -351,10 +347,10 @@ class EnviSendMail
                     }
                 }
                 $this->cc_array = $cc_array_tmp;
-                $this->_cc = join(",", (array)$this->cc_array);
+                $this->_cc = join(',', (array)$this->cc_array);
 
             } else {
-                $this->_cc = join(",", (array)$this->cc_array);
+                $this->_cc = join(',', (array)$this->cc_array);
             }
         } else {
             if ($is_stg && $this->stg_send !== false) {
@@ -377,17 +373,17 @@ class EnviSendMail
                     }
                 }
                 $this->bcc_array = $bcc_array_tmp;
-                $this->_bcc = join(",", (array)$this->bcc_array);
+                $this->_bcc = join(',', (array)$this->bcc_array);
             } else {
-                $this->_bcc = join(",", (array)$this->bcc_array);
+                $this->_bcc = join(',', (array)$this->bcc_array);
             }
         }
 
         //開発なら自動で件名に【DEV】をつける。
         if ($is_dev) {
-            $this->subject = "【DEV】".$this->subject;
+            $this->subject = '【DEV】'.$this->subject;
         } elseif ($is_stg) {
-            $this->subject = "【STG】".$this->subject;
+            $this->subject = '【STG】'.$this->subject;
         }
 
         //メールをクリーンな内容にする
@@ -402,39 +398,20 @@ class EnviSendMail
             $this->setString($this->body, true, true);
         }
         $this->_header = "From: ".$this->_from
-                        .($this->_cc == false ? "" : "\r\nCc: ".$this->_cc)
-                        .($this->_bcc == false ? "" : "\r\nBcc: ".$this->_bcc)
-                        .($this->reply == false ? "" : "\r\nReply-To: ".$this->reply)
-                        .($this->keyword == false ? "" : "\r\nKeyword: ".$this->keyword);
+                        .($this->_cc == false ? '' : "\r\nCc: ".$this->_cc)
+                        .($this->_bcc == false ? '' : "\r\nBcc: ".$this->_bcc)
+                        .($this->reply == false ? '' : "\r\nReply-To: ".$this->reply)
+                        .($this->keyword == false ? '' : "\r\nKeyword: ".$this->keyword);
 
         // 添付ファイル用のヘッダ
         if($this->is_attachment){
             $this->_header .="\r\nMIME-Version: 1.0";
-            $this->_header .="\r\nContent-Type: multipart/mixed; boundary=\"".$this->boundary."\"";
+            $this->_header .="\r\nContent-Type: multipart/mixed; boundary=\"".$this->boundary.'"';
         }
         return $this->_header;
     }
 
-    /**
-     * ファイルテンプレートパスをセットする
-     *
-     * @see $smarty
-     */
-    public function setMailTemplateDir($path)
-    {
-        $this->smarty->template_dir = $path;
-        $this->smarty->config_dir   = $path;
-    }
 
-    /**
-     * ファイルコンパイルパスをセットする
-     *
-     * @see $smarty
-     */
-    public function setMailCompileDir($path)
-    {
-        $this->smarty->compile_dir = $path;
-    }
 
 
     /**
@@ -447,7 +424,7 @@ class EnviSendMail
      */
     public function setBody($template)
     {
-        $this->body = $this->smarty->fetch($template, "EnviSendMailClass", "EnviSendMailClass");
+        $this->body = $this->renderer->fetch($template, 'EnviSendMailClass', 'EnviSendMailClass');
     }
 
     /**
@@ -459,9 +436,9 @@ class EnviSendMail
     public function setAttribute($name, $value = null)
     {
         if (is_array($name)) {
-            $this->smarty->assign($name);
+            $this->renderer->assign($name);
         } else {
-            $this->smarty->assign($name, $value);
+            $this->renderer->assign($name, $value);
         }
     }
 
@@ -474,7 +451,7 @@ class EnviSendMail
     public function setFrom($address, $name=false)
     {
         if($name != false){
-            $this->_from = mb_encode_mimeheader($name)."<".$address.">";
+            $this->_from = mb_encode_mimeheader($name)."<{$address}>";
         }else{
             $this->_from = $address;
         }
@@ -511,7 +488,7 @@ class EnviSendMail
         if (is_array($address)) {
             $this->to_array = (array)$this->to_array + $address;
         } elseif ($name != false) {
-            $this->to_array[] = mb_encode_mimeheader($name)."<".$address.">";
+            $this->to_array[] = mb_encode_mimeheader($name)."<{$address}>";
         } else {
             $this->to_array[] = $address;
         }
@@ -528,7 +505,7 @@ class EnviSendMail
         if (is_array($address)) {
             $this->cc_array = (array)$this->cc_array + $address;
         } elseif ($name != false) {
-            $this->cc_array[] = mb_encode_mimeheader($name)."<".$address.">";
+            $this->cc_array[] = mb_encode_mimeheader($name)."<{$address}>";
         } else {
             $this->cc_array[] = $address;
         }
@@ -545,24 +522,29 @@ class EnviSendMail
         if (is_array($address)) {
             $this->bcc_array = (array)$this->bcc_array + $address;
         } elseif ($name != false) {
-            $this->bcc_array[] = mb_encode_mimeheader($name)."<".$address.">";
+            $this->bcc_array[] = mb_encode_mimeheader($name)."<{$address}>";
         } else {
             $this->bcc_array[] = $address;
         }
     }
 
+
+
     /**
-     * エンコード
+     * +-- メールの内容を整える
      *
      * メールの内容を整える
      *
-     * @parm [$msg] string
+     * @access public
+     * @param string &$msg
+     * @param boolean $is_kana OPTIONAL:false
+     * @param boolean $isPre OPTIONAL:false
      * @return string
      */
     public function setString(&$msg, $is_kana = false, $isPre = false)
     {
         if (!$isPre) {
-            $msg = str_replace(array("\n", "\r"), "", $msg);
+            $msg = str_replace(array("\n", "\r"), '', $msg);
         } elseif($is_kana) {
             $msg = mb_convert_kana($msg, 'KV');
         }
@@ -577,16 +559,16 @@ class EnviSendMail
      * @param strings $Filename 添付ファイルの名前
      * @param strings $Type mimeヘッダ
      */
-    public function addAttachment(&$data, $Filename="", $Type="application/octet-stream")
+    public function addAttachment(&$data, $Filename = '', $Type = 'application/octet-stream')
     {
         $this->is_attachment = TRUE;
-        if($Filename == ""){
-            $Filename = uniqid("at");
+        if($Filename === ''){
+            $Filename = uniqid('at');
         }
         $s = count($this->attachment);
-        $this->attachment[$s]["data"] = $data;
-        $this->attachment[$s]["file"] = $Filename;
-        $this->attachment[$s]["type"] = $Type;
+        $this->attachment[$s]['data'] = $data;
+        $this->attachment[$s]['file'] = $Filename;
+        $this->attachment[$s]['type'] = $Type;
     }
 
 
@@ -597,7 +579,7 @@ class EnviSendMail
      * @param strings $Filename 添付ファイルの名前
      * @param strings $Type mimeヘッダ
      */
-    public function getAttachment($file, $rename = false, $Type = "application/octet-stream")
+    public function getAttachment($file, $rename = false, $Type = 'application/octet-stream')
     {
         $data = file_get_contents($file);
         $this->addAttachment(
@@ -639,7 +621,7 @@ class EnviSendMail
                 $this->subject = "【STG】".$this->subject;
             }
 
-            mb_send_mail($this->error_to, $subject, $body, "auto-mail@five-foxes.com");
+            mb_send_mail($this->error_to, $subject, $body, 'from: '.$this->_from);
         }
     }
 }
