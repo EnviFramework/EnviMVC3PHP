@@ -26,6 +26,19 @@ if (!isset($argv[4])) {
 $project_name = $argv[2];
 $module_name = $argv[3];
 $action_name = $argv[4];
+if (!mb_ereg('^[a-zA-Z0-9.\-_]+$', $project_name)) {
+    eecho('英数と._-以外の文字は使えません。');
+    die;
+}
+if (!mb_ereg('^[a-zA-Z0-9.\-_]+$', $module_name)) {
+    eecho('英数と._-以外の文字は使えません。');
+    die;
+}
+if (!mb_ereg('^[a-zA-Z0-9.\-_]+$', $action_name)) {
+    eecho('英数と._-以外の文字は使えません。');
+    die;
+}
+
 
 
 $module_dir = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR;

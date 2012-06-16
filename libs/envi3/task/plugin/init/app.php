@@ -24,6 +24,11 @@ if (!isset($argv[2])) {
     die;
 }
 $project_name = $argv[2];
+if (!mb_ereg('^[a-zA-Z0-9.\-_]+$', $project_name)) {
+    eecho('英数と._-以外の文字は使えません。');
+    die;
+}
+
 
 $arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR;
 $arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR;
@@ -55,6 +60,6 @@ touch($base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."mo
 
 $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'main.php');
 $text = str_replace(array('%%app_name%%'), array($project_name), $text);
-if (!is_file($base_dir.'web'.DIRECTORY_SEPARATOR.'main.php')) {
-    file_put_contents($base_dir.'web'.DIRECTORY_SEPARATOR.'index.php', $text);
+if (!is_file($base_dir.'web'.DIRECTORY_SEPARATOR.$project_name.'.php')) {
+    file_put_contents($base_dir.'web'.DIRECTORY_SEPARATOR.$project_name.'.php', $text);
 }
