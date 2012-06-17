@@ -48,7 +48,7 @@ class User
 
 
     /**
-     * セッションを開始する
+     * +-- セッションを開始する
      *
      * @return void
      */
@@ -60,9 +60,10 @@ class User
         self::$session->sessionStart();
         self::$_is_session_start = true;
     }
+    /* ----------------------------------------- */
 
     /**
-     * ログイン状態にする
+     * +-- ログイン状態にする
      *
      * @return void
      */
@@ -73,9 +74,10 @@ class User
         }
         self::$session->login();
     }
+    /* ----------------------------------------- */
 
     /**
-     * ログアウト状態にする
+     * +-- ログアウト状態にする
      *
      * @return void
      */
@@ -86,9 +88,10 @@ class User
         }
         self::$session->logout();
     }
+    /* ----------------------------------------- */
 
     /**
-     * ログイン状態かどうか
+     * +-- ログイン状態かどうか
      *
      * @return boolean
      */
@@ -100,9 +103,10 @@ class User
 
         return self::$session->isLogin();
     }
+    /* ----------------------------------------- */
 
     /**
-     * ユーザーAttributeにデータを格納する
+     * +-- ユーザーAttributeにデータを格納する
      *
      * @param string $key Attribute名
      * @param mixed $value 値
@@ -115,9 +119,10 @@ class User
         }
         return self::$session->setAttribute($key, $value);
     }
+    /* ----------------------------------------- */
 
     /**
-     * ユーザーAttributeにデータがあるか確認する
+     * +-- ユーザーAttributeにデータがあるか確認する
      *
      * @param string $key Attribute名
      * @param mixed $value 値
@@ -130,9 +135,10 @@ class User
         }
         return self::$session->hasAttribute($key);
     }
+    /* ----------------------------------------- */
 
     /**
-     * ユーザーAttributeのデータを削除する
+     * +-- ユーザーAttributeのデータを削除する
      *
      * @param string $name Attribute名
      * @return void
@@ -144,9 +150,10 @@ class User
         }
         self::$session->removeAttribute($key);
     }
+    /* ----------------------------------------- */
 
     /**
-     * ユーザーAttributeのデータを全て削除する
+     * +-- ユーザーAttributeのデータを全て削除する
      *
      * @return void
      */
@@ -157,9 +164,10 @@ class User
         }
         self::$session->cleanAttributes();
     }
+    /* ----------------------------------------- */
 
     /**
-     * ユーザーAttributeに格納されている値を取得する
+     * +-- ユーザーAttributeに格納されている値を取得する
      *
      * @param $key Attribute名
      * @return mixd
@@ -172,4 +180,5 @@ class User
         $arr = func_get_args();
         return call_user_func(array(self::$session, 'getAttribute'), $arr);
     }
+    /* ----------------------------------------- */
 }

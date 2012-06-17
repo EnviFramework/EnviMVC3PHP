@@ -167,17 +167,7 @@ class Request
         }
 
         self::$_ext_path_info = $exp_pathinfo;
-        // 余剰のパスインフォは$_GET扱いに
-        if (count($exp_pathinfo)) {
-            while (count($exp_pathinfo)) {
-                $k = array_shift($exp_pathinfo);
-                $v = array_shift($exp_pathinfo);
-                if (!$k) {
-                    continue;
-                }
-                $_GET[$k] = $v;
-            }
-        }
+
         self::$_module_name = self::$_request_module_name;
         self::$_action_name = self::$_request_action_name;
     }
@@ -332,7 +322,7 @@ class Request
      */
     public static function hasParameter($name, $post_only = 3)
     {
-        if ($post_only == 3) {
+        if ($post_only === 3) {
             return (isset($_POST[$name]) || isset($_GET[$name]));
         } elseif ($post_only == 1) {
             return isset($_POST[$name]);
@@ -415,15 +405,34 @@ class Request
     }
     /* ----------------------------------------- */
 
-    public static function setErrorsAll($data)
+    /**
+     * +-- エラーメッセージをすべて配列で書き換える
+     *
+     * @access public
+     * @static
+     * @params array $data
+     * @return void
+     */
+    public static function setErrorsAll(array $data)
     {
         self::$_error_message = $data;
     }
+    /* ----------------------------------------- */
 
-    public static function setErrorCodesAll($data)
+    /**
+     * +-- エラーコードをすべて配列で書き換える
+     *
+     * @access public
+     * @static
+     * @params array $data
+     * @return void
+     */
+    public static function setErrorCodesAll(array $data)
     {
         self::$_error_code = $data;
     }
+    /* ----------------------------------------- */
+
     /**
      * +-- エラーを指定して取得
      *
