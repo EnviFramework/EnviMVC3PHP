@@ -176,10 +176,11 @@ class Request
     /**
      * +-- パースしたパスインフォで、フレームワークで使用されなかった分を取得する
      *
+     * @static
      * @access public
      * @return array
      */
-    public function getPathInfo()
+    public static function getPathInfo()
     {
         return self::$_ext_path_info;
     }
