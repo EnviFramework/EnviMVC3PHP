@@ -1,0 +1,31 @@
+SCHEMA:
+  ## <?php $app_name = substr(basename(__FILE__), 0, strlen(basename(__FILE__))-strlen('_schema.yml')); ?>
+  # テーブル名
+  sample_table_name:
+    # クラス名(省略可能。省略した場合はテーブル名のパスカルケース)
+    class_name: "SampleClassName"
+
+    # スキーマ情報
+    schema:
+      # カラム名
+      id:
+        # カラムの型を指定します
+        type: int
+        # 主キーの場合は下記のように記載します
+        index: primary
+      # カラム名
+      id2:
+        # カラムの型を指定します
+        type: int
+        # 主キーが複数ある場合は、全て記載してください
+        index: primary
+      # 使用するインスタンス名を指定します(省略可能、省略した場合はデフォルを使用)
+      instance_name: "command_log"
+
+DIRECTORY:
+  # モデルを保存するdirectory
+  model_dir: "<?php $ds = DIRECTORY_SEPARATOR; echo realpath(ENVI_BASE_DIR."..{$ds}..{$ds}apps{$ds}{$app_name}{$ds}libs{$ds}model").$ds; ?>"
+
+SETTING:
+  #デフォルトのインスタンス名
+  default_instance_name: "default_master"
