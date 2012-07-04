@@ -37,7 +37,8 @@ $arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR.
 $arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."libs".DIRECTORY_SEPARATOR."common".DIRECTORY_SEPARATOR;
 $arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."libs".DIRECTORY_SEPARATOR."constant".DIRECTORY_SEPARATOR;
 $arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."libs".DIRECTORY_SEPARATOR."models".DIRECTORY_SEPARATOR;
-
+$arr[] = $base_dir."tests".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR;
+$arr[] = $base_dir."tests".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modulesTest".DIRECTORY_SEPARATOR;
 
 $ds = DIRECTORY_SEPARATOR;
 
@@ -54,6 +55,7 @@ copy($default_config_dir.'main.yml', $base_dir."config{$ds}".$project_name.'.yml
 copy($default_config_dir.'main_databases.yml', $base_dir."config{$ds}".$project_name.'_databases.yml');
 copy($default_config_dir.'main_di_container.yml', $base_dir."config{$ds}".$project_name.'_di_container.yml');
 copy($default_config_dir.'main_web_type.yml', $base_dir."config{$ds}".$project_name.'_web_type.yml');
+copy($default_config_dir.'main_schema.yml', $base_dir."config{$ds}".$project_name.'_schema.yml');
 
 touch($base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR.'config.php');
 
