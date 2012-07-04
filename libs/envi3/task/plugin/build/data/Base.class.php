@@ -17,6 +17,7 @@
  * @since      File available since Release 1.0.0
  */
 
+
 /**
  *
  *
@@ -31,8 +32,21 @@
  * @see        %%your_see%%
  * @since      Class available since Release 1.0.0
  */
-class actionBase extends EnviActionBase
+class Base%%class_name%% extends OrMapBase
 {
 
+    protected $default_instance_name = '%%instance_name%%';
 
+    /**
+     * +-- コンストラクタ
+     *
+     * @access public
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->table_name = '%%table_name%%';
+        $this->pkeys      = array(%%pkeys%%);
+    }
+    /* ----------------------------------------- */
 }

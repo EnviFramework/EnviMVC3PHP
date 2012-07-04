@@ -1,83 +1,83 @@
 <?php
 /**
-   * Spyc -- A Simple PHP YAML Class
-   * @version 0.5
-   * @author Vlad Andersen <vlad.andersen@gmail.com>
-   * @author Chris Wanstrath <chris@ozmm.org>
-   * @link http://code.google.com/p/spyc/
-   * @copyright Copyright 2005-2006 Chris Wanstrath, 2006-2011 Vlad Andersen
-   * @license http://www.opensource.org/licenses/mit-license.php MIT License
-   * @package Spyc
-   */
+ * Spyc -- A Simple PHP YAML Class
+ * @version 0.5
+ * @author Vlad Andersen <vlad.andersen@gmail.com>
+ * @author Chris Wanstrath <chris@ozmm.org>
+ * @link http://code.google.com/p/spyc/
+ * @copyright Copyright 2005-2006 Chris Wanstrath, 2006-2011 Vlad Andersen
+ * @license http://www.opensource.org/licenses/mit-license.php MIT License
+ * @package Spyc
+ */
 
 if (!function_exists('spyc_load')) {
-  /**
-   * Parses YAML to array.
-   * @param string $string YAML string.
-   * @return array
-   */
+/**
+ * Parses YAML to array.
+ * @param string $string YAML string.
+ * @return array
+ */
   function spyc_load ($string) {
     return Spyc::YAMLLoadString($string);
   }
 }
 
 if (!function_exists('spyc_load_file')) {
-  /**
-   * Parses YAML to array.
-   * @param string $file Path to YAML file.
-   * @return array
-   */
+/**
+ * Parses YAML to array.
+ * @param string $file Path to YAML file.
+ * @return array
+ */
   function spyc_load_file ($file) {
     return Spyc::YAMLLoad($file);
   }
 }
 
 /**
-   * The Simple PHP YAML Class.
-   *
-   * This class can be used to read a YAML file and convert its contents
-   * into a PHP array.  It currently supports a very limited subsection of
-   * the YAML spec.
-   *
-   * Usage:
-   * <code>
-   *   $Spyc  = new Spyc;
-   *   $array = $Spyc->load($file);
-   * </code>
-   * or:
-   * <code>
-   *   $array = Spyc::YAMLLoad($file);
-   * </code>
-   * or:
-   * <code>
-   *   $array = spyc_load_file($file);
-   * </code>
-   * @package Spyc
-   */
+ * The Simple PHP YAML Class.
+ *
+ * This class can be used to read a YAML file and convert its contents
+ * into a PHP array.  It currently supports a very limited subsection of
+ * the YAML spec.
+ *
+ * Usage:
+ * <code>
+ *   $Spyc  = new Spyc;
+ *   $array = $Spyc->load($file);
+ * </code>
+ * or:
+ * <code>
+ *   $array = Spyc::YAMLLoad($file);
+ * </code>
+ * or:
+ * <code>
+ *   $array = spyc_load_file($file);
+ * </code>
+ * @package Spyc
+ */
 class Spyc {
 
   // SETTINGS
 
   const REMPTY = "\0\0\0\0\0";
 
-  /**
-   * Setting this to true will force YAMLDump to enclose any string value in
-   * quotes.  False by default.
-   * 
-   * @var bool
-   */
+/**
+ * Setting this to true will force YAMLDump to enclose any string value in
+ * quotes.  False by default.
+ * 
+ * @var bool
+ */
   public $setting_dump_force_quotes = false;
 
-  /**
-   * Setting this to true will forse YAMLLoad to use syck_load function when
-   * possible. False by default.
-   * @var bool
-   */
+/**
+ * Setting this to true will forse YAMLLoad to use syck_load function when
+ * possible. False by default.
+ * @var bool
+ */
   public $setting_use_syck_is_possible = false;
 
 
 
-  /**#@+
+/**#@+
   * @access private
   * @var mixed
   */
@@ -90,13 +90,13 @@ class Spyc {
   private $LiteralPlaceHolder = '___YAML_Literal_Block___';
   private $SavedGroups = array();
   private $indent;
-  /**
-   * Path modifier that should be applied after adding current element.
-   * @var array
-   */
+/**
+ * Path modifier that should be applied after adding current element.
+ * @var array
+ */
   private $delayedPath = array();
 
-  /**#@+
+/**#@+
   * @access public
   * @var mixed
   */
@@ -120,7 +120,7 @@ class Spyc {
     return $this->__load($file);
   }
 
-  /**
+/**
      * Load YAML into a PHP array statically
      *
      * The load method, when supplied with a YAML stream (string or file),
@@ -140,7 +140,7 @@ class Spyc {
     return $Spyc->__load($input);
   }
 
-  /**
+/**
      * Load a string of YAML into a PHP array statically
      *
      * The load method, when supplied with a YAML string, will do its best 
@@ -164,7 +164,7 @@ class Spyc {
     return $Spyc->__loadString($input);
   }
 
-  /**
+/**
      * Dump YAML from PHP array statically
      *
      * The dump method, when supplied with an array, will do its best
@@ -190,7 +190,7 @@ class Spyc {
   }
 
 
-  /**
+/**
      * Dump PHP array to YAML
      *
      * The dump method, when supplied with an array, will do its best
@@ -243,7 +243,7 @@ class Spyc {
     return $string;
   }
 
-  /**
+/**
      * Attempts to convert a key / value array item to YAML
      * @access private
      * @return string
@@ -269,7 +269,7 @@ class Spyc {
     return $string;
   }
 
-  /**
+/**
      * Attempts to convert an array to YAML
      * @access private
      * @return string
@@ -291,7 +291,7 @@ class Spyc {
     }
   }
 
-  /**
+/**
      * Returns YAML from a key and a value
      * @access private
      * @return string
@@ -340,7 +340,7 @@ class Spyc {
     return $string;
   }
 
-  /**
+/**
      * Creates a literal block for dumping
      * @access private
      * @return string
@@ -365,7 +365,7 @@ class Spyc {
     return $newValue;
   }
 
-  /**
+/**
      * Folds a string of text, if necessary
      * @access private
      * @return string
@@ -476,7 +476,7 @@ class Spyc {
     return $lines;
   }
 
-  /**
+/**
      * Parses YAML code and returns an array for a node
      * @access private
      * @return array
@@ -512,7 +512,7 @@ class Spyc {
 
   }
 
-  /**
+/**
      * Finds the type of the passed value, returns the value as the new type.
      * @access private
      * @param string $value
@@ -611,7 +611,7 @@ class Spyc {
     return $value;
   }
 
-  /**
+/**
      * Used in inlines to check for more inlines or quoted strings
      * @access private
      * @return array

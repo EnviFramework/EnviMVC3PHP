@@ -31,7 +31,7 @@
  * @see        %%your_see%%
  * @since      Class available since Release 1.0.0
  */
-class actionBase extends EnviActionBase
+class %%class_name%%Peer extends Base%%class_name%%Peer
 {
 
 

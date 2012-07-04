@@ -17,6 +17,7 @@
  * @since      File available since Release 1.0.0
  */
 
+
 /**
  *
  *
@@ -31,8 +32,22 @@
  * @see        %%your_see%%
  * @since      Class available since Release 1.0.0
  */
-class actionBase extends EnviActionBase
+class Base%%class_name%%Peer
 {
 
 
+
+    public static function retrieveByPK(%%args%%, $con = NULL)
+    {
+
+        $dbi = $con ? $con : extension()->DBI()->getInstance('%%instance_name%%');
+
+        $res = $dbi->getRow('%%sql%%', array(%%args%%));
+        if (!$res) {
+            return false;
+        }
+        $ormap = new %%class_name%%;
+        $ormap->hydrate($res);
+        return $ormap;
+    }
 }

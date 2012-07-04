@@ -17,6 +17,7 @@
  * @since      File available since Release 1.0.0
  */
 
+
 /**
  *
  *
@@ -31,7 +32,7 @@
  * @see        %%your_see%%
  * @since      Class available since Release 1.0.0
  */
-class actionBase extends EnviActionBase
+class %%class_name%% extends Base%%class_name%%
 {
 
 
