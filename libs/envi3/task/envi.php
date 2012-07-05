@@ -120,4 +120,5 @@ if (!is_file($task_file)) {
     die;
 }
 
+require dirname(__FILE__).DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'task.interface.php';
 require $task_file;

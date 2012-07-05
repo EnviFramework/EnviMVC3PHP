@@ -1,6 +1,7 @@
 <?php
 /**
- * コマンドのエイリアス
+ * Ruby Rails風の処理を行う、あれこれ。
+ *
  *
  * PHP versions 5
  *
@@ -15,13 +16,9 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      File available since Release 1.0.0
-*/
+ */
 
-$alias = array(
-    'cc' => array('clear', 'cache'),
-    'app' => array('init', 'app'),
-    'module' => array('init', 'module'),
-    'controller' => array('init', 'action'), // symfony風のコマンドエイリアス
-    'action' => array('init', 'action'),
-    'model' => array('build', 'model'),
-);
+interface EnviTask
+{
+    public function execute();
+}

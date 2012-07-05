@@ -13,14 +13,20 @@ SCHEMA:
         type: int
         # 主キーの場合は下記のように記載します
         index: primary
+        # デフォルトの値
+        default: NULL
       # カラム名
       id2:
         # カラムの型を指定します
         type: int
         # 主キーが複数ある場合は、全て記載してください
         index: primary
+        # デフォルトの値
+        default: 0
       # 使用するインスタンス名を指定します(省略可能、省略した場合はデフォルを使用)
       instance_name: "command_log"
+      # テーブル定義から自動取得するかどうか(省略可能、省略した場合はデフォルを使用)
+      auto_schema: false
 
 DIRECTORY:
   # モデルを保存するdirectory
@@ -29,3 +35,14 @@ DIRECTORY:
 SETTING:
   #デフォルトのインスタンス名
   default_instance_name: "default_master"
+  #マジックメソッドを利用したSetterGetterを使用するかどうか
+  default_magic_method: true
+  # データーベース定義
+  database_yaml: "<?php echo realpath(ENVI_BASE_DIR."..{$ds}..{$ds}config{$ds}").$ds?>databases.yml"
+  # 環境
+  env: "dev"
+  # デフォルトのauto_schema
+  default_auto_schema: true
+  # auto_schemaの結果を反映した、yamlファイルを出力するかどうか
+  reverse_yaml: true
+
