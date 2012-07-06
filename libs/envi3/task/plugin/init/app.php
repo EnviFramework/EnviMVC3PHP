@@ -68,7 +68,7 @@ copy($default_config_dir.'main_di_container.yml', $base_dir."config{$ds}".$proje
 copy($default_config_dir.'main_web_type.yml', $base_dir."config{$ds}".$project_name.'_web_type.yml');
 copy($default_config_dir.'main_schema.yml', $base_dir."config{$ds}".$project_name.'_schema.yml');
 
-copy($default_config_dir.'main_test.yml', $base_dir."tests".$ds.$project_name.$ds.$project_name.'_test.yml');
+copy($default_config_dir.'main_test.yml', $base_dir."tests".$ds.$project_name.'_test.yml');
 
 
 touch($base_dir."apps".$ds.$project_name.$ds."modules".$ds.'config.php');

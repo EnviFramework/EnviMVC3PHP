@@ -57,7 +57,7 @@ class %%module_name%%%%action_name%%Test extends testCaseBase
      * @access public
      * @return void
      */
-    public function execute%%action_name%%Test()
+    public function %%action_name%%Test()
     {
         $this->setModuleAction('%%module_name%%', '%%action_name%%');
         list($header, $body) = $this->emulateExecute();

@@ -55,6 +55,6 @@ if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."a
 
 $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'test.class.php');
 $text = str_replace(array('%%module_name%%', '%%action_name%%'), array($module_name, $action_name), $text);
-if (!is_file($module_test_dir.DIRECTORY_SEPARATOR.$module_name."Test".DIRECTORY_SEPARATOR.$action_name.'Test.class.php')) {
-    file_put_contents($module_test_dir.DIRECTORY_SEPARATOR.$module_name."Test".DIRECTORY_SEPARATOR.$action_name.'Test.class.php', $text);
+if (!is_file($module_test_dir.DIRECTORY_SEPARATOR.$module_name."Test".DIRECTORY_SEPARATOR.$module_name.$action_name.'Test.class.php')) {
+    file_put_contents($module_test_dir.DIRECTORY_SEPARATOR.$module_name."Test".DIRECTORY_SEPARATOR.$module_name.$action_name.'Test.class.php', $text);
 }
