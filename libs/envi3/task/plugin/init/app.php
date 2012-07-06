@@ -41,11 +41,11 @@ $arr[] = $base_dir."apps".$ds.$project_name.$ds."libs".$ds."models".$ds;
 // テスト用
 $arr[] = $base_dir."tests".$ds.$project_name.$ds;
 $arr[] = $base_dir."tests".$ds.$project_name.$ds."modulesTest".$ds;
-$arr[] = $base_dir."apps".$ds.$project_name.$ds."libsTest".$ds;
-$arr[] = $base_dir."apps".$ds.$project_name.$ds."libsTest".$ds."controllerTest".$ds;
-$arr[] = $base_dir."apps".$ds.$project_name.$ds."libsTest".$ds."commonTest".$ds;
-$arr[] = $base_dir."apps".$ds.$project_name.$ds."libsTest".$ds."constantTest".$ds;
-$arr[] = $base_dir."apps".$ds.$project_name.$ds."libsTest".$ds."modelsTest".$ds;
+$arr[] = $base_dir."tests".$ds.$project_name.$ds."libsTest".$ds;
+$arr[] = $base_dir."tests".$ds.$project_name.$ds."libsTest".$ds."controllerTest".$ds;
+$arr[] = $base_dir."tests".$ds.$project_name.$ds."libsTest".$ds."commonTest".$ds;
+$arr[] = $base_dir."tests".$ds.$project_name.$ds."libsTest".$ds."constantTest".$ds;
+$arr[] = $base_dir."tests".$ds.$project_name.$ds."libsTest".$ds."modelsTest".$ds;
 
 
 
@@ -67,7 +67,8 @@ copy($default_config_dir.'main_databases.yml', $base_dir."config{$ds}".$project_
 copy($default_config_dir.'main_di_container.yml', $base_dir."config{$ds}".$project_name.'_di_container.yml');
 copy($default_config_dir.'main_web_type.yml', $base_dir."config{$ds}".$project_name.'_web_type.yml');
 copy($default_config_dir.'main_schema.yml', $base_dir."config{$ds}".$project_name.'_schema.yml');
-copy($default_config_dir.'main_test.yml', $base_dir."config{$ds}".$project_name.'_test.yml');
+
+copy($default_config_dir.'main_test.yml', $base_dir."tests".$ds.$project_name.$ds.$project_name.'_test.yml');
 
 
 touch($base_dir."apps".$ds.$project_name.$ds."modules".$ds.'config.php');
