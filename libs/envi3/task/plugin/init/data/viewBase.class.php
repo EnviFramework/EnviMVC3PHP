@@ -35,5 +35,39 @@
 class viewBase extends EnviViewBase
 {
 
+    /**
+     * +-- レンダラーセット
+     *
+     * @access public
+     * @params
+     * @return void
+     */
+    public function setRenderer()
+    {
+        parent::setRenderer();
+    }
+    /* ----------------------------------------- */
 
+    /**
+     * +-- 画面を簡単に描画する
+     *
+     * @access public
+     * @params array $parameter OPTIONAL:NULL
+     * @params string $template OPTIONAL:NULL
+     * @return void
+     */
+    public function display(array $parameter = NULL, $template = NULL)
+    {
+        // パラメータのsetAttribute
+        if (!empty($parameter)) {
+            foreach ($parameter as $key => $value) {
+                $this->renderer->setAttribute($key, $value);
+            }
+        }
+        if ($template === NULL) {
+            $template = Request::getThisAction() . '.tpl';
+        }
+        $this->renderer->display($template);
+    }
+    /* ----------------------------------------- */
 }

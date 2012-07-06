@@ -892,6 +892,7 @@ class Envi
             if ($res === self::NONE || !$res) {
                 return true;
             }
+            $view_suffix = $res === true ? 'success' : strtolower($res);
         } catch (redirectException $e) {
             $action->$shutdown();
             throw $e;
@@ -903,7 +904,7 @@ class Envi
         } catch (Exception $e) {
             throw $e;
         }
-        $view_class_path = $view_dir.Request::getThisAction()."View_{$res}.class.php";
+        $view_class_path = $view_dir.Request::getThisAction()."View_{$view_suffix}.class.php";
 
         if (is_file($view_class_path)) {
             if (dirname($view_class_path) !== realpath($view_dir)) {
@@ -913,35 +914,60 @@ class Envi
             $view = Request::getThisAction().'View';
             $view = new $view;
             if (method_exists($view, "execute{$action_sf}")) {
-                $initialize     = "initialize{$action_sf}";
-                $execute       = "execute{$action_sf}";
-                $setRenderer    = "setRenderer{$action_sf}";
+                $execute        = "execute{$action_sf}";
+                $setRenderer    = method_exists($view, "setRenderer{$action_sf}") ? "setRenderer{$action_sf}" : "setRenderer";
+                $initialize     = method_exists($view, "initialize{$action_sf}") ? "initialize{$action_sf}" : "initialize";
+                $shutdown       = method_exists($view, "shutdown{$action_sf}") ? "shutdown{$action_sf}" : "shutdown";
             } else {
-                $initialize     = 'initialize';
                 $execute        = 'execute';
                 $setRenderer    = 'setRenderer';
-            }
-        } elseif (is_file($view_dir.'views.class.php')) {
-            $view_class_path = $view_dir.'views.class.php';
-            include_once($view_class_path);
-            $view = Request::getThisModule().'Views';
-            $view = new $view;
-            if (method_exists($view, "execute{$action_sf}")) {
-                $initialize     = "initialize{$action_sf}";
-                $execute       = "execute{$action_sf}";
-                $setRenderer    = "setRenderer{$action_sf}";
-            } else {
-                throw new EnviException("execute{$action_sf}がないです", 11003);
+                $initialize     = 'initialize';
+                $shutdown       = 'shutdown';
             }
         } else {
-            throw new EnviException('Viewがないです。', 11004);
+            $sub_action            = isset($sub_action) ? $sub_action : mb_ereg_replace('^([a-z0-9]+).*$', '\1', Request::getThisAction());
+            $view_sub_class_path = $view_dir.$sub_action."Views_{$view_suffix}.class.php";
+
+            if (is_file($view_sub_class_path)) {
+                // 1ファイルに複数ビューがあるパターン
+                if (dirname($action_sub_class_path) !== realpath($action_dir)) {
+                    throw new EnviException('Viewのパスが変です。', 10002);
+                }
+                include_once($view_sub_class_path);
+                $view = $sub_action.'Views';
+                $view = new $view;
+                $action_sub_sf = ucwords(mb_ereg_replace("^{$sub_action}", '', Request::getThisAction()));
+                if (method_exists($action, "execute{$action_sub_sf}")) {
+                    $execute        = "execute{$action_sub_sf}";
+                    $setRenderer    = method_exists($view, "setRenderer{$action_sub_sf}") ? "setRenderer{$action_sub_sf}" : "setRenderer";
+                    $initialize     = method_exists($view, "initialize{$action_sub_sf}") ? "initialize{$action_sub_sf}" : "initialize";
+                    $shutdown       = method_exists($view, "shutdown{$action_sub_sf}") ? "shutdown{$action_sub_sf}" : "shutdown";
+                } else {
+                    throw new Envi404Exception("execute{$action_sub_sf}がないです", 10003);
+                }
+
+            }  elseif (is_file($view_dir.'views.class.php')) {
+                $view_class_path = $view_dir.'views.class.php';
+                include_once($view_class_path);
+                $view = Request::getThisModule().'Views';
+                $view = new $view;
+                if (method_exists($view, "execute{$action_sf}")) {
+                    $execute        = "execute{$action_sf}";
+                    $setRenderer    = method_exists($view, "setRenderer{$action_sf}") ? "setRenderer{$action_sf}" : "setRenderer";
+                    $initialize     = method_exists($view, "initialize{$action_sf}") ? "initialize{$action_sf}" : "initialize";
+                    $shutdown       = method_exists($view, "shutdown{$action_sf}") ? "shutdown{$action_sf}" : "shutdown";
+                } else {
+                    throw new EnviException("execute{$action_sf}がないです", 11003);
+                }
+            } else {
+                throw new EnviException('Viewがないです。', 11004);
+            }
         }
 
         try {
             // View
+            // レンダラーセット
             $view->$setRenderer();
-            $view->renderer->_system_conf =& $this->_system_conf;
-            $view->renderer->setting($module_dir);
 
             // イニシャライズ
             $res = $view->$initialize();
@@ -949,6 +975,12 @@ class Envi
                 return false;
             }
             $res = $view->$execute();
+
+            // 修了処理
+            $res = $view->$shutdown();
+            if ($res === false) {
+                return false;
+            }
         } catch (redirectException $e) {
             $view->$shutdown();
             throw $e;
