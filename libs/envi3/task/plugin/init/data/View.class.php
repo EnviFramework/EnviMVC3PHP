@@ -17,7 +17,7 @@
  * @since      File available since Release 1.0.0
  */
 
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'actions.class.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'views.class.php';
 
 /**
  *
