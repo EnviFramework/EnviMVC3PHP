@@ -41,7 +41,7 @@
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
  */
-class logWriter
+class EnviLogWriter
 {
 
     // エラータイプ
@@ -104,7 +104,7 @@ class logWriter
     public static function singleton()
     {
         if (!isset(self::$instance)) {
-            self::$instance = new logWriter();
+            self::$instance = new EnviLogWriter();
         }
         return self::$instance;
     }

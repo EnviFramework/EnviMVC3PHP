@@ -37,7 +37,7 @@
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
  */
-class extension
+class EnviExtension
 {
     private $configuration;
     private $extensions = array();
@@ -138,7 +138,7 @@ class extension
     public static function _singleton($configuration = NULL)
     {
         if (!isset(self::$instance)) {
-            self::$instance = new extension($configuration);
+            self::$instance = new EnviExtension($configuration);
         }
         return self::$instance;
     }
@@ -153,5 +153,5 @@ class extension
 
 function extension()
 {
-    return extension::_singleton();
+    return EnviExtension::_singleton();
 }

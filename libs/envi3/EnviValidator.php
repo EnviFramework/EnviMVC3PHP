@@ -22,15 +22,15 @@
 */
 
 /**
- * +-- validator
+ * +-- EnviValidator
  *
  * @access public
  * @static
- * @return validator
+ * @return EnviValidator
  */
 function validator()
 {
-    return validator::singleton();
+    return EnviValidator::singleton();
 }
 /* ----------------------------------------- */
 
@@ -100,11 +100,11 @@ function validator()
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
  */
-class validator
+class EnviValidator
 {
     const VALIDATE_MODE = 'mode';
     const VALIDATE_DATA = 'data';
-    const VALIDATOR       = 'validator';
+    const VALIDATOR       = 'EnviValidator';
     const VALIDATOR_CHAIN = 'chain';
     const FORM_NAME        = 'form';
     const HOUR_ONLY        = 2;
@@ -168,7 +168,7 @@ class validator
      *
      * @var array
      */
-    private $_validator_list = array(
+    private $_EnviValidator_list = array(
         'number'           => '_typeNumber',
         'naturalnumber'    => '_typeNaturalNumber',
         'integer'          => '_typeInteger',
@@ -231,7 +231,7 @@ class validator
      *
      * @var array
      */
-    private $_register_validators = array();
+    private $_register_EnviValidators = array();
 
     /**#@-*/
 
@@ -249,7 +249,7 @@ class validator
     public static function singleton()
     {
         if (!is_object(self::$singleton_obj)) {
-            self::$singleton_obj = new validator();
+            self::$singleton_obj = new EnviValidator();
         }
 
         return self::$singleton_obj;
@@ -273,26 +273,26 @@ class validator
             $validation_name = key($validation_name);
         }
         if (!isset($this->_validation_list[$validation_name])) {
-            trigger_error("Unknown validator chain selected");
+            trigger_error("Unknown EnviValidator chain selected");
         }
 
         $validation_datas =& $this->_validation_list[$validation_name];
         // error flag
         $is_error         = false;
-        foreach ($validation_datas[self::VALIDATOR] as $validator_data) {
-            $each = each ($validator_data);
-            $validator = $each["key"];
+        foreach ($validation_datas[self::VALIDATOR] as $EnviValidator_data) {
+            $each = each ($EnviValidator_data);
+            $EnviValidator = $each["key"];
             $option    = $each["value"];
-            //foreach ($validator_data as $validator => $option) {
+            //foreach ($EnviValidator_data as $EnviValidator => $option) {
             //blankチェック以外のblankはすり抜ける
-            $ck = $this->_validation($validator, $validation_datas[self::VALIDATE_DATA], $option[self::VALIDATE_MODE]);
+            $ck = $this->_validation($EnviValidator, $validation_datas[self::VALIDATE_DATA], $option[self::VALIDATE_MODE]);
             if (!$ck) {
                 //エラーハンドリング
                 $is_error = true;
                 $this->_handleError(
                     $validation_name,
                     $validation_datas[self::FORM_NAME],
-                    $validator, $validation_datas[self::VALIDATE_DATA],
+                    $EnviValidator, $validation_datas[self::VALIDATE_DATA],
                     $option[self::VALIDATE_MODE]
                 );
                 if($option[self::VALIDATOR_CHAIN] === false){
@@ -331,12 +331,12 @@ class validator
     {
         $is_error = false;
         $res = array();
-        foreach ($this->_validation_list as $validator_name => $validation_datas) {
-            if ($this->isError($this->execute($validator_name, false))){
+        foreach ($this->_validation_list as $EnviValidator_name => $validation_datas) {
+            if ($this->isError($this->execute($EnviValidator_name, false))){
                 $is_error = true;
             }
             //結果
-            $res[$validator_name] =& $this->_validation_list[$validator_name][self::VALIDATE_DATA];
+            $res[$EnviValidator_name] =& $this->_validation_list[$EnviValidator_name][self::VALIDATE_DATA];
         }
 
         if ($is_error) {
@@ -365,20 +365,20 @@ class validator
      * array("バリデートするフォームデータ名" => フォーム名)
      * 配列を指定することで、フォーム名をつけることができます。
      * フォーム名は、エラー発生時にエラークラスに渡されます。</pre>
-     * @param string|array $validator バリデータ名,$this->getChainFormat()の結果
-     * @param bool $validator_chain エラーがあった場合に確認処理を継続するか
+     * @param string|array $EnviValidator バリデータ名,$this->getChainFormat()の結果
+     * @param bool $EnviValidator_chain エラーがあった場合に確認処理を継続するか
      * @param bool $trim 入力検証データをtrimするかどうか
      * @param integer|boolean VM_METHOD_POST = POSTのみ VM_METHOD_GET = GETのみ VM_METHOD_POST|VM_METHOD_GET = POSTかGETのどちらか。
      * @param mix $validate_mode バリデータオプション
      * @see prepare();
      * @return void
      */
-    public function autoPrepare($validation_name, $validator, $validator_chain = true, $trim = false, $post_only = 3, $validate_mode = false)
+    public function autoPrepare($validation_name, $EnviValidator, $EnviValidator_chain = true, $trim = false, $post_only = 3, $validate_mode = false)
     {
         $this->prepare($validation_name,
-            $validator,
+            $EnviValidator,
             $this->_getValidationData(is_array($validation_name) ? key($validation_name) : $validation_name, $trim, $post_only),
-            $validator_chain,
+            $EnviValidator_chain,
             $validate_mode
         );
     }
@@ -392,16 +392,16 @@ class validator
      * array("データ名" => "フォーム名")
      * 配列を指定することで、フォーム名をつけることができます。
      * フォーム名は、エラー発生時にエラークラスに渡されます。</pre>
-     * @param string,array $validator バリデータ名,$this->getChainFormat()の結果
+     * @param string,array $EnviValidator バリデータ名,$this->getChainFormat()の結果
      * @param string,bool,object,array,string,int バリデートするデータ
-     * @param bool $validator_chain エラーがあった場合に確認処理を継続するか
+     * @param bool $EnviValidator_chain エラーがあった場合に確認処理を継続するか
      * @param bool $trim 入力検証データをtrimするかどうか
      * @param bool $post_only TRUEで、POSTのみ取得
      * @param bool,string,int,array $validate_mode バリデータオプション
      * @see autoPrepare();
      * @return void
      */
-    public function prepare($validation_name, $validator, $validation_data, $validator_chain = true, $validate_mode = false)
+    public function prepare($validation_name, $EnviValidator, $validation_data, $EnviValidator_chain = true, $validate_mode = false)
     {
         if (is_array($validation_name)) {
             //配列が渡されたら、要素をバリデータ名に、値をフォーム名に
@@ -413,13 +413,13 @@ class validator
         }
 
         $this->_validation_list[$validation_name][self::VALIDATE_DATA] = $validation_data;
-        if (is_array($validator)) {
-            $this->_validation_list[$validation_name][self::VALIDATOR]=$validator;
-        } elseif(isset($this->_validator_list[strtolower($validator)]) ||
-                isset($this->_register_validators[strtolower($validator)])) {
-            $this->chain($validation_name, $validator, $validator_chain, $validate_mode);
+        if (is_array($EnviValidator)) {
+            $this->_validation_list[$validation_name][self::VALIDATOR]=$EnviValidator;
+        } elseif(isset($this->_EnviValidator_list[strtolower($EnviValidator)]) ||
+                isset($this->_register_EnviValidators[strtolower($EnviValidator)])) {
+            $this->chain($validation_name, $EnviValidator, $EnviValidator_chain, $validate_mode);
         } else {
-            trigger_error("Unknown validator selected", E_USER_ERROR);
+            trigger_error("Unknown EnviValidator selected", E_USER_ERROR);
         }
     }
 
@@ -431,17 +431,17 @@ class validator
      * の形で、指定された関数にわたります。<br>
      * ユーザー定義関数からは、正しい場合true・間違っている場合falseを返してください。<br>
 
-     * @param string $validator_name 読み出しに使用するバリデータ名
+     * @param string $EnviValidator_name 読み出しに使用するバリデータ名
      * @param string $function_name 関数名
      * @return void
      */
-    public function registerValidators($validator_name, $function_name)
+    public function registerValidators($EnviValidator_name, $function_name)
     {
         if (!function_exists($function_name)) {
             trigger_error('No exists function selected', E_USER_ERROR);
         }
 
-        $this->_register_validators[strtolower($validator_name)] = $function_name;
+        $this->_register_EnviValidators[strtolower($EnviValidator_name)] = $function_name;
     }
 
     /**
@@ -451,23 +451,23 @@ class validator
      * バリデータはchain()で呼び出された順番に、実行されます。
      *
      * @param string $validation_name バリデートするフォームデータ名
-     * @param string $validator バリデータ名
-     * @param bool $validator_chain エラーの場合につなげてバリデート処理を行うか
+     * @param string $EnviValidator バリデータ名
+     * @param bool $EnviValidator_chain エラーの場合につなげてバリデート処理を行うか
      * @param bool,string,int,array $validate_mode バリデータオプション
      * @return void
      */
-    public function chain($validation_name, $validator, $validator_chain = true, $validate_mode = false)
+    public function chain($validation_name, $EnviValidator, $EnviValidator_chain = true, $validate_mode = false)
     {
         if (is_array($validation_name)) {
             $validation_name = key($validation_name);
         }
         if (isset($this->_validation_list[$validation_name])) {
-            $this->_validation_list[$validation_name][self::VALIDATOR][][strtolower($validator)] = array(
+            $this->_validation_list[$validation_name][self::VALIDATOR][][strtolower($EnviValidator)] = array(
                                                                 self::VALIDATE_MODE   => $validate_mode,
-                                                                self::VALIDATOR_CHAIN => $validator_chain,
+                                                                self::VALIDATOR_CHAIN => $EnviValidator_chain,
                                                                 );
         } else {
-            $this->autoPrepare($validation_name, $validator, $validator_chain, $validate_mode);
+            $this->autoPrepare($validation_name, $EnviValidator, $EnviValidator_chain, $validate_mode);
         }
 
     }
@@ -478,24 +478,24 @@ class validator
      * 入力検証のフォーマットを作成して、簡単に再利用可能にします。
      *
      * @param string $group フォーマットグループ名
-     * @param string $validator バリデータ名
+     * @param string $EnviValidator バリデータ名
      * @param string,int $order チェインされる順番
-     * @param bool $validator_chain エラーの場合につなげてバリデート処理を行うか
+     * @param bool $EnviValidator_chain エラーの場合につなげてバリデート処理を行うか
      * @param bool,string,int,array $validate_mode バリデータオプション
      * @see getChainFormat()
      * @return void
      */
-    public function setChainFormat($group, $validator, $order = 'AUTO', $validator_chain = true, $validate_mode = false)
+    public function setChainFormat($group, $EnviValidator, $order = 'AUTO', $EnviValidator_chain = true, $validate_mode = false)
     {
         if (is_numeric($order)) {
-            $this->chain_format[$group][(int)$order][strtolower($validator)] = array(
+            $this->chain_format[$group][(int)$order][strtolower($EnviValidator)] = array(
                                                                 self::VALIDATE_MODE   => $validate_mode,
-                                                                self::VALIDATOR_CHAIN => $validator_chain,
+                                                                self::VALIDATOR_CHAIN => $EnviValidator_chain,
                                                                 );
         } else {
-            $this->chain_format[$group][][strtolower($validator)] = array(
+            $this->chain_format[$group][][strtolower($EnviValidator)] = array(
                                                                 self::VALIDATE_MODE   => $validate_mode,
-                                                                self::VALIDATOR_CHAIN => $validator_chain,
+                                                                self::VALIDATOR_CHAIN => $EnviValidator_chain,
                                                                 );
         }
     }
@@ -530,14 +530,14 @@ class validator
      * 全てのチェインを消す場合は、free()メソッドが高速です。
      *
      * @param $validation_name バリデーション名
-     * @param $validator キャンセルするバリデータ
+     * @param $EnviValidator キャンセルするバリデータ
      * @see free()
      * @return void
      */
-    public function unchain($validation_name, $validator)
+    public function unchain($validation_name, $EnviValidator)
     {
         foreach ($this->_validation_list[$validation_name][self::VALIDATOR] as $key => $value) {
-            if(isset($value[strtolower($validator)])){
+            if(isset($value[strtolower($EnviValidator)])){
                 unset($this->_validation_list[$validation_name][self::VALIDATOR][$key]);
                 break;
             }
@@ -578,15 +578,15 @@ class validator
      * 入力データを簡単に検証します。
      * 正しければ、TRUE違っていれば、FALSEを返します。
      *
-     * @param string $validator 使用するバリデータ
+     * @param string $EnviValidator 使用するバリデータ
      * @param string,arrray $data バリデータにかけるデータ
      * @param string,array $option バリデータオプション
      * @return bool
      */
-    public function validation($validator, $data, $option)
+    public function validation($EnviValidator, $data, $option)
     {
-        $validator = strtolower($validator);
-        return $this->_validation($validator, $data, $option);
+        $EnviValidator = strtolower($EnviValidator);
+        return $this->_validation($EnviValidator, $data, $option);
     }
 
 
@@ -621,23 +621,23 @@ class validator
     /**
      * バリデートする
      *
-     * @param string $validator 使用するバリデータ
+     * @param string $EnviValidator 使用するバリデータ
      * @param string,arrray $data バリデータにかけるデータ
      * @param string,array $option バリデータオプション
      * @access private
      * @return bool
      */
-    protected function _validation(&$validator, &$data, &$option)
+    protected function _validation(&$EnviValidator, &$data, &$option)
     {
-        if (($validator !== "blank" && $validator !== "noblank") ?
+        if (($EnviValidator !== "blank" && $EnviValidator !== "noblank") ?
             $this->_typeNoBlank($data, false) : true) {
-            if (isset($this->_validator_list[$validator])) {
-                $method =& $this->_validator_list[$validator];
+            if (isset($this->_EnviValidator_list[$EnviValidator])) {
+                $method =& $this->_EnviValidator_list[$EnviValidator];
                 $ck = $this->$method($data, $option);
-            } elseif (isset($this->_register_validators[$validator])) {
-                $ck = call_user_func_array($this->_register_validators[$validator], array($data, $option));
+            } elseif (isset($this->_register_EnviValidators[$EnviValidator])) {
+                $ck = call_user_func_array($this->_register_EnviValidators[$EnviValidator], array($data, $option));
             } else {
-                trigger_error("Unknown validator selected", E_USER_ERROR);
+                trigger_error("Unknown EnviValidator selected", E_USER_ERROR);
             }
         } else {
             return true;
@@ -718,12 +718,12 @@ class validator
      * @param string $name バリデータチェイン名
      * @return void
      */
-    protected function _handleError($name, $form_name, $validator, $data, $option)
+    protected function _handleError($name, $form_name, $EnviValidator, $data, $option)
     {
         if(!is_object(self::$_error_object)) {
             self::$_error_object = new $this->error_class();
         }
-        self::$_error_object->setError($name, $form_name, $validator, $data, $option);
+        self::$_error_object->setError($name, $form_name, $EnviValidator, $data, $option);
     }
 
 
@@ -1567,7 +1567,7 @@ class ValidatorError
     {
         $this->_error_message =& Request::getErrorsByRef();
         if (Envi::singleton()->getConfiguration('SYSTEM', 'use_i18n')) {
-            $this->_error_list = Envi::singleton()->getI18n('validator');
+            $this->_error_list = Envi::singleton()->getI18n('EnviValidator');
         }
     }
 
@@ -1576,16 +1576,16 @@ class ValidatorError
      *
      * @param string $name バリデーションチェイン名
      * @param string $form_name フォーム名
-     * @param string $validator バリデータ名
+     * @param string $EnviValidator バリデータ名
      * @param string|array $data データ
      * @param mixed $option 渡されたoption
      * @param int $id エラーコード
      * @return void
      */
-    public function setError($name, $form_name, $validator, $data, $option)
+    public function setError($name, $form_name, $EnviValidator, $data, $option)
     {
-        $mess = isset($this->_error_list[$name][$validator]) ? $this->_error_list[$name][$validator] : $this->_error_default_list[$validator];
-        $this->_error_message[$name][$validator] = str_replace(
+        $mess = isset($this->_error_list[$name][$EnviValidator]) ? $this->_error_list[$name][$EnviValidator] : $this->_error_default_list[$EnviValidator];
+        $this->_error_message[$name][$EnviValidator] = str_replace(
             array(
                 '{name}',
                 '{form}',
@@ -1606,13 +1606,13 @@ class ValidatorError
      * エラーメッセージのセット
      *
      * @param string $name バリデーションチェイン名
-     * @param string $validator バリデータ名
+     * @param string $EnviValidator バリデータ名
      * @param string $message エラーメッセージ
      * @return void
      */
-    public function setErrorMess($name, $validator, $message)
+    public function setErrorMess($name, $EnviValidator, $message)
     {
-        $this->_error_message[$name][$validator] = $message;
+        $this->_error_message[$name][$EnviValidator] = $message;
     }
 
 
@@ -1620,13 +1620,13 @@ class ValidatorError
      * エラーメッセージのセット
      *
      * @param string $name バリデーションチェイン名
-     * @param string $validator バリデータ名
+     * @param string $EnviValidator バリデータ名
      * @param string $message エラーメッセージ
      * @return void
      */
-    public function setErrorList($name, $validator, $message)
+    public function setErrorList($name, $EnviValidator, $message)
     {
-        $this->_error_list[$name][$validator] = $message;
+        $this->_error_list[$name][$EnviValidator] = $message;
     }
 
     /**

@@ -48,8 +48,8 @@ require ENVI_BASE_DIR.'EnviViewBase.php';
 require ENVI_BASE_DIR.'Controller.php';
 require ENVI_BASE_DIR.'Request.php';
 require ENVI_BASE_DIR.'User.php';
-require ENVI_BASE_DIR.'validator.php';
-require ENVI_BASE_DIR.'logWriter.php';
+require ENVI_BASE_DIR.'EnviValidator.php';
+require ENVI_BASE_DIR.'EnviLogWriter.php';
 require ENVI_BASE_DIR.'extension.php';
 
 
@@ -508,16 +508,78 @@ class Envi
     }
     /* ----------------------------------------- */
 
+    /**
+     * +-- Extensionを取得
+     *
+     * @static
+     * @return EnviLogWriter
+     */
+    public static function extension()
+    {
+        return EnviExtension::singleton();
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- Validatorを取得
+     *
+     * @static
+     * @return EnviLogWriter
+     */
+    public static function validator()
+    {
+        return EnviValidator::singleton();
+    }
+    /* ----------------------------------------- */
 
     /**
      * +-- Loggerを取得
      *
      * @static
-     * @return logWriter
+     * @return EnviLogWriter
+     */
+    public static function logger()
+    {
+        return EnviLogWriter::singleton();
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- Extensionを取得(後方互換用)
+     *
+     * @static
+     * @return EnviLogWriter
+     */
+    public static function getExtension()
+    {
+        return EnviExtension::singleton();
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- Validatorを取得(後方互換用)
+     *
+     * @static
+     * @return EnviLogWriter
+     */
+    public static function getValidator()
+    {
+        return EnviValidator::singleton();
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- Loggerを取得(後方互換用)
+     *
+     * @static
+     * @return EnviLogWriter
      */
     public static function getLogger()
     {
-        return logWriter::singleton();
+        return EnviLogWriter::singleton();
     }
     /* ----------------------------------------- */
 
