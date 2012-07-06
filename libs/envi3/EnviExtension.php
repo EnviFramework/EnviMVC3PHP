@@ -54,7 +54,7 @@ class EnviExtension
     {
         $this->configuration = $configuration;
         foreach ($configuration as $name => $v) {
-            if (!$v['constant']) {
+            if (isset($v['constant']) && !$v['constant']) {
                 continue;
             }
             $class_name = $v['class']['class_name'];

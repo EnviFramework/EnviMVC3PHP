@@ -22,6 +22,28 @@
 */
 
 /**
+ * 雑多な入力検証を提供する入力検証クラス。
+ * *
+ * @category   MVC
+ * @package    Envi3
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2012 Artisan Project
+ * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
+ */
+class validator{
+    const HOUR_ONLY        = 2;
+    const HOUR_TO_MINUTE   = 4;
+    const HOUR_TO_SECOND   = 6;
+    const METHOD_POST      = 1;
+    const METHOD_GET       = 2;
+}
+
+/**
  * +-- EnviValidator
  *
  * @access public
@@ -107,11 +129,7 @@ class EnviValidator
     const VALIDATOR       = 'EnviValidator';
     const VALIDATOR_CHAIN = 'chain';
     const FORM_NAME        = 'form';
-    const HOUR_ONLY        = 2;
-    const HOUR_TO_MINUTE   = 4;
-    const HOUR_TO_SECOND   = 6;
-    const METHOD_POST      = 1;
-    const METHOD_GET       = 2;
+
 
     private static $_error_object = NULL;
 

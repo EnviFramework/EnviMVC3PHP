@@ -50,7 +50,7 @@ require ENVI_BASE_DIR.'Request.php';
 require ENVI_BASE_DIR.'User.php';
 require ENVI_BASE_DIR.'EnviValidator.php';
 require ENVI_BASE_DIR.'EnviLogWriter.php';
-require ENVI_BASE_DIR.'extension.php';
+require ENVI_BASE_DIR.'EnviExtension.php';
 
 
 define('ENVI_ENV', EnviServerStatus()->getServerStatus());
@@ -1020,7 +1020,7 @@ class Envi
             }
             $cache = "<?php\n";
             foreach ($extension as $v) {
-                if ($v['constant'] === true) {
+                if (isset($v['constant']) && $v['constant'] === true) {
                     $v = $v['class']['resource'];
                     $cache .= "include_once '{$v}';\n";
                 }
@@ -1032,7 +1032,7 @@ class Envi
         }
 
         include $load_extension_constant;
-        extension::_singleton($extension);
+        EnviExtension::_singleton($extension);
     }
     /* ----------------------------------------- */
 
