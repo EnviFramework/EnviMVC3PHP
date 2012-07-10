@@ -81,6 +81,8 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
         }
         $dbi = $DBInstance->getInstance($instance_name);
         $schema_arr = $dbi->getAll('desc '.$table_name);
+        $index_schema_arr = $dbi->getAll('SHOW INDEX FROM '.$table_name);
+
         foreach ($schema_arr as $k => $arr) {
             $schema['schema'][$arr['Field']]['type']    = $arr['Type'];
             switch ($arr['Default']) {
@@ -91,12 +93,25 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
                 break;
             }
             $schema['schema'][$arr['Field']]['default'] = $arr['Default'];
-            if ($arr['Key'] === 'PRI') {
-                $schema['schema'][$arr['Field']]['index'] = 'primary';
+
+            foreach ($index_schema_arr as $index_arr) {
+                if ($index_arr['Column_name'] === $arr['Field']) {
+                    if ($index_arr['Non_unique'] == 0 && strtolower($index_arr['Key_name']) === 'primary') {
+                        $schema['schema'][$arr['Field']]['primary'] = $index_arr['Key_name'];
+                    } elseif ($index_arr['Non_unique'] == 0) {
+                        $schema['schema'][$arr['Field']]['unique'][] = $index_arr['Key_name'];
+                    } else {
+                        $schema['schema'][$arr['Field']]['index'][] = $index_arr['Key_name'];
+                    }
+                }
             }
-            if ($arr['Null'] === 'No') {
+            if (strtolower($arr['Null']) === 'no') {
                 $schema['schema'][$arr['Field']]['not_null'] = true;
             }
+            if (strtolower($arr['Extra']) === 'auto_increment') {
+                $schema['schema'][$arr['Field']]['auto_increment'] = true;
+            }
+
         }
     }
 
@@ -117,7 +132,7 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
 
 
     foreach ($schema['schema'] as $column => $status) {
-        if (isset($status['index']) && $status['index'] == 'primary') {
+        if (isset($status['primary'])) {
             $sql .= $and.$column.' = ? ';
             $and = 'AND ';
             $func_args[] = '$pkey'.count($func_args);

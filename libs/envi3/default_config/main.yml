@@ -79,14 +79,14 @@ all:
 ## 常にオートロードされるディレクトリ
   AUTOLOAD_CONSTANT:
 ## <?php $ds = DIRECTORY_SEPARATOR; $base = realpath(ENVI_BASE_DIR."..{$ds}..{$ds}apps{$ds}{$app_name}").$ds; ?>
-    1: "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>"
-    2: "<?php echo "{$base}libs{$ds}controller{$ds}";?>"
-    3: "<?php echo "{$base}libs{$ds}constant{$ds}";?>"
+    - "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>"
+    - "<?php echo "{$base}libs{$ds}controller{$ds}";?>"
+    - "<?php echo "{$base}libs{$ds}constant{$ds}";?>"
 ## コールされた時にオートロードされるディレクトリ
   AUTOLOAD:
-    1: "<?php echo ENVI_BASE_DIR.'plugins'.DIRECTORY_SEPARATOR;?>"
-    2: "<?php echo "{$base}libs{$ds}common{$ds}";?>"
-    3: "<?php echo "{$base}libs{$ds}models{$ds}";?>"
+    - "<?php echo ENVI_BASE_DIR.'plugins'.DIRECTORY_SEPARATOR;?>"
+    - "<?php echo "{$base}libs{$ds}common{$ds}";?>"
+    - "<?php echo "{$base}libs{$ds}models{$ds}";?>"
 
   MEMCACHE:
   ################################

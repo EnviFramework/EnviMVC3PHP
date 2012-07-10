@@ -12,7 +12,20 @@ SCHEMA:
         # カラムの型を指定します
         type: int
         # 主キーの場合は下記のように記載します
-        index: primary
+        primary: PRIMARY
+        # 通常のインデックスの場合は下記のように記載します
+        index:
+          - idx_id
+        # 複数貼ることもできます
+          - idx_id2
+        # uniqueインデックスの場合は下記のように記載します
+        unique:
+          - uq_id
+        not_null: true
+        auto_increment: true
+        # 複数貼ることもできます
+          - idx_id2
+
         # デフォルトの値
         default: NULL
       # カラム名
@@ -20,7 +33,7 @@ SCHEMA:
         # カラムの型を指定します
         type: int
         # 主キーが複数ある場合は、全て記載してください
-        index: primary
+        primary: PRIMARY
         # デフォルトの値
         default: 0
       # 使用するインスタンス名を指定します(省略可能、省略した場合はデフォルを使用)
