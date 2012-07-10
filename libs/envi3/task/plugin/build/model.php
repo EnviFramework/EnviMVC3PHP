@@ -179,7 +179,7 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
     }
 }
 unset($schema);
-if ($config['SETTING']['database_yaml']) {
+if ($config['SETTING']['reverse_yaml']) {
     // リバースする
     $file_name = $argv[2].'.reverse.yml';
     $yaml = Spyc::YAMLDump($config, 2, 60);
