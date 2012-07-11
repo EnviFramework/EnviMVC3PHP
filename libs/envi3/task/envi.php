@@ -75,7 +75,11 @@ function isOption($name) {
  * 色付 echo
  */
 function cecho($m, $c = 30, $oth = '') {
-     system("echo -e '\e[{$c}m {$m} \e[m{$oth}'");
+    if (DIRECTORY_SEPARATOR === '/') {
+        system("echo -e '\e[{$c}m {$m} \e[m{$oth}'");
+    } else {
+        echo("{$m} {$oth}");
+    }
 }
 
 /**
@@ -96,6 +100,8 @@ function debug_msg($msg)
     }
 
 }
+
+require dirname(__FILE__).DIRECTORY_SEPARATOR.'help.php';
 
 if (!isset($argv[1])) {
     die("error:propaty 1\n");
