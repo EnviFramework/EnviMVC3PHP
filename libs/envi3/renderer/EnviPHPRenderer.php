@@ -59,7 +59,7 @@ class EnviPHPRenderer
     public function display($file_name, $cache_id  = NULL, $dummy2 = NULL)
     {
         //
-        include $this->_system_conf['DIRECTORY']['modules'].$module_dir.DIRECTORY_SEPARATOR.$this->_system_conf['DIRECTORY']['templates'].$file_name;
+        include $this->_system_conf['DIRECTORY']['modules'].Request::getThisModule().DIRECTORY_SEPARATOR.$this->_system_conf['DIRECTORY']['templates'].$file_name;
     }
 
     public function is_cached($file_name, $cache_id  = NULL, $dummy2 = NULL)

@@ -39,6 +39,35 @@ if (!mb_ereg('^[a-zA-Z0-9.\-_]+$', $action_name)) {
     die;
 }
 
+$return_str = '';
+if (isset($argv[5])) {
+    switch ($argv[5]) {
+        case 'success':
+        case 'return-success':
+            $return_str = 'return Envi::SUCCESS;';
+        break;
+        case 'default':
+        case 'return-success':
+            $return_str = 'return Envi::DEFAULT;';
+        break;
+        case 'error':
+        case 'return-success':
+            $return_str = 'return Envi::ERROR;';
+        break;
+        case 'conform':
+        case 'return-success':
+            $return_str = 'return Envi::CONFORM;';
+        break;
+        case 'commit':
+        case 'return-success':
+            $return_str = 'return Envi::COMMIT;';
+        break;
+        case 'none':
+        case 'return-success':
+            $return_str = 'return Envi::NONE;';
+        break;
+    }
+}
 
 
 $module_dir = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR;
@@ -46,7 +75,7 @@ $module_test_dir = $base_dir."tests".DIRECTORY_SEPARATOR.$project_name.DIRECTORY
 
 
 $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'Action.class.php');
-$text = str_replace(array('%%module_name%%', '%%action_name%%'), array($module_name, $action_name), $text);
+$text = str_replace(array('%%module_name%%', '%%action_name%%', '%%return_str%%'), array($module_name, $action_name, $return_str), $text);
 if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."actions".DIRECTORY_SEPARATOR.$action_name.'Action.class.php')) {
     file_put_contents($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."actions".DIRECTORY_SEPARATOR.$action_name.'Action.class.php', $text);
     touch($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR.$action_name.'.tpl');

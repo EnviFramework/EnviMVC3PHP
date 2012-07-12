@@ -29,7 +29,7 @@ cecho('    init-project                                         ', 32, '\n      
 cecho('    init-app [app name]                                  ', 32, '\n       アプリケーション(アプリキー)の作成(app)');
 cecho('    init-filesession [app name]                          ', 32, '\n       ファイルbaseのセッションディレクトリの作成');
 cecho('    init-module [app name] [module name]                 ', 32, '\n       モジュールの作成(module)');
-cecho('    init-action [app name] [module name] [action name]   ', 32, '\n       アクションの作成(action)');
+cecho('    init-action [app name] [module name] [action name] [return_str(Option)]  ', 32, '\n       アクションの作成(action)');
 cecho('    init-view [app name] [module name] [action name]     ', 32, '\n       ビューの作成(view)');
 
 exit;

@@ -1,5 +1,6 @@
 all:
 ##  <?php $app_name = substr(basename(__FILE__), 0, strlen(basename(__FILE__))-strlen('_di_container.yml')); ?>
+
   DBI:
   ################################
   # extension()->DBI()の設定
@@ -18,6 +19,7 @@ all:
       resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.$app_name.'_databases.yml';?>"
 
 ## webTypeを使用する場合は、コメントを外す
+
 #  webType:
 #  ################################
 #  # extension()->webType()の設定
