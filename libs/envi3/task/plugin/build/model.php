@@ -52,6 +52,9 @@ ob_end_clean();
 
 $database_yaml = spyc_load($buff);
 
+if (!isset($database_yaml[$config['SETTING']['env']])) {
+    $database_yaml[$config['SETTING']['env']] = array();
+}
 $database_yaml = array_merge((array)$database_yaml['all'], (array)$database_yaml[$config['SETTING']['env']]);
 
 
@@ -177,7 +180,7 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
         $text
     );
     if (!is_file($model_dir.$class_name.'Peer.class.php')) {
-        echo $model_dir.$class_name.'.class.php'."\n";
+        echo $model_dir.$class_name.'Peer.class.php'."\n";
         file_put_contents($model_dir.$class_name.'Peer.class.php', $text);
     }
 

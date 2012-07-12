@@ -37,6 +37,7 @@ $arr[] = $base_dir."apps".$ds.$project_name.$ds."libs".$ds."controller".$ds;
 $arr[] = $base_dir."apps".$ds.$project_name.$ds."libs".$ds."common".$ds;
 $arr[] = $base_dir."apps".$ds.$project_name.$ds."libs".$ds."constant".$ds;
 $arr[] = $base_dir."apps".$ds.$project_name.$ds."libs".$ds."models".$ds;
+$arr[] = $base_dir."apps".$ds.$project_name.$ds."libs".$ds."models".$ds."om";
 
 // テスト用
 $arr[] = $base_dir."tests".$ds.$project_name.$ds;

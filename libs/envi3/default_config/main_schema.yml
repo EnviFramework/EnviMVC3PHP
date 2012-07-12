@@ -43,7 +43,7 @@ SCHEMA:
 
 DIRECTORY:
   # モデルを保存するdirectory
-  model_dir: "<?php $ds = DIRECTORY_SEPARATOR; echo realpath(ENVI_BASE_DIR."..{$ds}..{$ds}apps{$ds}{$app_name}{$ds}libs{$ds}model").$ds; ?>"
+  model_dir: "<?php $ds = DIRECTORY_SEPARATOR; echo realpath(ENVI_BASE_DIR."..{$ds}..{$ds}apps{$ds}{$app_name}{$ds}libs{$ds}models").$ds; ?>"
 
 SETTING:
   #デフォルトのインスタンス名
@@ -51,7 +51,7 @@ SETTING:
   #マジックメソッドを利用したSetterGetterを使用するかどうか
   default_magic_method: true
   # データーベース定義
-  database_yaml: "<?php echo realpath(ENVI_BASE_DIR."..{$ds}..{$ds}config{$ds}").$ds?>databases.yml"
+  database_yaml: "<?php echo realpath(ENVI_BASE_DIR."..{$ds}..{$ds}config{$ds}").$ds.$app_name?>_databases.yml"
   # 環境
   env: "dev"
   # デフォルトのauto_schema
