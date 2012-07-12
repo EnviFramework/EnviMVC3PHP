@@ -17,6 +17,8 @@
  * @since      File available since Release 1.0.0
  */
 
+ini_set('include_path', ini_get('include_path') . (DIRECTORY_SEPARATOR === '/' ? ':' : ';') . realpath(ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'Smarty'));
+
 require 'ArtisanSmarty.class.php';
 
 /**
