@@ -89,6 +89,7 @@ all:
     - "<?php echo ENVI_BASE_DIR.'plugins'.DIRECTORY_SEPARATOR;?>"
     - "<?php echo "{$base}libs{$ds}common{$ds}";?>"
     - "<?php echo "{$base}libs{$ds}models{$ds}";?>"
+    - "<?php echo "{$base}libs{$ds}models{$ds}om{$ds}";?>"
 
   MEMCACHE:
   ################################
