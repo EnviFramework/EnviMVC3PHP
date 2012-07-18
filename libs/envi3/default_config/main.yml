@@ -43,6 +43,7 @@ all:
   # ディレクトリに関する設定
   ################################
 ## <?php $ds = DIRECTORY_SEPARATOR; $base = realpath(ENVI_BASE_DIR."..{$ds}..{$ds}apps{$ds}{$app_name}").$ds; ?>
+
     base: "<?php echo $base;?>"
     ## 通常のリクエストやforwardで飛ばされるモジュール
     modules: "<?php echo "{$base}modules{$ds}";?>"
@@ -79,6 +80,7 @@ all:
 ## 常にオートロードされるディレクトリ
   AUTOLOAD_CONSTANT:
 ## <?php $ds = DIRECTORY_SEPARATOR; $base = realpath(ENVI_BASE_DIR."..{$ds}..{$ds}apps{$ds}{$app_name}").$ds; ?>
+
     - "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>"
     - "<?php echo "{$base}libs{$ds}controller{$ds}";?>"
     - "<?php echo "{$base}libs{$ds}constant{$ds}";?>"

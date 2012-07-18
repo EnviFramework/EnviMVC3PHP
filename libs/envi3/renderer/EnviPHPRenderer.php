@@ -61,7 +61,9 @@ class EnviPHPRenderer
     public function display($file_name, $cache_id  = NULL, $dummy2 = NULL)
     {
         //
-        extract($this->parameter);
+        if ($this->parameter) {
+            extract($this->parameter);
+        }
         include $this->_system_conf['DIRECTORY']['modules'].Request::getThisModule().DIRECTORY_SEPARATOR.$this->_system_conf['DIRECTORY']['templates'].$file_name;
     }
 
@@ -78,7 +80,9 @@ class EnviPHPRenderer
     public function displayRef($file_name, $cache_id  = NULL, $dummy2 = NULL)
     {
         ob_start();
-        extract($this->parameter);
+        if ($this->parameter) {
+            extract($this->parameter);
+        }
         include $this->_system_conf['DIRECTORY']['modules'].Request::getThisModule().DIRECTORY_SEPARATOR.$this->_system_conf['DIRECTORY']['templates'].$file_name;
         $this->display_ref = ob_get_contents();
         ob_end_clean();
