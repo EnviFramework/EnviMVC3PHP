@@ -24,22 +24,23 @@
 
 
 define('ENVI_BASE_DIR', dirname(__FILE__).DIRECTORY_SEPARATOR);
+define('ENVI_ROOT_DIR', ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR);
 
-if (!defined('ENVI_MVC_APPKEY_PATH')) {
-    define('ENVI_MVC_APPKEY_PATH', microtime(true));
+if (!defined('LW_START_MTIMESTAMP')) {
+    define('LW_START_MTIMESTAMP', microtime(true));
 }
 
 
 /** ユーザー定義可能な定数 */
 if (!defined('ENVI_MVC_APPKEY_PATH')) {
-    define('ENVI_MVC_APPKEY_PATH',     realpath(ENVI_BASE_DIR.'dsn'.DIRECTORY_SEPARATOR));
+    define('ENVI_MVC_APPKEY_PATH',     realpath(ENVI_ROOT_DIR.'config'.DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR);
 }
 if (!defined('ENVI_MVC_CACHE_PATH')) {
-    define('ENVI_MVC_CACHE_PATH',     realpath(ENVI_BASE_DIR.'cache'.DIRECTORY_SEPARATOR));
+    define('ENVI_MVC_CACHE_PATH',     realpath(ENVI_ROOT_DIR.'cache'.DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR);
 }
 
 if (!defined('ENVI_SERVER_STATUS_CONF')) {
-    define('ENVI_SERVER_STATUS_CONF', realpath(ENVI_BASE_DIR.'env/ServerStatus.conf'));
+    define('ENVI_SERVER_STATUS_CONF', realpath(ENVI_ROOT_DIR.'env/ServerStatus.conf'));
 }
 
 require ENVI_BASE_DIR.'EnviServerStatus.php';
