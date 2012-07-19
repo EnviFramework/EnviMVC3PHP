@@ -113,10 +113,9 @@ class Request
      *
      * @access public
      * @static
-     * @param
      * @return string
      */
-    public static function getIi8n()
+    public static function getI18n()
     {
         return self::$_i18n;
     }
@@ -342,10 +341,10 @@ class Request
      *
      * @access public
      * @static
-     * @param エラー名 $name
-     * @param 引っかかったValidator $validator
-     * @param エラーコード $code
-     * @param エラーメッセージ $message
+     * @param string $name エラー名
+     * @param string $validator 引っかかったValidator
+     * @param integer $code エラーコード
+     * @param string $message エラーメッセージ
      * @return void
      */
     public static function setError($name, $validator, $code, $message)

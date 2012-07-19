@@ -115,6 +115,32 @@ class Controller
     /* ----------------------------------------- */
 
     /**
+     * +-- action名module名を指定してUrlを作成する。
+     *
+     * @final
+     * @access public
+     * @static
+     * @param string $action
+     * @param string $module OPTIONAL:NULL
+     * @param string $url OPTIONAL:NULL
+     * @return string
+     */
+    final public static function generateUrl($action, $module = NULL, $url = NULL)
+    {
+        if ($url === NULL) {
+            $url = Envi()->getConfiguration('SYSTEM', 'dispatch_url');
+        }
+
+        $i18n = Request::getI18n();
+
+        if ($module === NULL) {
+            $module = Request::getThisModule();
+        }
+        return Envi()->getConfiguration('SYSTEM', 'use_i18n') ? "{$url}/{$i18n}/{$module}/{$action}" : "{$url}/{$module}/{$action}";
+    }
+    /* ----------------------------------------- */
+
+    /**
      * +-- 処理を中断します。
      *
      * Envi内では、exitやdieなどの関数で処理を中断することは推奨されません。
