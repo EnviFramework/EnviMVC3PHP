@@ -641,7 +641,7 @@ all:
     cookie_lifetime: 1200000
     session_manager_path: "<?php echo ENVI_BASE_DIR."libs{$ds}EnviSecureSession.php";?>"
     session_manager: "EnviSecureSession"
-    sess_base_save_path: "<?php echo realpath(ENVI_BASE_DIR."..{$ds}..{$ds}var{$ds}session").$ds;?>"
+    sess_base_save_path: "<?php echo realpath(ENVI_BASE_DIR."..{$ds}..{$ds}var{$ds}sessions{$ds}{$app_name}").$ds;?>"
 
 ################################
 # 環境ごとに変更する値を下記に書くことができます。

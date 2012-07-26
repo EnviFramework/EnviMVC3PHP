@@ -85,7 +85,8 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
         if (isset($val['auto_increment'])) {
             $sql .= ' AUTO_INCREMENT';
         } elseif (isset($val['default'])) {
-            $sql .= 'default ' .(strtolower($val['default']) === 'null' && !isset($val['not_null'])) ? 'NULL' : '"'.$val['default'].'"';
+            $sql .= ' DEFAULT ';
+            $sql .= (strtolower($val['default']) === 'null' && !isset($val['not_null'])) ? 'NULL' : '"'.$val['default'].'"';
         }
         if (isset($val['index'])) {
             foreach ($val['index'] as $item) {

@@ -1,5 +1,6 @@
 SCHEMA:
   ## <?php $app_name = substr(basename(__FILE__), 0, strlen(basename(__FILE__))-strlen('_schema.yml')); ?>
+
   # テーブル名
   sample_table_name:
     # クラス名(省略可能。省略した場合はテーブル名のパスカルケース)
