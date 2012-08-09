@@ -13,7 +13,10 @@ all:
       initialize_query: "set names utf8;"
   default_stage:
     params:
-      dsn: "phptype=mysql&username=exampleuser&password=example&hostspec=localhost&database=example_stage"
+      dsn:
+	  # 配列にしておくと、ランダムで接続先が変わるようになる
+        - "phptype=mysql&username=exampleuser&password=example&hostspec=localhost&database=example_stage"
+        - "phptype=mysql&username=exampleuser&password=example&hostspec=localhost&database=example_stage"
       instance_pool: true
       connection_pool: false
       initialize_query: "set names utf8;"

@@ -97,24 +97,42 @@ class DB
      */
     public static function getConnection($param, $instance_name)
     {
-        if ($param['instance_pool']) {
-            if (!isset(self::$connections[$instance_name])) {
-                parse_str($param['dsn'], $conf);
-                self::$connections[$instance_name] = self::connect($conf, '', '', $param['connection_pool']);
-                if ($param['initialize_query']) {
-                    self::$connections[$instance_name]->query($param['initialize_query']);
-                }
-            }
+        if (isset(self::$connections[$instance_name])) {
             return self::$connections[$instance_name];
         }
-        parse_str($param['dsn'], $conf);
-        $dbi = self::connect($conf, '', '', $param['connection_pool']);
-        if ($param['initialize_query']) {
-            $dbi->query($param['initialize_query']);
+        if (is_array($param['dsn'])) {
+            shuffle($param['dsn']);
+            foreach ($param['dsn'] as $dsn) {
+                $dbi = self::getNewConnection($dsn, $param);
+                if ($dbi !== false) {
+                    break;
+                }
+            }
+        } else {
+            $dbi = self::getNewConnection($param['dsn'], $param);
+        }
+        
+        if ($param['instance_pool']) {
+            self::$connections[$instance_name] = $dbi;
         }
         return $dbi;
     }
     /* ----------------------------------------- */
+
+
+    private static function getNewConnection($dsn, array $param)
+    {
+        parse_str($dsn, $conf);
+        try{
+            $dbi = self::connect($conf, '', '', $param['connection_pool']);
+            if ($param['initialize_query']) {
+                $dbi->query($param['initialize_query']);
+            }
+            return $dbi;
+        } catch (exception $e) {
+            return false;
+        }
+    }
 
     /**
      * +-- EnviDBIBaseを取得する

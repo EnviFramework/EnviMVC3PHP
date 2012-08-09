@@ -35,6 +35,8 @@
  */
 class Base%%class_name%%Peer
 {
+    public $table_name = '%%table_name%%';
+    
     /**
      * +-- PKで抽出
      *
@@ -55,6 +57,25 @@ class Base%%class_name%%Peer
         $ormap = new %%class_name%%;
         $ormap->hydrate($res);
         return $ormap;
+    }
+    /* ----------------------------------------- */
+    
+    /**
+     * +-- $sqlの__TABLE__を正しいテーブル名に置き換えて、返す。
+     *
+     * @access public
+     * @static
+     * @param string $sql 置き換え元のSQL分
+     * @param string $suffix テーブル名+_の後ろにつける文字列。NULLの場合は_も省略されテーブル名のみとなる。 OPTIONAL:NULL
+     * @return void
+     */
+    final protected static function getReplacedSQL($sql, $suffix = NULL)
+    {
+        $table_name = $this->table_name;
+        if ($suffix === NULL) {
+            $table_name .= "_{$suffix}";
+        }
+        return str_replace(array('__TABLE__'), array($table_name), $sql);
     }
     /* ----------------------------------------- */
 }
