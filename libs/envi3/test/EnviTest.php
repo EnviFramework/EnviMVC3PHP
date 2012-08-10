@@ -1318,10 +1318,11 @@ abstract class EnviTestCase extends EnviTestAssert
      */
     final protected function emulateExecute($_request_method = false)
     {
-        $get         = (array)$this->system_conf['parameter']['get'];
-        $post        = (array)$this->system_conf['parameter']['post'];
-        $headers     = (array)$this->system_conf['parameter']['headers'];
-        $cookie      = (array)$this->system_conf['parameter']['cookie'];
+        $get         = is_array($this->system_conf['parameter']['get']) ? $this->system_conf['parameter']['get'] : array();
+        $post        = is_array($this->system_conf['parameter']['post']) ? $this->system_conf['parameter']['post'] : array();
+        $headers     = is_array($this->system_conf['parameter']['headers']) ? $this->system_conf['parameter']['headers'] : array();
+        $cookie      = is_array($this->system_conf['parameter']['cookie']) ? $this->system_conf['parameter']['cookie'] : array();
+        
         $request_method    = $this->system_conf['parameter']['request_method'];
 
         $get    = array_merge($get, $this->get);
