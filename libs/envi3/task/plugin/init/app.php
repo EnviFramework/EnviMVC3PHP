@@ -67,6 +67,7 @@ copy($default_config_dir.'main.yml', $base_dir."config{$ds}".$project_name.'.yml
 copy($default_config_dir.'main_databases.yml', $base_dir."config{$ds}".$project_name.'_databases.yml');
 copy($default_config_dir.'main_di_container.yml', $base_dir."config{$ds}".$project_name.'_di_container.yml');
 copy($default_config_dir.'main_web_type.yml', $base_dir."config{$ds}".$project_name.'_web_type.yml');
+copy($default_config_dir.'main_send_mail.yml', $base_dir."config{$ds}".$project_name.'_send_mail.yml');
 copy($default_config_dir.'main_schema.yml', $base_dir."config{$ds}".$project_name.'_schema.yml');
 
 copy($default_config_dir.'main_test.yml', $base_dir."tests".$ds.$project_name.'_test.yml');

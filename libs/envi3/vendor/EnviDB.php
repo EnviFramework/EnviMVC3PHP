@@ -159,7 +159,6 @@ class DB
                 return new EnviDBIBase($dsn, $user, $password);
             }
         }
-
     }
     /* ----------------------------------------- */
 
