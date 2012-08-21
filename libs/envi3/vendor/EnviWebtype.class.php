@@ -259,7 +259,7 @@ class EnviWebType
             break;
             case self::DOCOMO:
             //DOCOMOの場合
-                $info['uid']     = $_SERVER['REMOTE_ADDR'];
+                $info['uid']     = isset($_SERVER['HTTP_X-DCMGUID']) ? $_SERVER['HTTP_X-DCMGUID'] : NULL;
                 $info['b_type']  = 'html';
                 $user_agent      = split('[/ ()]', $_SERVER['HTTP_USER_AGENT']);
                 $info['browser'] = $user_agent[1];
