@@ -62,7 +62,7 @@ class Base%%class_name%%Peer
      * @param       EnviDBIBase $con OPTIONAL:NULL
      * @return      %%class_name%%|boolean
      */
-    public static function retrieveWithSuffix($query_key, array $bind_array, $suffix = NULL, EnviDBIBase $con = NULL)
+    public static function retrieveWithSuffix($query_key, array $bind_array = array(), $suffix = NULL, EnviDBIBase $con = NULL)
     {
         if (!isset(%%class_name%%Peer::$queries[$query_key])) {
             throw new EnviException("{$query_key}は存在しません");
@@ -71,7 +71,7 @@ class Base%%class_name%%Peer
         $sql = self::getReplacedSQL(%%class_name%%Peer::$queries[$query_key], $suffix);
         
         
-        $res = $dbi->getRow($sql, array($bind_array));
+        $res = $dbi->getRow($sql, $bind_array);
         if (!$res) {
             return false;
         }
@@ -93,7 +93,7 @@ class Base%%class_name%%Peer
      * @param       EnviDBIBase $con OPTIONAL:NULL
      * @return      array
      */
-    public static function retrieveAllWithSuffix($query_key, array $bind_array, $suffix = NULL, EnviDBIBase $con = NULL)
+    public static function retrieveAllWithSuffix($query_key, array $bind_array = array(), $suffix = NULL, EnviDBIBase $con = NULL)
     {
         if (!isset(%%class_name%%Peer::$queries[$query_key])) {
             throw new EnviException("{$query_key}は存在しません");
@@ -102,7 +102,7 @@ class Base%%class_name%%Peer
         $sql = self::getReplacedSQL(%%class_name%%Peer::$queries[$query_key], $suffix);
         
         
-        $res = $dbi->getAll($sql, array($bind_array));
+        $res = $dbi->getAll($sql, $bind_array);
         if (!$res) {
             return array();
         }
@@ -124,9 +124,9 @@ class Base%%class_name%%Peer
      * @param       EnviDBIBase $con OPTIONAL:NULL
      * @return      array
      */
-    public static function retrieveAll($query_key, array $bind_array, EnviDBIBase $con = NULL)
+    public static function retrieveAll($query_key, array $bind_array = array(), EnviDBIBase $con = NULL)
     {
-        return self::retrieveAllWithSuffix($query_key, $bind_array, NULL, $con)
+        return self::retrieveAllWithSuffix($query_key, $bind_array, NULL, $con);
     }
     /* ----------------------------------------- */
     
@@ -140,9 +140,9 @@ class Base%%class_name%%Peer
      * @param       EnviDBIBase $con OPTIONAL:NULL
      * @return      %%class_name%%|boolean
      */
-    public static function retrieve($query_key, array $bind_array, EnviDBIBase $con = NULL)
+    public static function retrieve($query_key, array $bind_array = array(), EnviDBIBase $con = NULL)
     {
-        return self::retrieveWithSuffix($query_key, $bind_array, NULL, $con)
+        return self::retrieveWithSuffix($query_key, $bind_array, NULL, $con);
     }
     /* ----------------------------------------- */
     
@@ -182,7 +182,7 @@ class Base%%class_name%%Peer
     final protected static function getReplacedSQL($sql, $suffix = NULL)
     {
         $table_name = self::$table_name;
-        if ($suffix !== NULL) {
+        if ($suffix === NULL) {
             $table_name .= "_{$suffix}";
         }
         return str_replace(array('__TABLE__'), array($table_name), $sql);
