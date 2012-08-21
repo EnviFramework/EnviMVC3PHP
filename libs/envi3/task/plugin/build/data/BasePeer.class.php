@@ -182,7 +182,7 @@ class Base%%class_name%%Peer
     final protected static function getReplacedSQL($sql, $suffix = NULL)
     {
         $table_name = self::$table_name;
-        if ($suffix === NULL) {
+        if ($suffix !== NULL) {
             $table_name .= "_{$suffix}";
         }
         return str_replace(array('__TABLE__'), array($table_name), $sql);
