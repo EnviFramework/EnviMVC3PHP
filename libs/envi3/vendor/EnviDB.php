@@ -214,18 +214,21 @@ class EnviDBIBase
      * クオートする
      *
      * @access public
-     * @param mixied $str クオートするデータ
+     * @param mixied $value クオートするデータ
      * @return string
      */
-    public function quotesmart($str)
+    public function quotesmart($value)
     {
-        if (is_int($str)) {
-            return $this->PDO->quote($str, PDO::PARAM_INT);
-        } elseif ($str === NULL ) {
-            return $this->PDO->quote($str, PDO::PARAM_NULL);
+        if (is_int($value)) {
+            $pdo_param_type = PDO::PARAM_INT;
+        } elseif(is_bool($value)){
+            $pdo_param_type = PDO::PARAM_BOOL;
+        } elseif(is_null($value)){
+            $pdo_param_type = PDO::PARAM_NULL;
         } else {
-            return $this->PDO->quote($str, PDO::PARAM_STR);
+            $pdo_param_type = PDO::PARAM_STR;
         }
+        return $this->PDO->quote($value, $pdo_param_type);
     }
     /* ----------------------------------------- */
 
@@ -298,8 +301,25 @@ class EnviDBIBase
      */
     public function &execute(PDOStatement $pdos, array $driver_options = array())
     {
+        $is_string_key = NULL;
         foreach ($driver_options as $key => $value) {
-            $pdos->bindValue ($key+1, $value, is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR);
+            if ($is_string_key === NULL) {
+                $is_string_key = !is_numeric($key);
+            }
+            if (is_int($value)) {
+                $pdo_param_type = PDO::PARAM_INT;
+            } elseif(is_bool($value)){
+                $pdo_param_type = PDO::PARAM_BOOL;
+            } elseif(is_null($value)){
+                $pdo_param_type = PDO::PARAM_NULL;
+            } else {
+                $pdo_param_type = PDO::PARAM_STR;
+            }
+            if ($is_string_key) {
+                $pdos->bindValue (":{$key}", $value, $pdo_param_type);
+            } else {
+                $pdos->bindValue ($key+1, $value, $pdo_param_type);
+            }
         }
         $pdos->execute();
         $this->last_query = $pdos->queryString;

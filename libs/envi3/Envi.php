@@ -856,7 +856,7 @@ class Envi
                 // sslなアクションかどうか
                 throw new Envi404Exception('is not ssl', 20001);
             }
-            if ($action->$isSecure() && Session::isLogin() === false) {
+            if ($action->$isSecure() && User::isLogin() === false) {
                 // セキュアなページかどうか
                 throw new Envi403Exception('please login if you show this action.', 20000);
             }
