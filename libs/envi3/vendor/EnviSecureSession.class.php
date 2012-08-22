@@ -65,35 +65,37 @@ class EnviSecureSession
 
     public function close()
     {
-        return true;
+        return(true);
     }
 
     public function read($id)
     {
-        $session_file = session_save_path().DIRECTORY_SEPARATOR.'.sess_'.$id;
-        if (is_file($session_file)) {
-            touch($session_file);
-            return file_get_contents($session_file);
+        $dir = substr($id, 0, 1);
+        $sess_file = session_save_path().DIRECTORY_SEPARATOR.'.sess_'.$id;
+        if (is_file($sess_file)) {
+            touch($sess_file);
+            return file_get_contents($sess_file);
         }
         return '';
     }
 
-    public function write($id, $session_data)
+    public function write($id, $sess_data)
     {
-        $session_file = session_save_path().DIRECTORY_SEPARATOR.'.sess_'.$id;
-        $res = file_put_contents($session_file, $session_data);
-        if ($res) {
-            return true;
+        $sess_file = session_save_path().DIRECTORY_SEPARATOR.'.sess_'.$id;
+
+        if ($fp = @fopen($sess_file, 'w')) {
+            fwrite($fp, $sess_data);
+            return fclose($fp);
         }
-        throw new EnviException('session write failed.');
         return false;
     }
 
     public function destroy($id)
     {
-        $session_file = session_save_path().DIRECTORY_SEPARATOR.'.sess_'.$id;
+        $dir = substr(sha1(substr($id, 0, 10)), 0, 1);
+        $sess_file = session_save_path().DIRECTORY_SEPARATOR.'.sess_'.$id;
         setcookie (session_name(), $id, time() - 3600);
-        return @unlink($session_file);
+        return @unlink($sess_file);
     }
 
 
@@ -157,8 +159,8 @@ class EnviSecureSession
             $id  = $_COOKIE[$session_name];
             $dir = substr($id, 0, 1);
             if (isset($this->sess_dir_array[$dir])) {
-                $session_file = $this->sess_base_save_path.$this->sess_dir_array[$dir].'.sess_'.$id;
-                if(is_file($session_file)){
+                $sess_file = $this->sess_base_save_path.$this->sess_dir_array[$dir].'.sess_'.$id;
+                if(is_file($sess_file)){
                     $is_new_session = false;
                 }
             }
@@ -167,9 +169,6 @@ class EnviSecureSession
         if ($is_new_session) {
             $id = $this->newSession();
             $dir = substr($id, 0, 1);
-        }
-        if (!is_dir($this->sess_base_save_path.$this->sess_dir_array[$dir])) {
-            throw EnviException('not such directory '.$this->sess_base_save_path.$this->sess_dir_array[$dir]);
         }
         ini_set('session.save_path', $this->sess_base_save_path.$this->sess_dir_array[$dir]);
         //セッション開始

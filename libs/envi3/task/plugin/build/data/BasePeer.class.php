@@ -188,4 +188,3 @@ class Base%%class_name%%Peer
         return str_replace(array('__TABLE__'), array($table_name), $sql);
     }
     /* ----------------------------------------- */
-}
