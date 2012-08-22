@@ -69,7 +69,7 @@ class Base%%class_name%%Peer
             throw new EnviException("{$query_key}は存在しません");
         }
         $dbi = $con ? $con : extension()->DBI()->getInstance('%%instance_name%%');
-        $sql = self::getReplacedSQL(%%class_name%%Peer::$queries[$query_key], $suffix);
+        $sql = self::getReplacedSQL(%%class_name%%Peer::$queries[$query_key], $bind_array, $suffix);
         
         
         return $dbi->query($sql, $bind_array);
@@ -94,7 +94,7 @@ class Base%%class_name%%Peer
             throw new EnviException("{$query_key}は存在しません");
         }
         $dbi = $con ? $con : extension()->DBI()->getInstance('%%instance_name%%');
-        $sql = self::getReplacedSQL(%%class_name%%Peer::$queries[$query_key], $suffix);
+        $sql = self::getReplacedSQL(%%class_name%%Peer::$queries[$query_key], $bind_array, $suffix);
         
         
         $res = $dbi->getRow($sql, $bind_array);
@@ -125,7 +125,7 @@ class Base%%class_name%%Peer
             throw new EnviException("{$query_key}は存在しません");
         }
         $dbi = $con ? $con : extension()->DBI()->getInstance('%%instance_name%%');
-        $sql = self::getReplacedSQL(%%class_name%%Peer::$queries[$query_key], $suffix);
+        $sql = self::getReplacedSQL(%%class_name%%Peer::$queries[$query_key], $bind_array, $suffix);
         
         
         $res = $dbi->getAll($sql, $bind_array);
@@ -221,11 +221,23 @@ class Base%%class_name%%Peer
      * @param string $suffix テーブル名+_の後ろにつける文字列。NULLの場合は_も省略されテーブル名のみとなる。 OPTIONAL:NULL
      * @return void
      */
-    final protected static function getReplacedSQL($sql, $suffix = NULL)
+    final protected static function getReplacedSQL($sql, &$bind_array, $suffix = NULL)
     {
         $table_name = self::$table_name;
         if ($suffix !== NULL) {
             $table_name .= "_{$suffix}";
+        }
+        foreach ($bind_array as $column => $value) {
+            if (!is_array($value)) {
+                continue;
+            }
+            unset($bind_array[$column]);
+            $add_query_str = '';
+            foreach ($value as $key => $item) {
+                $add_query_str .= ",:{$column}-{$key}";
+                $bind_array["{$column}-{$key}"] = $item;
+            }
+            $sql = mb_ereg_replace(":{$column}([^a-z0-9A=Z])", substr($add_query_str, 1)."\\1", $sql);
         }
         return str_replace(array('__TABLE__'), array($table_name), $sql);
     }
