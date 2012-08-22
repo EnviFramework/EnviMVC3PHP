@@ -51,6 +51,32 @@ class Base%%class_name%%Peer
      */
     protected static $queries = array();
     
+    
+    /**
+     * +-- Suffix対応でクエリを実行する
+     *
+     * @access      public
+     * @static
+     * @param       string $query_key
+     * @param       array $bind_array
+     * @param       string $suffix OPTIONAL:NULL
+     * @param       EnviDBIBase $con OPTIONAL:NULL
+     * @return      %%class_name%%|boolean
+     */
+    public static function queryWithSuffix($query_key, array $bind_array = array(), $suffix = NULL, EnviDBIBase $con = NULL)
+    {
+        if (!isset(%%class_name%%Peer::$queries[$query_key])) {
+            throw new EnviException("{$query_key}は存在しません");
+        }
+        $dbi = $con ? $con : extension()->DBI()->getInstance('%%instance_name%%');
+        $sql = self::getReplacedSQL(%%class_name%%Peer::$queries[$query_key], $suffix);
+        
+        
+        return $dbi->query($sql, $bind_array);
+    }
+    /* ----------------------------------------- */
+    
+    
     /**
      * +-- Suffix対応で一行抽出する
      *
@@ -146,7 +172,23 @@ class Base%%class_name%%Peer
     }
     /* ----------------------------------------- */
     
-
+    /**
+     * +-- SQLを実行する
+     *
+     * @access      public
+     * @static
+     * @param       string $query_key
+     * @param       array $bind_array
+     * @param       EnviDBIBase $con OPTIONAL:NULL
+     * @return      %%class_name%%|boolean
+     */
+    public static function query($query_key, array $bind_array = array(), EnviDBIBase $con = NULL)
+    {
+        return self::queryWithSuffix($query_key, $bind_array, NULL, $con);
+    }
+    /* ----------------------------------------- */
+    
+    
     /**
      * +-- PKで抽出
      *
@@ -182,9 +224,10 @@ class Base%%class_name%%Peer
     final protected static function getReplacedSQL($sql, $suffix = NULL)
     {
         $table_name = self::$table_name;
-        if ($suffix === NULL) {
+        if ($suffix !== NULL) {
             $table_name .= "_{$suffix}";
         }
         return str_replace(array('__TABLE__'), array($table_name), $sql);
     }
     /* ----------------------------------------- */
+}
