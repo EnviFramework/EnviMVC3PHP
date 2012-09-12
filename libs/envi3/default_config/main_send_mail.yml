@@ -1,7 +1,7 @@
 all:
   SETTING:
     renderer:
-## D‚«‚Èrenderer‚ğg—p‚µ‚Ä‚­‚¾‚³‚¢Bƒxƒ“ƒ_[‚Å—pˆÓ‚µ‚Ä‚¢‚érenderer‚Í‰º‹L‚Ì3‚Â‚Å‚·
+## å¥½ããªrendererã‚’ä½¿ç”¨ã—ã¦ãã ã•ã„ã€‚ãƒ™ãƒ³ãƒ€ãƒ¼ã§ç”¨æ„ã—ã¦ã„ã‚‹rendererã¯ä¸‹è¨˜ã®3ã¤ã§ã™
 #    renderer:
 #      resource: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviSmartyRenderer.php"
 #      class_name: EnviSmartyRenderer
@@ -12,25 +12,25 @@ all:
 #      resource: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviPHPRenderer.php"
 #      class_name: EnviPHPRenderer
     
-## ƒwƒbƒ_‚Ì•s—v‚È‰üs‚Ìíœ‚âA”¼ŠpƒJƒi‚Ì‘SŠp‰»‚ğs‚¤
+## ãƒ˜ãƒƒãƒ€ã®ä¸è¦ãªæ”¹è¡Œã®å‰Šé™¤ã‚„ã€åŠè§’ã‚«ãƒŠã®å…¨è§’åŒ–ã‚’è¡Œã†
     auto_clean: true
-## ŠÂ‹«‚ªdev‚Ì‚Éˆê—¥‚µ‚Ä‘—M‚·‚éæ‚ğw’è‚·‚é
-## false ‚É‚·‚é‚Æprod ‚Æ“¯‚¶“®‚«‚ğ‚·‚é
+## ç’°å¢ƒãŒdevã®æ™‚ã«ä¸€å¾‹ã—ã¦é€ä¿¡ã™ã‚‹å…ˆã‚’æŒ‡å®šã™ã‚‹
+## false ã«ã™ã‚‹ã¨prod ã¨åŒã˜å‹•ãã‚’ã™ã‚‹
     dev_send: false
 #    dev_send: exsample@exsample.com
 
-## ŠÂ‹«‚ªstg‚Ì‚Éˆê—¥‚µ‚Ä‘—M‚·‚éæ‚ğw’è‚·‚é
-## false ‚É‚·‚é‚Æprod ‚Æ“¯‚¶“®‚«‚ğ‚·‚é
+## ç’°å¢ƒãŒstgã®æ™‚ã«ä¸€å¾‹ã—ã¦é€ä¿¡ã™ã‚‹å…ˆã‚’æŒ‡å®šã™ã‚‹
+## false ã«ã™ã‚‹ã¨prod ã¨åŒã˜å‹•ãã‚’ã™ã‚‹
     stg_send: false
 #    stg_send: exsample@exsample.com
-## ŠÂ‹«‚ªSTG‚Ì‚ÉA‘—M‚ğ‹–‰Â‚·‚éˆ¶æ
+## ç’°å¢ƒãŒSTGã®æ™‚ã«ã€é€ä¿¡ã‚’è¨±å¯ã™ã‚‹å®›å…ˆ
     stg_allow_send:
       - exsample1@exsample.com
       - exsample2@exsample.com
       - exsample3@exsample.com
-## ‘—MÒ‚Ìİ’è
+## é€ä¿¡è€…ã®è¨­å®š
     from:
-## ‘—MŒ³ƒ[ƒ‹ƒAƒhƒŒƒX
+## é€ä¿¡å…ƒãƒ¡ãƒ¼ãƒ«ã‚¢ãƒ‰ãƒ¬ã‚¹
       email: auto-mail@<?php echo $_SERVER['SERVER_NAME'];?>
-## ‘—MÒ‚Ì–¼‘O
+## é€ä¿¡è€…ã®åå‰
       name: auto-mail@<?php echo $_SERVER['SERVER_NAME'];?>
