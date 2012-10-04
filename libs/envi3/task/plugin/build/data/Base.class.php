@@ -33,7 +33,7 @@
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
  */
-class Base%%class_name%% extends OrMapBase
+class Base%%class_name%% extends EnviOrMapBase
 {
 
     protected $default_instance_name = '%%instance_name%%';

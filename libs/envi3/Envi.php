@@ -1055,16 +1055,22 @@ class Envi
             return;
         }
         // 古い基底クラス
-        $class_name = strtolower($class_name);
-        if ($class_name === 'request') {
+        switch (strtolower($class_name)) {
+        case 'request':
             include ENVI_BASE_DIR.'oldEnviClass'.DIRECTORY_SEPARATOR.'Request.php';
-            return;
-        } elseif ($class_name === 'user') {
+            break;
+        case 'user':
             include ENVI_BASE_DIR.'oldEnviClass'.DIRECTORY_SEPARATOR.'User.php';
-            return;
-        } elseif ($class_name === 'controller') {
+            break;
+        case 'controller':
             include ENVI_BASE_DIR.'oldEnviClass'.DIRECTORY_SEPARATOR.'Controller.php';
-            return;
+            break;
+        case 'db':
+            include ENVI_BASE_DIR.'oldEnviClass'.DIRECTORY_SEPARATOR.'DB.php';
+            break;
+        case 'dbinstance':
+            include ENVI_BASE_DIR.'oldEnviClass'.DIRECTORY_SEPARATOR.'DBInstance.php';
+            break;
         }
     }
     /* ----------------------------------------- */

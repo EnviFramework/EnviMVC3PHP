@@ -31,7 +31,7 @@
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
  */
-class DBInstance
+class EnviDBInstance
 {
     private $_system_conf;
     /**
@@ -59,7 +59,7 @@ class DBInstance
         if (!isset($this->_system_conf[$db_key])) {
             throw new EnviException("DB: {$db_key}が存在してません。");
         }
-        return DB::getConnection($this->_system_conf[$db_key]['params'], $db_key);
+        return EnviDB::getConnection($this->_system_conf[$db_key]['params'], $db_key);
     }
     /* ----------------------------------------- */
 }
@@ -77,7 +77,7 @@ class DBInstance
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
  */
-class DB
+class EnviDB
 {
     const AUTOQUERY_INSERT = 1;
     const AUTOQUERY_UPDATE = 2;
@@ -495,11 +495,11 @@ class EnviDBIBase
      * @access public
      * @param string $table テーブル名
      * @param array $table_fields フィールドの配列
-     * @param integer $mode OPTIONAL:DB::AUTOQUERY_INSERT
+     * @param integer $mode OPTIONAL:EnviDB::AUTOQUERY_INSERT
      * @param string $where UPDATE時のWHERE文 OPTIONAL:false
      * @return PDOStatement
      */
-    public function autoExecute($table, array $table_fields, $mode = DB::AUTOQUERY_INSERT, $where = false)
+    public function autoExecute($table, array $table_fields, $mode = EnviDB::AUTOQUERY_INSERT, $where = false)
     {
         $sql = $this->buildManipSQL($table, $table_fields, $mode, $where);
         return $this->query($sql, $table_fields);
@@ -567,7 +567,7 @@ class EnviDBIBase
         $first = true;
         $arr = array();
         switch ($mode) {
-        case DB::AUTOQUERY_INSERT:
+        case EnviDB::AUTOQUERY_INSERT:
             $values = '';
             $names = '';
             foreach ($table_fields as $key => $value) {
@@ -584,7 +584,7 @@ class EnviDBIBase
             }
             $table_fields = $arr;
             return "INSERT INTO $table ($names) VALUES ($values)";
-        case DB::AUTOQUERY_REPLACE:
+        case EnviDB::AUTOQUERY_REPLACE:
             $values = '';
             $names = '';
             foreach ($table_fields as $key => $value) {
@@ -601,7 +601,7 @@ class EnviDBIBase
             }
             $table_fields = $arr;
             return "REPLACE INTO $table ($names) VALUES ($values)";
-        case DB::AUTOQUERY_UPDATE:
+        case EnviDB::AUTOQUERY_UPDATE:
             $set = '';
             foreach ($table_fields as $key => $value) {
                 $key = trim($key);
