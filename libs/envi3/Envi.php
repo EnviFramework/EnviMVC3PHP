@@ -1052,6 +1052,19 @@ class Envi
         $auto_load_classes = self::singleton()->auto_load_classes;
         if (isset($auto_load_classes[$class_name])) {
             include $auto_load_classes[$class_name];
+            return;
+        }
+        // 古い基底クラス
+        $class_name = strtolower($class_name);
+        if ($class_name === 'request') {
+            include ENVI_BASE_DIR.'oldEnviClass'.DIRECTORY_SEPARATOR.'Request.php';
+            return;
+        } elseif ($class_name === 'user') {
+            include ENVI_BASE_DIR.'oldEnviClass'.DIRECTORY_SEPARATOR.'User.php';
+            return;
+        } elseif ($class_name === 'controller') {
+            include ENVI_BASE_DIR.'oldEnviClass'.DIRECTORY_SEPARATOR.'Controller.php';
+            return;
         }
     }
     /* ----------------------------------------- */
