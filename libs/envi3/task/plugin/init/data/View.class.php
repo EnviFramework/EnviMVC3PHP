@@ -38,7 +38,7 @@ class %%action_name%%View extends %%module_name%%Views
 
     public function execute()
     {
-        $parameter = Request::getAttributeAll();
+        $parameter = EnviRequest::getAttributeAll();
         $this->display($parameter);
     }
 

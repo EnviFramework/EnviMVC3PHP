@@ -65,7 +65,7 @@ class viewBase extends EnviViewBase
             }
         }
         if ($template === NULL) {
-            $template = Request::getThisAction() . '.tpl';
+            $template = EnviRequest::getThisAction() . '.tpl';
         }
         $this->renderer->display($template);
     }

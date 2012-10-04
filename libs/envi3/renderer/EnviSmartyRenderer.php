@@ -42,9 +42,9 @@ class EnviSmartyRenderer extends Smarty
 
     public function __construct()
     {
-        $this->_compile_id  = Request::getThisModule();
+        $this->_compile_id  = EnviRequest::getThisModule();
         $this->_system_conf = Envi()->getConfigurationAll();
-        $this->setting(Request::getThisModule());
+        $this->setting(EnviRequest::getThisModule());
     }
 
 

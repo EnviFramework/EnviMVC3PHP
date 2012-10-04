@@ -47,7 +47,7 @@ class EnviInputPathInfoToGetFilter extends EnviInputFilterBase
      */
     public function execute()
     {
-        $exp_path_info = Request::getPathInfo();
+        $exp_path_info = EnviRequest::getPathInfo();
         if (count($exp_path_info)) {
             while (count($exp_path_info)) {
                 $k = array_shift($exp_path_info);

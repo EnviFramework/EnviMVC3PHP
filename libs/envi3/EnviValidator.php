@@ -260,7 +260,7 @@ class EnviValidator
      */
     private function __construct()
     {
-        $this->errors =& Request::getErrorsByRef();
+        $this->errors =& EnviRequest::getErrorsByRef();
 
     }
 
@@ -1583,7 +1583,7 @@ class ValidatorError
      */
     public function __construct()
     {
-        $this->_error_message =& Request::getErrorsByRef();
+        $this->_error_message =& EnviRequest::getErrorsByRef();
         if (Envi::singleton()->getConfiguration('SYSTEM', 'use_i18n')) {
             $this->_error_list = Envi::singleton()->getI18n('EnviValidator');
         }

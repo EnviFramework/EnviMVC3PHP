@@ -50,7 +50,7 @@ class EnviTwigRenderer
     {
         $this->_system_conf = Envi()->getConfigurationAll();
         Twig_Autoloader::register();
-        $this->setting(Request::getThisModule());
+        $this->setting(EnviRequest::getThisModule());
     }
 
 

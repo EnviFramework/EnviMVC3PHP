@@ -349,7 +349,7 @@ class Envi
         // 国際化
         if ($this->_system_conf['SYSTEM']['use_i18n']) {
             $this->_i18n = $this->parseYml(
-                $this->_system_conf['I18N'][Request::getIi8n()],
+                $this->_system_conf['I18N'][EnviRequest::getIi8n()],
                 ENVI_BASE_DIR.'i18n'.DIRECTORY_SEPARATOR
             );
         }
@@ -637,7 +637,7 @@ class Envi
     /**
      * +-- 処理を中断する
      *
-     * Controller::kill()と機能は一緒です。
+     * EnviController::kill()と機能は一緒です。
      *
      * @access public
      * @param string $kill OPTIONAL:''
@@ -682,7 +682,7 @@ class Envi
             spl_autoload_register(array('Envi', 'autoload'));
 
             // リクエストモジュールの初期化
-            Request::initialize();
+            EnviRequest::initialize();
             include_once ENVI_MVC_CACHE_PATH.self::$app_key.ENVI_ENV.'.autoload_constant.envicc';
             $envi->loadExtension();
             $filters = $envi->getConfiguration('FILTER');
@@ -747,11 +747,11 @@ class Envi
         if ($is_first && is_file($this->_system_conf['DIRECTORY']['modules'].'config.php')) {
             include_once($this->_system_conf['DIRECTORY']['modules'].'config.php');
         }
-        $base_module_dir = Controller::isActionChain() ?
+        $base_module_dir = EnviController::isActionChain() ?
             $this->_system_conf['DIRECTORY']['chain_modules'] : $this->_system_conf['DIRECTORY']['modules'];
 
         // Module
-        $module_dir = $base_module_dir.Request::getThisModule().DIRECTORY_SEPARATOR;
+        $module_dir = $base_module_dir.EnviRequest::getThisModule().DIRECTORY_SEPARATOR;
         // Action
         $action_dir = $module_dir.$this->_system_conf['DIRECTORY']['actions'];
         // View
@@ -767,8 +767,8 @@ class Envi
         }
 
         // アクションの存在確認
-        $action_class_path = $action_dir.Request::getThisAction().'Action.class.php';
-        $action_sf         = ucwords(Request::getThisAction());
+        $action_class_path = $action_dir.EnviRequest::getThisAction().'Action.class.php';
+        $action_sf         = ucwords(EnviRequest::getThisAction());
 
         if (is_file($action_class_path)) {
             // 1ファイル1アクションのパターン
@@ -776,7 +776,7 @@ class Envi
                 throw new EnviException('Actionのパスが変です。', 10002);
             }
             include_once($action_class_path);
-            $action = Request::getThisAction().'Action';
+            $action = EnviRequest::getThisAction().'Action';
             $action = new $action;
             if (method_exists($action, "execute{$action_sf}")) {
                 $execute        = "execute{$action_sf}";
@@ -800,7 +800,7 @@ class Envi
                 $shutdown       = 'shutdown';
             }
         } else {
-            $sub_action            = mb_ereg_replace('^([a-z0-9]+).*$', '\1', Request::getThisAction());
+            $sub_action            = mb_ereg_replace('^([a-z0-9]+).*$', '\1', EnviRequest::getThisAction());
             $action_sub_class_path = $action_dir.$sub_action.'Actions.class.php';
 
             if (is_file($action_sub_class_path)) {
@@ -811,7 +811,7 @@ class Envi
                 include_once($action_sub_class_path);
                 $action = $sub_action.'Actions';
                 $action = new $action;
-                $action_sub_sf = ucwords(mb_ereg_replace("^{$sub_action}", '', Request::getThisAction()));
+                $action_sub_sf = ucwords(mb_ereg_replace("^{$sub_action}", '', EnviRequest::getThisAction()));
                 if (method_exists($action, "execute{$action_sub_sf}")) {
                     $execute        = "execute{$action_sub_sf}";
                     $isPrivate  = method_exists($action, "isPrivate{$action_sub_sf}") ? "isPrivate{$action_sub_sf}" : "isPrivate";
@@ -830,7 +830,7 @@ class Envi
                 // actions.class.phpにまとめて書くパターン
                 $action_class_path = $action_dir.'actions.class.php';
                 include_once($action_class_path);
-                $action = Request::getThisModule().'Actions';
+                $action = EnviRequest::getThisModule().'Actions';
                 $action         = new $action;
                 if (method_exists($action, "execute{$action_sf}")) {
                     $execute        = "execute{$action_sf}";
@@ -858,7 +858,7 @@ class Envi
                 // sslなアクションかどうか
                 throw new Envi404Exception('is not ssl', 20001);
             }
-            if ($action->$isSecure() && User::isLogin() === false) {
+            if ($action->$isSecure() && EnviUser::isLogin() === false) {
                 // セキュアなページかどうか
                 throw new Envi403Exception('please login if you show this action.', 20000);
             }
@@ -907,14 +907,14 @@ class Envi
         } catch (Exception $e) {
             throw $e;
         }
-        $view_class_path = $view_dir.Request::getThisAction()."View_{$view_suffix}.class.php";
+        $view_class_path = $view_dir.EnviRequest::getThisAction()."View_{$view_suffix}.class.php";
 
         if (is_file($view_class_path)) {
             if (dirname($view_class_path) !== realpath($view_dir)) {
                 throw new EnviException('Viewのパスが変です。', 11002);
             }
             include_once $view_class_path;
-            $view = Request::getThisAction().'View';
+            $view = EnviRequest::getThisAction().'View';
             $view = new $view;
             if (method_exists($view, "execute{$action_sf}")) {
                 $execute        = "execute{$action_sf}";
@@ -928,7 +928,7 @@ class Envi
                 $shutdown       = 'shutdown';
             }
         } else {
-            $sub_action            = isset($sub_action) ? $sub_action : mb_ereg_replace('^([a-z0-9]+).*$', '\1', Request::getThisAction());
+            $sub_action            = isset($sub_action) ? $sub_action : mb_ereg_replace('^([a-z0-9]+).*$', '\1', EnviRequest::getThisAction());
             $view_sub_class_path = $view_dir.$sub_action."Views_{$view_suffix}.class.php";
 
             if (is_file($view_sub_class_path)) {
@@ -939,7 +939,7 @@ class Envi
                 include_once($view_sub_class_path);
                 $view = $sub_action.'Views';
                 $view = new $view;
-                $action_sub_sf = ucwords(mb_ereg_replace("^{$sub_action}", '', Request::getThisAction()));
+                $action_sub_sf = ucwords(mb_ereg_replace("^{$sub_action}", '', EnviRequest::getThisAction()));
                 if (method_exists($action, "execute{$action_sub_sf}")) {
                     $execute        = "execute{$action_sub_sf}";
                     $setRenderer    = method_exists($view, "setRenderer{$action_sub_sf}") ? "setRenderer{$action_sub_sf}" : "setRenderer";
@@ -952,7 +952,7 @@ class Envi
             }  elseif (is_file($view_dir.'views.class.php')) {
                 $view_class_path = $view_dir.'views.class.php';
                 include_once($view_class_path);
-                $view = Request::getThisModule().'Views';
+                $view = EnviRequest::getThisModule().'Views';
                 $view = new $view;
                 if (method_exists($view, "execute{$action_sf}")) {
                     $execute        = "execute{$action_sf}";

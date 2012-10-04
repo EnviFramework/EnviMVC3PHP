@@ -56,10 +56,10 @@ class EnviForm
      */
     public function getConfiguration()
     {
-        if (!(isset($this->system_conf[Request::getThisModule()]) && isset($this->system_conf[Request::getThisModule()][Request::getThisAction()]))) {
+        if (!(isset($this->system_conf[EnviRequest::getThisModule()]) && isset($this->system_conf[EnviRequest::getThisModule()][EnviRequest::getThisAction()]))) {
             return array();
         }
-        return $this->system_conf[Request::getThisModule()][Request::getThisAction()];
+        return $this->system_conf[EnviRequest::getThisModule()][EnviRequest::getThisAction()];
     }
     /* ----------------------------------------- */
     
@@ -77,7 +77,7 @@ class EnviForm
         }
         
         $validate = validator();
-        $i18n     = Request::getI18n();
+        $i18n     = EnviRequest::getI18n();
         foreach ($validate_conf as $form_name => $conf) {
             $i = 0;
             $validate->autoExecute(

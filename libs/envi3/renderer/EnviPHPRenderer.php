@@ -64,7 +64,7 @@ class EnviPHPRenderer
         if ($this->parameter) {
             extract($this->parameter);
         }
-        include $this->_system_conf['DIRECTORY']['modules'].Request::getThisModule().DIRECTORY_SEPARATOR.$this->_system_conf['DIRECTORY']['templates'].$file_name;
+        include $this->_system_conf['DIRECTORY']['modules'].EnviRequest::getThisModule().DIRECTORY_SEPARATOR.$this->_system_conf['DIRECTORY']['templates'].$file_name;
     }
 
     public function is_cached($file_name, $cache_id  = NULL, $dummy2 = NULL)
@@ -83,7 +83,7 @@ class EnviPHPRenderer
         if ($this->parameter) {
             extract($this->parameter);
         }
-        include $this->_system_conf['DIRECTORY']['modules'].Request::getThisModule().DIRECTORY_SEPARATOR.$this->_system_conf['DIRECTORY']['templates'].$file_name;
+        include $this->_system_conf['DIRECTORY']['modules'].EnviRequest::getThisModule().DIRECTORY_SEPARATOR.$this->_system_conf['DIRECTORY']['templates'].$file_name;
         $this->display_ref = ob_get_contents();
         ob_end_clean();
         return $this->display_ref;

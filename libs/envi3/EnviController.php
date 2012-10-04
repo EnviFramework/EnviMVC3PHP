@@ -70,19 +70,19 @@ class EnviController
      */
     final public static function forward($action, $module = NULL)
     {
-        $cpm = Request::$_module_name;
-        $cpa = Request::$_action_name;
+        $cpm = EnviRequest::$_module_name;
+        $cpa = EnviRequest::$_action_name;
         if (!is_null($module)) {
-            Request::$_module_name = $module;
+            EnviRequest::$_module_name = $module;
         }
 
         //Action
-        Request::$_action_name = $action;
+        EnviRequest::$_action_name = $action;
         //実行
         Envi::singleton()->_run();
         //戻す
-        Request::$_module_name = $cpm;
-        Request::$_action_name = $cpa;
+        EnviRequest::$_module_name = $cpm;
+        EnviRequest::$_action_name = $cpa;
         return true;
     }
     /* ----------------------------------------- */
@@ -131,10 +131,10 @@ class EnviController
             $url = Envi()->getConfiguration('SYSTEM', 'dispatch_url');
         }
 
-        $i18n = Request::getI18n();
+        $i18n = EnviRequest::getI18n();
 
         if ($module === NULL) {
-            $module = Request::getThisModule();
+            $module = EnviRequest::getThisModule();
         }
         return Envi()->getConfiguration('SYSTEM', 'use_i18n') ? "{$url}/{$i18n}/{$module}/{$action}" : "{$url}/{$module}/{$action}";
     }
@@ -206,9 +206,9 @@ class EnviController
     final public static function go()
     {
         self::$_is_action_chain = true;
-        $_attribute     = Request::getAttributeAll();
-        $_error_message = Request::getErrorsByRef();
-        $_error_code    = Request::getErrorCodesByRef();
+        $_attribute     = EnviRequest::getAttributeAll();
+        $_error_message = EnviRequest::getErrorsByRef();
+        $_error_code    = EnviRequest::getErrorCodesByRef();
         $post_data = $_POST;
         foreach (self::$_action_chain as $key => $value) {
             self::$_action_chain_name = $key;
@@ -219,9 +219,9 @@ class EnviController
             self::forward($value[0], $value[1]);
             $res[$key] = ob_get_contents();
             ob_clean();
-            Request::setAttributeAll($_attribute);
-            Request::setErrorsAll($_error_message);
-            Request::setErrorCodesAll($_error_code);
+            EnviRequest::setAttributeAll($_attribute);
+            EnviRequest::setErrorsAll($_error_message);
+            EnviRequest::setErrorCodesAll($_error_code);
             $_POST = $post_data;
         }
 
