@@ -11,7 +11,7 @@ all:
       ## ファイルの実態
       resource: "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>EnviDB.php"
       ## クラス名
-      class_name: "DBInstance"
+      class_name: "EnviDBInstance"
       ## シングルトン化するか
       singleton: true
     router:

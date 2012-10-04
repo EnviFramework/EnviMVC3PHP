@@ -46,9 +46,11 @@ if (!defined('ENVI_SERVER_STATUS_CONF')) {
 require ENVI_BASE_DIR.'EnviServerStatus.php';
 require ENVI_BASE_DIR.'EnviActionBase.php';
 require ENVI_BASE_DIR.'EnviViewBase.php';
-require ENVI_BASE_DIR.'Controller.php';
-require ENVI_BASE_DIR.'Request.php';
-require ENVI_BASE_DIR.'User.php';
+
+require ENVI_BASE_DIR.'EnviController.php';
+require ENVI_BASE_DIR.'EnviRequest.php';
+require ENVI_BASE_DIR.'EnviUser.php';
+
 require ENVI_BASE_DIR.'EnviValidator.php';
 require ENVI_BASE_DIR.'EnviLogWriter.php';
 require ENVI_BASE_DIR.'EnviExtension.php';
@@ -1050,6 +1052,25 @@ class Envi
         $auto_load_classes = self::singleton()->auto_load_classes;
         if (isset($auto_load_classes[$class_name])) {
             include $auto_load_classes[$class_name];
+            return;
+        }
+        // 古い基底クラス
+        switch (strtolower($class_name)) {
+        case 'request':
+            include ENVI_BASE_DIR.'oldEnviClass'.DIRECTORY_SEPARATOR.'Request.php';
+            break;
+        case 'user':
+            include ENVI_BASE_DIR.'oldEnviClass'.DIRECTORY_SEPARATOR.'User.php';
+            break;
+        case 'controller':
+            include ENVI_BASE_DIR.'oldEnviClass'.DIRECTORY_SEPARATOR.'Controller.php';
+            break;
+        case 'db':
+            include ENVI_BASE_DIR.'oldEnviClass'.DIRECTORY_SEPARATOR.'DB.php';
+            break;
+        case 'dbinstance':
+            include ENVI_BASE_DIR.'oldEnviClass'.DIRECTORY_SEPARATOR.'DBInstance.php';
+            break;
         }
     }
     /* ----------------------------------------- */
