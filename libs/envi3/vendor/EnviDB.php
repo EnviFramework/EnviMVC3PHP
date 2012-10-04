@@ -125,7 +125,7 @@ class DB
         parse_str($dsn, $conf);
         try{
             $dbi = self::connect($conf, '', '', $param['connection_pool']);
-            if ($param['initialize_query']) {
+            if (isset($param['initialize_query']) && !empty($param['initialize_query'])) {
                 $dbi->query($param['initialize_query']);
             }
             return $dbi;
@@ -639,10 +639,12 @@ class EnviDBIBase
         if (is_array($dsn)) {
             $username = $dsn['username'];
             $password = $dsn['password'];
+            $dsn = $dsn['phptype'].':dbname='.$dsn['database'].';host='.$dsn['hostspec'];
             if (isset($dsn['charset']) && strlen($dsn['charset'])) {
-                $dsn = $dsn['phptype'].':dbname='.$dsn['database'].';host='.$dsn['hostspec'].';charset='.$dsn['charset'];
-            } else {
-                $dsn = $dsn['phptype'].':dbname='.$dsn['database'].';host='.$dsn['hostspec'];
+                $dsn .= ';charset='.$dsn['charset'];
+            }
+            if (isset($dsn['port']) && strlen($dsn['port'])) {
+                $dsn .= ';port='.$dsn['port'];
             }
         }
         $this->PDO = new PDO($dsn, $username, $password, $driver_options);
