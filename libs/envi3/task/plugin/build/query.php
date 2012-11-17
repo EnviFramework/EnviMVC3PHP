@@ -57,7 +57,7 @@ if (!isset($database_yaml[$config['SETTING']['env']])) {
 $database_yaml = array_merge((array)$database_yaml['all'], (array)$database_yaml[$config['SETTING']['env']]);
 
 
-$DBInstance = NULL;
+$EnviDBInstance = NULL;
 function pascalize($string)
 {
     $string = strtolower($string);

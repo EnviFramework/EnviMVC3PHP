@@ -58,7 +58,7 @@ if (!isset($database_yaml[$config['SETTING']['env']])) {
 $database_yaml = array_merge((array)$database_yaml['all'], (array)$database_yaml[$config['SETTING']['env']]);
 
 
-$DBInstance = NULL;
+$EnviDBInstance = NULL;
 function pascalize($string)
 {
     $string = strtolower($string);
@@ -79,10 +79,10 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
     // DBに接続して、自動的にスキーマ情報を取得する
     if ($auto_schema) {
         $schema['schema'] = array();
-        if (is_null($DBInstance)) {
-            $DBInstance = new DBInstance($database_yaml);
+        if (is_null($EnviDBInstance)) {
+            $EnviDBInstance = new EnviDBInstance($database_yaml);
         }
-        $dbi = $DBInstance->getInstance($instance_name);
+        $dbi = $EnviDBInstance->getInstance($instance_name);
         $schema_arr = $dbi->getAll('desc '.$table_name);
         $index_schema_arr = $dbi->getAll('SHOW INDEX FROM '.$table_name);
 
