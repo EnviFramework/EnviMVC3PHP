@@ -165,7 +165,7 @@ class Envi404Exception extends Exception
     public function __construct($message, $code = 0, Exception $previous = null)
     {
         if (Envi::$debug) {
-            echo "{$message} Envi404[{$code}]";
+            echo $message.' Envi404['.$code.']';
         } else {
             header('HTTP/1.0 404 Not Found');
         }
@@ -204,7 +204,7 @@ class Envi403Exception extends Exception
     public function __construct($message, $code = 0, Exception $previous = null)
     {
         if (Envi::$debug) {
-            echo "{$message} Envi403[{$code}]";
+            echo $message.' Envi403['.$code.']';
         } else {
             header('HTTP/1.0 403 Forbidden');
         }
@@ -244,7 +244,7 @@ class EnviException extends Exception
     public function __construct($message, $code = 0, Exception $previous = null)
     {
         if (Envi::$debug) {
-            echo "{$message} EnviException[{$code}]";
+            echo $message.' EnviException['.$code.']';
         } else {
             header('HTTP/1.0 403 Forbidden');
         }
@@ -341,7 +341,7 @@ class Envi
             }
             $cache = "<?php\n";
             foreach ($autoload_constant as $v) {
-                $cache .= "include '{$v}';\n";
+                $cache .= "include '".$v."';\n";
             }
             file_put_contents($autoload_constant_cache, $cache);
         }
@@ -778,16 +778,16 @@ class Envi
             include_once($action_class_path);
             $action = EnviRequest::getThisAction().'Action';
             $action = new $action;
-            if (method_exists($action, "execute{$action_sf}")) {
-                $execute        = "execute{$action_sf}";
-                $validate  = method_exists($action, "validate{$action_sf}") ? "validate{$action_sf}" : "validate";
-                $defaultAccess  = method_exists($action, "defaultAccess{$action_sf}") ? "defaultAccess{$action_sf}" : "defaultAccess";
-                $handleError  = method_exists($action, "handleError{$action_sf}") ? "handleError{$action_sf}" : "handleError";
-                $isPrivate  = method_exists($action, "isPrivate{$action_sf}") ? "isPrivate{$action_sf}" : "isPrivate";
-                $isSSL      = method_exists($action, "isSSL{$action_sf}") ? "isSSL{$action_sf}" : "isSSL";
-                $isSecure   = method_exists($action, "isSecure{$action_sf}") ? "isSecure{$action_sf}" : "isSecure";
-                $initialize = method_exists($action, "initialize{$action_sf}") ? "initialize{$action_sf}" : "initialize";
-                $shutdown   = method_exists($action, "shutdown{$action_sf}") ? "shutdown{$action_sf}" : "shutdown";
+            if (method_exists($action, 'execute'.$action_sf)) {
+                $execute        = 'execute'.$action_sf;
+                $validate  = method_exists($action, 'validate'.$action_sf) ? 'validate'.$action_sf : 'validate';
+                $defaultAccess  = method_exists($action, 'defaultAccess'.$action_sf) ? 'defaultAccess'.$action_sf : 'defaultAccess';
+                $handleError  = method_exists($action, 'handleError'.$action_sf) ? 'handleError'.$action_sf : 'handleError';
+                $isPrivate  = method_exists($action, 'isPrivate'.$action_sf) ? 'isPrivate'.$action_sf : 'isPrivate';
+                $isSSL      = method_exists($action, 'isSSL'.$action_sf) ? 'isSSL'.$action_sf : 'isSSL';
+                $isSecure   = method_exists($action, 'isSecure'.$action_sf) ? 'isSecure'.$action_sf : 'isSecure';
+                $initialize = method_exists($action, 'initialize'.$action_sf) ? 'initialize'.$action_sf : 'initialize';
+                $shutdown   = method_exists($action, 'shutdown'.$action_sf) ? 'shutdown'.$action_sf : 'shutdown';
             } else {
                 $isPrivate      = 'isPrivate';
                 $isSSL          = 'isSSL';
@@ -811,19 +811,19 @@ class Envi
                 include_once($action_sub_class_path);
                 $action = $sub_action.'Actions';
                 $action = new $action;
-                $action_sub_sf = ucwords(mb_ereg_replace("^{$sub_action}", '', EnviRequest::getThisAction()));
-                if (method_exists($action, "execute{$action_sub_sf}")) {
-                    $execute        = "execute{$action_sub_sf}";
-                    $isPrivate  = method_exists($action, "isPrivate{$action_sub_sf}") ? "isPrivate{$action_sub_sf}" : "isPrivate";
-                    $isSSL      = method_exists($action, "isSSL{$action_sub_sf}") ? "isSSL{$action_sub_sf}" : "isSSL";
-                    $isSecure   = method_exists($action, "isSecure{$action_sub_sf}") ? "isSecure{$action_sub_sf}" : "isSecure";
-                    $initialize = method_exists($action, "initialize{$action_sub_sf}") ? "initialize{$action_sub_sf}" : "initialize";
-                    $shutdown   = method_exists($action, "shutdown{$action_sub_sf}") ? "shutdown{$action_sub_sf}" : "shutdown";
-                    $validate  = method_exists($action, "validate{$action_sub_sf}") ? "validate{$action_sub_sf}" : "validate";
-                    $defaultAccess  = method_exists($action, "defaultAccess{$action_sub_sf}") ? "defaultAccess{$action_sub_sf}" : "defaultAccess";
-                    $handleError  = method_exists($action, "handleError{$action_sub_sf}") ? "handleError{$action_sub_sf}" : "handleError";
+                $action_sub_sf = ucwords(mb_ereg_replace('^'.$sub_action, '', EnviRequest::getThisAction()));
+                if (method_exists($action, 'execute'.$action_sub_sf)) {
+                    $execute        = 'execute'.$action_sub_sf;
+                    $isPrivate  = method_exists($action, 'isPrivate'.$action_sub_sf) ? 'isPrivate'.$action_sub_sf : 'isPrivate';
+                    $isSSL      = method_exists($action, 'isSSL'.$action_sub_sf) ? 'isSSL'.$action_sub_sf : 'isSSL';
+                    $isSecure   = method_exists($action, 'isSecure'.$action_sub_sf) ? 'isSecure'.$action_sub_sf : 'isSecure';
+                    $initialize = method_exists($action, 'initialize'.$action_sub_sf) ? 'initialize'.$action_sub_sf : 'initialize';
+                    $shutdown   = method_exists($action, 'shutdown'.$action_sub_sf) ? 'shutdown'.$action_sub_sf : 'shutdown';
+                    $validate  = method_exists($action, 'validate'.$action_sub_sf) ? 'validate'.$action_sub_sf : 'validate';
+                    $defaultAccess  = method_exists($action, 'defaultAccess'.$action_sub_sf) ? 'defaultAccess'.$action_sub_sf : 'defaultAccess';
+                    $handleError  = method_exists($action, 'handleError'.$action_sub_sf) ? 'handleError'.$action_sub_sf : 'handleError';
                 } else {
-                    throw new Envi404Exception("execute{$action_sub_sf}がないです", 10003);
+                    throw new Envi404Exception('execute'.$action_sub_sf.'がないです', 10003);
                 }
 
             } elseif (is_file($action_dir.'actions.class.php')) {
@@ -832,18 +832,18 @@ class Envi
                 include_once($action_class_path);
                 $action = EnviRequest::getThisModule().'Actions';
                 $action         = new $action;
-                if (method_exists($action, "execute{$action_sf}")) {
-                    $execute        = "execute{$action_sf}";
-                    $validate  = method_exists($action, "validate{$action_sf}") ? "validate{$action_sf}" : "validate";
-                    $defaultAccess  = method_exists($action, "defaultAccess{$action_sf}") ? "defaultAccess{$action_sf}" : "defaultAccess";
-                    $handleError  = method_exists($action, "handleError{$action_sf}") ? "handleError{$action_sf}" : "handleError";
-                    $isPrivate  = method_exists($action, "isPrivate{$action_sf}") ? "isPrivate{$action_sf}" : "isPrivate";
-                    $isSSL      = method_exists($action, "isSSL{$action_sf}") ? "isSSL{$action_sf}" : "isSSL";
-                    $isSecure   = method_exists($action, "isSecure{$action_sf}") ? "isSecure{$action_sf}" : "isSecure";
-                    $initialize = method_exists($action, "initialize{$action_sf}") ? "initialize{$action_sf}" : "initialize";
-                    $shutdown   = method_exists($action, "shutdown{$action_sf}") ? "shutdown{$action_sf}" : "shutdown";
+                if (method_exists($action, 'execute'.$action_sf)) {
+                    $execute        = 'execute'.$action_sf;
+                    $validate  = method_exists($action, 'validate'.$action_sf) ? 'validate'.$action_sf : 'validate';
+                    $defaultAccess  = method_exists($action, 'defaultAccess'.$action_sf) ? 'defaultAccess'.$action_sf : 'defaultAccess';
+                    $handleError  = method_exists($action, 'handleError'.$action_sf) ? 'handleError'.$action_sf : 'handleError';
+                    $isPrivate  = method_exists($action, 'isPrivate'.$action_sf) ? 'isPrivate'.$action_sf : 'isPrivate';
+                    $isSSL      = method_exists($action, 'isSSL'.$action_sf) ? 'isSSL'.$action_sf : 'isSSL';
+                    $isSecure   = method_exists($action, 'isSecure'.$action_sf) ? 'isSecure'.$action_sf : 'isSecure';
+                    $initialize = method_exists($action, 'initialize'.$action_sf) ? 'initialize'.$action_sf : 'initialize';
+                    $shutdown   = method_exists($action, 'shutdown'.$action_sf) ? 'shutdown'.$action_sf : 'shutdown';
                 } else {
-                    throw new Envi404Exception("execute{$action_sf}がないです", 10003);
+                    throw new Envi404Exception('execute'.$action_sf.'がないです', 10003);
                 }
             } else {
                 throw new Envi404Exception('Actionがないです。', 10004);
@@ -907,7 +907,7 @@ class Envi
         } catch (Exception $e) {
             throw $e;
         }
-        $view_class_path = $view_dir.EnviRequest::getThisAction()."View_{$view_suffix}.class.php";
+        $view_class_path = $view_dir.EnviRequest::getThisAction().'View_'.$view_suffix.'.class.php';
 
         if (is_file($view_class_path)) {
             if (dirname($view_class_path) !== realpath($view_dir)) {
@@ -916,11 +916,11 @@ class Envi
             include_once $view_class_path;
             $view = EnviRequest::getThisAction().'View';
             $view = new $view;
-            if (method_exists($view, "execute{$action_sf}")) {
-                $execute        = "execute{$action_sf}";
-                $setRenderer    = method_exists($view, "setRenderer{$action_sf}") ? "setRenderer{$action_sf}" : "setRenderer";
-                $initialize     = method_exists($view, "initialize{$action_sf}") ? "initialize{$action_sf}" : "initialize";
-                $shutdown       = method_exists($view, "shutdown{$action_sf}") ? "shutdown{$action_sf}" : "shutdown";
+            if (method_exists($view, 'execute'.$action_sf)) {
+                $execute        = 'execute'.$action_sf;
+                $setRenderer    = method_exists($view, 'setRenderer'.$action_sf) ? 'setRenderer'.$action_sf : 'setRenderer';
+                $initialize     = method_exists($view, 'initialize'.$action_sf) ? 'initialize'.$action_sf : 'initialize';
+                $shutdown       = method_exists($view, 'shutdown'.$action_sf) ? 'shutdown'.$action_sf : 'shutdown';
             } else {
                 $execute        = 'execute';
                 $setRenderer    = 'setRenderer';
@@ -929,7 +929,7 @@ class Envi
             }
         } else {
             $sub_action            = isset($sub_action) ? $sub_action : mb_ereg_replace('^([a-z0-9]+).*$', '\1', EnviRequest::getThisAction());
-            $view_sub_class_path = $view_dir.$sub_action."Views_{$view_suffix}.class.php";
+            $view_sub_class_path = $view_dir.$sub_action.'Views_'.$view_suffix.'.class.php';
 
             if (is_file($view_sub_class_path)) {
                 // 1ファイルに複数ビューがあるパターン
@@ -939,14 +939,14 @@ class Envi
                 include_once($view_sub_class_path);
                 $view = $sub_action.'Views';
                 $view = new $view;
-                $action_sub_sf = ucwords(mb_ereg_replace("^{$sub_action}", '', EnviRequest::getThisAction()));
-                if (method_exists($action, "execute{$action_sub_sf}")) {
-                    $execute        = "execute{$action_sub_sf}";
-                    $setRenderer    = method_exists($view, "setRenderer{$action_sub_sf}") ? "setRenderer{$action_sub_sf}" : "setRenderer";
-                    $initialize     = method_exists($view, "initialize{$action_sub_sf}") ? "initialize{$action_sub_sf}" : "initialize";
-                    $shutdown       = method_exists($view, "shutdown{$action_sub_sf}") ? "shutdown{$action_sub_sf}" : "shutdown";
+                $action_sub_sf = ucwords(mb_ereg_replace('^'.$sub_action, '', EnviRequest::getThisAction()));
+                if (method_exists($action, 'execute'.$action_sub_sf)) {
+                    $execute        = 'execute'.$action_sub_sf;
+                    $setRenderer    = method_exists($view, 'setRenderer'.$action_sub_sf) ? 'setRenderer'.$action_sub_sf : 'setRenderer';
+                    $initialize     = method_exists($view, 'initialize'.$action_sub_sf) ? 'initialize'.$action_sub_sf : 'initialize';
+                    $shutdown       = method_exists($view, 'shutdown'.$action_sub_sf) ? 'shutdown'.$action_sub_sf : 'shutdown';
                 } else {
-                    throw new Envi404Exception("execute{$action_sub_sf}がないです", 10003);
+                    throw new Envi404Exception('execute'.$action_sub_sf.'がないです', 10003);
                 }
 
             }  elseif (is_file($view_dir.'views.class.php')) {
@@ -954,13 +954,13 @@ class Envi
                 include_once($view_class_path);
                 $view = EnviRequest::getThisModule().'Views';
                 $view = new $view;
-                if (method_exists($view, "execute{$action_sf}")) {
-                    $execute        = "execute{$action_sf}";
-                    $setRenderer    = method_exists($view, "setRenderer{$action_sf}") ? "setRenderer{$action_sf}" : "setRenderer";
-                    $initialize     = method_exists($view, "initialize{$action_sf}") ? "initialize{$action_sf}" : "initialize";
-                    $shutdown       = method_exists($view, "shutdown{$action_sf}") ? "shutdown{$action_sf}" : "shutdown";
+                if (method_exists($view, 'execute'.$action_sf)) {
+                    $execute        = 'execute'.$action_sf;
+                    $setRenderer    = method_exists($view, 'setRenderer'.$action_sf) ? 'setRenderer'.$action_sf : 'setRenderer';
+                    $initialize     = method_exists($view, 'initialize'.$action_sf) ? 'initialize'.$action_sf : 'initialize';
+                    $shutdown       = method_exists($view, 'shutdown'.$action_sf) ? 'shutdown'.$action_sf : 'shutdown';
                 } else {
-                    throw new EnviException("execute{$action_sf}がないです", 11003);
+                    throw new EnviException('execute'.$action_sf.'がないです', 11003);
                 }
             } else {
                 throw new EnviException('Viewがないです。', 11004);
@@ -1025,7 +1025,7 @@ class Envi
             foreach ($extension as $v) {
                 if (isset($v['constant']) && $v['constant'] === true) {
                     $v = $v['class']['resource'];
-                    $cache .= "include_once '{$v}';\n";
+                    $cache .= "include_once '".$v."';\n";
                 }
             }
             file_put_contents($load_extension_constant, $cache);
@@ -1111,7 +1111,7 @@ class Envi
     {
         static $is_message_pack;
         if ($is_message_pack === NULL) {
-            $is_message_pack = is_callable("msgpack_pack");
+            $is_message_pack = is_callable('msgpack_pack');
         }
         return $is_message_pack ? msgpack_pack($data) : serialize($data);
     }
@@ -1128,7 +1128,7 @@ class Envi
     {
         static $is_message_pack;
         if ($is_message_pack === NULL) {
-            $is_message_pack = is_callable("msgpack_pack");
+            $is_message_pack = is_callable('msgpack_pack');
         }
         return $is_message_pack ? msgpack_unpack($data) : unserialize($data);
     }

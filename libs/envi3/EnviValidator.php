@@ -291,7 +291,7 @@ class EnviValidator
             $validation_name = key($validation_name);
         }
         if (!isset($this->_validation_list[$validation_name])) {
-            trigger_error("Unknown EnviValidator chain selected");
+            trigger_error('Unknown EnviValidator chain selected');
         }
 
         $validation_datas =& $this->_validation_list[$validation_name];
@@ -299,8 +299,8 @@ class EnviValidator
         $is_error         = false;
         foreach ($validation_datas[self::VALIDATOR] as $EnviValidator_data) {
             $each = each ($EnviValidator_data);
-            $EnviValidator = $each["key"];
-            $option    = $each["value"];
+            $EnviValidator = $each['key'];
+            $option    = $each['value'];
             //foreach ($EnviValidator_data as $EnviValidator => $option) {
             //blankチェック以外のblankはすり抜ける
             $ck = $this->_validation($EnviValidator, $validation_datas[self::VALIDATE_DATA], $option[self::VALIDATE_MODE]);
@@ -437,7 +437,7 @@ class EnviValidator
                 isset($this->_register_EnviValidators[strtolower($EnviValidator)])) {
             $this->chain($validation_name, $EnviValidator, $EnviValidator_chain, $validate_mode);
         } else {
-            trigger_error("Unknown EnviValidator selected", E_USER_ERROR);
+            trigger_error('Unknown EnviValidator selected', E_USER_ERROR);
         }
     }
 
@@ -647,7 +647,7 @@ class EnviValidator
      */
     protected function _validation(&$EnviValidator, &$data, &$option)
     {
-        if (($EnviValidator !== "blank" && $EnviValidator !== "noblank") ?
+        if (($EnviValidator !== 'blank' && $EnviValidator !== 'noblank') ?
             $this->_typeNoBlank($data, false) : true) {
             if (isset($this->_EnviValidator_list[$EnviValidator])) {
                 $method =& $this->_EnviValidator_list[$EnviValidator];
@@ -655,7 +655,7 @@ class EnviValidator
             } elseif (isset($this->_register_EnviValidators[$EnviValidator])) {
                 $ck = call_user_func_array($this->_register_EnviValidators[$EnviValidator], array($data, $option));
             } else {
-                trigger_error("Unknown EnviValidator selected", E_USER_ERROR);
+                trigger_error('Unknown EnviValidator selected', E_USER_ERROR);
             }
         } else {
             return true;
@@ -676,10 +676,10 @@ class EnviValidator
 
         if (!strstr($validation_name, '[')) {
             if (($post_only == 3 || $post_only == 1 || is_bool($post_only)) &&
-                (isset($_POST[$validation_name]) !== false ? $_POST[$validation_name] !== "" : false)) {
+                (isset($_POST[$validation_name]) !== false ? $_POST[$validation_name] !== '' : false)) {
                 $res = $_POST[$validation_name];
             } elseif (($post_only == 3 || $post_only == 2 || $post_only === false) &&
-                (isset($_GET[$validation_name]) !== false ? $_GET[$validation_name] !== "" : false)) {
+                (isset($_GET[$validation_name]) !== false ? $_GET[$validation_name] !== '' : false)) {
                 $res = $_GET[$validation_name];
             } else {
                 $res = $this->_empty_form_data;
@@ -689,10 +689,10 @@ class EnviValidator
             $regs = array();
             preg_match_all("/([^\\[]*)\\[([^\\]]*)\\]/", $validation_name, $regs);
             if (($post_only == 3 || $post_only == 1 || is_bool($post_only)) &&
-                (isset($_POST[$regs[1][0]]) !== false ? $_POST[$regs[1][0]] !== "" : false)) {
+                (isset($_POST[$regs[1][0]]) !== false ? $_POST[$regs[1][0]] !== '' : false)) {
                 $res = $_POST[$regs[1][0]];
             } elseif (($post_only == 3 || $post_only == 2 || $post_only === false) &&
-                (isset($_GET[$regs[1][0]]) !== false ? $_GET[$regs[1][0]] !== "" : false)) {
+                (isset($_GET[$regs[1][0]]) !== false ? $_GET[$regs[1][0]] !== '' : false)) {
                 $res = $_GET[$regs[1][0]];
             } else {
                 $res = $this->_empty_form_data;
@@ -806,7 +806,7 @@ class EnviValidator
      */
     protected function _typeAlphabet(&$ValidationData, $dummy)
     {
-        return preg_match("/^[a-zA-Z]+$/", $ValidationData);
+        return ctype_alpha($ValidationData);
 
     }
 
@@ -818,7 +818,7 @@ class EnviValidator
      */
     protected function _typeAlphabetOrNumber(&$ValidationData, $dummy)
     {
-        return preg_match("/^[a-zA-Z0-9]+$/", $ValidationData);
+        return ctype_alnum($ValidationData);
 
     }
 
@@ -831,9 +831,9 @@ class EnviValidator
     protected function _typeRome(&$ValidationData, $convert)
     {
         if ($convert) {
-            $ValidationData = mb_convert_kana($ValidationData, "a");
+            $ValidationData = mb_convert_kana($ValidationData, 'a');
         }
-        return preg_match("/^[\!-\~]+$/", $ValidationData);
+        return preg_match('/^[\!-\~]+$/', $ValidationData);
     }
 
     /**
@@ -844,10 +844,10 @@ class EnviValidator
      */
     protected function _typeInteger(&$ValidationData, $dummy)
     {
-        if (preg_match("/^[0-9]$/", $ValidationData)) {
+        if (preg_match('/^[0-9]$/', $ValidationData)) {
             return true;
         }
-        return preg_match("/^-?[1-9][0-9]*$/", $ValidationData);
+        return preg_match('/^-?[1-9][0-9]*$/', $ValidationData);
 
     }
 
@@ -859,10 +859,10 @@ class EnviValidator
      */
     protected function _typeNaturalNumber(&$ValidationData, $dummy)
     {
-        if (preg_match("/^[0-9]$/", $ValidationData)) {
+        if (preg_match('/^[0-9]$/', $ValidationData)) {
             return true;
         }
-        return preg_match("/^[1-9][0-9]*$/", $ValidationData);
+        return preg_match('/^[1-9][0-9]*$/', $ValidationData);
 
     }
 
@@ -1006,12 +1006,12 @@ class EnviValidator
             false;
         }
         if ($kana == true) {
-            $ValidationData = mb_convert_kana($ValidationData,"KV");
+            $ValidationData = mb_convert_kana($ValidationData,'KV');
         }
         $_DEPEND_CHAR_PRE     = '(?-xism:(?<!\x8F))';
         $_DEPEND_CHAR_PATTERN = '[\xA9\xAA\xAB\xAC\xAD\xF9\xFA\xFB\xFC][\xA1-\xFE]';
         $_DEPEND_CHAR_POST    = '(?x-ism:(?=(?:[\xA1-\xFE][\xA1-\xFE])*(?:[\x00-\x7F\x8E\x8F]|\z)))';
-        $REG_PATTERN  = "/".$_DEPEND_CHAR_PRE."(".$_DEPEND_CHAR_PATTERN.")".$_DEPEND_CHAR_POST."/";
+        $REG_PATTERN  = '/'.$_DEPEND_CHAR_PRE.'('.$_DEPEND_CHAR_PATTERN.')'.$_DEPEND_CHAR_POST.'/';
         return preg_match($REG_PATTERN, mb_convert_encoding($ValidationData, 'EUC-JP-win')) == false;
     }
 
@@ -1027,9 +1027,9 @@ class EnviValidator
             false;
         }
         if ($kana == true) {
-            $ValidationData = mb_convert_kana($ValidationData,"HVc");
+            $ValidationData = mb_convert_kana($ValidationData,'HVc');
         }
-        return mb_ereg("^[ぁ-ん]+$",$ValidationData) != false;
+        return mb_ereg('^[ぁ-ん]+$',$ValidationData) != false;
     }
 
     /**
@@ -1044,9 +1044,9 @@ class EnviValidator
             false;
         }
         if ($kana == true) {
-            $ValidationData = mb_convert_kana($ValidationData,"KVC");
+            $ValidationData = mb_convert_kana($ValidationData,'KVC');
         }
-        return mb_ereg("^[ァ-ヶ]+$",$ValidationData) != false;
+        return mb_ereg('^[ァ-ヶ]+$',$ValidationData) != false;
     }
 
     /**
@@ -1096,7 +1096,7 @@ class EnviValidator
             false;
         }
         if ($kana == true) {
-            $ValidationData = mb_convert_kana($ValidationData,"a");
+            $ValidationData = mb_convert_kana($ValidationData,'a');
         }
         $REG_PATTERN = '/(?:[^(\040)<>@,;:".\\\[\]\000-\037\x80-\xff]+(?![^(\040)<>@,;:".\\\[\]\000-\037\x80-\xff])|"[^\\\x80-\xff\n\015"]*(?:\\[^\x80-\xff][^\\\x80-\xff\n\015"]*)*")(?:\.(?:[^(\040)<>@,;:".\\\[\]\000-\037\x80-\xff]+(?![^(\040)<>@,;:".\\\[\]\000-\037\x80-\xff])|"[^\\\x80-\xff\n\015"]*(?:\\[^\x80-\xff][^\\\x80-\xff\n\015"]*)*"))*@(?:[^(\040)<>@,;:".\\\[\]\000-\037\x80-\xff]+(?![^(\040)<>@,;:".\\\[\]\000-\037\x80-\xff])|\[(?:[^\\\x80-\xff\n\015\[\]]|\\[^\x80-\xff])*\])(?:\.(?:[^(\040)<>@,;:".\\\[\]\000-\037\x80-\xff]+(?![^(\040)<>@,;:".\\\[\]\000-\037\x80-\xff])|\[(?:[^\\\x80-\xff\n\015\[\]]|\\[^\x80-\xff])*\]))+/';
         return preg_match($REG_PATTERN, $ValidationData) != false;
@@ -1114,7 +1114,7 @@ class EnviValidator
             false;
         }
         if ($kana == true) {
-            $ValidationData = mb_convert_kana($ValidationData,"a");
+            $ValidationData = mb_convert_kana($ValidationData,'a');
         }
         $REG_PATTERN = '/^[0-9a-zA-Z!#$%&=\-|_\/+\^\~][0-9a-zA-Z!#$%&=\-|_\/+.\^\~]*@[0-9a-zA-Z!#$%&=\-|_\/+\^\~]+\.[0-9a-zA-Z!#$%&=\-|_\/+.\^\~]*[a-zA-Z]$/';
         return preg_match($REG_PATTERN, $ValidationData) != false;
@@ -1133,7 +1133,7 @@ class EnviValidator
             false;
         }
         if ($kana == true) {
-            $ValidationData = mb_convert_kana($ValidationData,"a");
+            $ValidationData = mb_convert_kana($ValidationData,'a');
         }
         $REG_PATTERN = "/\b(?:https?|shttp|ftp):\/\/(?:(?:[-_.!~*'()a-zA-Z0-9;:&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*@)?(?:(?:[a-zA-Z0-9](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?\.)*[a-zA-Z](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?\.?|[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)(?::[0-9]*)?(?:\/(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*(?:;(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*)*(?:\/(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*(?:;(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*)*)*)?(?:\?(?:[-_.!~*'()a-zA-Z0-9;\/?:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*)?(?:#(?:[-_.!~*'()a-zA-Z0-9;\/?:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*)?/";
         return preg_match($REG_PATTERN, $ValidationData) != false;
@@ -1187,7 +1187,7 @@ class EnviValidator
         }
         if ($this->_typeUrlFormat($ValidationData, $kana)) {
             $a = parse_url($ValidationData);
-            $host = $a["host"];
+            $host = $a['host'];
             if (gethostbyname($host)) {
                 return true;
             }
@@ -1224,9 +1224,9 @@ class EnviValidator
     {
         //プログラマレベルのエラー
         if(is_array($DateList)){
-            isset($DateList["month"]) ? true : trigger_error("Nooption DateList[month] type date", E_USER_ERROR);
-            isset($DateList["day"]) ? true : trigger_error("Nooption DateList[day] type date", E_USER_ERROR);
-            isset($DateList["year"]) ? true : trigger_error("Nooption DateList[year] type date", E_USER_ERROR);
+            isset($DateList['month']) ? true : trigger_error('Nooption DateList[month] type date', E_USER_ERROR);
+            isset($DateList['day']) ? true : trigger_error('Nooption DateList[day] type date', E_USER_ERROR);
+            isset($DateList['year']) ? true : trigger_error('Nooption DateList[year] type date', E_USER_ERROR);
         }
 
         if (!is_array($ValidationData)) {
@@ -1235,22 +1235,22 @@ class EnviValidator
                 $day   = (int)substr($ValidationData, 6, 2);
                 $year  = (int)substr($ValidationData, 0, 4);
             } elseif (strtotime ($ValidationData) != -1) {
-                $month = (int)strftime("%m", strtotime($ValidationData));
-                $day   = (int)strftime("%d", strtotime($ValidationData));
-                $year  = (int)strftime("%Y", strtotime($ValidationData));
+                $month = (int)strftime('%m', strtotime($ValidationData));
+                $day   = (int)strftime('%d', strtotime($ValidationData));
+                $year  = (int)strftime('%Y', strtotime($ValidationData));
             } else {
                 return false;
             }
         } elseif((is_array($ValidationData)) ?
             (
-                isset($ValidationData[$DateList["month"]]) &&
-                isset($ValidationData[$DateList["day"]]) &&
-                isset($ValidationData[$DateList["year"]])
+                isset($ValidationData[$DateList['month']]) &&
+                isset($ValidationData[$DateList['day']]) &&
+                isset($ValidationData[$DateList['year']])
             ) : false
         ) {
-            $month = (int)$ValidationData[$DateList["month"]];
-            $day   = (int)$ValidationData[$DateList["day"]];
-            $year  = (int)$ValidationData[$DateList["year"]];
+            $month = (int)$ValidationData[$DateList['month']];
+            $day   = (int)$ValidationData[$DateList['day']];
+            $year  = (int)$ValidationData[$DateList['year']];
         } else {
             return false;
         }
@@ -1271,12 +1271,12 @@ class EnviValidator
     {
         //プログラマレベルのエラー
         if(is_array($TimeFormat)){
-            isset($TimeFormat["hour"]) ? true : trigger_error("Nooption TimeFormat[hour] type time", E_USER_ERROR);
-            isset($TimeFormat["minute"]) ? true : trigger_error("Nooption TimeFormat[minute] type time", E_USER_ERROR);
-            isset($TimeFormat["second"]) ? true : trigger_error("Nooption TimeFormat[second] type time", E_USER_ERROR);
+            isset($TimeFormat['hour']) ? true : trigger_error('Nooption TimeFormat[hour] type time', E_USER_ERROR);
+            isset($TimeFormat['minute']) ? true : trigger_error('Nooption TimeFormat[minute] type time', E_USER_ERROR);
+            isset($TimeFormat['second']) ? true : trigger_error('Nooption TimeFormat[second] type time', E_USER_ERROR);
         }else{
             $format = array(2=>2,4=>4,6=>6);
-            isset($format[$TimeFormat]) ? true : trigger_error("Undefined option selected type time", E_USER_ERROR);
+            isset($format[$TimeFormat]) ? true : trigger_error('Undefined option selected type time', E_USER_ERROR);
         }
 
         if (!is_array($ValidationData) && !is_array($TimeFormat)) {
@@ -1289,14 +1289,14 @@ class EnviValidator
             $second = $len == 6 ? (int)substr($ValidationData, 4, 2) : 0;
         } elseif ((is_array($ValidationData) && is_array($TimeFormat)) ?
             (
-                isset($ValidationData[$TimeFormat["hour"]]) &&
-                isset($ValidationData[$TimeFormat["minute"]]) &&
-                isset($ValidationData[$TimeFormat["second"]])
+                isset($ValidationData[$TimeFormat['hour']]) &&
+                isset($ValidationData[$TimeFormat['minute']]) &&
+                isset($ValidationData[$TimeFormat['second']])
             ) : false
         ) {
-            $hour     = (int)$ValidationData[$TimeFormat["hour"]];
-            $minute   = (int)$ValidationData[$TimeFormat["minute"]];
-            $second   = (int)$ValidationData[$TimeFormat["second"]];
+            $hour     = (int)$ValidationData[$TimeFormat['hour']];
+            $minute   = (int)$ValidationData[$TimeFormat['minute']];
+            $second   = (int)$ValidationData[$TimeFormat['second']];
         } else {
             return false;
         }
