@@ -473,115 +473,115 @@ class EnviLogWriter
      */
     private function _writeValiableLog($mode = 'request', $res = array())
     {
-        if ($this->_system_conf[$mode]["value_track_{$mode}_type"][0]) {
+        if ($this->_system_conf[$mode]['value_track_'.$mode.'_type'][0]) {
             $md5list = explode(',', $this->_system_conf[$mode]['value_md5_server_key']);
             if ($this->_system_conf[$mode]['flag_limit_server_track']) {
                 $limit = explode(',', $this->_system_conf[$mode]['value_server_track_key']);
             } else {
                 $limit = false;
             }
-            if ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_TEXT) {
+            if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
                 $res['%s'] = $this->_parseArrayList($_SERVER, $md5list, $limit);
-            } elseif ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_SERIALIZE || $this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_XML) {
+            } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE || $this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
                 $res['_SERVER'] = $this->_getArrayList($_SERVER, $md5list, $limit);
             }
         }
-        if ($this->_system_conf[$mode]["value_track_{$mode}_type"][1]) {
+        if ($this->_system_conf[$mode]['value_track_'.$mode.'_type'][1]) {
             $md5list = explode(',', $this->_system_conf[$mode]['value_md5_cookie_key']);
             if ($this->_system_conf[$mode]['flag_limit_cookie_track']) {
                 $limit = explode(',', $this->_system_conf[$mode]['value_cookie_track_key']);
             } else {
                 $limit = false;
             }
-            if ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_TEXT) {
+            if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
                 $res['%c'] = $this->_parseArrayList($_COOKIE, $md5list, $limit);
-            } elseif ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_SERIALIZE || $this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_XML) {
+            } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE || $this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
                 $res['_COOKIE'] = $this->_getArrayList($_COOKIE, $md5list, $limit);
             }
         }
-        if ($this->_system_conf[$mode]["value_track_{$mode}_type"][2]) {
+        if ($this->_system_conf[$mode]['value_track_'.$mode.'_type'][2]) {
             $md5list = explode(',', $this->_system_conf[$mode]['value_md5_env_key']);
             if ($this->_system_conf[$mode]['flag_limit_env_track']) {
                 $limit = explode(',', $this->_system_conf[$mode]['value_envtrack_key']);
             } else {
                 $limit = false;
             }
-            if ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_TEXT) {
+            if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
                 $res['%e'] = $this->_parseArrayList($_ENV, $md5list, $limit);
-            } elseif ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_SERIALIZE || $this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_XML) {
+            } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE || $this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
                 $res['_ENV'] = $this->_getArrayList($_ENV, $md5list, $limit);
             }
         }
-        if ($this->_system_conf[$mode]["value_track_{$mode}_type"][3]) {
+        if ($this->_system_conf[$mode]['value_track_'.$mode.'_type'][3]) {
             $md5list = explode(',', $this->_system_conf[$mode]['value_md5_post_key']);
             if ($this->_system_conf[$mode]['flag_limit_post_track']) {
                 $limit = explode(',', $this->_system_conf[$mode]['value_post_track_key']);
             } else {
                 $limit = false;
             }
-            if ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_TEXT) {
+            if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
                 $res['%P'] = $this->_parseArrayList($_POST, $md5list, $limit);
-            } elseif ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_SERIALIZE || $this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_XML) {
+            } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE || $this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
                 $res['_POST'] = $this->_getArrayList($_POST, $md5list, $limit);
             }
         }
-        if ($this->_system_conf[$mode]["value_track_{$mode}_type"][4]) {
+        if ($this->_system_conf[$mode]['value_track_'.$mode.'_type'][4]) {
             $md5list = explode(',', $this->_system_conf[$mode]['value_md5_get_key']);
             if ($this->_system_conf[$mode]['flag_limit_get_track']) {
                 $limit = explode(',', $this->_system_conf[$mode]['value_get_track_key']);
             } else {
                 $limit = false;
             }
-            if ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_TEXT) {
+            if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
                 $res['%q'] = $this->_parseArrayList($_GET, $md5list, $limit);
-            } elseif ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_SERIALIZE || $this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_XML) {
+            } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE || $this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
                 $res['_GET'] = $this->_getArrayList($_GET, $md5list, $limit);
             }
         }
-        if ($this->_system_conf[$mode]["value_track_{$mode}_type"][5]) {
+        if ($this->_system_conf[$mode]['value_track_'.$mode.'_type'][5]) {
             $md5list = explode(',', $this->_system_conf[$mode]['value_md5_file_key']);
             if ($this->_system_conf[$mode]['flag_limit_file_track']) {
                 $limit = explode(',', $this->_system_conf[$mode]['value_file_track_key']);
             } else {
                 $limit = false;
             }
-            if ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_TEXT) {
+            if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
                 $res['%F'] = $this->_parseArrayList($_FILES, $md5list, $limit);
-            } elseif ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_SERIALIZE || $this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_XML) {
+            } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE || $this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
                 $res['_FILES'] = $this->_getArrayList($_FILES, $md5list, $limit);
             }
         }
-        if ($this->_system_conf[$mode]["value_track_{$mode}_type"][6]) {
+        if ($this->_system_conf[$mode]['value_track_'.$mode.'_type'][6]) {
             $md5list = explode(',', $this->_system_conf[$mode]['value_md5_session_key']);
             if ($this->_system_conf[$mode]['flag_limit_session_track']) {
                 $limit = explode(',', $this->_system_conf[$mode]['value_session_track_key']);
             } else {
                 $limit = false;
             }
-            if ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_TEXT) {
+            if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
                 $res['%S'] = $this->_parseArrayList($_SESSION, $md5list, $limit);
-            } elseif ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_SERIALIZE || $this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_XML) {
+            } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE || $this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
                 $res['_SESSION'] = $this->_getArrayList($_GET, $md5list, $limit);
             }
         }
-        if ($this->_system_conf[$mode]["value_track_{$mode}_type"][7]) {
+        if ($this->_system_conf[$mode]['value_track_'.$mode.'_type'][7]) {
             $md5list = explode(',', $this->_system_conf[$mode]['value_md5_globals_key']);
             if ($this->_system_conf[$mode]['flag_limit_globals_track']) {
                 $limit = explode(',', $this->_system_conf[$mode]['value_globals_track_key']);
             } else {
                 $limit = false;
             }
-            if ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_TEXT) {
+            if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
                 $res['%g'] = $this->_parseArrayList($GLOBALS, $md5list, $limit);
-            } elseif ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_SERIALIZE || $this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_XML) {
+            } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE || $this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
                 $res['GLOBALS'] = $this->_getArrayList($GLOBALS, $md5list, $limit);
             }
         }
-        if ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_TEXT) {
-            $message = str_replace(array_keys($res), array_values($res), $this->_system_conf['system']["value_{$mode}_log_format"]);
-        } elseif ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_SERIALIZE) {
+        if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
+            $message = str_replace(array_keys($res), array_values($res), $this->_system_conf['system']['value_'.$mode.'_log_format']);
+        } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE) {
             $message = urlencode(serialize($res));
-        } elseif ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_XML) {
+        } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
             $res = array($mode => $res);
             $message = $this->_xmlCreate($res);
         }
@@ -631,9 +631,9 @@ class EnviLogWriter
         } else {
             $res['format_time'] = $time_array[$res['time']];
             $res['level']       = $this->_log_level[$res['level']];
-            if ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_SERIALIZE) {
+            if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE) {
                 $message = urlencode(serialize($res));
-            } elseif ($this->_system_conf['system']["value_{$mode}_log_type"] === self::PURSER_XML) {
+            } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
                 $res = array('error' => $res);
                 $message = $this->_xmlCreate($res);
             }
@@ -670,31 +670,31 @@ class EnviLogWriter
             $res = $message."\n";
         }
 
-        if ($this->_system_conf['system']["value_{$mode}_logging_type"][0] === 1) {
+        if ($this->_system_conf['system']['value_'.$mode.'_logging_type'][0] === 1) {
             if (!$file_name) {
-                $file_name = strftime($this->_system_conf['file']["value_{$mode}_log_file_name"]);
+                $file_name = strftime($this->_system_conf['file']['value_'.$mode.'_log_file_name']);
             }
             // ファイル
             error_log(
                 $res,
                 3,
-                $this->_system_conf['file']["value_{$mode}_log_file_path"]
+                $this->_system_conf['file']['value_'.$mode.'_log_file_path']
                 .$file_name
             );
-            if ($this->_system_conf['file']["value_{$mode}_log_rotate_size"] !== 0 && $logging_count[$mode] === 0) {
+            if ($this->_system_conf['file']['value_'.$mode.'_log_rotate_size'] !== 0 && $logging_count[$mode] === 0) {
                 // ログローテート
-                $this->_logRotate($this->_system_conf['file']["value_{$mode}_log_file_path"]
+                $this->_logRotate($this->_system_conf['file']['value_'.$mode.'_log_file_path']
                     .$file_name,
-                    $this->_system_conf['file']["value_{$mode}_log_rotate_size"]
+                    $this->_system_conf['file']['value_'.$mode.'_log_rotate_size']
                 );
             }
         }
 
-        if ($this->_system_conf['system']["value_{$mode}_logging_type"][1] === 1) {
+        if ($this->_system_conf['system']['value_'.$mode.'_logging_type'][1] === 1) {
             // DB
             $ck = $this->_dbi->autoExecute(
-                $this->_system_conf['db']["value_{$mode}_log_table_name"],
-                array($this->_system_conf['db']["value_{$mode}_log_column_name"] => $res)
+                $this->_system_conf['db']['value_'.$mode.'_log_table_name'],
+                array($this->_system_conf['db']['value_'.$mode.'_log_column_name'] => $res)
             );
 
             if (DB::isError($ck)) {
@@ -702,21 +702,21 @@ class EnviLogWriter
             }
         }
 
-        if ($this->_system_conf['system']["value_{$mode}_logging_type"][2] === 1) {
+        if ($this->_system_conf['system']['value_'.$mode.'_logging_type'][2] === 1) {
             // mail
-            mb_send_mail($this->_system_conf['mail']["value_{$mode}_log_mail_to"],
-                $this->_system_conf['mail']["value_{$mode}_log_mail_subject"],
+            mb_send_mail($this->_system_conf['mail']['value_'.$mode.'_log_mail_to'],
+                $this->_system_conf['mail']['value_'.$mode.'_log_mail_subject'],
                 $res,
-                'from:'.$this->_system_conf['mail']["value_{$mode}_log_mail_from"]
+                'from:'.$this->_system_conf['mail']['value_'.$mode.'_log_mail_from']
             );
         }
 
-        if ($this->_system_conf['system']["value_{$mode}_logging_type"][3] === 1) {
+        if ($this->_system_conf['system']['value_'.$mode.'_logging_type'][3] === 1) {
             // 表示
             echo '<b>'.nl2br($res).'</b>';
         }
 
-        if ($this->_system_conf['system']["value_{$mode}_logging_type"][4] === 1) {
+        if ($this->_system_conf['system']['value_'.$mode.'_logging_type'][4] === 1) {
             // システム規定
             error_log($res, 0);
         }
@@ -758,9 +758,9 @@ class EnviLogWriter
             if ($limit === false) {
                 foreach ($array as $key => $value) {
                     if (is_array($value)) {
-                        $res .= "[{$key}]=>".$this->_parseArrayList($value, isset($md5_list[$key]) !== false ? array_keys($value) : array());
+                        $res .= '['.$key.']=>'.$this->_parseArrayList($value, isset($md5_list[$key]) !== false ? array_keys($value) : array());
                     } else {
-                        $res .= "[{$key}]=>"."'".(isset($md5_list[$key]) !== false ? md5($value) : $value)."'";
+                        $res .= '['.$key.']=>'."'".(isset($md5_list[$key]) !== false ? md5($value) : $value)."'";
                     }
                 }
 
@@ -771,9 +771,9 @@ class EnviLogWriter
                     }
 
                     if (is_array($array[$key])) {
-                        $res .= "[{$key}]=>".$this->_parseArrayList($array[$key], isset($md5_list[$key]) !== false ? array_keys($array[$key]) : array());
+                        $res .= '['.$key.']=>'.$this->_parseArrayList($array[$key], isset($md5_list[$key]) !== false ? array_keys($array[$key]) : array());
                     } else {
-                        $res .= "[{$key}]=>"."'".(isset($md5_list[$key]) !== false ? md5($array[$key]) : $array[$key])."'";
+                        $res .= '['.$key.']=>'."'".(isset($md5_list[$key]) !== false ? md5($array[$key]) : $array[$key])."'";
                     }
                 }
             }
@@ -920,19 +920,19 @@ class EnviLogWriter
         foreach ($array as $key => $value) {
             if (is_array($value)) {
                 if ($is_start) {
-                    $res .= "<{$key}>\n";
+                    $res .= '<'.$key.'>\n';
                     $res .= $this->_xmlCreate($value, false);
-                    $res .= "</{$key}>";
+                    $res .= '</'.$key.'>';
                 } else {
                     $res .="<parameter key='".htmlspecialchars($key)."'>";
                     $res .= $this->_xmlCreate($value, false);
-                    $res .= "</{$key}>";
+                    $res .= '</'.$key.'>';
                 }
             } else {
                 if ($is_start) {
-                    $res .= "<{$key}>\n";
+                    $res .= '<'.$key.'>\n';
                     $res .= htmlspecialchars($value);
-                    $res .= "</{$key}>";
+                    $res .= '</'.$key.'>';
                 } else {
                     $res .="<parameter key='".htmlspecialchars($key)."'>";
                     $res .= htmlspecialchars($value);

@@ -136,7 +136,7 @@ class EnviController
         if ($module === NULL) {
             $module = EnviRequest::getThisModule();
         }
-        return Envi()->getConfiguration('SYSTEM', 'use_i18n') ? "{$url}/{$i18n}/{$module}/{$action}" : "{$url}/{$module}/{$action}";
+        return Envi()->getConfiguration('SYSTEM', 'use_i18n') ? $url.'/'.$i18n.'/'.$module.'/'.$action : $url.'/'.$module.'/'.$action;
     }
     /* ----------------------------------------- */
 

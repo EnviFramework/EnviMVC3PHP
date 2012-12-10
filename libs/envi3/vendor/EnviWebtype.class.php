@@ -218,7 +218,7 @@ class EnviWebType
             break;
             case self::VODAFONE:
             //Vodafoneの処理
-                $user_agent = split('[/ ]', $_SERVER['HTTP_USER_AGENT']);
+                $user_agent = explode('/', strtr($_SERVER['HTTP_USER_AGENT'], array(' ' => '/')));
                 $info['b_type'] = 'html';
                 if (isset($_SERVER['HTTP_X_JPHONE_MSNAME'])) {
                     $info['browser'] = $_SERVER['HTTP_X_JPHONE_MSNAME'];
@@ -261,12 +261,19 @@ class EnviWebType
             //DOCOMOの場合
                 $info['uid']     = $_SERVER['REMOTE_ADDR'];
                 $info['b_type']  = 'html';
-                $user_agent      = split('[/ ()]', $_SERVER['HTTP_USER_AGENT']);
+                
+                $user_agent = explode('/', strtr($_SERVER['HTTP_USER_AGENT'], array(
+                    ' ' => '/', 
+                    '（' => '/', 
+                    ')' => '/', 
+                    ';' => '/'
+                    )
+                ));
                 $info['browser'] = $user_agent[1];
                 $info['device']  = $user_agent[2];
                 $info['cash']    = $user_agent[3];
                 if ($info['cash']) {
-                    $info['size'] = substr('$info[cash]', 1) * 1000;
+                    $info['size'] = substr($info[cash], 1) * 1000;
                 } else {
                     $info['size'] = 12000;
                 }
@@ -276,7 +283,9 @@ class EnviWebType
             //EZWEBの場合
                 $info['uid']    = $_SERVER['HTTP_X_UP_SUBNO'];
                 $info['size']   = $_SERVER['HTTP_X_UP_DEVCAP_MAX_PDU'];
-                $user_agent     = split('[- ]', $_SERVER['HTTP_USER_AGENT']);
+                $user_agent = explode('-', strtr($_SERVER['HTTP_USER_AGENT'], array(
+                    ' ' => '-',)
+                ));
                 $info['device'] = $user_agent[1];
                 if (isset($_SERVER['HTTP_X_UP_DEVCAP_MULTIMEDIA'])) {
                     //XHTML端末
@@ -335,7 +344,7 @@ class EnviWebType
             break;
             case self::LMODE:
             //L-modeの場合
-                $user_agent      =  split('[/]', $_SERVER['HTTP_USER_AGENT']);
+                $user_agent      =  explode('/', $_SERVER['HTTP_USER_AGENT']);
                 $info['size']    = $user_agent[5];
                 $info['b_type']  = 'html';
                 $info['browser'] = $user_agent[0];
