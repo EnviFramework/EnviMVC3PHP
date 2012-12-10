@@ -341,7 +341,7 @@ class Envi
             }
             $cache = "<?php\n";
             foreach ($autoload_constant as $v) {
-                $cache .= "include '".$v.";\n";
+                $cache .= "include '".$v."';\n";
             }
             file_put_contents($autoload_constant_cache, $cache);
         }
@@ -950,7 +950,7 @@ class Envi
                 include_once($view_class_path);
                 $view = EnviRequest::getThisModule().'Views';
                 $view = new $view;
-                if (method_exists($action, 'execute'.$action_sf)) {
+                if (method_exists($view, 'execute'.$action_sf)) {
                     $execute        = 'execute'.$action_sf;
                     $setRenderer    = method_exists($view, 'setRenderer'.$action_sf) ? 'setRenderer'.$action_sf : 'setRenderer';
                     $initialize     = method_exists($view, 'initialize'.$action_sf) ? 'initialize'.$action_sf : 'initialize';

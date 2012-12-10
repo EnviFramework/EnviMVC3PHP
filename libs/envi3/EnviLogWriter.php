@@ -665,9 +665,9 @@ class EnviLogWriter
             if (count($message) === 0) {
                 return;
             }
-            $res = join("\n", $message)."\n";
+            $res = join('\n', $message).'\n';
         } else {
-            $res = $message."\n";
+            $res = $message.'\n';
         }
 
         if ($this->_system_conf['system']['value_'.$mode.'_logging_type'][0] === 1) {
@@ -698,7 +698,7 @@ class EnviLogWriter
             );
 
             if (DB::isError($ck)) {
-                error_log('['.date('Y-m-d')."] logWriter Error : Can't autoExecute Log Send.");
+                error_log('['.date('Y-m-d').'] logWriter Error : Can\'t autoExecute Log Send.');
             }
         }
 
@@ -920,19 +920,19 @@ class EnviLogWriter
         foreach ($array as $key => $value) {
             if (is_array($value)) {
                 if ($is_start) {
-                    $res .= '<'.$key.'>\n';
+                    $res .= "<".$key.">\n";
                     $res .= $this->_xmlCreate($value, false);
-                    $res .= '</'.$key.'>';
+                    $res .= "</".$key.">";
                 } else {
                     $res .="<parameter key='".htmlspecialchars($key)."'>";
                     $res .= $this->_xmlCreate($value, false);
-                    $res .= '</'.$key.'>';
+                    $res .= "</".$key.">";
                 }
             } else {
                 if ($is_start) {
-                    $res .= '<'.$key.'>\n';
+                    $res .= "<".$key.">\n";
                     $res .= htmlspecialchars($value);
-                    $res .= '</'.$key.'>';
+                    $res .= "</".$key.">";
                 } else {
                     $res .="<parameter key='".htmlspecialchars($key)."'>";
                     $res .= htmlspecialchars($value);

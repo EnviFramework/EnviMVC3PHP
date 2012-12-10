@@ -57,7 +57,7 @@ class EnviDBInstance
     public function getInstance($db_key)
     {
         if (!isset($this->_system_conf[$db_key])) {
-            throw new EnviException("DB: {$db_key}が存在してません。");
+            throw new EnviException('DB: '.$db_key.'が存在してません。');
         }
         return EnviDB::getConnection($this->_system_conf[$db_key]['params'], $db_key);
     }
@@ -111,7 +111,7 @@ class EnviDB
         } else {
             $dbi = self::getNewConnection($param['dsn'], $param);
         }
-        
+
         if ($param['instance_pool']) {
             self::$connections[$instance_name] = $dbi;
         }
@@ -316,7 +316,7 @@ class EnviDBIBase
                 $pdo_param_type = PDO::PARAM_STR;
             }
             if ($is_string_key) {
-                $pdos->bindValue (":{$key}", $value, $pdo_param_type);
+                $pdos->bindValue (':'.$key, $value, $pdo_param_type);
             } else {
                 $pdos->bindValue ($key+1, $value, $pdo_param_type);
             }
@@ -583,7 +583,7 @@ class EnviDBIBase
                 $arr[] = $value;
             }
             $table_fields = $arr;
-            return "INSERT INTO $table ($names) VALUES ($values)";
+            return 'INSERT INTO '.$table.' ('.$names.') VALUES ('.$values.')';
         case EnviDB::AUTOQUERY_REPLACE:
             $values = '';
             $names = '';
@@ -600,7 +600,7 @@ class EnviDBIBase
                 $arr[] = $value;
             }
             $table_fields = $arr;
-            return "REPLACE INTO $table ($names) VALUES ($values)";
+            return 'REPLACE INTO '.$table.' ('.$names.') VALUES ('.$values.')';
         case EnviDB::AUTOQUERY_UPDATE:
             $set = '';
             foreach ($table_fields as $key => $value) {
@@ -610,12 +610,12 @@ class EnviDBIBase
                 } else {
                     $set .= ',';
                 }
-                $set .= "`$key` = ?";
+                $set .= '`$key` = ?';
                 $arr[] = $value;
             }
-            $sql = "UPDATE $table SET $set";
+            $sql = 'UPDATE '.$table.' SET '.$set.'{}';
             if ($where) {
-                $sql .= " WHERE $where";
+                $sql .= ' WHERE '.$where;
             }
             $table_fields = $arr;
             return $sql;
