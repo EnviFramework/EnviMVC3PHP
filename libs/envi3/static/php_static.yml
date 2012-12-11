@@ -23,11 +23,11 @@ VulnerabilityFunction:
   -
     Name: spliti
     Severity: High
-    Description: spliti()は PHP 5.3.0以降で 非推奨となりました。正規表現を使用しない場合は、explode()を、やむおえず、正規表現を使用する場合は、 preg_split()を使用してください。
+    Description: spliti()は PHP 5.3.0以降で 非推奨となりました。正規表現を使用しない場合は、explode()を、やむをえず、正規表現を使用する場合は、 preg_split()を使用してください。
   -
     Name: split
     Severity: High
-    Description: split()は PHP 5.3.0以降 で 非推奨となりました。正規表現を使用しない場合は、explode()を、やむおえず、正規表現を使用する場合は、 preg_split()を使用してください。
+    Description: split()は PHP 5.3.0以降 で 非推奨となりました。正規表現を使用しない場合は、explode()を、やむをえず、正規表現を使用する場合は、 preg_split()を使用してください。
 
   -
     Name: call_user_method
@@ -68,8 +68,6 @@ VulnerabilityFunction:
     Name: session_register
     Severity: High
     Description: session_register()は PHP 5.3.0 以降で 非推奨となりました。$_SESSIONを使用してください。
-    
-
   -
     Name: session_unregister
     Severity: High
@@ -129,10 +127,6 @@ VulnerabilityFunction:
     Severity: High
     Description: どうしても、OSコマンドを実行する際は、セキュリティリスクを理解し、適切に使用してください。
   -
-    Name: file_exists
-    Severity: Low
-    Description: ファイルの存在確認をするだけなら、is_file()を使用して下さい。
-  -
     Name: oci_connect
     Severity: Medium
     Description: PDOやその他ベンダーから用意されているDB接続方法を使用してください。
@@ -153,10 +147,16 @@ VulnerabilityFunction:
   -
     Name: is_a
     Severity: Medium
-    Description: is_a()よりも、instanceofを使用してください。
-    
-  -
-    Name: str_replace
-    Severity: Low
-    Description: str_replace()より早い、strtr()の使用を検討してください。
+    Description: is_a()よりもよい代替手段、instanceofを使用してください。
   
+  -
+    Name: array_key_exists
+    Severity: Low
+    Description: array_key_exists()よりもよい代替手段、isset()の使用を検討してください。
+  -
+    Name: file_exists
+    Severity: Low
+    Description: ファイルの存在確認をするだけなら、is_file()を使用して下さい。
+    
+    
+    
