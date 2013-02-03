@@ -56,7 +56,7 @@ class EnviSmartySecureRenderer
         $this->Smarty->etc_dir      = $this->_system_conf['DIRECTORY']['templateetc'];
         $this->Smarty->config_dir   = $this->_system_conf['DIRECTORY']['config'];
         $this->Smarty->template_dir = $this->_system_conf['DIRECTORY']['modules'].$module_dir.DIRECTORY_SEPARATOR.'templates';
-        $this->Smarty->default_modifiers('escape');
+        $this->Smarty->default_modifiers = array('escape');
         $this->Smarty->assign('Envi', Envi::singleton());
         $this->Smarty->assign('base_url', Envi::singleton()->getBaseUrl());
     }

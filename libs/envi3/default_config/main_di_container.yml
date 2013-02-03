@@ -29,7 +29,7 @@ all:
 #      ## ファイルの実態
 #      resource: "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>EnviWebtype.php"
 #      ## クラス名
-#      class_name: "DBInstance"
+#      class_name: "EnviWebtype"
 #      ## シングルトン化するか
 #      singleton: true
 #    router:
