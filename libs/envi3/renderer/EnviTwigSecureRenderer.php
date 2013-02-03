@@ -34,7 +34,7 @@ require ENVI_BASE_DIR."..{$ds}Twig{$ds}Autoloader.php";
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
  */
-class EnviTwigRenderer
+class EnviTwigSecureRenderer
 {
     public $_system_conf;
     public $_compile_id;

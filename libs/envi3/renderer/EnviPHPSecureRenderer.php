@@ -31,7 +31,7 @@
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
  */
-class EnviPHPRenderer
+class EnviPHPSecureRenderer
 {
     private $_system_conf;
     private $parameter;
