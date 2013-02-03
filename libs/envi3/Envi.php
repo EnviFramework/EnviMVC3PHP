@@ -1021,7 +1021,7 @@ class Envi
             foreach ($extension as $v) {
                 if (isset($v['constant']) && $v['constant'] === true) {
                     $v = $v['class']['resource'];
-                    $cache .= "include_once ".$v."';\n";
+                    $cache .= "include_once '".$v."';\n";
                 }
             }
             file_put_contents($load_extension_constant, $cache);

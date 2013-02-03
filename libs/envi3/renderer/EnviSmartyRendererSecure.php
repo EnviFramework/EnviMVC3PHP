@@ -35,10 +35,11 @@ require 'ArtisanSmarty.class.php';
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
  */
-class EnviSmartyRenderer extends Smarty
+class EnviSmartyRenderer
 {
     public $_system_conf;
     public $_compile_id;
+    public $Smarty;
 
     public function __construct()
     {
@@ -50,13 +51,14 @@ class EnviSmartyRenderer extends Smarty
 
     public function setting($module_dir)
     {
-        $this->compile_dir  = $this->_system_conf['DIRECTORY']['templatec'];
-        $this->etc_dir      = $this->_system_conf['DIRECTORY']['templateetc'];
-        $this->config_dir   = $this->_system_conf['DIRECTORY']['config'];
-        $this->template_dir = $this->_system_conf['DIRECTORY']['modules'].$module_dir.DIRECTORY_SEPARATOR.'templates';
-        $this->default_modifiers('escape');
-        $this->assign('Envi', Envi::singleton());
-        $this->assign('base_url', Envi::singleton()->getBaseUrl());
+        $this->Smarty = new Smarty;
+        $this->Smarty->compile_dir  = $this->_system_conf['DIRECTORY']['templatec'];
+        $this->Smarty->etc_dir      = $this->_system_conf['DIRECTORY']['templateetc'];
+        $this->Smarty->config_dir   = $this->_system_conf['DIRECTORY']['config'];
+        $this->Smarty->template_dir = $this->_system_conf['DIRECTORY']['modules'].$module_dir.DIRECTORY_SEPARATOR.'templates';
+        $this->Smarty->default_modifiers('escape');
+        $this->Smarty->assign('Envi', Envi::singleton());
+        $this->Smarty->assign('base_url', Envi::singleton()->getBaseUrl());
     }
 
     /**
@@ -68,26 +70,26 @@ class EnviSmartyRenderer extends Smarty
      */
     public function setAttribute($name, $value)
     {
-        $this->assign($name, $value);
+        $this->Smarty->assign($name, $value);
     }
 
     public function display($file_name, $cache_id  = NULL, $dummy2 = NULL)
     {
-        parent::display($file_name, $cache_id, $this->_compile_id);
+        $this->Smarty->display($file_name, $cache_id, $this->_compile_id);
     }
 
     public function is_cached($file_name, $cache_id  = NULL, $dummy2 = NULL)
     {
-        return parent::is_cached($file_name, $cache_id, $this->_compile_id);
+        return $this->Smarty->is_cached($file_name, $cache_id, $this->_compile_id);
     }
 
     public function clear_cache($file_name, $cache_id  = NULL, $dummy2 = NULL)
     {
-        return parent::clear_cache($file_name, $cache_id, $this->_compile_id);
+        return $this->Smarty->clear_cache($file_name, $cache_id, $this->_compile_id);
     }
 
     public function displayRef($file_name, $cache_id  = NULL, $dummy2 = NULL)
     {
-        return parent::fetch($file_name, $cache_id, $this->_compile_id);
+        return $this->Smarty->fetch($file_name, $cache_id, $this->_compile_id);
     }
 }
