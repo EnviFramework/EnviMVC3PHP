@@ -20,13 +20,16 @@
 /**
  * ArtisanSmarty escape modifier plugin
  *
- * °ìÉô¤Î¥¨¥¹¥±¡¼¥×ÊıË¡¤ò¥ª¥ê¥¸¥Ê¥ë¤«¤éÊÑ¹¹
- * @param string $string ¥¨¥ó¥³¡¼¥É¤·¤¿¤¤Ê¸»úÎó
+ * ä¸€éƒ¨ã®ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—æ–¹æ³•ã‚’ã‚ªãƒªã‚¸ãƒŠãƒ«ã‹ã‚‰å¤‰æ›´
+ * @param string $string ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã—ãŸã„æ–‡å­—åˆ—
  * @param string $esc_type html|htmlall|url|quotes|hex|hexentity|javascript
  * @return string
  */
 function smarty_modifier_escape($string, $esc_type = 'html', $char_set = NULL)
 {
+    if (!is_string($string)) {
+        return $string;
+    }
     if (empty($char_set)) {
         $char_set = mb_internal_encoding();
     }
@@ -42,7 +45,7 @@ function smarty_modifier_escape($string, $esc_type = 'html', $char_set = NULL)
 
         case 'urlpathinfo':
             return str_replace('%2F','/',rawurlencode($string));
-            
+
         case 'quotes':
             // escape unescaped single quotes
             return preg_replace("%(?<!\\\\)'%", "\\'", $string);
@@ -54,7 +57,7 @@ function smarty_modifier_escape($string, $esc_type = 'html', $char_set = NULL)
                 $return .= '%' . bin2hex($string[$x]);
             }
             return $return;
-            
+
         case 'hexentity':
             $return = '';
             for ($x=0; $x < strlen($string); $x++) {
@@ -72,11 +75,11 @@ function smarty_modifier_escape($string, $esc_type = 'html', $char_set = NULL)
         case 'javascript':
             // escape quotes and backslashes, newlines, etc.
             return strtr($string, array('\\'=>'\\\\',"'"=>"\\'",'"'=>'\\"',"\r"=>'\\r',"\n"=>'\\n','</'=>'<\/'));
-            
+
         case 'mail':
             // safe way to display e-mail address on a web page
             return str_replace(array('@', '.'),array('&#64;', '&#46;'), $string);
-            
+
         case 'nonstd':
            // escape non-standard chars, such as ms document quotes
            $_res = '';
