@@ -610,10 +610,10 @@ class EnviDBIBase
                 } else {
                     $set .= ',';
                 }
-                $set .= '`$key` = ?';
+                $set .= '`'.$key.'` = ?';
                 $arr[] = $value;
             }
-            $sql = 'UPDATE '.$table.' SET '.$set.'{}';
+            $sql = 'UPDATE '.$table.' SET '.$set.' ';
             if ($where) {
                 $sql .= ' WHERE '.$where;
             }
