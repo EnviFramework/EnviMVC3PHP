@@ -82,6 +82,7 @@ class EnviDB
     const AUTOQUERY_INSERT = 1;
     const AUTOQUERY_UPDATE = 2;
     const AUTOQUERY_REPLACE = 3;
+    const AUTOQUERY_INSERT_IGNORE = 4;
 
     private static $connections = array();
 
@@ -584,6 +585,23 @@ class EnviDBIBase
             }
             $table_fields = $arr;
             return 'INSERT INTO '.$table.' ('.$names.') VALUES ('.$values.')';
+        case EnviDB::AUTOQUERY_INSERT_IGNORE:
+            $values = '';
+            $names = '';
+            foreach ($table_fields as $key => $value) {
+                $key = trim($key);
+                if ($first) {
+                    $first = false;
+                } else {
+                    $names .= ',';
+                    $values .= ',';
+                }
+                $names .= '`'.$key.'`';
+                $values .= '?';
+                $arr[] = $value;
+            }
+            $table_fields = $arr;
+            return 'INSERT IGNORE INTO '.$table.' ('.$names.') VALUES ('.$values.')';
         case EnviDB::AUTOQUERY_REPLACE:
             $values = '';
             $names = '';
