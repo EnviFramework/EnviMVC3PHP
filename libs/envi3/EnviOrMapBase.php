@@ -84,7 +84,7 @@ abstract class EnviOrMapBase
         $dbi = $con ? $con : extension()->DBI()->getInstance($this->default_instance_name);
 
         if (!isset($this->_from_hydrate[$pkeys[0]])) {
-            $dbi->autoExecute($table_name, $this->to_save, DB::AUTOQUERY_INSERT);
+            $dbi->autoExecute($table_name, $this->to_save, EnviDB::AUTOQUERY_INSERT);
             if (!isset($this->to_save[$pkeys[0]])) {
                 $this->to_save[$pkeys[0]] = $dbi->lastInsertId();
             }
@@ -102,7 +102,7 @@ abstract class EnviOrMapBase
             $sql .= " {$and} {$v}=".$dbi->quoteSmart($this->_from_hydrate[$v]);
             $and = ' AND ';
         }
-        $dbi->autoExecute($table_name, $this->to_save, DB::AUTOQUERY_UPDATE, $sql);
+        $dbi->autoExecute($table_name, $this->to_save, EnviDB::AUTOQUERY_UPDATE, $sql);
         $this->_from_hydrate = $this->to_save;
         $this->_is_modify = false;
     }
