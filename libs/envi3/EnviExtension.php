@@ -82,20 +82,7 @@ class EnviExtension
         }
         $class_name = $this->configuration[$name]['class']['class_name'];
 
-        if (!isset($this->configuration[$name]['class']['singleton']) ||
-            !$this->configuration[$name]['class']['singleton']) {
-            if (!isset($this->extensions[$name])) {
-                include_once $this->configuration[$name]['class']['resource'];
-                $this->extensions[$name] = array();
-            }
-            $c = count($this->extensions[$name]);
-            $this->extensions[$name][$c] = new $class_name(
-                Envi::singleton()->parseYml(
-                    basename($this->configuration[$name]['router']['resource']),
-                    dirname($this->configuration[$name]['router']['resource']).DIRECTORY_SEPARATOR)
-            );
-            return $this->extensions[$name][$c];
-        } elseif (!isset($this->extensions[$name])) {
+        if (!isset($this->extensions[$name])) {
             include_once $this->configuration[$name]['class']['resource'];
             $this->extensions[$name] = new $class_name(
                 Envi::singleton()->parseYml(
@@ -103,6 +90,10 @@ class EnviExtension
                     dirname($this->configuration[$name]['router']['resource']).DIRECTORY_SEPARATOR
                 )
             );
+        }
+        if (!isset($this->configuration[$name]['class']['singleton']) ||
+            !$this->configuration[$name]['class']['singleton']) {
+            return clone $this->extensions[$name];
         }
         return $this->extensions[$name];
     }
