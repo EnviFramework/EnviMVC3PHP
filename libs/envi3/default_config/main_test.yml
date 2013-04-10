@@ -9,10 +9,10 @@ all:
     dirs:
       # テストファイルのディレクトリ
 
-      common: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.'libsTest'.DIRECTORY_SEPARATOR.'commonTest'.DIRECTORY_SEPARATOR; ?>
-      controller: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.'libsTest'.DIRECTORY_SEPARATOR.'controllerTest'.DIRECTORY_SEPARATOR; ?>
-      constant: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.'libsTest'.DIRECTORY_SEPARATOR.'constantTest'.DIRECTORY_SEPARATOR; ?>
-      models: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.'libsTest'.DIRECTORY_SEPARATOR.'modelsTest'.DIRECTORY_SEPARATOR; ?>
+      common: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.'libsTest'.DIRECTORY_SEPARATOR.'commonTest'.DIRECTORY_SEPARATOR; ?>"
+      controller: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.'libsTest'.DIRECTORY_SEPARATOR.'controllerTest'.DIRECTORY_SEPARATOR; ?>"
+      constant: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.'libsTest'.DIRECTORY_SEPARATOR.'constantTest'.DIRECTORY_SEPARATOR; ?>"
+      models: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.'libsTest'.DIRECTORY_SEPARATOR.'modelsTest'.DIRECTORY_SEPARATOR; ?>"
 
 
   app:
