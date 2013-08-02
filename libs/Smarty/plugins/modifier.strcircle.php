@@ -39,4 +39,3 @@ function smarty_modifier_strcircle($str,$partition=1,$left_delimiter="",$right_d
 	return $res;
 }
 
-?>

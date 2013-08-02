@@ -131,6 +131,7 @@ class EnviDB
             }
             return $dbi;
         } catch (exception $e) {
+            throw $e;
             return false;
         }
     }
@@ -657,13 +658,14 @@ class EnviDBIBase
         if (is_array($dsn)) {
             $username = $dsn['username'];
             $password = $dsn['password'];
-            $dsn = $dsn['phptype'].':dbname='.$dsn['database'].';host='.$dsn['hostspec'];
+            $dsn_key = $dsn['phptype'].':dbname='.$dsn['database'].';host='.$dsn['hostspec'];
             if (isset($dsn['charset']) && strlen($dsn['charset'])) {
-                $dsn .= ';charset='.$dsn['charset'];
+                $dsn_key .= ';charset='.$dsn['charset'];
             }
             if (isset($dsn['port']) && strlen($dsn['port'])) {
-                $dsn .= ';port='.$dsn['port'];
+                $dsn_key .= ';port='.$dsn['port'];
             }
+            $dsn = $dsn_key;
         }
         $this->PDO = new PDO($dsn, $username, $password, $driver_options);
         // エラーモードを修正する

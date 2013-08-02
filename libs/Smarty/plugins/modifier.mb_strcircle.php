@@ -30,7 +30,8 @@
  * @subpackage plugins
 */
 function smarty_modifier_mb_strcircle($str,$partition=1,$left_delimiter="",$right_delimiter="",$encoding="default")
-	$counter=mb_strlen($str);
+{
+	$counter = mb_strlen($str);
 	$i=0;
 	switch(strtolower($encoding)){
 		case "default":
@@ -50,4 +51,3 @@ function smarty_modifier_mb_strcircle($str,$partition=1,$left_delimiter="",$righ
 	}
 	return $res;
 }
-?>
