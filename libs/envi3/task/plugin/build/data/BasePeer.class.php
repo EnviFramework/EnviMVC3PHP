@@ -42,7 +42,7 @@ class Base%%class_name%%Peer
      * @var         string
      */
     protected static $table_name = '%%table_name%%';
-    
+
     /**
      * クエリリスト
      *
@@ -50,8 +50,8 @@ class Base%%class_name%%Peer
      * @var         array
      */
     protected static $queries = array();
-    
-    
+
+
     /**
      * +-- Suffix対応でクエリを実行する
      *
@@ -70,13 +70,13 @@ class Base%%class_name%%Peer
         }
         $dbi = $con ? $con : extension()->DBI()->getInstance('%%instance_name%%');
         $sql = self::getReplacedSQL(%%class_name%%Peer::$queries[$query_key], $bind_array, $suffix);
-        
-        
+
+
         return $dbi->query($sql, $bind_array);
     }
     /* ----------------------------------------- */
-    
-    
+
+
     /**
      * +-- Suffix対応で一行抽出する
      *
@@ -95,18 +95,21 @@ class Base%%class_name%%Peer
         }
         $dbi = $con ? $con : extension()->DBI()->getInstance('%%instance_name%%');
         $sql = self::getReplacedSQL(%%class_name%%Peer::$queries[$query_key], $bind_array, $suffix);
-        
-        
+
+
         $res = $dbi->getRow($sql, $bind_array);
         if (!$res) {
             return false;
         }
         $ormap = new %%class_name%%;
         $ormap->hydrate($res);
+        if ($suffix !== NULL) {
+            $ormap->setSuffix($suffix);
+        }
         return $ormap;
     }
     /* ----------------------------------------- */
-    
+
 
     /**
      * +-- Suffix対応で複数行抽出する
@@ -126,8 +129,8 @@ class Base%%class_name%%Peer
         }
         $dbi = $con ? $con : extension()->DBI()->getInstance('%%instance_name%%');
         $sql = self::getReplacedSQL(%%class_name%%Peer::$queries[$query_key], $bind_array, $suffix);
-        
-        
+
+
         $res = $dbi->getAll($sql, $bind_array);
         if (!$res) {
             return array();
@@ -135,11 +138,14 @@ class Base%%class_name%%Peer
         foreach ($res as $key => $item) {
             $res[$key] = new %%class_name%%;
             $res[$key]->hydrate($item);
+            if ($suffix !== NULL) {
+                $res[$key]->setSuffix($suffix);
+            }
         }
         return $res;
     }
     /* ----------------------------------------- */
-    
+
     /**
      * +-- 複数行抽出する
      *
@@ -155,7 +161,7 @@ class Base%%class_name%%Peer
         return self::retrieveAllWithSuffix($query_key, $bind_array, NULL, $con);
     }
     /* ----------------------------------------- */
-    
+
     /**
      * +-- 一行抽出する
      *
@@ -171,7 +177,7 @@ class Base%%class_name%%Peer
         return self::retrieveWithSuffix($query_key, $bind_array, NULL, $con);
     }
     /* ----------------------------------------- */
-    
+
     /**
      * +-- SQLを実行する
      *
@@ -187,8 +193,8 @@ class Base%%class_name%%Peer
         return self::queryWithSuffix($query_key, $bind_array, NULL, $con);
     }
     /* ----------------------------------------- */
-    
-    
+
+
     /**
      * +-- PKで抽出
      *
@@ -211,7 +217,7 @@ class Base%%class_name%%Peer
         return $ormap;
     }
     /* ----------------------------------------- */
-    
+
     /**
      * +-- $sqlの__TABLE__を正しいテーブル名に置き換えて、返す。
      *
@@ -234,8 +240,8 @@ class Base%%class_name%%Peer
             unset($bind_array[$column]);
             $add_query_str = '';
             foreach ($value as $key => $item) {
-                $add_query_str .= ",:{$column}-{$key}";
-                $bind_array["{$column}-{$key}"] = $item;
+                $add_query_str .= ",:{$column}_mul_{$key}";
+                $bind_array["{$column}_mul_{$key}"] = $item;
             }
             $sql = mb_ereg_replace(":{$column}([^a-z0-9A=Z])", substr($add_query_str, 1)."\\1", $sql);
         }

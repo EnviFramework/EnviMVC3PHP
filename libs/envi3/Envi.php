@@ -293,15 +293,15 @@ class Envi
     const COMMIT         = 'COMMIT';
     const NONE           = 'NONE';
 
-    private static $app_key;
-    private $_system_conf;
-    private $_i18n = array();
+    protected static $app_key;
+    protected $_system_conf;
+    protected $_i18n = array();
     public $module_dir;
     public $autoload_dirs;
-    private static $instance;
+    protected static $instance;
     public static $debug;
 
-    private $is_shutDown;
+    protected $is_shutDown;
 
     public $auto_load_classes;
 
@@ -313,7 +313,7 @@ class Envi
      * @param boolean $debug OPTIONAL:false
      * @return void
      */
-    private function __construct($app, $debug = false)
+    protected function __construct($app, $debug = false)
     {
         self::$debug     = $debug;
         self::$app_key   = $app;
@@ -849,7 +849,7 @@ class Envi
             // アクション開始
             if ($is_first ? $action->$isPrivate() : false) {
                 // privateなアクションかどうか
-                throw new Envi404Exception('this is private action', 20000);
+                throw new Envi404Exception('this is protected action', 20000);
             } elseif ($is_first ? $action->$isSSL() && !isset($_SERVER['HTTPS']) : false) {
                 // sslなアクションかどうか
                 throw new Envi404Exception('is not ssl', 20001);
@@ -1001,7 +1001,7 @@ class Envi
      * @access private
      * @return void
      */
-    private function loadExtension()
+    protected function loadExtension()
     {
         $load_extension_constant = ENVI_MVC_CACHE_PATH.self::$app_key.ENVI_ENV.'.load_extension_constant.envicc';
         $load_extension = ENVI_MVC_CACHE_PATH.self::$app_key.ENVI_ENV.'.load_extension.envicc';

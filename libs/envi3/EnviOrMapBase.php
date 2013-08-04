@@ -37,9 +37,35 @@ abstract class EnviOrMapBase
 {
     protected $_from_hydrate, $to_save;
     protected $_is_modify = true;
+    protected $suffix = '';
     protected $table_name,$pkeys;
 
     protected $default_instance_name = 'default_master';
+
+    /**
+     * +-- テーブル名のサフィックスをセットする
+     *
+     * @access      public
+     * @param       string $val
+     * @return      void
+     */
+    public function setSuffix($val)
+    {
+        $this->suffix = '_'.$val;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- テーブル名を取得する
+     *
+     * @access      public
+     * @return      string
+     */
+    public function getTableName()
+    {
+        return $this->table_name.$this->suffix;
+    }
+    /* ----------------------------------------- */
 
     /**
      * +-- DBからセレクトしたデータをオブジェクトにセットする
@@ -79,7 +105,7 @@ abstract class EnviOrMapBase
      */
     public function save(EnviDBIBase $con = NULL)
     {
-        $table_name = $this->table_name;
+        $table_name = $this->getTableName();
         $pkeys      = $this->pkeys;
         $dbi = $con ? $con : extension()->DBI()->getInstance($this->default_instance_name);
 
@@ -118,7 +144,7 @@ abstract class EnviOrMapBase
     public function delete(EnviDBIBase $con = NULL)
     {
         $arr = array();
-        $sql = "DELETE FROM {$this->table_name} WHERE ";
+        $sql = "DELETE FROM {$this->getTableName()} WHERE ";
         $and = '';
         foreach ($this->pkeys as $pkey) {
             $sql .= $and.$pkey.' = ?';
