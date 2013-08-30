@@ -13,7 +13,7 @@
 /**
  * ARTISAN PROJECT
  * 
- * �ޥ���Х����б�Smarty+ �ղå����ƥ�
+ * マルチバイト対応Smarty+ 付加システム
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -41,16 +41,16 @@
  */
 
 /**
- * DIR_SEP�Ϻ��ϻ��Ѥ���ޤ��󤬡������ɥѡ��ƥ����ǻ��Ѥ���뤫�⤷��ޤ���
+ * DIR_SEPは今は使用されませんが、サードパーティーで使用されるかもしれません。
  */
 if(!defined('DIR_SEP')) {
     define('DIR_SEP', DIRECTORY_SEPARATOR);
 }
 
 /**
- * SMARTY_DIR��Artisan Smarty�Υ饤�֥��ѥ������ꤷ�Ƥ���������
- * �⤷���ꤵ��ʤ����ϡ�include_path �����Ѥ���ޤ���
- * ������������ꤵ��Ƥ��ʤ����˸¤ꡢArtisanSmarty�ϼ�ʬ�ǹͤ���������ޤ���
+ * SMARTY_DIRにArtisan Smartyのライブラリパスを設定してください。
+ * もし設定されない場合は、include_path が使用されます。
+ * ソース内で設定されていない場合に限り、ArtisanSmartyは自分で考えて定義します。
  */
 if (!defined('SMARTY_DIR')) {
     define('SMARTY_DIR', dirname(__FILE__) . DIRECTORY_SEPARATOR);
@@ -72,76 +72,76 @@ define('SMARTY_PHP_ALLOW',      3);
 class Smarty
 {
     /**#@+
-     * ArtisanSmarty �Υ���ե�����ʬ
+     * ArtisanSmarty のコンフィグ部分
      */
 
     /**
-     * �ƥ�ץ졼�ȥե�������֤��ǥ��쥯�ȥ�Ǥ���<br>
-     * �ƥ�ץ졼�ȥե�������ɤ߹���ݤ˥ѥ�����ꤷ�ʤ��ä����ϡ����Υǥ��쥯�ȥ꤫��õ���ޤ���
+     * テンプレートファイルを置くディレクトリです。<br>
+     * テンプレートファイルを読み込む際にパスを指定しなかった場合は、このディレクトリから探します。
      * 
      * @var string
      */
     var $template_dir    =  'templates';
 
     /**
-     * ����ѥ��뤵�줿�ƥ�ץ졼�Ȥ��֤����ǥ��쥯�ȥ�Ǥ���
+     * コンパイルされたテンプレートが置かれるディレクトリです。
      *
      * @var string
      */
     var $compile_dir     =  'templates_c';
 
     /**
-     * �ƥ�ץ졼�Ȥ����ɤ߹��ि�������ե�����(Config�ե�����)���֤��ǥ��쥯�ȥ�Ǥ���
+     * テンプレートから読み込むための設定ファイル(Configファイル)を置くディレクトリです。
      *
      * @var string
      */
     var $config_dir      =  'configs';
 
     /**
-     * �����ؿ��ʤɤǥե�������Ǥ��ǥ��쥯�ȥ�
+     * 内部関数などでファイルを吐くディレクトリ
      *
      * @var string
      */
     var $etc_dir         =  'etc';
     /**
-     * Smarty��ɬ�פȤ���ץ饰������֤��ǥ��쥯�ȥ�Ǥ���<br>
-     * SMARTY_DIRľ���ͥ����ȥǥ��쥯�ȥ��php��include_path
-     * �ν�ǡ�����Υǥ��쥯�ȥ�򸡺����ޤ���
+     * Smartyが必要とするプラグインを置くディレクトリです。<br>
+     * SMARTY_DIR直下⇒カレントディレクトリ⇒phpのinclude_path
+     * の順で、配列のディレクトリを検索します。
      *
      * @var array
      */
     var $plugins_dir     =  array('plugins');
 
     /**
-     * �ڡ��������ɻ��ˡ���ư�ǥǥХå����󥽡��륦����ɥ���ɽ�����ޤ���<br>
-     * �֥饦���Ρ��ݥåץ��åפ���Ĥ��Ƥ���������
+     * ページロード時に、自動でデバッグコンソールウィンドウを表示します。<br>
+     * ブラウザの、ポップアップを許可してください。
      * 
      * @var boolean
      */
     var $debugging       =  false;
 
     /**
-     * ���åȤ���ȡ�Smarty�Υ��顼��٥�򥳥�˥��åȤ��ޤ���<br>
+     * セットすると、Smartyのエラーレベルをコレにセットします。<br>
      *
      * @var boolean
      */
     var $error_reporting  =  null;
 
     /**
-     * �ǥХå����󥽡���˻��Ѥ����ƥ�ץ졼�ȥե������̾���Ǥ���<br>
-     * ���ꤷ�ʤ����ϡ��ǥե���ȤΥǥХå����󥽡��뤬���Ѥ���ޤ���<br>
+     * デバッグコンソールに使用されるテンプレートファイルの名前です。<br>
+     * 設定しない場合は、デフォルトのデバッグコンソールが使用されます。<br>
      *
      * @var string
      */
     var $debug_tpl       =  '';
 
     /**
-     * �ǥХå��󥰥��󥽡����ͭ���ˤ��뤿���$debugging��������ˡ�Ǥ���
+     * デバッギングコンソールを有効にするための$debuggingに代わる方法です。
      * <ul>
-     *  <li>NONE =>�����̵���ˤ�������̣���ޤ�</li>
-     *  <li>URL => QUERY_STRING����˥������"SMARTY_DEBUG"���ޤޤ�Ƥ������˥ǥХå��󥰥��󥽡��뤬ͭ���ˤʤ�����̣���ޤ���</li>
+     *  <li>NONE =>これを無効にする事を意味します</li>
+     *  <li>URL => QUERY_STRINGの中にキーワード"SMARTY_DEBUG"が含まれていた時にデバッギングコンソールが有効になる事を意味します。</li>
      * </ul>
-     * $debugging��"true"�ξ��ϡ����������̵�뤵��ޤ���
+     * $debuggingが"true"の場合は、この設定は無視されます。
      *
      * @link http://www.foo.dom/index.php?SMARTY_DEBUG
      * @var string
@@ -149,29 +149,29 @@ class Smarty
     var $debugging_ctrl  =  'NONE';
 
     /**
-     * php���ץꥱ�������γƥꥯ�����Ȼ��ˡ����ߤΥƥ�ץ졼�Ȥ��Ǹ��ˬ�줿�������ѹ�����Ƥ���
-     * �ʥ����ॹ����פ��ۤʤ�ˤʤ顢���줬����ѥ��뤵��Ƥ��뤫�ɤ����򸡺����ޤ���<br>
-     * �⤷����ѥ��뤵��Ƥ��ʤ���С����Υƥ�ץ졼�Ȥ�ƥ���ѥ��뤷�ޤ���<br>
-     * ���Υƥ�ץ졼�Ȥ����٤⥳��ѥ��뤵��Ƥ��ʤ��ä����ϡ���������˴ط��ʤ�����ѥ����Ԥ��ޤ���<br>
+     * phpアプリケーションの各リクエスト時に、現在のテンプレートが最後に訪れた時から変更されている
+     * （タイムスタンプが異なる）なら、それがコンパイルされているかどうかを検査します。<br>
+     * もしコンパイルされていなければ、そのテンプレートを再コンパイルします。<br>
+     * そのテンプレートが一度もコンパイルされていなかった場合は、この設定に関係なくコンパイルを行います。<br>
      *
      * @var boolean
      */
     var $compile_check   =  true;
 
     /**
-     * �ƥ�ץ졼�Ȥ��ƤӽФ������˶���Ū�˥���ѥ���(�ƥ���ѥ���)��Ԥ��ޤ���<br>
-     * ��ȯ�䡢�ǥХå��˻��Ѥ��Ƥ���������
+     * テンプレートが呼び出される毎に強制的にコンパイル(再コンパイル)を行います。<br>
+     * 開発や、デバッグに使用してください。
      *
      * @var boolean
      */
     var $force_compile   =  false;
 
     /**
-     * �ƥ�ץ졼�Ȥν��Ϥ򥭥�å��夹�뤫�ɤ��������ꤷ�ޤ���
+     * テンプレートの出力をキャッシュするかどうかを設定します。
      * <ul>
-     *  <li>0 = ����å��󥰤�Ԥ��ޤ���</li>
-     *  <li>1 = �ˤ��Υ���å��夬�����ڤ줫�ɤ�����Ĵ�٤뤿��ˡ� ���ߤλ��֤� $cache_lifetime ���ͤ���Ӥ��ޤ���</li>
-     *  <li>2 = �ˤ��Υ���å��夬�������줿�����λ��֤� $cache_lifetime ���ͤ���Ӥ���褦�˻ؼ����ޤ�</li>
+     *  <li>0 = キャッシングを行いません。</li>
+     *  <li>1 = にそのキャッシュが期限切れかどうかを調べるために、 現在の時間と $cache_lifetime の値を比較します。</li>
+     *  <li>2 = にそのキャッシュが生成された時点の時間と $cache_lifetime の値を比較するように指示します</li>
      * </ul>
      *
      * @var integer
@@ -179,17 +179,17 @@ class Smarty
     var $caching         =  0;
 
     /**
-     * �ƥ�ץ졼�ȤΥ���å��夬��Ǽ�����ǥ��쥯�ȥ�Ǥ���
+     * テンプレートのキャッシュが格納されるディレクトリです。
      *
      * @var string
      */
     var $cache_dir       =  'cache';
 
     /**
-     * �ƥ�ץ졼�ȤΥ���å���δ���(ñ�̡���)�Ǥ������줬�ڤ��ȥ���å���Ϻ���������ޤ���
+     * テンプレートのキャッシュの期限(単位：秒)です。これが切れるとキャッシュは再生成されます。
      * <ul>
-     *  <li>0 = ��˥���å���κ��������ޤ���</li>
-     *  <li>-1 = ����å����̵���¤����Ѥ��ޤ���</li>
+     *  <li>0 = 常にキャッシュの再生成します。</li>
+     *  <li>-1 = キャッシュを無期限で利用します。</li>
      * </ul>
      *
      * @var integer
@@ -197,22 +197,22 @@ class Smarty
     var $cache_lifetime  =  3600;
 
     /**
-     * ����å��夵�줿���Ƥ�insert�������ޤޤ�ʤ����ˡ�
-     * ����å���ե�����Υ����ॹ����פ��Ǹ��ˬ�줿�������Ѥ�äƤ��ʤ��ʤ顢
-     * ����ƥ�Ĥ������"304 Not Modified"�쥹�ݥ󥹤��֤���ޤ���
+     * キャッシュされた内容にinsertタグが含まれない場合に、
+     * キャッシュファイルのタイムスタンプが最後に訪れた時から変わっていないなら、
+     * コンテンツの代わりに"304 Not Modified"レスポンスが返されます。
      * 
      * @var boolean
      */
     var $cache_modified_check = false;
 
     /**
-     * �ƥ�ץ졼�Ȥ������ޤ줿php�����ɤΰ��������ꤷ�ޤ���<br>
-     * �ƥ�ץ졼�����php�����˰Ϥޤ줿php�����ɤˤϱƶ���ڤܤ��ʤ��������դ��Ʋ�������
+     * テンプレートに埋め込まれたphpコードの扱いを設定します。<br>
+     * テンプレート内のphpタグに囲まれたphpコードには影響を及ぼさない事に注意して下さい。
      * <ul>
-     *  <li>SMARTY_PHP_PASSTHRU -> php�����ɤ�¹Ԥ����ˤ��Τޤ޽��Ϥ��ޤ���</li>
-     *  <li>SMARTY_PHP_QUOTE    -> php�����ɤ�html�����ǤȤ���ɽ�����ޤ���</li>
-     *  <li>SMARTY_PHP_REMOVE   -> php�����ɤ�ƥ�ץ졼�Ȥ������ޤ���</li>
-     *  <li>SMARTY_PHP_ALLOW    -> php�����ɤ�¹Ԥ��ޤ���</li>
+     *  <li>SMARTY_PHP_PASSTHRU -> phpコードを実行せずにそのまま出力します。</li>
+     *  <li>SMARTY_PHP_QUOTE    -> phpコードをhtmlの要素として表示します。</li>
+     *  <li>SMARTY_PHP_REMOVE   -> phpコードをテンプレートから除去します。</li>
+     *  <li>SMARTY_PHP_ALLOW    -> phpコードを実行します。</li>
      * </ul>
      *
      * @var integer
@@ -220,11 +220,11 @@ class Smarty
     var $php_handling    =  SMARTY_PHP_PASSTHRU;
 
     /**
-     * �ƥ�ץ졼�ȥ������ƥ���ǽ����Ѥ��뤫�ɤ��������ꤷ�ޤ���<br>
-     * ���Ѥ���ȡ��ƥ�ץ졼�Ȥ��͡��ʵ�ǽ����������ޤ���<br>
-     * ���ޤ꿮�Ѥ������ʤ����롼�פ��ƥ�ץ졼�Ȥ��Խ�����
-     * �ʤɤȸ������˺�Ŭ�ʥ������ƥ����󶡤��ޤ���<br>
-     * (���Ȥ��С��ƥ�ץ졼�����php�μ¹Ԥ�����ޤ���)
+     * テンプレートセキュリティ機能を使用するかどうかを設定します。<br>
+     * 使用すると、テンプレートの様々な機能が抑制されます。<br>
+     * あまり信用がおけないグループがテンプレートを編集する
+     * などと言う場合に最適なセキュリティを提供します。<br>
+     * (たとえば、テンプレート内でphpの実行が出来ません。)
      *
      * @see $security_settings
      * @var boolean
@@ -232,25 +232,25 @@ class Smarty
     var $security       =   false;
 
     /**
-     * �����ȹͤ�����ǥ��쥯�ȥ������Ǥ���<br>
-     * ����ϡ�{@link $security}�����Ѥ��줿�Ȥ��ˤϡ�
-     * ���Υǥ��쥯�ȥ�ˤ���ƥ�ץ졼�ȤΤߤ���Ѥ������������ޤ���<br>
-     * �����ǰ�ǥ��쥯�ȥ�ǻ��ꤷ��
-     * �ޤ���{@link $template_dir}�ϻ��ꤻ���Ȥ⡢���Ѳ�ǽ�Ǥ���
+     * 安全と考えられるディレクトリの配列です。<br>
+     * これは、{@link $security}が使用されたときには、
+     * このディレクトリにあるテンプレートのみを使用する事が許されます。<br>
+     * 一要素一ディレクトリで指定し、
+     * また、{@link $template_dir}は指定せずとも、使用可能です。
      *
      * @var array
      */
     var $secure_dir     =   array();
 
     /**
-     * ArtisanSmarty�Υ������ƥ�����Ǥ���<br>
-     * {@link $security}���ѻ���ư��򼨤��ޤ���<br>
+     * ArtisanSmartyのセキュリティ設定です。<br>
+     * {@link $security}使用時の動作を示します。<br>
      * <ul>
-     * <li>PHP_HANDLING -> true/false�ǻ��ꤷ�ޤ���true�ξ�硢�������ƥ��Τ����{@link $php_handling}������å����ޤ���</li>
-     * <li>IF_FUNCS -> if���ơ��ȥ��Ȥˤƻ��Ѳ�ǽ��php�ؿ���̾��������Ǥ���</li>
-     * <li>INCLUDE_ANY -> true/false�ǻ��ꤷ�ޤ���true�ξ�硢�ƥ�ץ졼�Ȥ�{@link $secure_dir}�Υꥹ�Ȥ˴ط��ʤ��������륷���ƥफ�饤�󥯥롼�ɲ�ǽ�Ǥ���</li>
-     * <li>PHP_TAGS -> true/false�ǻ��ꤷ�ޤ���true�ξ�硢php�������ƥ�ץ졼�Ȥǻ��ѤǤ��ޤ���</li>
-     * <li>MODIFIER_FUNCS -> �ѿ��ν����ҤȤ��ƻ��Ѳ�ǽ��php�ؿ���̾��������Ǥ���</li>
+     * <li>PHP_HANDLING -> true/falseで指定します。trueの場合、セキュリティのために{@link $php_handling}をチェックしません。</li>
+     * <li>IF_FUNCS -> ifステートメントにて使用可能なphp関数の名前の配列です。</li>
+     * <li>INCLUDE_ANY -> true/falseで指定します。trueの場合、テンプレートは{@link $secure_dir}のリストに関係なくローカルシステムからインクルード可能です。</li>
+     * <li>PHP_TAGS -> true/falseで指定します。trueの場合、phpタグがテンプレートで使用できます。</li>
+     * <li>MODIFIER_FUNCS -> 変数の修正子として使用可能なphp関数の名前の配列です。</li>
      * </ul>
      * 
      * @var array
@@ -277,18 +277,18 @@ class Smarty
     var $trusted_dir        = array();
 
     /**
-     * �ƥ�ץ졼�Ȥˤƻ��Ѥ����ƥ�ץ졼�ȸ���γ��Ϥ�ɽ���ǥ�ߥ��Ǥ���
-     * �ܲ�Smarty�Υǥե���Ȥ�"{"�Ǥ�����Javascript��CSS�ʤɤȤ������������١�
-     * ArtisanSmarty�Ǥϥǥե���Ȥ�"<%"�Ȥ��Ƥ��ޤ���
+     * テンプレートにて使用されるテンプレート言語の開始を表すデリミタです。
+     * 本家Smartyのデフォルトは"{"ですが、Javascript、CSSなどとの相性が悪い為、
+     * ArtisanSmartyではデフォルトを"<%"としています。
      *
      * @var string
      */
     var $left_delimiter  =  '<%';
 
     /**
-     * �ƥ�ץ졼�Ȥˤƻ��Ѥ����ƥ�ץ졼�ȸ���ν�ü��ɽ���ǥ�ߥ��Ǥ���
-     * �ܲ�Smarty�Υǥե���Ȥ�"}"�Ǥ�����Javascript��CSS�ʤɤȤ������������١�
-     * ArtisanSmarty�Ǥϥǥե���Ȥ�"%>"�Ȥ��Ƥ��ޤ���
+     * テンプレートにて使用されるテンプレート言語の終端を表すデリミタです。
+     * 本家Smartyのデフォルトは"}"ですが、Javascript、CSSなどとの相性が悪い為、
+     * ArtisanSmartyではデフォルトを"%>"としています。
      *
      *
      * @var string
@@ -396,36 +396,36 @@ class Smarty
     var $config_read_hidden = false;
 
     /**
-     * ����ե��������mac��dos��newline (\r �� \r\n)�Ϥ���餬�ѡ����������� \n�˥���С��Ȥ���ޤ���
-     * �ǥե���Ȥ�true�ǵ�ǽ��ON�ˤʤäƤ��ޤ��� 
+     * 設定ファイル内のmacとdosのnewline (\r と \r\n)はそれらがパースされる時に \nにコンバートされます。
+     * デフォルトはtrueで機能がONになっています。 
      */
     var $config_fix_newlines = true;
     /**#@-*/
 
     /**
-     * �ƥ�ץ졼�ȥե����뤬���Ĥ���ʤ��ä���硢�����ǻ��ꤵ�줿PHP�ؿ����¹Ԥ���ޤ���
+     * テンプレートファイルが見つからなかった場合、ここで指定されたPHP関数が実行されます。
      *
      * @var string function name
      */
     var $default_template_handler_func = '';
 
     /**
-     * ����ѥ��饯�饹��ޤ�ե����롣
-     * �ե�ѥ���񤯤��������Ǥʤ����php��include_path��SMARTY_DIR�����õ���ޤ���
+     * コンパイラクラスを含むファイル。
+     * フルパスを書くか、そうでなければphpのinclude_path・SMARTY_DIRの中を探します。
      *
      * @var string
      */
     var $compiler_file        =    'ArtisanSmarty_Compiler.class.php';
 
     /**
-     * Smarty���ƥ�ץ졼�Ȥ򥳥�ѥ��뤹�뤿��˻��Ѥ��륳��ѥ��饯�饹��̾������ꤷ�ޤ���
+     * Smartyがテンプレートをコンパイルするために使用するコンパイラクラスの名前を指定します。
      *
      * @var string
      */
     var $compiler_class        =   'Smarty_Compiler';
 
     /**
-     * ����ե����ѿ����ɤ߹��९�饹��̾������ꤷ�ޤ���
+     * コンフィグ変数を読み込むクラスの名前を指定します。
      *
      * @var string
      */
@@ -486,14 +486,14 @@ class Smarty
     var $_config               = array(array('vars'  => array(), 'files' => array()));
 
     /**
-     * 'Smarty'��md5 �����å�����Ǥ��� 
+     * 'Smarty'のmd5 チェックサムです。 
      *
      * @var string
      */
     var $_smarty_md5           = 'f8d698aea36fcbead2b9d5359ffca76f';
 
     /**
-     * ArtisanSmarty�ΥС������Ǥ���
+     * ArtisanSmartyのバージョンです。
      *
      * @var string
      */
@@ -1394,7 +1394,7 @@ class Smarty
  */
 
     /**
-     * Etc�ѥ����֤��ޤ�
+     * Etcパスを返します
      *
      * @return string|false
      */
@@ -1410,7 +1410,7 @@ class Smarty
     }
     
     /**
-     * �ץ饰����Υե�����ѥ���������ޤ���
+     * プラグインのファイルパスを取得します。
      *
      * @param string $type
      * @param string $name
@@ -1424,7 +1424,7 @@ class Smarty
     }
 
    /**
-     * �ƥ�ץ졼�ȥ꥽����������ѥ��뤹��ɬ�פ����뤫�ɤ�����Ĵ�٤ޤ���
+     * テンプレートリソースがコンパイルする必要があるかどうか、調べます。
      *
      * @param string $resource_name
      * @param string $compile_path
@@ -1457,7 +1457,7 @@ class Smarty
     }
 
    /**
-     * �ƥ�ץ졼�ȥ꥽�����򥳥�ѥ��뤷�ޤ���
+     * テンプレートリソースをコンパイルします。
      *
      * @param string $resource_name
      * @param string $compile_path
@@ -1493,7 +1493,7 @@ class Smarty
     }
 
    /**
-     * Ϳ����줿�������򥳥�ѥ��뤷�ޤ���
+     * 与えられたソースをコンパイルします。
      *
      * @param string $resource_name
      * @param string $source_content
@@ -1760,7 +1760,7 @@ class Smarty
 
 
     /**
-     * �ƥ�ץ졼�ȥե�������ɤ߹���
+     * テンプレートファイルの読み込み
      *
      * @since 2005/06/11 12:01
      * @param string $filename
@@ -1964,7 +1964,7 @@ class Smarty
 
 
     /**
-     * include()�Υ�åѡ��Ǥ���
+     * include()のラッパーです。
      *
      * @return mixed
      */
@@ -1979,7 +1979,7 @@ class Smarty
 
 
     /**
-     * eval()�Υ�åѡ��Ǥ���
+     * eval()のラッパーです。
      *
      * @return mixed
      */

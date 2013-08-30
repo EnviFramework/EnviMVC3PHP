@@ -18,10 +18,10 @@
 
 
 /**
- * strcircle�Υޥ���Х����б���
+ * strcircleのマルチバイト対応版
  *
- * wordwrap����ʸ����α�¦��ʬ��ʸ�����֤���ʬ�䤹��Τ��Ф���
- * strcircle�ϡ�ʸ�����ʬ��ʸ���ǰϤä�ʬ�䤷�ޤ���
+ * wordwrapが、文字列の右側に分割文字を置いて分割するのに対し、
+ * strcircleは、文字列を分割文字で囲って分割します。
  * 
  * @return string
  * @copyright ver1.0

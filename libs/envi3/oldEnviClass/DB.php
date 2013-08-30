@@ -1,6 +1,6 @@
 <?php
 /**
- * DBˆ—
+ * DBå‡¦ç†
  *
  * PHP versions 5
  *
@@ -17,7 +17,7 @@
  * @since      File available since Release 1.0.0
  */
 /**
- * pearDB•—‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ð’ñ‹Ÿ‚·‚é‚½‚ß‚Ìƒ‰ƒbƒp[
+ * pearDBé¢¨ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’æä¾›ã™ã‚‹ãŸã‚ã®ãƒ©ãƒƒãƒ‘ãƒ¼
  *
  * @package    Envi3
  * @subpackage EnviMVCCore
@@ -39,7 +39,7 @@ class DB
 
 
     /**
-     * +-- Envi‚©‚çŒÄ‚Î‚ê‚éƒƒ\ƒbƒhB•K‚¸ì‚é
+     * +-- Enviã‹ã‚‰å‘¼ã°ã‚Œã‚‹ãƒ¡ã‚½ãƒƒãƒ‰ã€‚å¿…ãšä½œã‚‹
      *
      * @access public
      * @static
@@ -87,7 +87,7 @@ class DB
     }
 
     /**
-     * +-- EnviDBIBase‚ðŽæ“¾‚·‚é
+     * +-- EnviDBIBaseã‚’å–å¾—ã™ã‚‹
      *
      * @access public
      * @static
@@ -115,7 +115,7 @@ class DB
     /* ----------------------------------------- */
 
     /**
-     * +-- ƒ_ƒ~[
+     * +-- ãƒ€ãƒŸãƒ¼
      *
      * @static
      * @param & $obj

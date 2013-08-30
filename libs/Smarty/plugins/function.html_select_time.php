@@ -23,7 +23,7 @@
  * Type:     function<br>
  * Name:     html_select_time<br>
  * Purpose:  Prints the dropdowns for time selection
- * @param array $params ¥Ñ¥é¥á¡¼¥¿
+ * @param array $params ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
  * @param object $smarty Smarty
  * @return string
  * @uses smarty_make_timestamp()

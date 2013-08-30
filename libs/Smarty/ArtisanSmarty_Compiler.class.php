@@ -14,7 +14,7 @@
 /**
  * ARTISAN PROJECT
  * 
- * ¥Ş¥ë¥Á¥Ğ¥¤¥ÈÂĞ±şSmarty+ ÉÕ²Ã¥·¥¹¥Æ¥à
+ * ãƒãƒ«ãƒãƒã‚¤ãƒˆå¯¾å¿œSmarty+ ä»˜åŠ ã‚·ã‚¹ãƒ†ãƒ 
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -1512,10 +1512,10 @@ class Smarty_Compiler extends Smarty {
 
 
     /**
-     * ¥¿¥°¤ÎÂ°À­²òÀÏ¡£
+     * ã‚¿ã‚°ã®å±æ€§è§£æã€‚
      *
-     * [=]¤Î¸å¤ò¾ÊÎ¬²ÄÇ½¤Ë¡£
-     * ¾ÊÎ¬»ş¤Ï¡¢TRUE¤¬Æş¤ê¤Ş¤¹¡£
+     * [=]ã®å¾Œã‚’çœç•¥å¯èƒ½ã«ã€‚
+     * çœç•¥æ™‚ã¯ã€TRUEãŒå…¥ã‚Šã¾ã™ã€‚
      *
      * @param string $tag_args
      * @return array
@@ -1550,11 +1550,11 @@ class Smarty_Compiler extends Smarty {
                     break;
 
                 case 1:
-                    /* '='¤¬¤¢¤ì¤Ğ¼¡¤Ø */
+                    /* '='ãŒã‚ã‚Œã°æ¬¡ã¸ */
                     if ($token == '=') {
                         $state = 2;
                     } else {
-                    /* '='¤¬Ìµ¤±¤ì¤Ğ¡¢true¤ò¤·¤Ş¤Ã¤Æ¼¡¤Ø */
+                    /* '='ãŒç„¡ã‘ã‚Œã°ã€trueã‚’ã—ã¾ã£ã¦æ¬¡ã¸ */
                         $token = 'true';
                         $attrs[$attr_name] = $token;
                         $state = 0;

@@ -31,7 +31,7 @@
  * @param string $encoding
  * @return string
  */
-function smarty_modifier_mb_strimwidth($string,$start = 0,$limit = 100, $trimmer = "¡Ä",$encoding = "AUTO")
+function smarty_modifier_mb_strimwidth($string,$start = 0,$limit = 100, $trimmer = "â€¦",$encoding = "AUTO")
 {
     return mb_strimwidth($string, $start, $limit, $trimmer, $encoding);
 }

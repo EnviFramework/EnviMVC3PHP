@@ -18,44 +18,44 @@
 
 
 /**
- * ʸ����ʬ��ʸ������Ѥ��ƻ��ꤷ��ʸ��������ʸ�����ʬ�䤹�롣
+ * 文字列分割文字を使用して指定した文字数数に文字列を分割する。
  *
  * <pre>
- * (���ץ�����) $width�ѥ�᡼���ǻ��ꤷ���� ����ֹ��ʸ����$string��ʬ�䤷�ޤ���
- * (���ץ��� ���)$break�ѥ�᡼�����Ѥ��ƹԤ�ʬ�䤵��ޤ���
- * $width�ޤ���$break�� ���ꤵ��Ƥ��ʤ���硢
- * mb_wordwrap()��80�����Ǽ�ưŪ��ʬ�䤷��'\n'(����)���Ѥ���ʬ�䤷�ޤ���
+ * (オプションの) $widthパラメータで指定したカ ラム番号で文字列$stringを分割します。
+ * (オプショ ンの)$breakパラメータを用いて行は分割されます。
+ * $widthまたは$breakが 指定されていない場合、
+ * mb_wordwrap()は80カラムで自動的に分割し、'\n'(改行)を用いて分割します。
  * 
- * $cut��1�����ꤵ�줿��硢ʸ����Ͼ�˻��ꤷ�����ǥ�åפ���ޤ���
- * ���ΰ١��ޥ���Х���ʸ�����������¤�ۤ���Ȥ��ϡ���������ʬ�䤵��ޤ���
- * $cut��0�ξ��ϡ���˸��ꤵ�줿ʸ������ʬ����ߤޤ���
+ * $cutが1に設定された場合、文字列は常に指定した幅でラップされます。
+ * この為、マルチバイト文字がこの制限を越えるときは、その前で分割されます。
+ * $cutが0の場合は、常に固定された文字数で分割を試みます。
  * 
- * ʬ�䤹��ʸ���󤬡�Ⱦ�ѥ����޻������ԡ����֡�Ⱦ�ѥ��ڡ����Ǥ�����ϡ�
- * wordwrap���ƤӽФ��졢��������ޤ���
+ * 分割する文字列が、半角ローマ字、改行・タブ・半角スペースである場合は、
+ * wordwrapが呼び出され、処理されます。
  *
  * -----------------------------------------------
  * Type:       modifier
  * Name:       mb_wordwrap
- * attribute: 1 (80) ��ɥ�åפ��륫����� �ǥե����
- *            2 ('\n') ��ɥ�åפ˻��Ѥ����ʸ���� �ǥե����
- *            3 (0) ��ɥ�åפ�ʸ�����Ǥ�뤫��ʸ�����Ǥ�뤫
+ * attribute: 1 (80) ワードラップするカラム幅 デフォルト
+ *            2 ('\n') ワードラップに使用される文字列 デフォルト
+ *            3 (0) ワードラップを文字数でやるか、文字幅でやるか
  * </pre>
  *
- * @param string $string ʬ�䤹��ǡ���
- * @param integer $length ������ֹ�
- * @param string $break ���ڤ�ʸ��
- * @param integer $cut �Х��ȷ׻�(�ޥ���Х���ʸ����2�Х���)����ʤ�1ʸ�����׻��ʤ�0 �ǥե����0
+ * @param string $string 分割するデータ
+ * @param integer $length カラム番号
+ * @param string $break 区切り文字
+ * @param integer $cut バイト計算(マルチバイト文字は2バイト)するなら1文字数計算なら0 デフォルト0
  * @see http://php.five-foxes.com/module/php_man/index.php?web=function.wordwrap
  * @return string
  */
 function smarty_modifier_mb_wordwrap($string, $length = 80, $break = "\n", $cut = 0)
 {
 	if (preg_match("/^[\!-\~\s\t\r\n]+$/", $string)) {
-		//�̾��Ⱦ�ѱѿ����ʤ�С����̤�wordwrap���롣
+		//通常の半角英数字ならば、普通にwordwrapする。
 		return wordwrap($string, $length, $break, $cut);
 	}
 	
-	//�ޥ���Х���ʸ������
+	//マルチバイト文字処理
 	$word_wrap_array = explode($break, $string);
 	foreach ($word_wrap_array as $str) {
 		$i = 0;
@@ -67,11 +67,11 @@ function smarty_modifier_mb_wordwrap($string, $length = 80, $break = "\n", $cut 
 		while ($i < $stop) {
 			if ($cut == 1) {
 				$a = mb_strcut($str, $i, $length);
-				//�¼��ʹԾ��֤�Ͽ
+				//実質進行状態を記録
 				$i += mb_strwidth($a);
 			} else {
 				$a = mb_substr($str, $i, $length);
-				//�ʹԾ��֤�Ͽ
+				//進行状態を記録
 				$i += $length;
 			}
 			$res[]=$a;

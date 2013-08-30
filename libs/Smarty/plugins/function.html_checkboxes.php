@@ -44,7 +44,7 @@
  * @author credits to Monte Ohrt <monte at ohrt dot com>
  * @author Akito<akito-artisan@five-foxes.com>
  * @version 1.1
- * @param array $params ¥Ñ¥é¥á¡¼¥¿
+ * @param array $params ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
  * @param object $smarty Smarty
  * @return string
  * @uses smarty_function_escape_special_chars()

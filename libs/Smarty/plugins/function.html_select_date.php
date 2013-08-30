@@ -40,7 +40,7 @@
  * @version 1.3.3
  * @author Andrei Zmievski
  * @author Akito<akito-artisan@five-foxes.com>
- * @param array $params ¥Ñ¥é¥á¡¼¥¿
+ * @param array $params ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
  * @param object $smarty Smarty
  * @return string
  */

@@ -18,19 +18,19 @@
 
 
 /**
- * ¹âµ¡Ç½¤ÊºòÆüº£ÆüÁí¹ç¥«¥¦¥ó¥¿¡¼¤òÄó¶¡¤·¤Ş¤¹¡£
+ * é«˜æ©Ÿèƒ½ãªæ˜¨æ—¥ä»Šæ—¥ç·åˆã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ã‚’æä¾›ã—ã¾ã™ã€‚
  *
  * Type:     function<br>
  * Name:     counter<br>
  * Purpose:  load config file vars
  * @param array $params Format:
  * <pre>
- * array('assign' => ¥«¥¦¥ó¥¿¡¼ÃÍ¤¬assign¤µ¤ì¤ëÊÑ¿ô¤ÎÌ¾Á°,
- *       'name' => ¥«¥¦¥ó¥¿¡¼¤ÎÌ¾Á°(¥Õ¥¡¥¤¥ëÌ¾¤Ë¤Ê¤ê¤Ş¤¹¡£)
+ * array('assign' => ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼å€¤ãŒassignã•ã‚Œã‚‹å¤‰æ•°ã®åå‰,
+ *       'name' => ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ã®åå‰(ãƒ•ã‚¡ã‚¤ãƒ«åã«ãªã‚Šã¾ã™ã€‚)
  *       'scope' => local/parent/global
  *       'global' => overrides scope, setting to parent if true)
  * </pre>
- * @param object $smaty smaty¥¯¥é¥¹¥ª¥Ö¥¸¥§¥¯¥È
+ * @param object $smaty smatyã‚¯ãƒ©ã‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
  * @since 2005/06/10 23:57
  * @author Akito<akito-artisan@five-foxes.com>
  * @return bool
@@ -45,7 +45,7 @@ function smarty_function_counter($params, &$smarty)
 		$counter=unserialize(file_get_contents($etc_dir.$name."_counter.php"));
 		$counter_ck=(mktime(0,0,0,date("m"),date("d"),date("Y"))-$counter["time_stamp"]);
 
-	//ÆüÉÕ¤¬ÊÑ¤ï¤Ã¤Æ¤¤¤ì¤ĞÃÍ¤òÊÑ¹¹
+	//æ—¥ä»˜ãŒå¤‰ã‚ã£ã¦ã„ã‚Œã°å€¤ã‚’å¤‰æ›´
 		if($counter_ck>0){
 			if($counter_ck>86401){
 				$counter["today"]=0;
@@ -63,7 +63,7 @@ function smarty_function_counter($params, &$smarty)
 		$counter["time_stamp"]=mktime(0,0,0,date("m"),date("d"),date("Y"));
 		$counter["ip"]="";
 	}
-	//¥«¥¦¥ó¥¿¡¼¤ò²ó¤¹
+	//ã‚«ã‚¦ãƒ³ã‚¿ãƒ¼ã‚’å›ã™
 	if(isset($params['count_up']) && isset($params['ck_ip']) ? $counter["ip"]!==$_SERVER['REMOTE_ADDR'] : isset($params['count_up'])){
 		if(isset($params['skip']) ? is_numeric($params['skip']) : false){
 			$skip= $params['skip'];

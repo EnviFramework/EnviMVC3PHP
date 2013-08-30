@@ -20,8 +20,8 @@
 /**
  * Smarty default modifier plugin
  *
- * 0¤Ç¤â¡¢DefaultÃÍ¤¬Í¥Àè¤µ¤ì¤Æ¤·¤Ş¤¦°Ù¡¢½¤Àµ¡£
- * ¥â¡¼¥ÉÀÚÂØ¤Ë¤è¤Ã¤Æ¡¢¶õÊ¸»ú¤ò¾Ê¤¯¤³¤È¤¬½ĞÍè¤ë¤è¤¦¤Ë½¤Àµ¡£
+ * 0ã§ã‚‚ã€Defaultå€¤ãŒå„ªå…ˆã•ã‚Œã¦ã—ã¾ã†ç‚ºã€ä¿®æ­£ã€‚
+ * ãƒ¢ãƒ¼ãƒ‰åˆ‡æ›¿ã«ã‚ˆã£ã¦ã€ç©ºæ–‡å­—ã‚’çœãã“ã¨ãŒå‡ºæ¥ã‚‹ã‚ˆã†ã«ä¿®æ­£ã€‚
  * Type:     modifier<br>
  * Name:     default<br>
  * Purpose:  designate default value for empty variables

@@ -22,7 +22,7 @@
  *
  * Type:     modifier<br>
  * Name:     mb_convert_kana<br>
- * Purpose:  PHP´Ø¿ômb_convert_kana¤ò¤«¤±¤Ş¤¹¡£
+ * Purpose:  PHPé–¢æ•°mb_convert_kanaã‚’ã‹ã‘ã¾ã™ã€‚
  *           
  *           
  * @param $string string

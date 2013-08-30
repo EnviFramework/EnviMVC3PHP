@@ -1,6 +1,6 @@
 <?php
 /**
- * DBˆ—
+ * DBå‡¦ç†
  *
  * PHP versions 5
  *
@@ -18,7 +18,7 @@
  */
 
 /**
- * DI‚©‚çŒÄ‚Î‚ê‚éƒNƒ‰ƒX
+ * DIã‹ã‚‰å‘¼ã°ã‚Œã‚‹ã‚¯ãƒ©ã‚¹
  *
  * @package    Envi3
  * @category   MVC
@@ -35,7 +35,7 @@ class DBInstance
 {
     private $_system_conf;
     /**
-     * +-- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+     * +-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
      *
      * @access public
      * @param  $config
@@ -48,7 +48,7 @@ class DBInstance
     /* ----------------------------------------- */
 
     /**
-     * +-- instance‚ÌŽæ“¾
+     * +-- instanceã®å–å¾—
      *
      * @access public
      * @param  $db_key
@@ -57,7 +57,7 @@ class DBInstance
     public function getInstance($db_key)
     {
         if (!isset($this->_system_conf[$db_key])) {
-            throw new EnviException("DB: {$db_key}‚ª‘¶Ý‚µ‚Ä‚Ü‚¹‚ñB");
+            throw new EnviException("DB: {$db_key}ãŒå­˜åœ¨ã—ã¦ã¾ã›ã‚“ã€‚");
         }
         return DB::getConnection($this->_system_conf[$db_key]['params'], $db_key);
     }
