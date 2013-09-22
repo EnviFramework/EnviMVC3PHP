@@ -305,6 +305,8 @@ class Envi
 
     public $auto_load_classes;
 
+    public static $is_rested = false;
+
     /**
      * +-- コンストラクタ
      *
@@ -669,18 +671,25 @@ class Envi
     {
         try {
             ob_start();
-            // オブジェクトの生成
-            $className = __CLASS__;
-            self::$instance = new Envi($app, $debug);
-            $envi = self::$instance;
+            if (!self::$is_rested) {
+                // オブジェクトの生成
+                $className = __CLASS__;
+                self::$instance = new Envi($app, $debug);
+                $envi = self::$instance;
 
-            // オートロードレジスト
-            spl_autoload_register(array('Envi', 'autoload'));
+                // オートロードレジスト
+                spl_autoload_register(array('Envi', 'autoload'));
 
-            // リクエストモジュールの初期化
-            EnviRequest::initialize();
-            include_once ENVI_MVC_CACHE_PATH.self::$app_key.ENVI_ENV.'.autoload_constant.envicc';
-            $envi->loadExtension();
+                // リクエストモジュールの初期化
+                EnviRequest::initialize();
+                include_once ENVI_MVC_CACHE_PATH.self::$app_key.ENVI_ENV.'.autoload_constant.envicc';
+                $envi->loadExtension();
+                self::$is_rested = true;
+            } else {
+                $className = __CLASS__;
+                $envi = self::$instance;
+            }
+
             $filters = $envi->getConfiguration('FILTER');
             if (isset($filters['input_filter'])) {
                 foreach ($filters['input_filter'] as $input_filters) {
@@ -1032,6 +1041,51 @@ class Envi
 
         include $load_extension_constant;
         EnviExtension::_singleton($extension);
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- レジストのみを行う(コマンドライン用)
+     *
+     * @access      public
+     * @static
+     * @param       var_text $app
+     * @param       var_text $debug OPTIONAL:false
+     * @return      void
+     */
+    public static function registerOnly($app, $debug = false)
+    {
+        if (self::$is_rested) {
+            return true;
+        }
+        try {
+            // オブジェクトの生成
+            self::$instance = new Envi($app, $debug);
+            $envi = self::$instance;
+
+            // オートロードレジスト
+            spl_autoload_register(array('Envi', 'autoload'));
+
+            // リクエストモジュールの初期化
+            EnviRequest::initialize();
+            include_once ENVI_MVC_CACHE_PATH.self::$app_key.ENVI_ENV.'.autoload_constant.envicc';
+            $envi->loadExtension();
+            self::$is_rested = true;
+
+        } catch (redirectException $e) {
+            throw $e;
+        } catch (killException $e) {
+            throw $e;
+        } catch (PDOException $e) {
+            Envi::getLogger()->fatal($e->__toString());
+            Envi::getLogger()->fatal($e->getFile().' line on '.$e->getLine());
+            throw $e;
+        } catch (Exception $e) {
+            Envi::getLogger()->fatal($e->__toString());
+            Envi::getLogger()->fatal($e->getFile().' line on '.$e->getLine());
+            throw $e;
+        }
     }
     /* ----------------------------------------- */
 
