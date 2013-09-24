@@ -37,6 +37,7 @@ abstract class EnviOrMapBase
 {
     protected $_from_hydrate, $to_save;
     protected $_is_modify = true;
+    protected $_is_hydrate = false;
     protected $suffix = '';
     protected $table_name,$pkeys;
 
@@ -79,6 +80,7 @@ abstract class EnviOrMapBase
     public function hydrate(array $arr)
     {
         $this->_is_modify = false;
+        $this->_is_hydrate = true;
         $this->_from_hydrate = $arr;
         $this->to_save       = $arr;
     }
@@ -109,7 +111,7 @@ abstract class EnviOrMapBase
         $pkeys      = $this->pkeys;
         $dbi = $con ? $con : extension()->DBI()->getInstance($this->default_instance_name);
 
-        if (!isset($this->_from_hydrate[$pkeys[0]])) {
+        if (!$this->_is_hydrate) {
             $dbi->autoExecute($table_name, $this->to_save, EnviDB::AUTOQUERY_INSERT);
             if (!isset($this->to_save[$pkeys[0]])) {
                 $this->to_save[$pkeys[0]] = $dbi->lastInsertId();
