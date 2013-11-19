@@ -20,8 +20,8 @@
 /**
  * Smarty default modifier plugin
  *
- * 0�Ǥ⡢Default�ͤ�ͥ�褵��Ƥ��ޤ��١�������
- * �⡼�����ؤˤ�äơ���ʸ����ʤ����Ȥ������褦�˽�����
+ * 0でも、Default値が優先されてしまう為、修正。
+ * モード切替によって、空文字を省くことが出来るように修正。
  * Type:     modifier<br>
  * Name:     default<br>
  * Purpose:  designate default value for empty variables
@@ -33,7 +33,7 @@
  */
 function smarty_modifier_default($string, $default = '', $mode = "all")
 {
-    if (($mode == "all" && ($string === false || $string === NULL || $string === "")) || 
+    if (($mode == "all" && ($string === false || $string === NULL || $string === "")) ||
     ($mode == "none" && ($string === false || $string === NULL))
     ) {
         return $default;
@@ -44,4 +44,4 @@ function smarty_modifier_default($string, $default = '', $mode = "all")
 
 /* vim: set expandtab: */
 
-?>
+

@@ -17,28 +17,28 @@
  */
 
 /**
- * ��������̤�ʸ�������������������åפ��Ԥ򥤥�ǥ�Ȥ���������������ޤ���
+ * 空白と特別な文字列を取り除き、境界をラップし行をインデントして段落を整形します。
  *
  * <pre>
  * <%textformat%><%/textformat%>
- * �ǰϤޤ줿�ϰϤ򡢥ե����ޥåȤ��ޤ���
+ * で囲まれた範囲を、フォーマットします。
  * --------------------------------------------------
  * Type:      block function<br>
  * Name:      textformat<br>
- * attribute: style: string () ���餫�������줿��������򥻥åȽ���ޤ������ߡ�"email"�Τߤ�ͭ���ʥ�������Ǥ���
- *            indent_first: integer (0) �ƹԤ򥤥�ǥ�Ȥ��륭����
- *            wrap: integer (80) �ƹԤ򤤤��ĤΥ���饯�����ǥ�åפ��뤫
- *            wrap_char string ("\n") �ƹԤ�ʬ�䤹�뤿��Υ���饯��(���ϥ�����ʸ����)
- *            indent_char: string (" ") ����ǥ�Ȥ��뤿��˻Ȥ��륭��饯��(���ϥ�����ʸ����)
- *            assign: string () ���Ϥ�������Ƥ���ƥ�ץ졼���ѿ�
- *            wrap_cut: boolean (false) true�ʤ�С���åפ�ñ��ζ�������������Τʥ���饯�����ǹԤ�ʬ�䤷�ޤ���
+ * attribute: style: string () あらかじめ決められたスタイルをセット出来ます。現在、"email"のみが有効なスタイルです。
+ *            indent_first: integer (0) 各行をインデントするキャラ数
+ *            wrap: integer (80) 各行をいくつのキャラクタ数でラップするか
+ *            wrap_char string ("\n") 各行を分割するためのキャラクタ(又はキャラの文字列)
+ *            indent_char: string (" ") インデントするために使われるキャラクタ(又はキャラの文字列)
+ *            assign: string () 出力が割り当てられるテンプレート変数
+ *            wrap_cut: boolean (false) trueならば、ラップは単語の境界の代わりに正確なキャラクタ数で行を分割します。
  * </pre>
  *
  * @author Akito<akito-artisan@five-foxes.com>
- * @param array $params ������°��
- * @param string $contents �֥��å�����ƥ��
- * @param object $smarty ArtisanSmarty���֥�������
- * @return string �ե����ޥåȤ��줿ʸ����
+ * @param array $params タグの属性
+ * @param string $contents ブロックコンテンツ
+ * @param object $smarty ArtisanSmartyオブジェクト
+ * @return string フォーマットされた文字列
  */
 function smarty_block_textformat($params, $content, &$smarty)
 {
@@ -54,7 +54,7 @@ function smarty_block_textformat($params, $content, &$smarty)
     $wrap_char = "\n";
     $wrap_cut = false;
     $assign = null;
-    
+
     foreach ($params as $_key => $_val) {
         switch ($_key) {
             case 'style':
@@ -111,5 +111,3 @@ function smarty_block_textformat($params, $content, &$smarty)
 }
 
 /* vim: set expandtab: */
-
-?>

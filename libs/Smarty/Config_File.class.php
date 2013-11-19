@@ -12,9 +12,9 @@
 //
 /**
  * Artisan Project
- * 
- * ¥Þ¥ë¥Á¥Ð¥¤¥ÈÂÐ±þSmarty
- * + ÉÕ²Ã¥·¥¹¥Æ¥à
+ *
+ * ãƒžãƒ«ãƒãƒã‚¤ãƒˆå¯¾å¿œSmarty
+ * + ä»˜åŠ ã‚·ã‚¹ãƒ†ãƒ 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -310,7 +310,7 @@ class Config_File {
                         $vars = array();
                         continue;
                     }
-                } else {                    
+                } else {
                     $section_name = $match[1];
                 }
                 if (!isset($config_data['sections'][$section_name]))
@@ -399,4 +399,3 @@ class Config_File {
     /**#@-*/
 }
 
-?>

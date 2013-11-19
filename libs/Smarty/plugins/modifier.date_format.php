@@ -56,4 +56,4 @@ function smarty_modifier_date_format($string, $format="%b %e, %Y", $default_date
 
 /* vim: set expandtab: */
 
-?>
+

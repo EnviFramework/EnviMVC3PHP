@@ -45,4 +45,4 @@ function smarty_modifier_mb_truncate($string, $length = 80, $trimmer = "...")
 	}
 }
 
-?>
+

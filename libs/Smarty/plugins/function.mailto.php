@@ -81,7 +81,7 @@ function smarty_function_mailto($params, &$smarty)
                 if (!empty($value))
                     $mail_parms[] = $var.'='.str_replace('%40','@',rawurlencode($value));
                 break;
-                
+
             case 'subject':
             case 'newsgroups':
                 $mail_parms[] = $var.'='.rawurlencode($value);
@@ -151,4 +151,4 @@ function smarty_function_mailto($params, &$smarty)
 
 /* vim: set expandtab: */
 
-?>
+

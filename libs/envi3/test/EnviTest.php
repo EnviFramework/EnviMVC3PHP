@@ -9,8 +9,8 @@
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2012 Artisan Project
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
@@ -95,8 +95,8 @@ function Envi()
  * @category   MVC
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2012 Artisan Project
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
@@ -119,8 +119,8 @@ if (!defined('ENVI_ENV')) {
  * @category   MVC
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2012 Artisan Project
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
@@ -246,8 +246,8 @@ function extension()
  * @category   MVC
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2012 Artisan Project
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
@@ -1322,7 +1322,7 @@ abstract class EnviTestCase extends EnviTestAssert
         $post        = is_array($this->system_conf['parameter']['post']) ? $this->system_conf['parameter']['post'] : array();
         $headers     = is_array($this->system_conf['parameter']['headers']) ? $this->system_conf['parameter']['headers'] : array();
         $cookie      = is_array($this->system_conf['parameter']['cookie']) ? $this->system_conf['parameter']['cookie'] : array();
-        
+
         $request_method    = $this->system_conf['parameter']['request_method'];
 
         $get    = array_merge($get, $this->get);
@@ -1357,8 +1357,8 @@ abstract class EnviTestCase extends EnviTestAssert
  * @category   MVC
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2012 Artisan Project
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki

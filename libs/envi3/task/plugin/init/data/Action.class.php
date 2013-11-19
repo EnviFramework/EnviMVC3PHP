@@ -69,7 +69,7 @@ class %%action_name%%Action extends %%module_name%%Actions
      *
      * バリデータを通して、処理を分岐させる。
      *
-     * @return Envi::DEFAULT | Envi::ERROR | Envi::SUCCESS | boolean
+     * @return Envi::DEFAULT_ACCESS | Envi::ERROR | Envi::SUCCESS | boolean
      */
     public function validate()
     {
@@ -88,7 +88,7 @@ class %%action_name%%Action extends %%module_name%%Actions
      * +-- validate()でEnvi::SUCCESSもしくはtrueが返った場合の処理。
      *
      * @see validate()
-     * @return Envi::DEFAULT | Envi::ERROR | Envi::SUCCESS | boolean
+     * @return Envi::DEFAULT_ACCESS | Envi::ERROR | Envi::SUCCESS  | Envi::NONE | boolean
      */
     public function execute()
     {
@@ -98,11 +98,11 @@ class %%action_name%%Action extends %%module_name%%Actions
 
 
     /**
-     * +--validate()でEnvi::DEFAULTが返った場合の処理。
+     * +--validate()でEnvi::DEFAULT_ACCESSが返った場合の処理。
      *
      *
      * @see validate()
-     * @return Envi::DEFAULT | Envi::ERROR | Envi::SUCCESS | boolean
+     * @return Envi::DEFAULT_ACCESS | Envi::ERROR | Envi::SUCCESS | boolean
      */
     public function defaultAccess()
     {
@@ -115,7 +115,7 @@ class %%action_name%%Action extends %%module_name%%Actions
      *
      *
      * @see validate()
-     * @return Envi::DEFAULT | Envi::ERROR | Envi::SUCCESS | boolean
+     * @return Envi::DEFAULT_ACCESS | Envi::ERROR | Envi::SUCCESS | boolean
      */
     public function handleError()
     {

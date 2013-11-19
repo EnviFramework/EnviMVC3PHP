@@ -1,6 +1,6 @@
 #!/usr/bin/php
 <?php
-// Envi2のディレクトリのパスを指定する。
+// Envi3のディレクトリのパスを指定する。
 $envi_dir = dirname(__FILE__).DIRECTORY_SEPARATOR.'libs/envi3/';
 
 // 通常の設定はここまで。これ以下は必要がある場合のみ。

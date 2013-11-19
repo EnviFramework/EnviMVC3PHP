@@ -20,8 +20,8 @@
 /**
  * ArtisanSmarty number_format modifier plugin
  *
- * number_format¤¹¤ë
- * @param string $string number_format¤·¤¿¤¤Ê¸»úÎó
+ * number_formatã™ã‚‹
+ * @param string $string number_formatã—ãŸã„æ–‡å­—åˆ—
  * @param string $esc_type html|htmlall|url|quotes|hex|hexentity|javascript
  * @return string
  */
@@ -31,4 +31,4 @@ function smarty_modifier_number_format($string, $decimals = 0, $dec_point = '.',
 }
 
 
-?>
+

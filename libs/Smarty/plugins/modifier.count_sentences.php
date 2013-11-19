@@ -36,4 +36,4 @@ function smarty_modifier_count_sentences($string)
 
 /* vim: set expandtab: */
 
-?>
+

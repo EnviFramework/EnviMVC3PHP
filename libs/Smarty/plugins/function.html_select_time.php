@@ -23,7 +23,7 @@
  * Type:     function<br>
  * Name:     html_select_time<br>
  * Purpose:  Prints the dropdowns for time selection
- * @param array $params �ѥ�᡼��
+ * @param array $params ･ﾑ･鬣癸ｼ･ｿ
  * @param object $smarty Smarty
  * @return string
  * @uses smarty_make_timestamp()
@@ -118,27 +118,27 @@ function smarty_function_html_select_time($params, &$smarty)
     $hour_fmt = $use_24_hours ? '%H' : '%I';
     if ($default_time) {
         if (is_array($default_time)) {
-            $a = array(strftime($hour_fmt, mktime($default_time[$prefix . 'Hour'],0,0,1,1,2000)), 
-                        sprintf($minute_value_format, $default_time[$prefix . 'Minute']), 
-                        sprintf($minute_value_format, $default_time[$prefix . 'Second']), 
+            $a = array(strftime($hour_fmt, mktime($default_time[$prefix . 'Hour'],0,0,1,1,2000)),
+                        sprintf($minute_value_format, $default_time[$prefix . 'Minute']),
+                        sprintf($minute_value_format, $default_time[$prefix . 'Second']),
                         $default_time[$prefix . 'Meridian']);
         } else {
             if (!is_numeric($default_time)) {
                 $default_time = strftime($default_time);
             }
-            $a = array(strftime($hour_fmt, $default_time), 
-                        sprintf($minute_value_format, intval(floor(strftime('%M', $default_time) / $minute_interval) * $minute_interval)), 
-                        sprintf($second_value_format, intval(floor(strftime('%S', $default_time) / $second_interval) * $second_interval)), 
+            $a = array(strftime($hour_fmt, $default_time),
+                        sprintf($minute_value_format, intval(floor(strftime('%M', $default_time) / $minute_interval) * $minute_interval)),
+                        sprintf($second_value_format, intval(floor(strftime('%S', $default_time) / $second_interval) * $second_interval)),
                         strftime("%p", $default_time));
         }
         $default_time = $a;
-        
+
     }
-    
+
     $hours_result = '';
     if ($display_hours) {
         $hours       = $use_24_hours ? range(0, 23) : range(1, 12);
-        
+
         for ($i = 0, $for_max = count($hours); $i < $for_max; $i++) {
             $hours_names[$i] = sprintf($hour_format, $hours[$i]);
             $hours_values[$i] = sprintf($hour_value_format, $hours[$i]);
@@ -188,7 +188,7 @@ function smarty_function_html_select_time($params, &$smarty)
             $minutes_result .= ' ' . $all_extra;
         }
         $minutes_result .= '>'."\n";
-        
+
         if(isset($minute_empty)) {
             array_unshift($minutes_names, $minute_empty);
             array_unshift($minutes_values, '');
@@ -200,7 +200,7 @@ function smarty_function_html_select_time($params, &$smarty)
                                                      $smarty);
         $minutes_result .= "</select>\n";
     }
-    
+
     $seconds_result = "";
     if ($display_seconds) {
         $all_seconds = range(0, 59);
@@ -215,7 +215,7 @@ function smarty_function_html_select_time($params, &$smarty)
         } else {
             $seconds_result .= '"' . $prefix . 'Second"';
         }
-        
+
         if (null !== $second_extra){
             $seconds_result .= ' ' . $second_extra;
         }
@@ -246,7 +246,7 @@ function smarty_function_html_select_time($params, &$smarty)
         } else {
             $meridian_result .= '"' . $prefix . 'Meridian"';
         }
-        
+
         if (null !== $meridian_extra){
             $meridian_result .= ' ' . $meridian_extra;
         }
@@ -266,7 +266,7 @@ function smarty_function_html_select_time($params, &$smarty)
                                                      $smarty);
         $meridian_result .= "</select>\n";
     }
-    
+
     $html_result = array();
     for ($i = 0; $i <= 3; $i++){
         $c = substr($field_order, $i, 1);
@@ -282,7 +282,7 @@ function smarty_function_html_select_time($params, &$smarty)
             case 'S':
                 $html_result[] = $seconds_result.($i != 3 ? $field_separator : '');
                 break;
-                
+
             case 'A':
                 $html_result[] = $meridian_result.($i != 3 ? $field_separator : '');
                 break;
@@ -294,4 +294,4 @@ function smarty_function_html_select_time($params, &$smarty)
 
 /* vim: set expandtab: */
 
-?>
+

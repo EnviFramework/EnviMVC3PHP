@@ -52,4 +52,3 @@ function smarty_core_get_include_path(&$params, &$smarty)
 
 /* vim: set expandtab: */
 
-?>

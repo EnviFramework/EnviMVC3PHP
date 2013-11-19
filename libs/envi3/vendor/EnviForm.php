@@ -1,6 +1,6 @@
 <?php
 /**
- * ÉtÉHÅ[ÉÄÇÃèàóù
+ * „Éï„Ç©„Éº„É†„ÅÆÂá¶ÁêÜ
  *
  *
  * PHP versions 5
@@ -10,8 +10,8 @@
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2012 Artisan Project
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
@@ -20,15 +20,15 @@
 
 
 /**
- * ÉtÉHÅ[ÉÄÇÃèàóù
+ * „Éï„Ç©„Éº„É†„ÅÆÂá¶ÁêÜ
  *
  *
  * @package    Envi3
  * @category   MVC
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2012 Artisan Project
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
@@ -37,9 +37,9 @@
 class EnviForm
 {
     private $system_conf;
-    
+
     /**
-     * ÉRÉìÉXÉgÉâÉNÉ^
+     * „Ç≥„É≥„Çπ„Éà„É©„ÇØ„Çø
      *
      * @return void
      */
@@ -47,9 +47,9 @@ class EnviForm
     {
         $this->system_conf = $system_conf;
     }
-    
+
     /**
-     * +-- ÉÇÉWÉÖÅ[ÉãÅAÉAÉNÉVÉáÉìÇ…âûÇ∂ÇΩÉRÉìÉtÉBÉOèÓïÒÇéÊìæÇ∑ÇÈ
+     * +-- „É¢„Ç∏„É•„Éº„É´„ÄÅ„Ç¢„ÇØ„Ç∑„Éß„É≥„Å´Âøú„Åò„Åü„Ç≥„É≥„Éï„Ç£„Ç∞ÊÉÖÂ†±„ÇíÂèñÂæó„Åô„Çã
      *
      * @access      public
      * @return      array
@@ -62,9 +62,9 @@ class EnviForm
         return $this->system_conf[EnviRequest::getThisModule()][EnviRequest::getThisAction()];
     }
     /* ----------------------------------------- */
-    
+
     /**
-     * +-- YMLÇ…íËã`Ç≥ÇÍÇΩÉoÉäÉfÅ[ÉVÉáÉìÇçsÇ§
+     * +-- YML„Å´ÂÆöÁæ©„Åï„Çå„Åü„Éê„É™„Éá„Éº„Ç∑„Éß„É≥„ÇíË°å„ÅÜ
      *
      * @access      public
      * @return      array|ValidatorError
@@ -75,17 +75,17 @@ class EnviForm
         if (count($validate_conf) === 0) {
             return array();
         }
-        
+
         $validate = validator();
         $i18n     = EnviRequest::getI18n();
         foreach ($validate_conf as $form_name => $conf) {
             $i = 0;
             $validate->autoExecute(
-                isset($conf['name'][$i18n]) ? array($form_name => $conf['name'][$i18n]) : $form_name, 
-                $conf['validation'][$i]['type'], 
-                $conf['validation'][$i]['is_chain'], 
-                $conf['is_trim'], 
-                strpos($conf['method'], '|') ? 3 : stripos($conf['method'], 'POST') === 0 ? validator::METHOD_POST : validator::METHOD_GET, 
+                isset($conf['name'][$i18n]) ? array($form_name => $conf['name'][$i18n]) : $form_name,
+                $conf['validation'][$i]['type'],
+                $conf['validation'][$i]['is_chain'],
+                $conf['is_trim'],
+                strpos($conf['method'], '|') ? 3 : stripos($conf['method'], 'POST') === 0 ? validator::METHOD_POST : validator::METHOD_GET,
                 isset($conf['validation'][$i]['option']) ? $conf['validation'][$i]['option'] : false
             );
             if (isset($conf['validation'][$i]['error_message'][$i18n]) && !empty($conf['validation'][$i]['error_message'][$i18n])) {
@@ -93,9 +93,9 @@ class EnviForm
             }
             while(isset($conf['validation'][++$i])) {
                 $validate->chain(
-                    $form_name, 
-                    $conf['validation'][$i]['type'], 
-                    $conf['validation'][$i]['is_chain'], 
+                    $form_name,
+                    $conf['validation'][$i]['type'],
+                    $conf['validation'][$i]['is_chain'],
                     isset($conf['validation'][$i]['option']) ? $conf['validation'][$i]['option'] : false
                 );
                 if (isset($conf['validation'][$i]['error_message'][$i18n]) && !empty($conf['validation'][$i]['error_message'][$i18n])) {

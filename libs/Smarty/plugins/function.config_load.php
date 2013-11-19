@@ -108,9 +108,9 @@ function smarty_function_config_load($params, &$smarty)
             $_config_vars = array_merge($smarty->_conf_obj->get($_file),
                     $smarty->_conf_obj->get($_file, $_section));
             if(function_exists('var_export')) {
-                $_output = '<?php $_config_vars = ' . var_export($_config_vars, true) . '; ?>';
+                $_output = '<?php $_config_vars = ' . var_export($_config_vars, true) . '; ';
             } else {
-                $_output = '<?php $_config_vars = unserialize(\'' . strtr(serialize($_config_vars),array('\''=>'\\\'', '\\'=>'\\\\')) . '\'); ?>';
+                $_output = '<?php $_config_vars = unserialize(\'' . strtr(serialize($_config_vars),array('\''=>'\\\'', '\\'=>'\\\\')) . '\'); ';
             }
             $_params = (array('compile_path' => $_compile_file, 'compiled_content' => $_output, 'resource_timestamp' => $_params['resource_timestamp']));
             require_once(SMARTY_CORE_DIR . 'core.write_compiled_resource.php');
@@ -149,4 +149,4 @@ function smarty_function_config_load($params, &$smarty)
 
 /* vim: set expandtab: */
 
-?>
+

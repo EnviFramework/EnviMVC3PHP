@@ -17,22 +17,22 @@
  */
 
 /**
- * �ƥ�ץ졼�Ȥ˥ƥ�ץ졼���ѿ��������Ƥޤ���
+ * テンプレートにテンプレート変数を割り当てます。
  *
  * <pre>
- * ���饹���Τ�assign��Ʊ�ͤ�ư���򤷤ޤ���
- * var=''°����value=''°�����ͤ���������ޤ���
- * assign��������줿�ƥ�ץ졼���ѿ��ϡ��̾�ɤ���<%$�ѿ�̾%>�ǻ��Ƚ���ޤ���
+ * クラス本体のassignと同様の動きをします。
+ * var=''属性にvalue=''属性の値が代入されます。
+ * assignで定義されたテンプレート変数は、通常どおり<%$変数名%>で参照出来ます。
  * ----------------------------------------------------
  * Type:       compiler function
  * Name:       assign
- * attribute:  var ������Ƥ���ƥ�ץ졼���ѿ���̾�� ɬ������
- *             value �ƥ�ץ졼���ѿ��˳�����Ƥ���
+ * attribute:  var 割り当てられるテンプレート変数の名前 必須入力
+ *             value テンプレート変数に割り当てる値
  * </pre>
  *
  * @author Akito<akito-artisan@five-foxes.com>
- * @param array $tag_attrs ����������
- * @param object $compiler ArtisanSmartyCompiler���֥�������
+ * @param array $tag_attrs タグの要素
+ * @param object $compiler ArtisanSmartyCompilerオブジェクト
  */
 function smarty_compiler_assign($tag_attrs, &$compiler)
 {
@@ -53,4 +53,4 @@ function smarty_compiler_assign($tag_attrs, &$compiler)
 
 /* vim: set expandtab: */
 
-?>
+

@@ -43,7 +43,7 @@ function smarty_modifier_truncate($string, $length = 80, $etc = '...',
         $length -= strlen($etc);
         if (!$break_words)
             $string = preg_replace('/\s+?(\S+)?$/', '', substr($string, 0, $length+1));
-      
+
         return substr($string, 0, $length).$etc;
     } else
         return $string;
@@ -51,4 +51,4 @@ function smarty_modifier_truncate($string, $length = 80, $etc = '...',
 
 /* vim: set expandtab: */
 
-?>
+

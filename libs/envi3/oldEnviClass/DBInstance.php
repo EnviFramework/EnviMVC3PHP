@@ -1,6 +1,6 @@
 <?php
 /**
- * DBèàóù
+ * DBÂá¶ÁêÜ
  *
  * PHP versions 5
  *
@@ -9,8 +9,8 @@
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2012 Artisan Project
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
@@ -18,14 +18,14 @@
  */
 
 /**
- * DIÇ©ÇÁåƒÇŒÇÍÇÈÉNÉâÉX
+ * DI„Åã„ÇâÂëº„Å∞„Çå„Çã„ÇØ„É©„Çπ
  *
  * @package    Envi3
  * @category   MVC
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2012 Artisan Project
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
@@ -35,7 +35,7 @@ class DBInstance
 {
     private $_system_conf;
     /**
-     * +-- ÉRÉìÉXÉgÉâÉNÉ^
+     * +-- „Ç≥„É≥„Çπ„Éà„É©„ÇØ„Çø
      *
      * @access public
      * @param  $config
@@ -48,7 +48,7 @@ class DBInstance
     /* ----------------------------------------- */
 
     /**
-     * +-- instanceÇÃéÊìæ
+     * +-- instance„ÅÆÂèñÂæó
      *
      * @access public
      * @param  $db_key
@@ -57,7 +57,7 @@ class DBInstance
     public function getInstance($db_key)
     {
         if (!isset($this->_system_conf[$db_key])) {
-            throw new EnviException("DB: {$db_key}Ç™ë∂ç›ÇµÇƒÇ‹ÇπÇÒÅB");
+            throw new EnviException("DB: {$db_key}„ÅåÂ≠òÂú®„Åó„Å¶„Åæ„Åõ„Çì„ÄÇ");
         }
         return DB::getConnection($this->_system_conf[$db_key]['params'], $db_key);
     }

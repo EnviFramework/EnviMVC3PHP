@@ -1,6 +1,6 @@
 <?php
 /**
- * DBˆ—
+ * DBå‡¦ç†
  *
  * PHP versions 5
  *
@@ -9,21 +9,21 @@
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2012 Artisan Project
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      File available since Release 1.0.0
  */
 /**
- * pearDB•—‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ’ñ‹Ÿ‚·‚é‚½‚ß‚Ìƒ‰ƒbƒp[
+ * pearDBé¢¨ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’æä¾›ã™ã‚‹ãŸã‚ã®ãƒ©ãƒƒãƒ‘ãƒ¼
  *
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2012 Artisan Project
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
@@ -39,7 +39,7 @@ class DB
 
 
     /**
-     * +-- Envi‚©‚çŒÄ‚Î‚ê‚éƒƒ\ƒbƒhB•K‚¸ì‚é
+     * +-- Enviã‹ã‚‰å‘¼ã°ã‚Œã‚‹ãƒ¡ã‚½ãƒƒãƒ‰ã€‚å¿…ãšä½œã‚‹
      *
      * @access public
      * @static
@@ -63,7 +63,7 @@ class DB
         } else {
             $dbi = self::getNewConnection($param['dsn'], $param);
         }
-        
+
         if ($param['instance_pool']) {
             self::$connections[$instance_name] = $dbi;
         }
@@ -87,7 +87,7 @@ class DB
     }
 
     /**
-     * +-- EnviDBIBase‚ğæ“¾‚·‚é
+     * +-- EnviDBIBaseã‚’å–å¾—ã™ã‚‹
      *
      * @access public
      * @static
@@ -115,7 +115,7 @@ class DB
     /* ----------------------------------------- */
 
     /**
-     * +-- ƒ_ƒ~[
+     * +-- ãƒ€ãƒŸãƒ¼
      *
      * @static
      * @param & $obj

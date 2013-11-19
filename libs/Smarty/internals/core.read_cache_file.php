@@ -109,4 +109,3 @@ function smarty_core_read_cache_file(&$params, &$smarty)
 
 /* vim: set expandtab: */
 
-?>

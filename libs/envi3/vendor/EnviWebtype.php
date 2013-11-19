@@ -9,8 +9,8 @@
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2012 Artisan Project
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
@@ -24,8 +24,8 @@
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2012 Artisan Project
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
@@ -99,48 +99,48 @@ class EnviWebType
         $this->remote_host = @gethostbyaddr($_SERVER['REMOTE_ADDR']);
     }
 
-    public function getUserInfo()
+    public function getUserInfo($user_agent = NULL)
     {
-        if (isset($this->_cash['getUserinfo'])) {
-            return $this->_cash['getUserinfo'];
+        $user_agent = $user_agent === NULL ? $_SERVER['HTTP_USER_AGENT'] : $user_agent;
+        if (isset($this->_cash['getUserinfo'][$user_agent])) {
+            return $this->_cash['getUserinfo'][$user_agent];
         }
-        $user_agent =& $_SERVER['HTTP_USER_AGENT'];
-        if (stristr($_SERVER['HTTP_USER_AGENT'], 'KDDI') && stristr($_SERVER['HTTP_USER_AGENT'], 'Opera')) {
+        if (stristr($user_agent, 'KDDI') && stristr($user_agent, 'Opera')) {
             $web = self::OHTER;
-        } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'iPhone')) {
+        } elseif (stristr($user_agent, 'iPhone')) {
             $web = self::IPHONE;
-        } elseif (strstr($_SERVER['HTTP_USER_AGENT'], 'Android')) {
+        } elseif (strstr($user_agent, 'Android')) {
             $web = self::ANDROID;
-        } elseif (mb_eregi('KDDI|UP\.Browser', $_SERVER['HTTP_USER_AGENT'])) {
+        } elseif (mb_eregi('KDDI|UP\.Browser', $user_agent)) {
             $web = self::AU;
-        } elseif (mb_eregi('J-PHONE|Vodafone|MOT|SoftBank', $_SERVER['HTTP_USER_AGENT'])) {
+        } elseif (mb_eregi('J-PHONE|Vodafone|MOT|SoftBank', $user_agent)) {
             $web = self::VODAFONE;
-        } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'Docomo')) {
+        } elseif (stristr($user_agent, 'Docomo')) {
             $web = self::DOCOMO;
-        } elseif (strstr($_SERVER['HTTP_USER_AGENT'], 'PlayStation Portable')) {
+        } elseif (strstr($user_agent, 'PlayStation Portable')) {
             $web = self::PSP;
         } else {
             // それ以外はPCよん
             $web = self::PC;
         }
 
-        $this->_cash['getUserinfo'] = $web;
+        $this->_cash['getUserinfo'][$user_agent] = $web;
         return $web;
     }
 
-    public function getWeb()
+    public function getWeb($user_agent = NULL, $remote_host = NULL)
     {
-        if (isset($this->_cash['getWeb'])) {
-            return $this->_cash['getWeb'];
+        $user_agent = $user_agent === NULL ? $_SERVER['HTTP_USER_AGENT'] : $user_agent;
+        if (isset($this->_cash['getWeb'][$user_agent])) {
+            return $this->_cash['getWeb'][$user_agent];
         }
-        $user_agent =& $_SERVER['HTTP_USER_AGENT'];
-        $remote_host = $this->remote_host;
-        if (strstr($_SERVER['HTTP_USER_AGENT'], 'KDDI') && strstr($_SERVER['HTTP_USER_AGENT'], 'Opera')) {
+        $remote_host = $remote_host === NULL ? $this->remote_host : $remote_host;
+        if (strstr($user_agent, 'KDDI') && strstr($user_agent, 'Opera')) {
             $web = self::OHTER;
-        } elseif (strstr($_SERVER['HTTP_USER_AGENT'], 'iPhone')) {
+        } elseif (strstr($user_agent, 'iPhone')) {
             $web = self::IPHONE;
             // $web = self::PC;
-        } elseif (strstr($_SERVER['HTTP_USER_AGENT'], 'Android')) {
+        } elseif (strstr($user_agent, 'Android')) {
             $web = self::ANDROID;
             // $web = self::PC;
         } elseif (ereg('\.(ido|ezweb)\.ne\.jp$', $remote_host)) {
@@ -174,13 +174,13 @@ class EnviWebType
         } elseif ($_SERVER['REMOTE_ADDR'] === '') {
             //特定IPはデバッグに
             $web = self::DEBUG;
-        } elseif (strstr($_SERVER['HTTP_USER_AGENT'], 'PlayStation Portable')) {
+        } elseif (strstr($user_agent, 'PlayStation Portable')) {
             $web = self::PSP;
         } else {
             // それ以外はPCよん
             $web = self::PC;
         }
-        $this->_cash['getWeb'] = $web;
+        $this->_cash['getWeb'][$user_agent] = $web;
         return $web;
     }
 

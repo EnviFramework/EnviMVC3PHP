@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// |                            ARTISAN¥·¥¹¥Æ¥à                           |
+// |                            ARTISANã‚·ã‚¹ãƒ†ãƒ                            |
 // +----------------------------------------------------------------------+
 // | PHP Version 4                                                        |
 // +----------------------------------------------------------------------+
@@ -42,7 +42,7 @@ function make_hidden(&$params, &$smarty, $item, $name = false)
         if ($name !== false) {
             $key = $name."[".$key."]";
         }
-        
+
         if (is_array($value)) {
             $res  .= make_hidden($params, $smarty, $value, $key);
         } else {
@@ -52,5 +52,3 @@ function make_hidden(&$params, &$smarty, $item, $name = false)
     }
     return $res;
 }
-
-?>

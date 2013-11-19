@@ -40,7 +40,7 @@
  * @version 1.3.3
  * @author Andrei Zmievski
  * @author Akito<akito-artisan@five-foxes.com>
- * @param array $params �ѥ�᡼��
+ * @param array $params ･ﾑ･鬣癸ｼ･ｿ
  * @param object $smarty Smarty
  * @return string
  */
@@ -142,9 +142,9 @@ function smarty_function_html_select_date($params, &$smarty)
     }
     if ($default_time) {
         if (is_array($default_time)) {
-            
+
             $default_time = array($default_time[$prefix . 'Year'], $default_time[$prefix . 'Month'], $default_time[$prefix . 'Day']);
-            
+
         } else {
             if(preg_match('!^-\d+$!',$default_time)) {
                 // negative timestamp, use date()
@@ -175,7 +175,7 @@ function smarty_function_html_select_date($params, &$smarty)
             $start_year = strftime('%Y') - $match[2];
         }
     }
-    if (strlen($time[0]) > 0) { 
+    if (strlen($time[0]) > 0) {
         if ($start_year > $time[0] && !isset($params['start_year'])) {
             // force start year to include given date if not explicitly set
             $start_year = $time[0];
@@ -193,7 +193,7 @@ function smarty_function_html_select_date($params, &$smarty)
     if ($display_months) {
         $month_names = array();
         $month_values = array();
-        
+
         for ($i = 1; $i <= 12; $i++) {
             $month_names[$i] = strftime($month_format, @mktime(0, 0, 0, $i, 1, 2000));
             $month_values[$i] = strftime($month_value_format, @mktime(0, 0, 0, $i, 1, 2000));
@@ -225,7 +225,7 @@ function smarty_function_html_select_date($params, &$smarty)
                                                       $smarty);
         $month_result .= '</select>';
     }
-    
+
     if ($display_days) {
         $days = array();
         for ($i = 1; $i <= 31; $i++) {
@@ -252,7 +252,7 @@ function smarty_function_html_select_date($params, &$smarty)
             $day_result .= ' ' . $day_extra;
         }
         $day_result .= '>'."\n";
-        
+
         $day_result .= smarty_function_html_options(array('output'     => $days,
                                                           'values'     => $day_values,
                                                           'selected'   => $default_time[2] ? strftime($day_value_format, @mktime(0, 0, 0, 1, (int)$default_time[2], 2000)) : '',
@@ -301,7 +301,7 @@ function smarty_function_html_select_date($params, &$smarty)
             $year_result .= '>'."\n";
             $year_result .= smarty_function_html_options(array('output' => $years,
                                                                'values' => $yearvals,
-                                                               'selected'   => $default_time[0], 
+                                                               'selected'   => $default_time[0],
                                                                'print_result' => false),
                                                          $smarty);
             $year_result .= '</select>';
@@ -327,4 +327,3 @@ function smarty_function_html_select_date($params, &$smarty)
     $html_result = sprintf($field_design, $html_result[0], $html_result[1], $html_result[2]);
     return $html_result;
 }
-?>

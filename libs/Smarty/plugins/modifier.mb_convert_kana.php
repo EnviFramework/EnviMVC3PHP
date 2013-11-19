@@ -22,9 +22,9 @@
  *
  * Type:     modifier<br>
  * Name:     mb_convert_kana<br>
- * Purpose:  PHP�ؿ�mb_convert_kana�򤫤��ޤ���
- *           
- *           
+ * Purpose:  PHPｴﾘｿb_convert_kana､ｫ､ｱ､ﾞ､ｹ｡｣
+ *
+ *
  * @param $string string
  * @param $format string
  * @return string
@@ -36,4 +36,3 @@ function smarty_modifier_mb_convert_kana($string, $format="asKV")
 
 /* vim: set expandtab: */
 
-?>

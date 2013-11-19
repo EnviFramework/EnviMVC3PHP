@@ -9,8 +9,8 @@
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2012 Artisan Project
- * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
@@ -105,7 +105,7 @@ class ParsePHP
         }
     }
     /* ----------------------------------------- */
-    
+
     /**
      * +-- ファイルベースのパース
      *
@@ -122,7 +122,7 @@ class ParsePHP
         }
     }
     /* ----------------------------------------- */
-    
+
     /**
      * +-- 使用禁止関数の確認
      *
@@ -148,7 +148,7 @@ class ParsePHP
         $this->error_count = $error_count;
     }
     /* ----------------------------------------- */
-    
+
     /**
      * +-- コールされている関数の一覧を返す
      *
@@ -161,21 +161,21 @@ class ParsePHP
         // 定義を削除
         $preg = '(<span style="color: '.$this->highlight_keyword.'">([^<]*<br \/>|&nbsp;)*?((var|public|static|private|abstract|protected|final)(<br \/>|&nbsp;))*?(class|(<br \/>|&nbsp;)*?function|trait|extends|implements)(<br \/>|&nbsp;)*?<\/span>)'
                 .'<span style="color: '.$this->highlight_default.'">([^<]*?)<\/span>';
-        
+
         preg_match_all('/'.$preg.'/', $contents, $match);
         $contents = str_replace($match[0], '', $contents);
 
         // メソッドの実行を削除
         $preg = '<span style="color: '.$this->highlight_keyword.'">(-&gt;|::)<\/span>'
             .'<span style="color: '.$this->highlight_default.'">([^$][^<]+?)<\/span>';
-        
+
         preg_match_all('/'.$preg.'/', $contents, $match);
         $contents = str_replace($match[0], '', $contents);
-        
+
         // 取得
         $preg = '<span style="color: '.$this->highlight_default.'">([^$][^<]+?)<\/span>'
             .'<span style="color: '.$this->highlight_keyword.'">\(';
-        
+
         preg_match_all('/'.$preg.'/', $contents, $match);
         foreach ($match[1] as &$v) {
             $v = str_replace(array('<br />', '&nbsp;'), '', $v);
@@ -184,7 +184,7 @@ class ParsePHP
         return $match[1];
     }
     /* ----------------------------------------- */
-    
+
     /**
      * +-- Comment部分を削除して、削除したCommentを返す
      *
@@ -204,7 +204,7 @@ class ParsePHP
         return $match[1];
     }
     /* ----------------------------------------- */
-    
+
     /**
      * +-- HTML部分を削除する
      *
@@ -223,7 +223,7 @@ class ParsePHP
 class ParsePHP_Executer
 {
     private $argv;
-    
+
     /**
      * +-- コンストラクタ
      *
@@ -236,7 +236,7 @@ class ParsePHP_Executer
         $this->argv = $argv;
     }
     /* ----------------------------------------- */
-    
+
     /**
      * +-- メイン処理
      *
@@ -246,7 +246,7 @@ class ParsePHP_Executer
     public function main()
     {
         $ParsePHP = new ParsePHP;
-        
+
         switch (true) {
         case (isset($this->argv[1]) ? is_file($this->argv[1]) || is_dir($this->argv[1]) : false):
             $this->refDo($this->argv[1], clone $ParsePHP);
@@ -263,7 +263,7 @@ class ParsePHP_Executer
         }
     }
     /* ----------------------------------------- */
-    
+
     /**
      * +-- 再帰的にディレクトリを開いてPHPをチェックする
      *

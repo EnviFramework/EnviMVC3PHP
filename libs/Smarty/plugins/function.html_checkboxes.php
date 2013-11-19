@@ -44,7 +44,7 @@
  * @author credits to Monte Ohrt <monte at ohrt dot com>
  * @author Akito<akito-artisan@five-foxes.com>
  * @version 1.1
- * @param array $params �ѥ�᡼��
+ * @param array $params ･ﾑ･鬣癸ｼ･ｿ
  * @param object $smarty Smarty
  * @return string
  * @uses smarty_function_escape_special_chars()
@@ -151,4 +151,4 @@ function smarty_function_html_checkboxes_output($name, $value, $output, $selecte
     return $_output;
 }
 
-?>
+
