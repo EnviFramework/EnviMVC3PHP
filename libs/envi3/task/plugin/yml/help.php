@@ -1,6 +1,6 @@
 <?php
 /**
- *  プロジェクトの追加タスク
+ * マニュアル
  *
  *
  * PHP versions 5
@@ -18,17 +18,14 @@
  * @since      File available since Release 1.0.0
  */
 
-umask(0);
-$arr[] = $current_work_dir.'apps';
-$arr[] = $current_work_dir.'web';
-$arr[] = $current_work_dir.'cache';
-$arr[] = $current_work_dir.'config';
-$arr[] = $current_work_dir.'logs';
-$arr[] = $current_work_dir.'tests';
-$ds = DIRECTORY_SEPARATOR;
-foreach ($arr as $item) {
-    mkdir($item);
-    echo $item."\n";
-}
-touch($current_work_dir.'envi.prj');
 
+// ヘルプ表示
+cecho('Name:', 33);
+cecho('    envi ', 34, '\n         Enviに対する操作を行います');
+cecho('Usage:', 33);
+    echo '    envi task_name [arguments] [Options]'."\n";
+cecho('Task name:', 33);
+cecho('    yaml-test                                         ', 32, '\n       YAMLのテストをします。\n       envi yaml-test <テストを行うファイルのパス>');
+
+exit;
+die;

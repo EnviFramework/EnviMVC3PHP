@@ -25,24 +25,33 @@ if (!isset($argv[2])) {
 }
 $project_name = $argv[2];
 
+$project_dir = $current_work_dir;
+while (!is_file($project_dir.'envi.prj') && strlen($project_dir) > 2) {
+    $project_dir = dirname($project_dir).DIRECTORY_SEPARATOR;
+}
 
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."1".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."2".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."3".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."4".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."5".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."6".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."7".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."8".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."9".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."0".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."a".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."b".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."c".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."d".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."e".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."f".DIRECTORY_SEPARATOR;
+if (!is_file($project_dir.'envi.prj')) {
+    echo 'please change directory. envi project directory';
+    die;
+}
+
+$arr[] = $project_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR;
+$arr[] = $project_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."1".DIRECTORY_SEPARATOR;
+$arr[] = $project_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."2".DIRECTORY_SEPARATOR;
+$arr[] = $project_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."3".DIRECTORY_SEPARATOR;
+$arr[] = $project_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."4".DIRECTORY_SEPARATOR;
+$arr[] = $project_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."5".DIRECTORY_SEPARATOR;
+$arr[] = $project_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."6".DIRECTORY_SEPARATOR;
+$arr[] = $project_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."7".DIRECTORY_SEPARATOR;
+$arr[] = $project_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."8".DIRECTORY_SEPARATOR;
+$arr[] = $project_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."9".DIRECTORY_SEPARATOR;
+$arr[] = $project_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."0".DIRECTORY_SEPARATOR;
+$arr[] = $project_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."a".DIRECTORY_SEPARATOR;
+$arr[] = $project_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."b".DIRECTORY_SEPARATOR;
+$arr[] = $project_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."c".DIRECTORY_SEPARATOR;
+$arr[] = $project_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."d".DIRECTORY_SEPARATOR;
+$arr[] = $project_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."e".DIRECTORY_SEPARATOR;
+$arr[] = $project_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."f".DIRECTORY_SEPARATOR;
 
 
 foreach ($arr as $item) {

@@ -7,7 +7,7 @@ $envi_dir = dirname(__FILE__).DIRECTORY_SEPARATOR.'libs/envi3/';
 
 // Enviが管理するベースのディレクトリ
 $base_dir = dirname(__FILE__).DIRECTORY_SEPARATOR;
-
+$current_work_dir = getcwd().DIRECTORY_SEPARATOR;
 
 require $envi_dir.'task/envi.php';
 

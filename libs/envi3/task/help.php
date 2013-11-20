@@ -44,6 +44,8 @@ if (isOption('--help') || isOption('-h') || isOption('-?') || !isset($argv[1])) 
     cecho('    -action                              ', 32, '\n       アクションの作成(action)');
     cecho('    -view                                ', 32, '\n       ビューの作成(view)');
 
+    cecho('yml:', 33);
+    cecho('    -test                                ', 32, '\n       YMLの展開テスト');
     exit;
     die;
 }

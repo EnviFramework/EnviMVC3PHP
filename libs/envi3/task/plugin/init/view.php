@@ -40,9 +40,18 @@ if (!mb_ereg('^[a-zA-Z0-9.\-_]+$', $action_name)) {
 }
 
 
+$project_dir = $current_work_dir;
+while (!is_file($project_dir.'envi.prj') && strlen($project_dir) > 2) {
+    $project_dir = dirname($project_dir).DIRECTORY_SEPARATOR;
+}
 
-$module_dir = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR;
-$module_test_dir = $base_dir."tests".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modulesTest".DIRECTORY_SEPARATOR;
+if (!is_file($project_dir.'envi.prj')) {
+    echo 'please change directory. envi project directory';
+    die;
+}
+
+$module_dir = $project_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR;
+$module_test_dir = $project_dir."tests".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modulesTest".DIRECTORY_SEPARATOR;
 
 
 $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'View.class.php');

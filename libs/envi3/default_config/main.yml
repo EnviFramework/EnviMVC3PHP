@@ -42,7 +42,7 @@ all:
   ################################
   # ディレクトリに関する設定
   ################################
-## <?php $ds = DIRECTORY_SEPARATOR; $base = realpath(ENVI_BASE_DIR."..{$ds}..{$ds}apps{$ds}{$app_name}").$ds; ?>
+## <?php $ds = DIRECTORY_SEPARATOR; $base = realpath(__FILE__."..{$ds}apps{$ds}{$app_name}").$ds; ?>
 
     base: "<?php echo $base;?>"
     ## 通常のリクエストやforwardで飛ばされるモジュール
@@ -79,7 +79,6 @@ all:
 
 ## 常にオートロードされるディレクトリ
   AUTOLOAD_CONSTANT:
-## <?php $ds = DIRECTORY_SEPARATOR; $base = realpath(ENVI_BASE_DIR."..{$ds}..{$ds}apps{$ds}{$app_name}").$ds; ?>
 
     - "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>"
     - "<?php echo "{$base}libs{$ds}controller{$ds}";?>"
@@ -274,7 +273,7 @@ all:
     ################################
     ## ファイルへのログ書き込み設定
     ################################
-      <?php $log_file_dir = realpath(ENVI_BASE_DIR."..{$ds}..{$ds}logs").$ds;?>
+      <?php $log_file_dir = realpath($base."{$ds}logs").$ds;?>
       ## エラーログのパス                                                -fe1
       value_error_log_file_path: "<?php echo $log_file_dir;?>"
       ## エラーログファイルのパス                                        -fe2
@@ -641,7 +640,7 @@ all:
     cookie_lifetime: 1200000
     session_manager_path: "<?php echo ENVI_BASE_DIR."libs{$ds}EnviSecureSession.php";?>"
     session_manager: "EnviSecureSession"
-    sess_base_save_path: "<?php echo realpath(ENVI_BASE_DIR."..{$ds}..{$ds}var{$ds}sessions{$ds}{$app_name}").$ds;?>"
+    sess_base_save_path: "<?php echo realpath($base."{$ds}var{$ds}session").$ds;?>"
 
 ################################
 # 環境ごとに変更する値を下記に書くことができます。
@@ -655,7 +654,7 @@ dev:
     cookie_lifetime: 1200000
     session_manager_path: "<?php echo ENVI_BASE_DIR."libs{$ds}EnviSecureSession.php";?>"
     session_manager: "EnviSecureSession"
-    sess_base_save_path: "<?php echo realpath(ENVI_BASE_DIR."..{$ds}..{$ds}var{$ds}session").$ds;?>"
+    sess_base_save_path: "<?php echo realpath($base."{$ds}var{$ds}session").$ds;?>"
 
 
 prod:
@@ -666,4 +665,4 @@ prod:
     cookie_lifetime: 1200000
     session_manager_path: "<?php echo ENVI_BASE_DIR."libs{$ds}EnviSecureSession.php";?>"
     session_manager: "EnviSecureSession"
-    sess_base_save_path: "<?php echo realpath(ENVI_BASE_DIR."..{$ds}..{$ds}var{$ds}session").$ds;?>"
+    sess_base_save_path: "<?php echo realpath($base."{$ds}var{$ds}session").$ds;?>"

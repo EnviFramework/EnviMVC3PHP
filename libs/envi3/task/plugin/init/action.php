@@ -23,6 +23,7 @@ if (!isset($argv[4])) {
 
 }
 
+
 $project_name = $argv[2];
 $module_name = $argv[3];
 $action_name = $argv[4];
@@ -36,6 +37,17 @@ if (!mb_ereg('^[a-zA-Z0-9.\-_]+$', $module_name)) {
 }
 if (!mb_ereg('^[a-zA-Z0-9.\-_]+$', $action_name)) {
     eecho('英数と._-以外の文字は使えません。');
+    die;
+}
+
+
+$project_dir = $current_work_dir;
+while (!is_file($project_dir.'envi.prj') && strlen($project_dir) > 2) {
+    $project_dir = dirname($project_dir).DIRECTORY_SEPARATOR;
+}
+
+if (!is_file($project_dir.'envi.prj')) {
+    echo 'please change directory. envi project directory';
     die;
 }
 
@@ -70,8 +82,8 @@ if (isset($argv[5])) {
 }
 
 
-$module_dir = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR;
-$module_test_dir = $base_dir."tests".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modulesTest".DIRECTORY_SEPARATOR;
+$module_dir = $project_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR;
+$module_test_dir = $project_dir."tests".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modulesTest".DIRECTORY_SEPARATOR;
 
 
 $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'Action.class.php');
