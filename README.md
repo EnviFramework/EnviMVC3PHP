@@ -1,57 +1,57 @@
-[EnviMVC](https://github.com/EnviMVC/EnviMVC3PHP) - Light Weight PHP FlameWork
+[Envi PHP](http://www.enviphp.net/) - Light Weight PHP FlameWork
 ==================================================
 
 Contribution Guides
 --------------------------------------
 
-�I�[�v���\�[�X�ł���AEnviMVC�ɍv������������́A�K�C�h��ǂ�ł���������ƍK���ł��B
+オープンソースである、EnviMVCに貢献くださる方は、ガイドを読んでいただけると幸いです。
 
-�R�[�h�̏C����A�o�O�̕񍐂Ɋւ��Ă͉��L�̃����N���Q�Ƃ��Ă��������B
+コードの修正や、バグの報告に関しては下記のリンクを参照してください。
 
-1. [�\�[�X�R�[�h�̃t�H�[�N](https://github.com/EnviMVC/EnviMVC3PHP)
-2. [�}�j���A���Ewiki](https://github.com/EnviMVC/EnviMVC3PHP/wiki)
-3. [�o�O��](https://github.com/EnviMVC/EnviMVC3PHP/issues)
+1. [ソースコードのフォーク](https://github.com/EnviMVC/EnviMVC3PHP)
+2. [マニュアル・wiki](https://github.com/EnviMVC/EnviMVC3PHP/wiki)
+3. [バグ報告](https://github.com/EnviMVC/EnviMVC3PHP/issues)
 
 
 
-�R�[�h�̎��s��
+コードの実行環境
 --------------------------------------
 
-PHP 5.2����сAPHP 5.3�����퓮�삷����ł̊J�����s���ĉ������B
-PHP5.2����сAPHP5.3�Ō݊���ۂ悤�ɂ��ĉ������B
-EnviMVC�ł́APHP 5.4�𐳎��T�|�[�g���Ă͂���܂��񂪁APHP 5.4�Ō݊����Ȃ��ύX�͍s��Ȃ��ŉ������B
+PHP 5.2および、PHP 5.3が正常動作する環境での開発を行って下さい。
+PHP5.2および、PHP5.3で互換を保つようにして下さい。
+EnviMVCでは、PHP 5.4を正式サポートしてはおりませんが、PHP 5.4で互換がない変更は行わないで下さい。
 
 
-PullRequest�ɂ���
+PullRequestについて
 --------------------------------------
 
-�R�[�h�̏C����������������AEnviMVC���ĂɁAPullRequest�𑗂��ĉ������B
-�C���̃R�~�b�g�́A��ɂ܂Ƃ߂Ă���������ƍK���ł��B
-���L�ɂ��̕��@�������܂��B
+コードの修正をいただいたら、EnviMVC宛てに、PullRequestを送って下さい。
+修正のコミットは、一つにまとめていただけると幸いです。
+下記にその方法を示します。
 
 
 ```
-git checkout -b pullpeq/�C�ӂ̃u�����`�̖��O
-git merge --squash ���܂ŕύX���Ă����u�����`��
+git checkout -b pullpeq/任意のブランチの名前
+git merge --squash 今まで変更していたブランチ名
 git commit
 
 ```
 
-�܂��APullRequest�ł̃R�����g�́A����ύX�����̂��B���̂��߂̕ύX�Ȃ̂��B���L�ڂ��Ă��������B
-����ȊO�̃��[���͂���܂���B
+また、PullRequestでのコメントは、何を変更したのか。何のための変更なのか。を記載してください。
+それ以外のルールはありません。
 
 
 
-�R�[�f�B���O�K��ɂ���
+コーディング規約について
 --------------------------------------
 
-Pear�W���R�[�f�B���O�K��ɏ�������K�v������܂��B
-�K��ɂ��Ă�[������](http://pear.php.net/manual/ja/standards.php)����Q�Ƃ��邱�Ƃ��o���܂��B
+Pear標準コーディング規約に準拠する必要があります。
+規約については[こちら](http://pear.php.net/manual/ja/standards.php)から参照することが出来ます。
 
 
 
-�o�O�񍐂ɂ���
+バグ報告について
 --------------------------------------
 
-�R�[�h�̃R�~�b�g���Ȃ��Ƃ��A�o�O�̕񍐁A�@�\���P�̗v�������ł��A�\���ȃv���W�F�N�g�ւ̍v���ƂȂ�܂��̂ŁA����������A[������](https://github.com/EnviMVC/EnviMVC3PHP/issues)����񍐂��ĉ������B
+コードのコミットがなくとも、バグの報告、機能改善の要求だけでも、十分なプロジェクトへの貢献となりますので、発見し次第、[こちら](https://github.com/EnviMVC/EnviMVC3PHP/issues)から報告して下さい。
 
