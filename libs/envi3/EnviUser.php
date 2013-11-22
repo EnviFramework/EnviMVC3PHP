@@ -71,7 +71,7 @@ class EnviUser
     public static function sessionStart()
     {
         $session_manager = Envi::singleton()->getConfiguration('SESSION', 'session_manager');
-        if (class_exists($session_manager, false)) {
+        if (!class_exists($session_manager, false)) {
             $session_manager_path = Envi::singleton()->getConfiguration('SESSION', 'session_manager_path');
             include $session_manager_path;
         }
