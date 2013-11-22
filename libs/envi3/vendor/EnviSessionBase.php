@@ -127,33 +127,30 @@ interface EnviSessionBaseInterface
     /**
      * +-- EnviUser::setAttributeの実装を記述します
      *
-     * @static
      * @param       string $key
      * @param       mixed $value
      * @return      void
      */
-    public static function setAttribute($key, $value);
+    public function setAttribute($key, $value);
     /* ----------------------------------------- */
 
     /**
      * +-- EnviUser::getAttributeの実装を記述します
      *
-     * @static
      * @param       string $key
      * @return      mixed
      */
-    public static function getAttribute($key);
+    public function getAttribute($key);
     /* ----------------------------------------- */
 
 
     /**
      * +-- EnviUser::hasAttributeの実装を記述します
      *
-     * @static
      * @param       string $key
      * @return      boolean
      */
-    public static function hasAttribute($key);
+    public function hasAttribute($key);
     /* ----------------------------------------- */
 
     /**

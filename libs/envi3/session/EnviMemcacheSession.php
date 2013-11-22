@@ -105,19 +105,19 @@ class EnviMemcacheSession extends EnviSessionBase implements EnviSessionBaseInte
     }
 
 
-    public static function setAttribute($key, $value, $expire = 3600)
+    public function setAttribute($key, $value, $expire = 3600)
     {
         $key = self::generateKey($key);
         return EnviMemcache::set($key, serialize($value), $expire, 'session', self::$_is_gzip);
     }
 
-    public static function getAttribute($key)
+    public function getAttribute($key)
     {
         $key = self::generateKey($key);
         return unserialize(EnviMemcache::get($key, 'session', self::$_is_gzip));
     }
 
-    public static function hasAttribute($key)
+    public function hasAttribute($key)
     {
         $key = self::generateKey($key);
         return EnviMemcache::has($key, 'session', self::$_is_gzip);
