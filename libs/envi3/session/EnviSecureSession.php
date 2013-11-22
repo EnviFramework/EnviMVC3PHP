@@ -176,7 +176,7 @@ class EnviSecureSession extends EnviSessionBase implements EnviSessionBaseInterf
     {
         return isset($_SESSION[self::$_envi_system_value][$key]);
     }
-    public function setAttribute($key, $value)
+    public function setAttribute($key, $value, $expire = 3600)
     {
         $_SESSION[self::$_envi_system_value][$key] = $value;
     }
