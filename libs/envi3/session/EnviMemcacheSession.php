@@ -141,7 +141,7 @@ class EnviMemcacheSession extends EnviSessionBase implements EnviSessionBaseInte
         return EnviMemcache::get($key, 'session', self::$_is_gzip);
     }
 
-    public static function removeAttribute($key){
+    public function removeAttribute($key){
         $key = self::generateKey($key);
         return EnviMemcache::delete($key, 'session');
     }
