@@ -65,8 +65,10 @@ abstract class EnviSessionBase
 
 }
 
+
 interface EnviSessionBaseInterface
 {
+
     /**
      * +-- セッションを開始します
      *
@@ -131,7 +133,7 @@ interface EnviSessionBaseInterface
      * @param       mixed $value
      * @return      void
      */
-    public function setAttribute($key, $value);
+    public function setAttribute($key, $value, $expire = 3600);
     /* ----------------------------------------- */
 
     /**
@@ -181,11 +183,10 @@ interface EnviSessionBaseInterface
     /**
      * +-- EnviUser::removeAttributeの実装を記述します
      *
-     * @static
      * @param       string $key
      * @return      boolean
      */
-    public static function removeAttribute($key);
+    public function removeAttribute($key);
     /* ----------------------------------------- */
 
     /**
