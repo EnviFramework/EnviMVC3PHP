@@ -132,8 +132,8 @@ class EnviSecureSession
             $str .= chr(mt_rand(1,126));
         }
         $session_id .= hash('sha512', $str);
-        $session_id = substr($session_id, 0, 1).base64_encode(pack('h*', $session_id)).substr($session_id, -1, 1);
-        $session_id = str_replace(array('+', '=', '/', "\\"), '', $session_id);
+        $session_id = substr($session_id, 0, 1).substr(base64_encode(pack('h*', $session_id)), 0, 20).substr($session_id, -1, 1);
+        $session_id = str_replace(array('+', '=', '/'), '', $session_id);
         session_id($session_id);
         return $session_id;
     }

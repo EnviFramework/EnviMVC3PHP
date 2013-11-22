@@ -2,7 +2,19 @@
 /**
  * リクエストを管理するクラス
  *
- * ActionControllerから、全て静的にコールされます。
+ * EnviRequestはユーザーからのパラメータの受け渡しと、ActionControllerからViewControllerへのパラメータの受け渡しを行うためのクラスです。
+ * staticで定義されているため、Envi PHP上のどこからでもアクセスすることが出来ますが、ActionControllerおよび、ViewController以外からの参照はしない方が、エレガントなコードになります。
+ * 
+ * 主に三種類
+ * 
+ *  XXXParameter
+ *   * ユーザーからGETやPOSTで渡ってきた値を取得します。
+ *   * 通常は、valodatorを通すため、直接参照する機会は少ないかもしれません。
+ * * XXXAttribute
+ *   * ActionControllerから、ViewControllerへの値の受け渡しをおこないます。
+ * *  XXXError
+ *   * ActionControllerから、ViewControllerへの値の受け渡しを行う点では、XXXAttributeと同じですが、XXXErrorでは、エラーの情報をViewControllerへと受け渡します。
+ *   * validatorを使用した場合は、自動的に値が入ります。 
  *
  * PHP versions 5
  *
@@ -23,7 +35,7 @@
 /**
  * リクエストを管理するクラス
  *
- * ActionControllerから、全て静的にコールされます。
+ * ユーザーからのパラメータの受け渡しと、ActionControllerからViewControllerへのパラメータの受け渡しを、表します。
  *
  * @category   MVC
  * @package    Envi3
@@ -173,7 +185,7 @@ class EnviRequest
     /* ----------------------------------------- */
 
     /**
-     * +-- パースしたパスインフォで、フレームワークで使用されなかった分を取得する
+     * +-- パースしたPATH_INFOのうち、フレームワークで使用されなかった分を取得する
      *
      * @static
      * @access public
@@ -235,7 +247,7 @@ class EnviRequest
     /* ----------------------------------------- */
 
     /**
-     * +-- Attributeした情報をすべて返す
+     * +-- Attributeした情報をすべて取り出します
      *
      * @access public
      * @static
@@ -296,9 +308,9 @@ class EnviRequest
      *
      * @access public
      * @static
-     * @param string|array|int $name
-     * @param mixed $default_parameter
-     * @param int $post_only
+     * @param string|int $name 取り出すParameterのkey
+     * @param mixed $default_parameter 値が取得できなかった場合のデフォルトの値(OPTIONAL:false)
+     * @param int $post_only 取得するhttp methodを指定する。 EnviRequest::POST,EnviRequest::GETが指定できます。bit演算で、両方指定することも出来ます。
      * @return mixed
      */
     public static function getParameter($name, $default_parameter = false, $post_only = 3)
@@ -312,12 +324,12 @@ class EnviRequest
     }
 
     /**
-     * +-- 存在する値かどうかを確認する
+     * +-- 存在するパラメーターかどうかを確認する
      *
      * @access public
      * @static
-     * @param string|array|int $name
-     * @param int $post_only
+     * @param string|int $name 存在確認を行うParameterのkey
+     * @param int $post_only 存在確認を行うhttp methodを指定する。 EnviRequest::POST,EnviRequest::GETが指定できます。bit演算で、両方指定することも出来ます。
      * @return boolean
      */
     public static function hasParameter($name, $post_only = 3)
@@ -337,7 +349,7 @@ class EnviRequest
     /**
      * +-- エラーをセットする
      *
-     * Validatorクラスから呼ばれるので、あまり使わないかも
+     * 主にEnviValidatorクラスからコールされます。
      *
      * @access public
      * @static
@@ -379,7 +391,7 @@ class EnviRequest
 
 
     /**
-     * +-- エラーを全てリファレンスで取得
+     * +-- エラーを全て参照受け渡しで取得
      *
      * @access public
      * @static
@@ -393,7 +405,7 @@ class EnviRequest
 
 
     /**
-     * +-- エラーコードを全てリファレンスで取得
+     * +-- エラーコードを全て参照受け渡しで取得
      *
      * @access public
      * @static
@@ -424,7 +436,7 @@ class EnviRequest
      *
      * @access public
      * @static
-     * @params array $data
+     * @param array $data
      * @return void
      */
     public static function setErrorCodesAll(array $data)
@@ -448,7 +460,7 @@ class EnviRequest
     /* ----------------------------------------- */
 
     /**
-     * +-- エラーがあるかどうか
+     * +-- エラーがあるかどうか確認します
      *
      * @access public
      * @static
@@ -461,7 +473,7 @@ class EnviRequest
     /* ----------------------------------------- */
 
     /**
-     * +-- 指定したエラーがあるかどうか
+     * +-- 指定したエラーがあるかどうか確認します
      *
      * @access public
      * @static

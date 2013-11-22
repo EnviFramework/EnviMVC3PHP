@@ -33,6 +33,9 @@
 class EnviMemcacheSession
 {
 
+    private static  $_is_login = '_is_login';
+    private static  $_is_gzip = true;
+    private static  $_session_id = null;
     public function newSession()
     {
         $session_id = hash('sha512', mt_rand().microtime());
@@ -42,8 +45,8 @@ class EnviMemcacheSession
             $str .= chr(mt_rand(1,126));
         }
         $session_id .= hash('sha512', $str);
-        $session_id = substr($session_id, 0, 1).base64_encode(pack('h*', $session_id)).substr($session_id, -1, 1);
-        $session_id = str_replace(array('+', '='), '', $session_id);
+        $session_id = substr($session_id, 0, 1).substr(base64_encode(pack('h*', $session_id)), 0, 20).substr($session_id, -1, 1);
+        $session_id = str_replace(array('+', '=', '/'), '', $session_id);
         session_id($session_id);
         return $session_id;
     }
@@ -53,31 +56,31 @@ class EnviMemcacheSession
         $this->sess_base_save_path = $this->_system_conf['SESSION']['sess_base_save_path'];
         $session_name = $this->_system_conf['SESSION']['cookie_name'];
         session_name($session_name);
-        ini_set('session.gc_maxlifetime', $this->_system_conf['SESSION']['gc_lifetime']);
-        ini_set('session.cookie_lifetime', $this->_system_conf['SESSION']['cookie_lifetime']);
-        session_set_save_handler (
-            array($this, 'open'),
-            array($this,'close'),
-            array($this,'read'),
-            array($this,'write'),
-            array($this,'destroy'),
-            array($this,'gc')
-        );
+
         $is_new_session = true;
         //セッションIDの正誤性をチェックする。
         if (isset($_COOKIE[$session_name])) {
             $key  = $_COOKIE[$session_name];
-            if (EnviMemcache::has($key, false, '_session')) {
+            if (EnviMemcache::has($key, 'session', self::$_is_gzip)) {
                 $is_new_session = false;
             }
         }
-
         if ($is_new_session) {
-            $key = $this->newSession();
-            $dir = substr($id, 0, 1);
+            $i = 0;
+            while ($i++ < 30) {
+                $key = self::newSession();
+                if (!EnviMemcache::has($key, 'session', self::$_is_gzip)) {
+                    break;
+                }
+            }
+            if ($i >= 30) {
+                throw new EnviException('do not start session');
+            }
         }
         //セッション開始
-        session_start();
+        self::$_session_id = $key;
+        EnviMemcache::set($key, serialize(array()), $this->_system_conf['SESSION']['cookie_lifetime'], 'session', self::$_is_gzip);
+        setcookie (session_name(), $key, time()+$this->_system_conf['SESSION']['cookie_lifetime']);
     }
 
     public function open($save_path, $session_name)
@@ -92,12 +95,12 @@ class EnviMemcacheSession
 
     public function read($key)
     {
-        return unserialize(EnviMemcache::get($key, false, 'session'));
+        return unserialize(EnviMemcache::get($key, 'session', self::$_is_gzip));
     }
 
     public function write($key, $value)
     {
-        EnviMemcache::set($key, serialize($value), false, session_cache_expire(), 'session');
+        return EnviMemcache::set($key, serialize($value), $this->_system_conf['SESSION']['cookie_lifetime'], 'session', self::$_is_gzip);
     }
 
     public function destroy($key)
@@ -115,30 +118,35 @@ class EnviMemcacheSession
     public static function setAttribute($key, $value, $expire = 3600)
     {
         $key = self::generateKey($key);
-        return EnviMemcache::set($key, serialize($value), false, $expire, 'session');
+        return EnviMemcache::set($key, serialize($value), $expire, 'session', self::$_is_gzip);
     }
 
-    public static function getAttribute($key){
+    public static function getAttribute($key)
+    {
         $key = self::generateKey($key);
-        return unserialize(EnviMemcache::get($key, false, 'session'));
+        return unserialize(EnviMemcache::get($key, 'session', self::$_is_gzip));
     }
 
-    public static function hasAttribute($key){
+    public static function hasAttribute($key)
+    {
         $key = self::generateKey($key);
-        return EnviMemcache::has($key, false, 'session');
+        return EnviMemcache::has($key, 'session', self::$_is_gzip);
     }
 
     public function login()
     {
-        $_SESSION[self::$_is_login] = true;
+        $key = self::generateKey(self::$_is_login);
+        return EnviMemcache::set($key, serialize(true), $this->_system_conf['SESSION']['cookie_lifetime'], 'session', self::$_is_gzip);
     }
     public function logout()
     {
-        $_SESSION[self::$_is_login] = false;
+        $key = self::generateKey(self::$_is_login);
+        EnviMemcache::delete($key, 'session');
     }
     public function isLogin()
     {
-        return isset($_SESSION[self::$_is_login]) ? $_SESSION[self::$_is_login] : false;
+        $key = self::generateKey(self::$_is_login);
+        return EnviMemcache::get($key, 'session', self::$_is_gzip);
     }
 
     public static function removeAttribute($key){
@@ -154,7 +162,7 @@ class EnviMemcacheSession
     {
         static $key_gen;
         if (!isset($key_gen)) {
-            $key_gen = session_id();
+            $key_gen = self::$_session_id;
         }
         return $key_gen.'-'.$key;
     }

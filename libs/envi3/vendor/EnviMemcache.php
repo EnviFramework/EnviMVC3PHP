@@ -77,7 +77,7 @@ class EnviMemcache
         $key = self::$prefix[$name].$key;
 
         if (!isset(self::$cache[$name][$key])) {
-            self::$cache[$name][$key] = $con->get($key, $flag);
+            self::$cache[$name][$key] = $con->get($key);
         }
         return self::$cache[$name][$key];
     }

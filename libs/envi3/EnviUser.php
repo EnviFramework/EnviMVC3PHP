@@ -2,7 +2,7 @@
 /**
  * ユーザークラス
  *
- * ActionControllerから、全て静的にコールされます。
+ *
  *
  * PHP versions 5
  *
@@ -22,6 +22,7 @@
 /**
  * ユーザークラス
  *
+ * Sessionを利用した、ユーザー固有のデータ管理を行います。
  *
  * @category   MVC
  * @package    Envi3
@@ -49,6 +50,8 @@ class EnviUser
 
     /**
      * +-- セッションを開始する
+     *
+     * 通常は明示的に実行する必要はありません。
      *
      * @return void
      */
@@ -91,7 +94,7 @@ class EnviUser
     /* ----------------------------------------- */
 
     /**
-     * +-- ログイン状態かどうか
+     * +-- ログイン状態かどうかを確認する
      *
      * @return boolean
      */
@@ -108,32 +111,33 @@ class EnviUser
     /**
      * +-- ユーザーAttributeにデータを格納する
      *
-     * @param string $key Attribute名
+     * @param string $name Attribute名
      * @param mixed $value 値
      * @return void
      */
-    public static function setAttribute($key, $value)
+    public static function setAttribute($name, $value)
     {
         if (!self::$_is_session_start) {
             self::sessionStart();
         }
-        return self::$session->setAttribute($key, $value);
+        $arr = func_get_args();
+        return call_user_func_array(array(self::$session, 'setAttribute'), $arr);
     }
     /* ----------------------------------------- */
 
     /**
      * +-- ユーザーAttributeにデータがあるか確認する
      *
-     * @param string $key Attribute名
-     * @param mixed $value 値
+     * @param string $name Attribute名
      * @return void
      */
-    public static function hasAttribute($key)
+    public static function hasAttribute($name)
     {
         if (!self::$_is_session_start) {
             self::sessionStart();
         }
-        return self::$session->hasAttribute($key);
+        $arr = func_get_args();
+        return call_user_func_array(array(self::$session, 'hasAttribute'), $arr);
     }
     /* ----------------------------------------- */
 
@@ -143,12 +147,13 @@ class EnviUser
      * @param string $name Attribute名
      * @return void
      */
-    public static function removeAttribute($key)
+    public static function removeAttribute($name)
     {
         if (!self::$_is_session_start) {
             self::sessionStart();
         }
-        self::$session->removeAttribute($key);
+        $arr = func_get_args();
+        return call_user_func_array(array(self::$session, 'removeAttribute'), $arr);
     }
     /* ----------------------------------------- */
 
@@ -169,16 +174,16 @@ class EnviUser
     /**
      * +-- ユーザーAttributeに格納されている値を取得する
      *
-     * @param $key Attribute名
+     * @param string $name Attribute名
      * @return mixd
      */
-    public static function getAttribute($key)
+    public static function getAttribute($name)
     {
         if (!self::$_is_session_start) {
             self::sessionStart();
         }
         $arr = func_get_args();
-        return call_user_func(array(self::$session, 'getAttribute'), $arr);
+        return call_user_func_array(array(self::$session, 'getAttribute'), $arr);
     }
     /* ----------------------------------------- */
 }
