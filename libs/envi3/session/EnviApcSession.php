@@ -31,7 +31,7 @@
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
  */
-class EnviApcSession extends EnviSessionBase
+class EnviApcSession extends EnviSessionBase implements EnviSessionBaseInterface
 {
 
     private static  $_envi_system_value = "__ENVI_USER__";

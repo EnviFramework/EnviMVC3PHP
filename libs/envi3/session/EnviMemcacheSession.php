@@ -33,7 +33,7 @@
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
  */
-class EnviMemcacheSession extends EnviSessionBase
+class EnviMemcacheSession extends EnviSessionBase implements EnviSessionBaseInterface
 {
 
     private static  $_is_login = '_is_login';

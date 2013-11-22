@@ -62,12 +62,17 @@ abstract class EnviSessionBase
     }
     /* ----------------------------------------- */
 
+
+}
+
+interface EnviSessionBaseInterface
+{
     /**
      * +-- セッションを開始します
      *
      * @return      void
      */
-    abstract public function sessionStart();
+    public function sessionStart();
     /* ----------------------------------------- */
 
     /**
@@ -77,7 +82,7 @@ abstract class EnviSessionBase
      * @param       string $session_name
      * @return      void
      */
-    abstract public function open($save_path, $session_name);
+    public function open($save_path, $session_name);
     /* ----------------------------------------- */
 
     /**
@@ -85,7 +90,7 @@ abstract class EnviSessionBase
      *
      * @return      void
      */
-    abstract public function close();
+    public function close();
 
     /**
      * +-- session_set_save_handler用read
@@ -93,7 +98,7 @@ abstract class EnviSessionBase
      * @param       string $key
      * @return      mixed
      */
-    abstract public function read($key);
+    public function read($key);
 
     /**
      * +-- session_set_save_handler用write
@@ -102,14 +107,14 @@ abstract class EnviSessionBase
      * @param       mixed $value
      * @return      void
      */
-    abstract public function write($key, $value);
+    public function write($key, $value);
 
     /**
      * +-- session_set_save_handler用destroy
      *
      * @return      void
      */
-    abstract public function destroy($key);
+    public function destroy($key);
 
     /**
      * +-- session_set_save_handler用gc
@@ -117,7 +122,7 @@ abstract class EnviSessionBase
      * @param       integer $maxlifetime
      * @return      void
      */
-    abstract public function gc($maxlifetime);
+    public function gc($maxlifetime);
 
     /**
      * +-- EnviUser::setAttributeの実装を記述します
@@ -127,7 +132,7 @@ abstract class EnviSessionBase
      * @param       mixed $value
      * @return      void
      */
-    abstract public static function setAttribute($key, $value, $expire = 3600);
+    public static function setAttribute($key, $value);
     /* ----------------------------------------- */
 
     /**
@@ -137,7 +142,7 @@ abstract class EnviSessionBase
      * @param       string $key
      * @return      mixed
      */
-    abstract public static function getAttribute($key);
+    public static function getAttribute($key);
     /* ----------------------------------------- */
 
 
@@ -148,7 +153,7 @@ abstract class EnviSessionBase
      * @param       string $key
      * @return      boolean
      */
-    abstract public static function hasAttribute($key);
+    public static function hasAttribute($key);
     /* ----------------------------------------- */
 
     /**
@@ -156,7 +161,7 @@ abstract class EnviSessionBase
      *
      * @return      void
      */
-    abstract public function login();
+    public function login();
     /* ----------------------------------------- */
 
     /**
@@ -164,7 +169,7 @@ abstract class EnviSessionBase
      *
      * @return      void
      */
-    abstract public function logout();
+    public function logout();
     /* ----------------------------------------- */
 
 
@@ -173,7 +178,7 @@ abstract class EnviSessionBase
      *
      * @return      boolean
      */
-    abstract public function isLogin();
+    public function isLogin();
     /* ----------------------------------------- */
 
     /**
@@ -183,7 +188,7 @@ abstract class EnviSessionBase
      * @param       string $key
      * @return      boolean
      */
-    abstract public static function removeAttribute($key);
+    public static function removeAttribute($key);
     /* ----------------------------------------- */
 
     /**
@@ -191,7 +196,6 @@ abstract class EnviSessionBase
      *
      * @return      boolean
      */
-    abstract public function cleanAttributes();
+    public function cleanAttributes();
     /* ----------------------------------------- */
-
 }
