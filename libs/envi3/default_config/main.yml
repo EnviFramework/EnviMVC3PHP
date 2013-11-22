@@ -85,7 +85,6 @@ all:
     - "<?php echo "{$base}libs{$ds}constant{$ds}";?>"
 ## コールされた時にオートロードされるディレクトリ
   AUTOLOAD:
-    - "<?php echo ENVI_BASE_DIR.'plugins'.DIRECTORY_SEPARATOR;?>"
     - "<?php echo "{$base}libs{$ds}common{$ds}";?>"
     - "<?php echo "{$base}libs{$ds}models{$ds}";?>"
     - "<?php echo "{$base}libs{$ds}models{$ds}om{$ds}";?>"
@@ -638,7 +637,7 @@ all:
     cookie_name: "gibson"
     gc_lifetime: 1200000
     cookie_lifetime: 1200000
-    session_manager_path: "<?php echo ENVI_BASE_DIR."libs{$ds}EnviSecureSession.php";?>"
+    session_manager_path: "<?php echo ENVI_BASE_DIR."session{$ds}EnviSecureSession.php";?>"
     session_manager: "EnviSecureSession"
     sess_base_save_path: "<?php echo realpath($base."{$ds}var{$ds}session").$ds;?>"
 
@@ -652,7 +651,7 @@ dev:
     cookie_name: "gibson"
     gc_lifetime: 1200000
     cookie_lifetime: 1200000
-    session_manager_path: "<?php echo ENVI_BASE_DIR."libs{$ds}EnviSecureSession.php";?>"
+    session_manager_path: "<?php echo ENVI_BASE_DIR."session{$ds}EnviSecureSession.php";?>"
     session_manager: "EnviSecureSession"
     sess_base_save_path: "<?php echo realpath($base."{$ds}var{$ds}session").$ds;?>"
 
@@ -663,6 +662,6 @@ prod:
     cookie_name: "fender"
     gc_lifetime: 1200000
     cookie_lifetime: 1200000
-    session_manager_path: "<?php echo ENVI_BASE_DIR."libs{$ds}EnviSecureSession.php";?>"
+    session_manager_path: "<?php echo ENVI_BASE_DIR."session{$ds}EnviSecureSession.php";?>"
     session_manager: "EnviSecureSession"
     sess_base_save_path: "<?php echo realpath($base."{$ds}var{$ds}session").$ds;?>"

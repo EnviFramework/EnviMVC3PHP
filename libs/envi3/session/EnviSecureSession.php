@@ -7,7 +7,7 @@
  *
  * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage EnviUserSession
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -22,7 +22,7 @@
  *
  * @package    Envi3
  * @category   MVC
- * @subpackage EnviMVCCore
+ * @subpackage EnviUserSession
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -31,7 +31,7 @@
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
  */
-class EnviSecureSession
+class EnviSecureSession extends EnviSessionBase
 {
     public $sess_dir_array = array(
         '0' => '0/',
@@ -123,20 +123,6 @@ class EnviSecureSession
         return false;
     }
 
-    public function newSession()
-    {
-        $session_id = hash('sha512', mt_rand().microtime());
-        $str = '';
-        $rand = mt_rand(15, 30);
-        while ($rand--) {
-            $str .= chr(mt_rand(1,126));
-        }
-        $session_id .= hash('sha512', $str);
-        $session_id = substr($session_id, 0, 1).substr(base64_encode(pack('h*', $session_id)), 0, 20).substr($session_id, -1, 1);
-        $session_id = str_replace(array('+', '=', '/'), '', $session_id);
-        session_id($session_id);
-        return $session_id;
-    }
 
     public function sessionStart()
     {
@@ -167,8 +153,15 @@ class EnviSecureSession
         }
 
         if ($is_new_session) {
-            $id = $this->newSession();
-            $dir = substr($id, 0, 1);
+            while (true) {
+                $id = $this->newSession();
+                $dir = substr($id, 0, 1);
+                $sess_file = $this->sess_base_save_path.$this->sess_dir_array[$dir].'.sess_'.$id;
+                if(!is_file($sess_file)){
+                    break;
+                }
+            }
+            session_id($id);
         }
         ini_set('session.save_path', $this->sess_base_save_path.$this->sess_dir_array[$dir]);
         //セッション開始
@@ -177,12 +170,10 @@ class EnviSecureSession
 
     public function getAttribute($key)
     {
-        $key = $key[0];
         return isset($_SESSION[self::$_envi_system_value][$key]) ? $_SESSION[self::$_envi_system_value][$key] : NULL;
     }
     public function hasAttribute($key)
     {
-        $key = $key[0];
         return isset($_SESSION[self::$_envi_system_value][$key]);
     }
     public function setAttribute($key, $value)
@@ -212,5 +203,4 @@ class EnviSecureSession
     {
         return isset($_SESSION[self::$_is_login]) ? $_SESSION[self::$_is_login] : false;
     }
-
 }

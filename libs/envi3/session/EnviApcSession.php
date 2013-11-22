@@ -7,7 +7,7 @@
  *
  * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage EnviUserSession
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -22,7 +22,7 @@
  *
  * @package    Envi3
  * @category   MVC
- * @subpackage EnviMVCCore
+ * @subpackage EnviUserSession
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -31,7 +31,7 @@
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
  */
-class EnviApcSession
+class EnviApcSession extends EnviSessionBase
 {
 
     private static  $_envi_system_value = "__ENVI_USER__";
@@ -53,7 +53,6 @@ class EnviApcSession
 
     public function read($id)
     {
-        $dir = substr($id, 0, 1);
         $session_key = 'sess_'.$this->_system_conf['SESSION']['cookie_name'].$id;
         if (apc_exists($session_key)) {
             return apc_fetch($session_key);
@@ -81,25 +80,7 @@ class EnviApcSession
         return true;
     }
 
-    public function newSession()
-    {
-        $session_id = hash('sha512', mt_rand().microtime());
-        $str = '';
-        $rand = mt_rand(15, 30);
-        while ($rand--) {
-            $str .= chr(mt_rand(1,126));
-        }
-        $session_id .= hash('sha512', $str);
-        $session_id = substr($session_id, 0, 1).base64_encode(pack('h*', $session_id)).substr($session_id, -1, 1);
-        $session_id = str_replace(array('+', '='), '', $session_id);
 
-        $session_key = 'sess_'.$this->_system_conf['SESSION']['cookie_name'].$session_id;
-        if (apc_exists($session_key)) {
-            $this->newSession();
-        }
-        session_id($session_id);
-        return $session_id;
-    }
 
     public function sessionStart()
     {
@@ -127,7 +108,13 @@ class EnviApcSession
         }
 
         if ($is_new_session) {
-            $id = $this->newSession();
+            while(true) {
+                $id = $this->newSession();
+                if (!apc_exists($id)) {
+                    session_id($id);
+                    break;
+                }
+            }
         }
         //セッション開始
         session_start();
@@ -135,12 +122,10 @@ class EnviApcSession
 
     public function getAttribute($key)
     {
-        $key = $key[0];
         return isset($_SESSION[self::$_envi_system_value][$key]) ? $_SESSION[self::$_envi_system_value][$key] : NULL;
     }
     public function hasAttribute($key)
     {
-        $key = $key[0];
         return isset($_SESSION[self::$_envi_system_value][$key]);
     }
     public function setAttribute($key, $value)
