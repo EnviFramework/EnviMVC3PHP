@@ -21,7 +21,7 @@
  * テスト用dummy
  *
  * @category   Native Application
- * @package    hakoniwa
+ * @package    Envi3
  * @subpackage EnviMVCCore
  * @since File available since Release 1.0.0
  * @author     fumikazu.kitagawa <kitagawa-f@klab.jp>
