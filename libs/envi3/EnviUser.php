@@ -2,7 +2,7 @@
 /**
  * ユーザークラス
  *
- * 
+ *
  *
  * PHP versions 5
  *
@@ -120,7 +120,8 @@ class EnviUser
         if (!self::$_is_session_start) {
             self::sessionStart();
         }
-        return self::$session->setAttribute($name, $value);
+        $arr = func_get_args();
+        return call_user_func_array(array(self::$session, 'setAttribute'), $arr);
     }
     /* ----------------------------------------- */
 
@@ -135,7 +136,8 @@ class EnviUser
         if (!self::$_is_session_start) {
             self::sessionStart();
         }
-        return self::$session->hasAttribute($name);
+        $arr = func_get_args();
+        return call_user_func_array(array(self::$session, 'hasAttribute'), $arr);
     }
     /* ----------------------------------------- */
 
@@ -150,7 +152,8 @@ class EnviUser
         if (!self::$_is_session_start) {
             self::sessionStart();
         }
-        self::$session->removeAttribute($name);
+        $arr = func_get_args();
+        return call_user_func_array(array(self::$session, 'removeAttribute'), $arr);
     }
     /* ----------------------------------------- */
 
@@ -180,7 +183,7 @@ class EnviUser
             self::sessionStart();
         }
         $arr = func_get_args();
-        return call_user_func(array(self::$session, 'getAttribute'), $arr);
+        return call_user_func_array(array(self::$session, 'getAttribute'), $arr);
     }
     /* ----------------------------------------- */
 }

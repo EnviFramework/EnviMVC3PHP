@@ -83,18 +83,10 @@ class EnviSecureSession
     {
         $sess_file = session_save_path().DIRECTORY_SEPARATOR.'.sess_'.$id;
 
-        if ($fp = fopen($sess_file, 'w')) {
+        if ($fp = @fopen($sess_file, 'w')) {
             fwrite($fp, $sess_data);
             return fclose($fp);
         }
-        return false;
-    }
-
-
-    public function touch($id)
-    {
-        $sess_file = session_save_path().DIRECTORY_SEPARATOR.'.sess_'.$id;
-        touch($sess_file);
         return false;
     }
 
@@ -140,16 +132,10 @@ class EnviSecureSession
             $str .= chr(mt_rand(1,126));
         }
         $session_id .= hash('sha512', $str);
-        $session_id = substr($session_id, 0, 1).base64_encode(pack('h*', $session_id)).substr($session_id, -1, 1);
-        $session_id = str_replace(array('+', '=', '/', "\\"), '', $session_id);
-        $session_id = $this->minimumKey($session_id);
+        $session_id = substr($session_id, 0, 1).substr(base64_encode(pack('h*', $session_id)), 0, 20).substr($session_id, -1, 1);
+        $session_id = str_replace(array('+', '=', '/'), '', $session_id);
         session_id($session_id);
         return $session_id;
-    }
-
-    public function minimumKey($key)
-    {
-        return substr($key, 0, 20).substr($key, -20);
     }
 
     public function sessionStart()
@@ -185,8 +171,6 @@ class EnviSecureSession
             $dir = substr($id, 0, 1);
         }
         ini_set('session.save_path', $this->sess_base_save_path.$this->sess_dir_array[$dir]);
-        $this->touch($id);
-
         //セッション開始
         session_start();
     }
