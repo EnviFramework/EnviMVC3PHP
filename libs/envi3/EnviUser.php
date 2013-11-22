@@ -2,14 +2,14 @@
 /**
  * ユーザークラス
  *
- *
+ * Sessionの機構を利用した、ユーザー固有のデータ管理を行います。
  *
  * PHP versions 5
  *
  *
  * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage EnviUserSession
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -24,9 +24,24 @@
  *
  * Sessionを利用した、ユーザー固有のデータ管理を行います。
  *
+ * ユーザークラス機能は、複数回のアクセスを通じて特定のデー タを保持する手段を実現するものです。
+ * Envi PHPでは、いくつかの手段で、この方法を実現していますが、基本的な挙動はすべて同じです。
+ * Web サイトの訪問者にはセッションIDというセッションIDと呼ばれるユニークなIDが割りつけられます。
+ * このIDは、ユーザー側にクッキーとして保存します。
+ *
+ * 使用できる、セッションの仕組みは現在、
+ *
+ * * EnviSecureSession
+ * * EnviMemcacheSession
+ * * EnviApcSession
+ * * EnviApcSympleSession
+ *
+ * の３つとなります。
+ *
+ *
  * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage EnviUserSession
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -58,6 +73,10 @@ class EnviUser
     public static function sessionStart()
     {
         $session_manager = Envi::singleton()->getConfiguration('SESSION', 'session_manager');
+        if (!class_exists($session_manager, false)) {
+            $session_manager_path = Envi::singleton()->getConfiguration('SESSION', 'session_manager_path');
+            include $session_manager_path;
+        }
         self::$session = new $session_manager;
         self::$session->_system_conf = Envi::singleton()->getConfigurationAll();
         self::$session->sessionStart();
@@ -67,6 +86,10 @@ class EnviUser
 
     /**
      * +-- ログイン状態にする
+     *
+     * ユーザーをログイン状態にします。
+     * ここでのログイン状態の有無は、ActionControllerにおける、isSecure()の挙動にひも付いています。
+     * isSecure()の返り値が true にした時、もしログイン状態でないのであれば、Envi403Exceptionを発行し、すべての処理を中断します。
      *
      * @return void
      */
@@ -82,6 +105,10 @@ class EnviUser
     /**
      * +-- ログアウト状態にする
      *
+     * EnviUser::isLogin() でログイン状態にある場合に、ログアウト状態にします。
+     * すでにログイン状態にない場合は、特に何もせず、エラーも返しません。
+     *
+     *
      * @return void
      */
     public static function logout()
@@ -95,6 +122,8 @@ class EnviUser
 
     /**
      * +-- ログイン状態かどうかを確認する
+     *
+     * EnviUser::isLogin() でログイン状態にあるかどうかを確認します。
      *
      * @return boolean
      */
@@ -111,8 +140,14 @@ class EnviUser
     /**
      * +-- ユーザーAttributeにデータを格納する
      *
-     * @param string $name Attribute名
-     * @param mixed $value 値
+     * 変数をデータ領域にキャッシュします。
+     *
+     * PHP の他の多くの仕組みと異なり、 EnviUser::setAttribute() を用いて格納された変数は、
+     * ユーザー単位でリクエストを超えて（その値がキャッシュから取り除かれるまで）持続します。
+     *
+     * @param string $name この名前を用いて変数を格納します。$name は ユーザーAttribute内で一意です。そのため、同一の $name で新しい値を格納すると、元の値は上書きされます。
+     * @param mixed $value 格納する変数
+     * @param int $ttl     EnviMemcacheSessionを選択したときだけ有効です。有効期間。$value は、キャッシュに ttl 秒間だけ格納されます。 ttl が経過すると、格納されている変数は （次のリクエスト時に）キャッシュから削除されます。 ttl が指定されていない（あるいは ttl が 0 の場合）は、 キャッシュから手動で削除される・あるいはキャッシュに存在できなくなる （clear, delete, sesion time out など）まで値が持続します。
      * @return void
      */
     public static function setAttribute($name, $value)
@@ -128,8 +163,10 @@ class EnviUser
     /**
      * +-- ユーザーAttributeにデータがあるか確認する
      *
-     * @param string $name Attribute名
-     * @return void
+     * ユーザーAttributeにデータがセットされており、それが NULL でないことを調べます。
+     *
+     * @param string $name 存在を確認する$name
+     * @return boolean
      */
     public static function hasAttribute($name)
     {
@@ -144,7 +181,9 @@ class EnviUser
     /**
      * +-- ユーザーAttributeのデータを削除する
      *
-     * @param string $name Attribute名
+     * EnviUser::setAttribute()したデータを削除します。
+     *
+     * @param string $name EnviUser::setAttribute()を用いて値を格納する際に 使用された$name
      * @return void
      */
     public static function removeAttribute($name)
@@ -160,6 +199,8 @@ class EnviUser
     /**
      * +-- ユーザーAttributeのデータを全て削除する
      *
+     * EnviUser::setAttribute()を用いて格納したデータを全て破棄します。
+     *
      * @return void
      */
     public static function cleanAttributes()
@@ -174,7 +215,9 @@ class EnviUser
     /**
      * +-- ユーザーAttributeに格納されている値を取得する
      *
-     * @param string $name Attribute名
+     * このメソッドはEnviUser::setAttribute()したデータを取得します。
+     *
+     * @param string $name 取得するAttribute名
      * @return mixd
      */
     public static function getAttribute($name)

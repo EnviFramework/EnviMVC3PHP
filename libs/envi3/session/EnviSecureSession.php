@@ -1,13 +1,13 @@
 <?php
 /**
- * APCを使用したSESSION
+ * ファイルを使用したSESSION
  *
  * PHP versions 5
  *
  *
  * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage EnviUserSession
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -18,11 +18,11 @@
  */
 
 /**
- * APCを使用したSESSION
+ * ファイルを使用したSESSION
  *
  * @package    Envi3
  * @category   MVC
- * @subpackage EnviMVCCore
+ * @subpackage EnviUserSession
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -31,9 +31,26 @@
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
  */
-class EnviApcSession
+class EnviSecureSession extends EnviSessionBase implements EnviSessionBaseInterface
 {
-
+    public $sess_dir_array = array(
+        '0' => '0/',
+        '1' => '1/',
+        '2' => '2/',
+        '3' => '3/',
+        '4' => '4/',
+        '5' => '5/',
+        '6' => '6/',
+        '7' => '7/',
+        '8' => '8/',
+        '9' => '9/',
+        'a' => 'a/',
+        'b' => 'b/',
+        'c' => 'c/',
+        'd' => 'd/',
+        'e' => 'e/',
+        'f' => 'f/',
+    );
     private static  $_envi_system_value = "__ENVI_USER__";
     private static  $_attribute = array();
     private static  $_is_login = '_is_login';
@@ -54,52 +71,58 @@ class EnviApcSession
     public function read($id)
     {
         $dir = substr($id, 0, 1);
-        $session_key = 'sess_'.$this->_system_conf['SESSION']['cookie_name'].$id;
-        if (apc_exists($session_key)) {
-            return apc_fetch($session_key);
+        $sess_file = session_save_path().DIRECTORY_SEPARATOR.'.sess_'.$id;
+        if (is_file($sess_file)) {
+            touch($sess_file);
+            return file_get_contents($sess_file);
         }
         return '';
     }
 
-    public function write($id, $session_data)
+    public function write($id, $sess_data)
     {
-        $session_key = 'sess_'.$this->_system_conf['SESSION']['cookie_name'].$id;
-        return apc_store($session_key, $session_data, $this->_system_conf['SESSION']['cookie_lifetime']);
+        $sess_file = session_save_path().DIRECTORY_SEPARATOR.'.sess_'.$id;
+
+        if ($fp = @fopen($sess_file, 'w')) {
+            fwrite($fp, $sess_data);
+            return fclose($fp);
+        }
+        return false;
     }
 
     public function destroy($id)
     {
-        $session_key = 'sess_'.$this->_system_conf['SESSION']['cookie_name'].$id;
+        $dir = substr(sha1(substr($id, 0, 10)), 0, 1);
+        $sess_file = session_save_path().DIRECTORY_SEPARATOR.'.sess_'.$id;
         setcookie (session_name(), $id, time() - 3600);
-        return @apc_delete($session_key);
+        return @unlink($sess_file);
     }
 
 
     public function gc($maxlifetime)
     {
-        // apc側のGCに任せる
-        return true;
+        $a = array_rand($this->sess_dir_array);
+        if ($dh = @opendir($this->sess_base_save_path.$a)) {
+            while ($file = @readdir($dh)) {
+                if ($file == '.' || $file == '..') {
+                    continue;
+                }
+
+                if (is_file($this->sess_base_save_path.$a.DIRECTORY_SEPARATOR.$file)) {
+                    $lifetime = time()-filemtime($this->sess_base_save_path.$a.DIRECTORY_SEPARATOR.$file);
+                    if ($lifetime > $maxlifetime) {
+                        if (!@unlink($this->sess_base_save_path.$a.DIRECTORY_SEPARATOR.$file)) {
+                            return false;
+                        }
+                    }
+                }
+            }
+            closedir($dh);
+            return true;
+        }
+        return false;
     }
 
-    public function newSession()
-    {
-        $session_id = hash('sha512', mt_rand().microtime());
-        $str = '';
-        $rand = mt_rand(15, 30);
-        while ($rand--) {
-            $str .= chr(mt_rand(1,126));
-        }
-        $session_id .= hash('sha512', $str);
-        $session_id = substr($session_id, 0, 1).base64_encode(pack('h*', $session_id)).substr($session_id, -1, 1);
-        $session_id = str_replace(array('+', '='), '', $session_id);
-
-        $session_key = 'sess_'.$this->_system_conf['SESSION']['cookie_name'].$session_id;
-        if (apc_exists($session_key)) {
-            $this->newSession();
-        }
-        session_id($session_id);
-        return $session_id;
-    }
 
     public function sessionStart()
     {
@@ -120,30 +143,40 @@ class EnviApcSession
         //セッションIDの正誤性をチェックする。
         if (isset($_COOKIE[$session_name])) {
             $id  = $_COOKIE[$session_name];
-            $session_key = 'sess_'.$this->_system_conf['SESSION']['cookie_name'].$id;
-            if (apc_exists($session_key)) {
-                $is_new_session = false;
+            $dir = substr($id, 0, 1);
+            if (isset($this->sess_dir_array[$dir])) {
+                $sess_file = $this->sess_base_save_path.$this->sess_dir_array[$dir].'.sess_'.$id;
+                if(is_file($sess_file)){
+                    $is_new_session = false;
+                }
             }
         }
 
         if ($is_new_session) {
-            $id = $this->newSession();
+            while (true) {
+                $id = $this->newSession();
+                $dir = substr($id, 0, 1);
+                $sess_file = $this->sess_base_save_path.$this->sess_dir_array[$dir].'.sess_'.$id;
+                if(!is_file($sess_file)){
+                    break;
+                }
+            }
+            session_id($id);
         }
+        ini_set('session.save_path', $this->sess_base_save_path.$this->sess_dir_array[$dir]);
         //セッション開始
         session_start();
     }
 
     public function getAttribute($key)
     {
-        $key = $key[0];
         return isset($_SESSION[self::$_envi_system_value][$key]) ? $_SESSION[self::$_envi_system_value][$key] : NULL;
     }
     public function hasAttribute($key)
     {
-        $key = $key[0];
         return isset($_SESSION[self::$_envi_system_value][$key]);
     }
-    public function setAttribute($key, $value)
+    public function setAttribute($key, $value, $expire = 3600)
     {
         $_SESSION[self::$_envi_system_value][$key] = $value;
     }
@@ -170,5 +203,4 @@ class EnviApcSession
     {
         return isset($_SESSION[self::$_is_login]) ? $_SESSION[self::$_is_login] : false;
     }
-
 }

@@ -7,7 +7,7 @@
  *
  * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage EnviUserSession
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -19,9 +19,12 @@
 /**
  * Memcacheを使用したセッション
  *
+ * PHP標準の$_SESSIONは使用しません。
+ *
+ *
  * @package    Envi3
  * @category   MVC
- * @subpackage EnviMVCCore
+ * @subpackage EnviUserSession
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -30,26 +33,13 @@
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
  */
-class EnviMemcacheSession
+class EnviMemcacheSession extends EnviSessionBase implements EnviSessionBaseInterface
 {
 
     private static  $_is_login = '_is_login';
     private static  $_is_gzip = true;
     private static  $_session_id = null;
-    public function newSession()
-    {
-        $session_id = hash('sha512', mt_rand().microtime());
-        $str = '';
-        $rand = mt_rand(15, 30);
-        while ($rand--) {
-            $str .= chr(mt_rand(1,126));
-        }
-        $session_id .= hash('sha512', $str);
-        $session_id = substr($session_id, 0, 1).substr(base64_encode(pack('h*', $session_id)), 0, 20).substr($session_id, -1, 1);
-        $session_id = str_replace(array('+', '=', '/'), '', $session_id);
-        session_id($session_id);
-        return $session_id;
-    }
+
 
     public function sessionStart()
     {
@@ -115,19 +105,21 @@ class EnviMemcacheSession
     }
 
 
-    public static function setAttribute($key, $value, $expire = 3600)
+    public function setAttribute($key, $value, $expire = 3600)
     {
         $key = self::generateKey($key);
         return EnviMemcache::set($key, serialize($value), $expire, 'session', self::$_is_gzip);
     }
 
-    public static function getAttribute($key)
+
+    public function getAttribute($key)
     {
         $key = self::generateKey($key);
         return unserialize(EnviMemcache::get($key, 'session', self::$_is_gzip));
     }
 
-    public static function hasAttribute($key)
+
+    public function hasAttribute($key)
     {
         $key = self::generateKey($key);
         return EnviMemcache::has($key, 'session', self::$_is_gzip);
