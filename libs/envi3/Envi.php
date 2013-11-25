@@ -363,7 +363,7 @@ class Envi
         );
         $auto_load_classes_cache = ENVI_MVC_CACHE_PATH.self::$app_key.ENVI_ENV.'.auto_load_files.envicc';
         if (!$debug && is_file($auto_load_classes_cache)) {
-            $this->auto_load_classes = $this->unserialize(file_get_contents($auto_load_classes_cache));
+            $this->auto_load_classes = $this->configUnSerialize($auto_load_classes_cache);
         } else {
             foreach ($this->autoload_dirs as $dir) {
                 if (!is_dir($dir)) {
@@ -381,7 +381,7 @@ class Envi
                 }
                 closedir($dh);
             }
-            file_put_contents($auto_load_classes_cache, $this->serialize($this->auto_load_classes));
+            $this->configSerialize($auto_load_classes_cache, $this->auto_load_classes);
         }
     }
     /* ----------------------------------------- */
@@ -611,9 +611,9 @@ class Envi
 
             $buff = spyc_load($buff);
             $res = isset($buff[ENVI_ENV]) ? array_merge($buff['all'], $buff[ENVI_ENV]) : $buff['all'];
-            file_put_contents(ENVI_MVC_CACHE_PATH.$file.ENVI_ENV.'.envicc', $this->serialize($res));
+            $this->configSerialize(ENVI_MVC_CACHE_PATH.$file.ENVI_ENV.'.envicc', $res);
         } else {
-            $res      = $this->unserialize(file_get_contents(ENVI_MVC_CACHE_PATH.$file.ENVI_ENV.'.envicc'));
+            $res      = $this->configUnSerialize(ENVI_MVC_CACHE_PATH.$file.ENVI_ENV.'.envicc');
         }
         return $res;
     }
@@ -785,14 +785,14 @@ class Envi
             $action = new $action;
             if (method_exists($action, 'execute'.$action_sf)) {
                 $execute        = 'execute'.$action_sf;
-                $validate  = method_exists($action, 'validate'.$action_sf) ? 'validate'.$action_sf : 'validate';
+                $validate       = method_exists($action, 'validate'.$action_sf) ? 'validate'.$action_sf : 'validate';
                 $defaultAccess  = method_exists($action, 'defaultAccess'.$action_sf) ? 'defaultAccess'.$action_sf : 'defaultAccess';
-                $handleError  = method_exists($action, 'handleError'.$action_sf) ? 'handleError'.$action_sf : 'handleError';
-                $isPrivate  = method_exists($action, 'isPrivate'.$action_sf) ? 'isPrivate'.$action_sf : 'isPrivate';
-                $isSSL      = method_exists($action, 'isSSL'.$action_sf) ? 'isSSL'.$action_sf : 'isSSL';
-                $isSecure   = method_exists($action, 'isSecure'.$action_sf) ? 'isSecure'.$action_sf : 'isSecure';
-                $initialize = method_exists($action, 'initialize'.$action_sf) ? 'initialize'.$action_sf : 'initialize';
-                $shutdown   = method_exists($action, 'shutdown'.$action_sf) ? 'shutdown'.$action_sf : 'shutdown';
+                $handleError    = method_exists($action, 'handleError'.$action_sf) ? 'handleError'.$action_sf : 'handleError';
+                $isPrivate      = method_exists($action, 'isPrivate'.$action_sf) ? 'isPrivate'.$action_sf : 'isPrivate';
+                $isSSL          = method_exists($action, 'isSSL'.$action_sf) ? 'isSSL'.$action_sf : 'isSSL';
+                $isSecure       = method_exists($action, 'isSecure'.$action_sf) ? 'isSecure'.$action_sf : 'isSecure';
+                $initialize     = method_exists($action, 'initialize'.$action_sf) ? 'initialize'.$action_sf : 'initialize';
+                $shutdown       = method_exists($action, 'shutdown'.$action_sf) ? 'shutdown'.$action_sf : 'shutdown';
             } else {
                 $isPrivate      = 'isPrivate';
                 $isSSL          = 'isSSL';
@@ -819,14 +819,14 @@ class Envi
                 $action_sub_sf = ucwords(mb_ereg_replace('^'.$sub_action, '', EnviRequest::getThisAction()));
                 if (method_exists($action, 'execute'.$action_sub_sf)) {
                     $execute        = 'execute'.$action_sub_sf;
-                    $isPrivate  = method_exists($action, 'isPrivate'.$action_sub_sf) ? 'isPrivate'.$action_sub_sf : 'isPrivate';
-                    $isSSL      = method_exists($action, 'isSSL'.$action_sub_sf) ? 'isSSL'.$action_sub_sf : 'isSSL';
-                    $isSecure   = method_exists($action, 'isSecure'.$action_sub_sf) ? 'isSecure'.$action_sub_sf : 'isSecure';
-                    $initialize = method_exists($action, 'initialize'.$action_sub_sf) ? 'initialize'.$action_sub_sf : 'initialize';
-                    $shutdown   = method_exists($action, 'shutdown'.$action_sub_sf) ? 'shutdown'.$action_sub_sf : 'shutdown';
-                    $validate  = method_exists($action, 'validate'.$action_sub_sf) ? 'validate'.$action_sub_sf : 'validate';
+                    $isPrivate      = method_exists($action, 'isPrivate'.$action_sub_sf) ? 'isPrivate'.$action_sub_sf : 'isPrivate';
+                    $isSSL          = method_exists($action, 'isSSL'.$action_sub_sf) ? 'isSSL'.$action_sub_sf : 'isSSL';
+                    $isSecure       = method_exists($action, 'isSecure'.$action_sub_sf) ? 'isSecure'.$action_sub_sf : 'isSecure';
+                    $initialize     = method_exists($action, 'initialize'.$action_sub_sf) ? 'initialize'.$action_sub_sf : 'initialize';
+                    $shutdown       = method_exists($action, 'shutdown'.$action_sub_sf) ? 'shutdown'.$action_sub_sf : 'shutdown';
+                    $validate       = method_exists($action, 'validate'.$action_sub_sf) ? 'validate'.$action_sub_sf : 'validate';
                     $defaultAccess  = method_exists($action, 'defaultAccess'.$action_sub_sf) ? 'defaultAccess'.$action_sub_sf : 'defaultAccess';
-                    $handleError  = method_exists($action, 'handleError'.$action_sub_sf) ? 'handleError'.$action_sub_sf : 'handleError';
+                    $handleError    = method_exists($action, 'handleError'.$action_sub_sf) ? 'handleError'.$action_sub_sf : 'handleError';
                 } else {
                     throw new Envi404Exception('execute'.$action_sub_sf.'がないです', 10003);
                 }
@@ -839,14 +839,14 @@ class Envi
                 $action         = new $action;
                 if (method_exists($action, 'execute'.$action_sf)) {
                     $execute        = 'execute'.$action_sf;
-                    $validate  = method_exists($action, 'validate'.$action_sf) ? 'validate'.$action_sf : 'validate';
+                    $validate       = method_exists($action, 'validate'.$action_sf) ? 'validate'.$action_sf : 'validate';
                     $defaultAccess  = method_exists($action, 'defaultAccess'.$action_sf) ? 'defaultAccess'.$action_sf : 'defaultAccess';
-                    $handleError  = method_exists($action, 'handleError'.$action_sf) ? 'handleError'.$action_sf : 'handleError';
-                    $isPrivate  = method_exists($action, 'isPrivate'.$action_sf) ? 'isPrivate'.$action_sf : 'isPrivate';
-                    $isSSL      = method_exists($action, 'isSSL'.$action_sf) ? 'isSSL'.$action_sf : 'isSSL';
-                    $isSecure   = method_exists($action, 'isSecure'.$action_sf) ? 'isSecure'.$action_sf : 'isSecure';
-                    $initialize = method_exists($action, 'initialize'.$action_sf) ? 'initialize'.$action_sf : 'initialize';
-                    $shutdown   = method_exists($action, 'shutdown'.$action_sf) ? 'shutdown'.$action_sf : 'shutdown';
+                    $handleError    = method_exists($action, 'handleError'.$action_sf) ? 'handleError'.$action_sf : 'handleError';
+                    $isPrivate      = method_exists($action, 'isPrivate'.$action_sf) ? 'isPrivate'.$action_sf : 'isPrivate';
+                    $isSSL          = method_exists($action, 'isSSL'.$action_sf) ? 'isSSL'.$action_sf : 'isSSL';
+                    $isSecure       = method_exists($action, 'isSecure'.$action_sf) ? 'isSecure'.$action_sf : 'isSecure';
+                    $initialize     = method_exists($action, 'initialize'.$action_sf) ? 'initialize'.$action_sf : 'initialize';
+                    $shutdown       = method_exists($action, 'shutdown'.$action_sf) ? 'shutdown'.$action_sf : 'shutdown';
                 } else {
                     throw new Envi404Exception('execute'.$action_sf.'がないです', 10003);
                 }
@@ -1007,7 +1007,7 @@ class Envi
     /**
      * +-- DIコンテナ用のエクステンションを読み込む
      *
-     * @access private
+     * @access protected
      * @return void
      */
     protected function loadExtension()
@@ -1034,9 +1034,9 @@ class Envi
                 }
             }
             file_put_contents($load_extension_constant, $cache);
-            file_put_contents($load_extension, $this->serialize($extension));
+            $this->configSerialize($load_extension, $extension);
         } else {
-            $extension = $this->unserialize(file_get_contents($load_extension));
+            $extension = $this->configUnSerialize($load_extension);
         }
 
         include $load_extension_constant;
@@ -1147,6 +1147,33 @@ class Envi
     public function __wakeup()
     {
         trigger_error('Unserializing is not allowed.', E_USER_ERROR);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- コンフィグファイルのシリアライズを行う
+     *
+     * @access      public
+     * @param       string $file_path
+     * @param       mixed $data
+     * @return      void
+     */
+    public function configSerialize($file_path, $data)
+    {
+        file_put_contents($file_path, "<?php\n    return ".var_export($data, true));
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- コンフィグファイルのアンシリアライズを行う
+     *
+     * @access      public
+     * @param       string $file_path
+     * @return      mixed
+     */
+    public function configUnSerialize($file_path)
+    {
+        return include $file_path;
     }
     /* ----------------------------------------- */
 

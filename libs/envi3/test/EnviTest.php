@@ -43,7 +43,7 @@ class dummyBase
  * テスト用dummy
  *
  * @category   Native Application
- * @package    hakoniwa
+ * @package    EnviMVCCore
  * @subpackage EnviMVCCore
  * @since File available since Release 1.0.0
  * @author     fumikazu.kitagawa <kitagawa-f@klab.jp>
@@ -57,7 +57,7 @@ class Logger extends dummyBase
  * テスト用dummy
  *
  * @category   Native Application
- * @package    hakoniwa
+ * @package    EnviMVCCore
  * @subpackage EnviMVCCore
  * @since File available since Release 1.0.0
  * @author     fumikazu.kitagawa <kitagawa-f@klab.jp>
