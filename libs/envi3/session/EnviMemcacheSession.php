@@ -111,11 +111,13 @@ class EnviMemcacheSession extends EnviSessionBase implements EnviSessionBaseInte
         return EnviMemcache::set($key, serialize($value), $expire, 'session', self::$_is_gzip);
     }
 
+
     public function getAttribute($key)
     {
         $key = self::generateKey($key);
         return unserialize(EnviMemcache::get($key, 'session', self::$_is_gzip));
     }
+
 
     public function hasAttribute($key)
     {
@@ -139,7 +141,7 @@ class EnviMemcacheSession extends EnviSessionBase implements EnviSessionBaseInte
         return EnviMemcache::get($key, 'session', self::$_is_gzip);
     }
 
-    public static function removeAttribute($key){
+    public function removeAttribute($key){
         $key = self::generateKey($key);
         return EnviMemcache::delete($key, 'session');
     }
