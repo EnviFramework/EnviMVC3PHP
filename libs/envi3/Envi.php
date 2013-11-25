@@ -1160,7 +1160,7 @@ class Envi
      */
     public function configSerialize($file_path, $data)
     {
-        file_put_contents($file_path, "<?php\n    return ".var_export($data, true));
+        file_put_contents($file_path, "<?php\n    return ".var_export($data, true).';');
     }
     /* ----------------------------------------- */
 
