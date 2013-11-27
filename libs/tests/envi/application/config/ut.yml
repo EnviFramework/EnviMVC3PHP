@@ -1,0 +1,667 @@
+all:
+  ## <?php $app_name = substr(basename(__FILE__), 0, strlen(basename(__FILE__))-4); ?>
+
+  SYSTEM:
+  ################################
+  # 基本的な振る舞いに関する設定
+  ################################
+    default_module: "index"
+    default_action: "index"
+    ext: "php"
+    top_url: "http://<?php echo $_SERVER["HTTP_HOST"];?>"
+    ssl_top_url: "https://<?php echo $_SERVER["HTTP_HOST"];?>"
+    dispatch_url: "http://<?php echo $_SERVER["HTTP_HOST"].$_SERVER["SCRIPT_NAME"];?>"
+    ssl_dispatch_url: "https://<?php echo $_SERVER["HTTP_HOST"].$_SERVER["SCRIPT_NAME"];?>"
+    ## 国際化設定の使用をするかどうか
+    use_i18n: false
+    ## defaultの国際化ファイル
+    default_i18n: "ja"
+    # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviSmartyRenderer.php"
+    # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviTwigRenderer.php"
+    renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviPHPRenderer.php"
+    auto_load_cache: true
+
+  FILTER:
+  ################################
+  # フィルターの設定
+  ################################
+    input_filter:
+      EnviInputFilter:
+        class_name: "EnviInputFilter"
+        resource: "<?php echo ENVI_BASE_DIR."filters".DIRECTORY_SEPARATOR."EnviInputFilter.php";?>"
+    output_filter:
+      EnviInputFilter:
+        class_name: "EnviOutputFilter"
+        resource: "<?php echo ENVI_BASE_DIR."filters".DIRECTORY_SEPARATOR."EnviOutputFilter.php";?>"
+  I18N:
+  ################################
+  # 国際化の設定
+  ################################
+    ja: "ja.yml"
+  DIRECTORY:
+  ################################
+  # ディレクトリに関する設定
+  ################################
+## <?php $ds = DIRECTORY_SEPARATOR; $base = realpath(__FILE__."..{$ds}apps{$ds}{$app_name}").$ds; ?>
+
+    base: "<?php echo $base;?>"
+    ## 通常のリクエストやforwardで飛ばされるモジュール
+    modules: "<?php echo "{$base}modules{$ds}";?>"
+    ## アクションチェイン専用のディレクトリ
+    chain_modules: "<?php echo "{$base}chains{$ds}";?>"
+    templatec: "<?php echo "{$base}data{$ds}template.c{$ds}";?>"
+    templateetc: "<?php echo "{$base}data{$ds}template.etc{$ds}";?>"
+    cache: "<?php echo realpath(ENVI_BASE_DIR."..{$ds}..{$ds}cache").$ds;?>"
+    config   : "<?php echo "{$base}template_config{$ds}";?>"
+    base_templates: "<?php echo "{$base}templates{$ds}";?>"
+    actions: "actions/"
+    views: "views/"
+    templates: "templates/"
+
+  EXTENSION:
+  ################################
+  # エクステンション(DIContainer)の設定
+  ################################
+    ## 別ファイルに記述する場合は下記のように
+    load_yml: true
+    load_yml_resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.$app_name.'_di_container.yml';?>"
+    ## ここに記述する場合は下記のように記述可能
+    # extensions:
+    #   DBI:
+    #     ## ここをtrueにすると、リクエストごとにロードされ、オブジェクトが生成されます
+    #     constant: true
+    #     class:
+    #       resource: "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>EnviDB.php"
+    #       class_name: "EnviDBInstance"
+    #       singleton: true
+    #     router:
+    #       resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.'{$app_name}_databases.yml';?>"
+
+## 常にオートロードされるディレクトリ
+  AUTOLOAD_CONSTANT:
+
+    - "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>"
+    - "<?php echo "{$base}libs{$ds}controller{$ds}";?>"
+    - "<?php echo "{$base}libs{$ds}constant{$ds}";?>"
+## コールされた時にオートロードされるディレクトリ
+  AUTOLOAD:
+    - "<?php echo "{$base}libs{$ds}common{$ds}";?>"
+    - "<?php echo "{$base}libs{$ds}models{$ds}";?>"
+    - "<?php echo "{$base}libs{$ds}models{$ds}om{$ds}";?>"
+
+  MEMCACHE:
+  ################################
+  # メムキャッシュの設定
+  ################################
+    default_host   : "127.0.0.1"
+    default_port   : 11211
+    default_timeout: 10
+    default_prefix : "default_"
+
+    session_host   : "127.0.0.1"
+    session_port   : 11211
+    session_timeout: 10
+    session_prefix: "session_"
+  LOGGER:
+  ################################
+  # ロガーの設定
+  ################################
+    system:
+    ################################
+    # ロガーの基本設定
+    ################################
+      ## ログの吐き出すタイミング設定                                    -sm1
+      ## <?php echo EnviLogWriter::LMODE_EACH;?>: メソッドがコールされた時
+      ## <?php echo EnviLogWriter::LMODE_LAST;?>: shutDownメソッドコール時
+      value_logging_mode: <?php echo EnviLogWriter::LMODE_EACH;?>
+
+      #----------------------------------------------------------------------------------
+
+      ## エラーログの吐き出し方設定                                      -se1
+      ## <?php echo EnviLogWriter::LTYPE_FILE;?>: ファイルに書く
+      ## <?php echo EnviLogWriter::LTYPE_DB;?>: DBに送信する
+      ## <?php echo EnviLogWriter::LTYPE_MAIL;?>: メールを送る
+      ## <?php echo EnviLogWriter::LTYPE_DISPLAY;?>: 標準出力に出力する
+      ## <?php echo EnviLogWriter::LTYPE_SYSTEM;?>: PHPシステムエラーに送る
+      value_error_logging_type: <?php echo EnviLogWriter::LTYPE_FILE;?>
+
+      ## エラーログを吐き出すエラーレベル設定                            -se2
+      ## <?php echo EnviLogWriter::ETYPE_DEBUG;?>: debugレベル
+      ## <?php echo EnviLogWriter::ETYPE_INFO;?>: infomationレベル
+      ## <?php echo EnviLogWriter::ETYPE_NOTICE;?>: noticeレベル
+      ## <?php echo EnviLogWriter::ETYPE_WARNING;?>: warningレベル
+      ## <?php echo EnviLogWriter::ETYPE_FATAL;?>: fatalレベル
+      ## <?php echo EnviLogWriter::ETYPE_ALL;?>: 上記全て
+      ## bit演算で合算できます
+      ## <?php echo EnviLogWriter::ETYPE_WARNING|EnviLogWriter::ETYPE_FATAL;?>: warningレベルとfatalレベル
+      value_error_logging_level: <?php echo EnviLogWriter::ETYPE_ALL?>
+
+      ## エラーログの時間フォーマット                                    -se3
+      value_error_log_date_time_format: "%Y-%m-%d %H:%M:%S"
+
+      ## ログ形式                                                        -sr6
+      ## <?php echo EnviLogWriter::PURSER_XML;?>       : XML形式
+      ## <?php echo EnviLogWriter::PURSER_SERIALIZE;?> : PHPのserialize形式
+      ## <?php echo EnviLogWriter::PURSER_TEXT;?>      : value_request_log_formatで指定した形式
+      value_error_log_type: <?php echo EnviLogWriter::PURSER_TEXT;?>
+
+
+      ## エラーログのファイル書き出しフォーマット                        -se4
+      ## %t unixタイムスタンプ
+      ## %T フォーマットされたタイムスタンプ
+      ## %l 行
+      ## %L レベル
+      ## %f ファイルパス
+      ## %m メッセージ
+      ## %p パフォーマンス(実行時間)
+      value_error_log_format: "[%T] %L %m %f on line %l : %p"
+
+      #----------------------------------------------------------------------------------
+
+      ## レスポンスログを書き込むかどうか                                -sp1
+      flag_use_response_log: false
+
+      ## レスポンスログの吐き出し方設定                                  -sp2
+      ## <?php echo EnviLogWriter::LTYPE_FILE;?>: ファイルに書く
+      ## <?php echo EnviLogWriter::LTYPE_DB;?>: DBに送信する
+      ## <?php echo EnviLogWriter::LTYPE_MAIL;?>: メールを送る
+      ## <?php echo EnviLogWriter::LTYPE_DISPLAY;?>: 標準出力に出力する
+      ## <?php echo EnviLogWriter::LTYPE_SYSTEM;?>: PHPシステムエラーに送る
+      value_response_logging_type: <?php echo EnviLogWriter::LTYPE_FILE;?>
+
+      ## レスポンスログの時間フォーマット                                -sp3
+      value_response_log_date_time_format: "%Y-%m-%d %H:%M:%S"
+
+      ## ログ形式                                                        -sr6
+      ## <?php echo EnviLogWriter::PURSER_XML;?>       : XML形式
+      ## <?php echo EnviLogWriter::PURSER_SERIALIZE;?> : PHPのserialize形式
+      ## <?php echo EnviLogWriter::PURSER_TEXT;?>      : value_request_log_formatで指定した形式
+      value_response_log_type: <?php echo EnviLogWriter::PURSER_TEXT;?>
+
+      ## レスポンスログのファイル書き出しフォーマット                    -sp7
+      ## %t unixタイムスタンプ
+      ## %T フォーマットされたタイムスタンプ
+      ## %l 行
+      ## %L レベル
+      ## %f ファイルパス
+      ## %m メッセージ
+      ## %p パフォーマンス(実行時間)
+      ## %P $_POST
+      ## %c $_COOKIE
+      ## %f $_FILES
+      ## %S $_SESSION
+      ## %s $_SERVER
+      ## %g $GLOBAL
+      ## %q $_GET
+      value_response_log_format: "[%T] %l %q %g %s %S %f %e %f %c %P : %p"
+
+      #----------------------------------------------------------------------------------
+
+      ## パフォーマンスアラートを使用するか                              -sa1
+      flag_use_performance_alert_log: true
+
+      ## アラートする実行時間                                            -sa2
+      value_performance_alert_execute: 20
+
+      ## パフォーマンスアラートの吐き出し方設定                          -sa3
+      ## <?php echo EnviLogWriter::LTYPE_FILE;?>: ファイルに書く
+      ## <?php echo EnviLogWriter::LTYPE_DB;?>: DBに送信する
+      ## <?php echo EnviLogWriter::LTYPE_MAIL;?>: メールを送る
+      ## <?php echo EnviLogWriter::LTYPE_DISPLAY;?>: 標準出力に出力する
+      ## <?php echo EnviLogWriter::LTYPE_SYSTEM;?>: PHPシステムエラーに送る
+      value_performance_alert_logging_type: <?php echo EnviLogWriter::LTYPE_FILE;?>
+
+      ## パフォーマンスアラートの時間フォーマット                        -sa4
+      value_performance_alert_log_format: "%Y-%m-%d %H:%M:%S"
+
+      ## ログ形式                                                        -sr5
+      ## <?php echo EnviLogWriter::PURSER_XML;?>       : XML形式
+      ## <?php echo EnviLogWriter::PURSER_SERIALIZE;?> : PHPのserialize形式
+      ## <?php echo EnviLogWriter::PURSER_TEXT;?>      : value_request_log_formatで指定した形式
+      value_performance_alert_log_type: <?php echo EnviLogWriter::PURSER_TEXT;?>
+
+      ## パフォーマンスアラートのファイル書き出しフォーマット            -sa6
+      ## %t unixタイムスタンプ
+      ## %T フォーマットされたタイムスタンプ
+      ## %l 行
+      ## %f ファイルパス
+      ## %p パフォーマンス
+      value_performance_alert_log_format: "[%T] %l %f : %p"
+
+      #----------------------------------------------------------------------------------
+
+      ## リクエストログを使用するか                                      -sr1
+      flag_use_request_log: false
+
+      ## リクエストログの吐き出し方設定                                  -sr2
+      ## <?php echo EnviLogWriter::LTYPE_FILE;?>: ファイルに書く
+      ## <?php echo EnviLogWriter::LTYPE_DB;?>: DBに送信する
+      ## <?php echo EnviLogWriter::LTYPE_MAIL;?>: メールを送る
+      ## <?php echo EnviLogWriter::LTYPE_DISPLAY;?>: 標準出力に出力する
+      ## <?php echo EnviLogWriter::LTYPE_SYSTEM;?>: PHPシステムエラーに送る
+      value_request_logging_type: <?php echo EnviLogWriter::LTYPE_FILE;?>
+
+      ## リクエストログの時間フォーマット                                -sr3
+      value_request_log_date_time_format: "%Y-%m-%d %H:%M:%S"
+
+      ## ログ形式                                                        -sr4
+      ## <?php echo EnviLogWriter::PURSER_XML;?>       : XML形式
+      ## <?php echo EnviLogWriter::PURSER_SERIALIZE;?> : PHPのserialize形式
+      ## <?php echo EnviLogWriter::PURSER_TEXT;?>      : value_request_log_formatで指定した形式
+      value_request_log_type: <?php echo EnviLogWriter::PURSER_TEXT;?>
+
+      ## リクエストログのファイル書き出しフォーマット                    -sr5
+      ## %t unixタイムスタンプ
+      ## %T フォーマットされたタイムスタンプ
+      ## %l 行
+      ## %L レベル
+      ## %f ファイルパス
+      ## %m メッセージ
+      ## %p パフォーマンス(実行時間)
+      ## %P $_POST
+      ## %c $_COOKIE
+      ## %f $_FILES
+      ## %S $_SESSION
+      ## %s $_SERVER
+      ## %g $GLOBAL
+      ## %q $_GET
+      value_request_log_format: "[%T] %l %q %g %s %S %f %e %f %c %P: %p"
+
+
+    file:
+    ################################
+    ## ファイルへのログ書き込み設定
+    ################################
+      <?php $log_file_dir = realpath($base."{$ds}logs").$ds;?>
+      ## エラーログのパス                                                -fe1
+      value_error_log_file_path: "<?php echo $log_file_dir;?>"
+      ## エラーログファイルのパス                                        -fe2
+      value_error_log_file_name: "%Y%m%d.app.log"
+      ## エラーログローテートサイズ                                      -fe3
+      value_error_log_rotate_size: "100000000"
+
+      #----------------------------------------------------------------------------------
+
+      ## レスポンスログのパス                                            -fp1
+      value_response_log_file_path: "<?php echo $log_file_dir;?>"
+      ## レスポンスログファイルのパス                                    -fp2
+      value_response_log_file_name: "%Y%m%d.res.log"
+      ## レスポンスログローテートサイズ                                  -fp3
+      value_response_log_rotate_size: "100000000"
+
+      #----------------------------------------------------------------------------------
+
+      ## パフォーマンスアラートのパス                                    -fa1
+      value_performance_alert_log_file_path: "<?php echo $log_file_dir;?>"
+      ## パフォーマンスアラートファイルのパス                            -fa2
+      value_performance_alert_log_file_name: "%Y%m%d.alert.log"
+      ## パフォーマンスアラートローテートサイズ                          -fa3
+      value_performance_alert_log_rotate_size: "100000000"
+
+      #----------------------------------------------------------------------------------
+
+      ## リクエストログのパス                                            -fr1
+      value_request_log_file_path: "<?php echo $log_file_dir;?>"
+      ## リクエストログファイルのパス                                    -fr2
+      value_request_log_file_name: "%Y%m%d.acc.log"
+      ## リクエストログローテートサイズ                                  -fr3
+      value_request_log_rotate_size: "100000000"
+
+
+
+    db:
+    ################################
+    ## DBへのログ書き込み設定
+    ################################
+      ## エラーログ記録テーブル                                          -de1
+      value_error_log_table_name: ""
+      ## エラーログ記録カラム                                            -de2
+      value_error_log_column_name: ""
+
+      #----------------------------------------------------------------------------------
+
+      ## レスポンスログ記録テーブル                                      -dp1
+      value_response_log_table_name: ""
+      ## レスポンスログ記録カラム                                        -dp2
+      value_response_log_column_name: ""
+
+      #----------------------------------------------------------------------------------
+
+      ## パフォーマンスアラートログ記録テーブル                          -da1
+      value_performance_alert_log_table_name: ""
+      ## パフォーマンスアラートログ記録カラム                            -da2
+      value_performance_alert_log_column_name: ""
+
+      #----------------------------------------------------------------------------------
+
+      ## リクエストログ記録テーブル                                      -dr1
+      value_request_log_table_name: ""
+      ## リクエストログ記録カラム                                        -dr2
+      value_request_log_column_name: ""
+
+    mail:
+    ################################
+    ## メールでのログ送信設定
+    ################################
+      ## エラーログメールあて先                                          -me1
+      value_error_log_mail_to: ""
+      ## エラーログメール差出人                                          -me2
+      value_error_log_mail_from: ""
+      ## エラーログメール件名                                            -me3
+      value_error_log_mail_subject: ""
+
+      #----------------------------------------------------------------------------------
+
+      ## レスポンスログメールあて先                                      -mp1
+      value_response_log_mail_to: ""
+      ## レスポンスログメール差出人                                      -mp2
+      value_response_log_mail_from: ""
+      ## レスポンスログメール件名                                        -mp3
+      value_response_log_mail_subject: ""
+
+      #----------------------------------------------------------------------------------
+
+      ## パフォーマンスアラートログメールあて先                          -ma1
+      value_performance_alert_log_mail_to: ""
+      ## パフォーマンスアラートログメール差出人                          -ma2
+      value_performance_alert_log_mail_from: ""
+      ## パフォーマンスアラートログメール件名                            -ma3
+      value_performance_alert_log_mail_subject: ""
+
+      #----------------------------------------------------------------------------------
+
+      ## リクエストログメールあて先                                      -mr1
+      value_request_log_mail_to: ""
+      ## リクエストログメール差出人                                      -mr2
+      value_request_log_mail_from: ""
+      ## リクエストログメール件名                                        -mr3
+      value_request_log_mail_subject: ""
+
+
+
+    request:
+    ################################
+    ## リクエストログ設定
+    ################################
+
+      ## トラックするグローバル変数
+      ## <?php echo EnviLogWriter::REQUEST_SERVER;?> : $_SERVER
+      ## <?php echo EnviLogWriter::REQUEST_COOKIE;?> : $_COOKIE
+      ## <?php echo EnviLogWriter::REQUEST_ENV;?>    : $_ENV
+      ## <?php echo EnviLogWriter::REQUEST_POST;?>   : $_POST
+      ## <?php echo EnviLogWriter::REQUEST_GET;?>    : $_GET
+      ## <?php echo EnviLogWriter::REQUEST_FILE;?>   : $_FILES
+      ## <?php echo EnviLogWriter::REQUEST_SESSION;?>: $_SESSION
+      ## <?php echo EnviLogWriter::REQUEST_GLOBALS;?>: $GLOBALS
+      ## <?php echo EnviLogWriter::REQUEST_ALL;?>    : 上記全て
+      value_track_request_type: <?php echo EnviLogWriter::REQUEST_SERVER|EnviLogWriter::REQUEST_COOKIE|EnviLogWriter::REQUEST_POST|EnviLogWriter::REQUEST_GET|EnviLogWriter::REQUEST_FILE|EnviLogWriter::REQUEST_SESSION;?>
+
+      #----------------------------------------------------------------------------------
+
+      ## $_SERVER の取得に制限をかけるかどうか
+      flag_limit_server_track: false
+      ## $_SERVERの取得に制限をかける場合の、取得するべきキー
+      ## [,(カンマ)]区切りで記述
+      value_server_track_key: "PHP_SELF,argv,argc,GATEWAY_INTERFACE,SERVER_NAME,SERVER_SOFTWARE,SERVER_PROTOCOL,REQUEST_METHOD,REQUEST_TIME,QUERY_STRING,DOCUMENT_ROOT,HTTP_ACCEPT,HTTP_ACCEPT_CHARSET,HTTP_ACCEPT_ENCODING,HTTP_ACCEPT_LANGUAGE,HTTP_CONNECTION,HTTP_HOST,HTTP_REFERER,HTTP_USER_AGENT,REMOTE_ADDR,REMOTE_HOST,REMOTE_PORT,SCRIPT_FILENAME,SERVER_ADMIN,SERVER_PORT,SERVER_SIGNATURE,PATH_TRANSLATED,SCRIPT_NAME,REQUEST_URI,PHP_AUTH_USER,PHP_AUTH_PW,AUTH_TYPE,PATH_INFO"
+      ## 暗号化して保存する、キー
+      ## [,(カンマ)]区切りで記述
+      value_md5_server_key: "PHP_AUTH_PW"
+      ## 制限をかける文字数
+      value_server_maxlen: 100000000
+
+      #----------------------------------------------------------------------------------
+
+      ## $_COOKIE の取得に制限をかけるかどうか
+      flag_limit_cookie_track: false
+      ## $_COOKIEの取得に制限をかける場合の、取得するべきキー
+      ## [,(カンマ)]区切りで記述
+      value_cookie_track_key: ""
+      ## 暗号化して保存する、キー
+      ## [,(カンマ)]区切りで記述
+      value_md5_cookie_key: ""
+      ## 制限をかける文字数
+      value_cookie_maxlen: 100000000
+
+      #----------------------------------------------------------------------------------
+
+      ## $_ENV の取得に制限をかけるかどうか
+      flag_limit_env_track: false
+      ## $_ENVの取得に制限をかける場合の、取得するべきキー
+      ## [,(カンマ)]区切りで記述
+      value_env_track_key: "PWD,REMOTEHOST,HOSTNAME,LESSOPEN,USER,LS_COLORS,MACHTYPE,MAIL,INPUTRC,LANG,LOGNAME,SHLVL,SHELL,HOSTTYPE,OSTYPE,HISTSIZE,TERM,HOME,SSH_ASKPASS,PATH,_"
+      ## 暗号化して保存する、キー
+      ## [,(カンマ)]区切りで記述
+      value_md5_env_key: ""
+      ## 制限をかける文字数
+      value_env_maxlen: 100000000
+
+      #----------------------------------------------------------------------------------
+
+      ## $_POST の取得に制限をかけるかどうか
+      flag_limit_post_track: false
+      ## $_POSTの取得に制限をかける場合の、取得するべきキー
+      ## [,(カンマ)]区切りで記述
+      value_post_track_key: ""
+      ## 暗号化して保存する、キー
+      ## [,(カンマ)]区切りで記述
+      value_md5_post_key: ""
+      ## 制限をかける文字数
+      value_post_maxlen: 100000000
+
+      #----------------------------------------------------------------------------------
+
+      ## $_GET の取得に制限をかけるかどうか
+      flag_limit_get_track: false
+      ## $_GETの取得に制限をかける場合の、取得するべきキー
+      ## [,(カンマ)]区切りで記述
+      value_get_track_key: ""
+      ## 暗号化して保存する、キー
+      ## [,(カンマ)]区切りで記述
+      value_md5_get_key: ""
+      ## 制限をかける文字数
+      value_get_maxlen: 100000000
+
+      #----------------------------------------------------------------------------------
+
+      ## $_FILE の取得に制限をかけるかどうか
+      flag_limit_file_track: false
+      ## $_FILEの取得に制限をかける場合の、取得するべきキー
+      ## [,(カンマ)]区切りで記述
+      value_file_track_key: ""
+      ## 暗号化して保存する、キー
+      value_md5_file_key: ""
+      ## 制限をかける文字数
+      value_file_maxlen: 100000000
+
+      #----------------------------------------------------------------------------------
+
+      ## $_SESSON の取得に制限をかけるかどうか
+      flag_limit_session_track: false
+      ## $_SESSONの取得に制限をかける場合の、取得するべきキー
+      ## [,(カンマ)]区切りで記述
+      value_session_track_key: ""
+      ## 暗号化して保存する、キー
+      ## [,(カンマ)]区切りで記述
+      value_md5_session_key: ""
+      ## 制限をかける文字数
+      value_session_maxlen: 100000000
+
+      #----------------------------------------------------------------------------------
+
+      ## $GLOBALS の取得に制限をかけるかどうか
+      flag_limit_globals_track: false
+      ## $GLOBALSの取得に制限をかける場合の、取得するべきキー
+      ## [,(カンマ)]区切りで記述
+      value_globals_track_key: ""
+      ## 暗号化して保存する、キー
+      ## [,(カンマ)]区切りで記述
+      value_md5_globals_key: ""
+      ## 制限をかける文字数
+      value_globals_maxlen: 100000000
+
+
+
+    response:
+    ################################
+    ## レスポンスログ設定
+    ################################
+
+      ## トラックするグローバル変数
+      ## <?php echo EnviLogWriter::REQUEST_SERVER;?>: $_SERVER
+      ## <?php echo EnviLogWriter::REQUEST_COOKIE;?>: $_COOKIE
+      ## <?php echo EnviLogWriter::REQUEST_ENV;?>: $_ENV
+      ## <?php echo EnviLogWriter::REQUEST_POST;?>: $_POST
+      ## <?php echo EnviLogWriter::REQUEST_GET;?>: $_GET
+      ## <?php echo EnviLogWriter::REQUEST_FILE;?>: $_FILES
+      ## <?php echo EnviLogWriter::REQUEST_SESSION;?>: $_SESSION
+      ## <?php echo EnviLogWriter::REQUEST_GLOBALS;?>: $GLOBALS
+      ## <?php echo EnviLogWriter::REQUEST_ALL;?>: 上記全て
+      value_track_response_type: <?php echo EnviLogWriter::REQUEST_SERVER|EnviLogWriter::REQUEST_COOKIE|EnviLogWriter::REQUEST_POST|EnviLogWriter::REQUEST_GET|EnviLogWriter::REQUEST_FILE|EnviLogWriter::REQUEST_SESSION;?>
+
+      #----------------------------------------------------------------------------------
+
+      ## $_SERVER の取得に制限をかけるかどうか
+      flag_limit_server_track: false
+      ## $_SERVERの取得に制限をかける場合の、取得するべきキー
+      ## [,(カンマ)]区切りで記述
+      value_server_track_key: "PHP_SELF,argv,argc,GATEWAY_INTERFACE,SERVER_NAME,SERVER_SOFTWARE,SERVER_PROTOCOL,REQUEST_METHOD,REQUEST_TIME,QUERY_STRING,DOCUMENT_ROOT,HTTP_ACCEPT,HTTP_ACCEPT_CHARSET,HTTP_ACCEPT_ENCODING,HTTP_ACCEPT_LANGUAGE,HTTP_CONNECTION,HTTP_HOST,HTTP_REFERER,HTTP_USER_AGENT,REMOTE_ADDR,REMOTE_HOST,REMOTE_PORT,SCRIPT_FILENAME,SERVER_ADMIN,SERVER_PORT,SERVER_SIGNATURE,PATH_TRANSLATED,SCRIPT_NAME,REQUEST_URI,PHP_AUTH_USER,PHP_AUTH_PW,AUTH_TYPE,PATH_INFO"
+      ## 暗号化して保存する、キー
+      ## [,(カンマ)]区切りで記述
+      value_md5_server_key: "PHP_AUTH_PW"
+      ## 制限をかける文字数
+      value_server_maxlen: 100000000
+
+      #----------------------------------------------------------------------------------
+
+      ## $_COOKIE の取得に制限をかけるかどうか
+      flag_limit_cookie_track: false
+      ## $_COOKIEの取得に制限をかける場合の、取得するべきキー
+      ## [,(カンマ)]区切りで記述
+      value_cookie_track_key: ""
+      ## 暗号化して保存する、キー
+      ## [,(カンマ)]区切りで記述
+      value_md5_cookie_key: ""
+      ## 制限をかける文字数
+      value_cookie_maxlen: 100000000
+
+      #----------------------------------------------------------------------------------
+
+      ## $_ENV の取得に制限をかけるかどうか
+      flag_limit_env_track: false
+      ## $_ENVの取得に制限をかける場合の、取得するべきキー
+      ## [,(カンマ)]区切りで記述
+      value_env_track_key: "PWD,REMOTEHOST,HOSTNAME,LESSOPEN,USER,LS_COLORS,MACHTYPE,MAIL,INPUTRC,LANG,LOGNAME,SHLVL,SHELL,HOSTTYPE,OSTYPE,HISTSIZE,TERM,HOME,SSH_ASKPASS,PATH,_"
+      ## 暗号化して保存する、キー
+      ## [,(カンマ)]区切りで記述
+      value_md5_env_key: ""
+      ## 制限をかける文字数
+      value_env_maxlen: 100000000
+
+      #----------------------------------------------------------------------------------
+
+      ## $_POST の取得に制限をかけるかどうか
+      flag_limit_post_track: false
+      ## $_POSTの取得に制限をかける場合の、取得するべきキー
+      ## [,(カンマ)]区切りで記述
+      value_post_track_key: ""
+      ## 暗号化して保存する、キー
+      ## [,(カンマ)]区切りで記述
+      value_md5_post_key: ""
+      ## 制限をかける文字数
+      value_post_maxlen: 100000000
+
+      #----------------------------------------------------------------------------------
+
+      ## $_GET の取得に制限をかけるかどうか
+      flag_limit_get_track: false
+      ## $_GETの取得に制限をかける場合の、取得するべきキー
+      ## [,(カンマ)]区切りで記述
+      value_get_track_key: ""
+      ## 暗号化して保存する、キー
+      ## [,(カンマ)]区切りで記述
+      value_md5_get_key: ""
+      ## 制限をかける文字数
+      value_get_maxlen: 100000000
+
+      #----------------------------------------------------------------------------------
+
+      ## $_FILE の取得に制限をかけるかどうか
+      flag_limit_file_track: false
+      ## $_FILEの取得に制限をかける場合の、取得するべきキー
+      ## [,(カンマ)]区切りで記述
+      value_file_track_key: ""
+      ## 暗号化して保存する、キー
+      ## [,(カンマ)]区切りで記述
+      value_md5_file_key: ""
+      ## 制限をかける文字数
+      value_file_maxlen: 100000000
+
+      #----------------------------------------------------------------------------------
+
+      ## $_SESSON の取得に制限をかけるかどうか
+      flag_limit_session_track: false
+      ## $_SESSONの取得に制限をかける場合の、取得するべきキー
+      ## [,(カンマ)]区切りで記述
+      value_session_track_key: ""
+      ## 暗号化して保存する、キー
+      ## [,(カンマ)]区切りで記述
+      value_md5_session_key: ""
+      ## 制限をかける文字数
+      value_session_maxlen: 100000000
+
+      #----------------------------------------------------------------------------------
+
+      ## $GLOBALS の取得に制限をかけるかどうか
+      flag_limit_globals_track: false
+      ## $GLOBALSの取得に制限をかける場合の、取得するべきキー
+      ## [,(カンマ)]区切りで記述
+      value_globals_track_key: ""
+      ## 暗号化して保存する、キー
+      value_md5_globals_key: ""
+      ## 制限をかける文字数
+      value_globals_maxlen: 100000000
+
+    mb_encoding:
+    #----------------------------------------------------------------------------------
+    ## 文字コードを自動取得・変換して、ログを記録するか
+    ## <?php echo EnviLogWriter::MB_AUTO;?> する
+    ## <?php echo EnviLogWriter::MB_PASS;?> しない
+      value_convert_encode: <?php echo EnviLogWriter::MB_PASS;?>
+
+
+  SESSION:
+  ################################
+  # セッションの設定
+  ################################
+    use: true
+    cookie_name: "gibson"
+    gc_lifetime: 1200000
+    cookie_lifetime: 1200000
+    session_manager_path: "<?php echo ENVI_BASE_DIR."session{$ds}EnviSecureSession.php";?>"
+    session_manager: "EnviSecureSession"
+    sess_base_save_path: "<?php echo realpath($base."{$ds}var{$ds}session").$ds;?>"
+
+################################
+# 環境ごとに変更する値を下記に書くことができます。
+# 以下に簡単な例を示します。
+################################
+dev:
+  SESSION:
+    use: true
+    cookie_name: "gibson"
+    gc_lifetime: 1200000
+    cookie_lifetime: 1200000
+    session_manager_path: "<?php echo ENVI_BASE_DIR."session{$ds}EnviSecureSession.php";?>"
+    session_manager: "EnviSecureSession"
+    sess_base_save_path: "<?php echo realpath($base."{$ds}var{$ds}session").$ds;?>"
+
+
+prod:
+  SESSION:
+    use: true
+    cookie_name: "fender"
+    gc_lifetime: 1200000
+    cookie_lifetime: 1200000
+    session_manager_path: "<?php echo ENVI_BASE_DIR."session{$ds}EnviSecureSession.php";?>"
+    session_manager: "EnviSecureSession"
+    sess_base_save_path: "<?php echo realpath($base."{$ds}var{$ds}session").$ds;?>"

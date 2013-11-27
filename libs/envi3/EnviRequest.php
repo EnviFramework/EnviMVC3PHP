@@ -65,7 +65,17 @@ class EnviRequest
 
     const POST = 1;
     const GET  = 2;
-
+    
+    /**
+     * +-- オブジェクト化させない
+     *
+     * @access      private
+     * @return      void
+     */
+    private function __construct()
+    {
+    }
+    /* ----------------------------------------- */
 
     /**
      * +-- リクエストされたモジュール名を返す

@@ -35,12 +35,24 @@
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      Class available since Release 1.0.0
  */
-class validator{
+class validator
+{
     const HOUR_ONLY        = 2;
     const HOUR_TO_MINUTE   = 4;
     const HOUR_TO_SECOND   = 6;
     const METHOD_POST      = 1;
     const METHOD_GET       = 2;
+    
+    /**
+     * +-- オブジェクト化させない
+     *
+     * @access      private
+     * @return      void
+     */
+    private function __construct()
+    {
+    }
+    /* ----------------------------------------- */
 }
 
 /**
@@ -63,6 +75,30 @@ function validator()
  * エラーがあれば、エラーオブジェクトを返します。
  * エラークラスをバンドルしていますが、オリジナルの物を使用することもできます。
  * バリデータのリスト
+ * Upper Version 3.3.1
+ * - 'equal'            => 値が同じであるかどうか
+ * - 'notequal'         => 値が違うかどうか
+ * - 'xdigit'           => 16 進数を表す文字かどうかを調べる
+ * - 'digit'            => すべての文字が数字かどうかを調べる
+ * - 'cntrl'            => すべての文字が制御文字であるかどうかを調べます。
+ * - 'graph'            => すべての文字が空白以外の印字可能な文字かどうかを調べる
+ * - 'lower'            => すべての文字が小文字かどうかを調べる
+ * - 'upper'            => すべての文字が大文字かどうかを調べる
+ * - 'print'            => すべての文字が印字可能な文字かどうかを調べる
+ * - 'punct'            => すべての文字が記号文字かどうかを調べる
+ * - 'space'            => すべての文字が空白文字かどうか調べる
+ * - 'notxdigit'         => 16 進数を表す文字でないかどうかを調べる
+ * - 'withoutdigit'      => 数字以外の文字が含まれているかどうかを調べる
+ * - 'withoutcntrl'      => 制御文字以外の文字が含まれているかどうかを調べる
+ * - 'withoutgraph'      => 改行,空白,タブのような印字も制御もできない文字が含まれるかどうか調べる
+ * - 'withoutlower'      => 小文字以外の文字が含まれるかどうかを調べる
+ * - 'withoutupper'      => 大文字以外の文字が含まれるかどうかを調べる
+ * - 'withoutprint'      => (改行、タブ,空白,制御文字などの)印字不可能な文字を含むかどうかを調べる
+ * - 'withoutpunct'      => 記号文字以外を含むかどうかを調べる
+ * - 'withoutspace'      => 空白文字以外を含むかどうかを調べる
+ * - 'withoutalphabet'              => アルファベット以外を含むかどうかを調べる
+ * - 'withoutalphabetornumber'      => アルファベットと数字以外を含むかどうかを調べる
+ * Upper Version 3.3.0
  * - "number"           => 数値かどうか。小数点も許容します。(OPTION:なし)
  * - "naturalnumber"    => 整数かどうか。0も許容します。(OPTION:なし)
  * - "integer"          => 数字かどうか。小数点は使用出来ません(OPTION:なし)
@@ -107,7 +143,7 @@ function validator()
  * - "maxbr"            => 改行数の最大(OPTION:最大数)
  * - "minbr"            => 改行数の最小(OPTION:最小数)
  * - "dirpath"          => 存在するディレクトリパスか(OPTION:なし)
- * - "file"             => 存在するファイル化(OPTION:なし)
+ * - "file"             => 存在するファイルか(OPTION:なし)
  * - "ereg"             => ルビー互換の正規表現にマッチするか(OPTION:正規表現)
  * - "preg"             => パール互換の正規表現にマッチするか(OPTION:正規表現)
  *
@@ -124,11 +160,11 @@ function validator()
  */
 class EnviValidator
 {
-    const VALIDATE_MODE = 'mode';
-    const VALIDATE_DATA = 'data';
-    const VALIDATOR       = 'EnviValidator';
-    const VALIDATOR_CHAIN = 'chain';
-    const FORM_NAME        = 'form';
+    const VALIDATE_MODE     = 'mode';
+    const VALIDATE_DATA     = 'data';
+    const VALIDATOR         = 'EnviValidator';
+    const VALIDATOR_CHAIN   = 'chain';
+    const FORM_NAME         = 'form';
 
 
     private static $_error_object = NULL;
@@ -186,7 +222,30 @@ class EnviValidator
      *
      * @var array
      */
-    private $_EnviValidator_list = array(
+    private $_validator_list = array(
+
+        'equal'             => '_typeEqual',
+        'notequal'          => '_typeNotEqual',
+        'xdigit'            => '_typeXdigit',
+        'digit'             => '_typeDigit',
+        'cntrl'             => '_typeCntrl',
+        'graph'             => '_typeGraph',
+        'lower'             => '_typeLower',
+        'upper'             => '_typeUpper',
+        'print'             => '_typePrint',
+        'punct'             => '_typePunct',
+        'space'             => '_typeSpace',
+        'notxdigit'         => '_typeNotXdigit',
+        'withoutdigit'      => '_typeWithoutDigit',
+        'withoutcntrl'      => '_typeWithoutCntrl',
+        'withoutgraph'      => '_typeWithoutGraph',
+        'withoutlower'      => '_typeWithoutLower',
+        'withoutupper'      => '_typeWithoutUpper',
+        'withoutprint'      => '_typeWithoutPrint',
+        'withoutpunct'      => '_typeWithoutPunct',
+        'withoutspace'      => '_typeWithoutSpace',
+        'withoutalphabet'              => '_typeWithoutAlphabet',
+        'withoutalphabetornumber'      => '_typeWithoutAlphabetOrNumber',
         'number'           => '_typeNumber',
         'naturalnumber'    => '_typeNaturalNumber',
         'integer'          => '_typeInteger',
@@ -249,7 +308,7 @@ class EnviValidator
      *
      * @var array
      */
-    private $_register_EnviValidators = array();
+    private $_register_validators = array();
 
     /**#@-*/
 
@@ -291,26 +350,26 @@ class EnviValidator
             $validation_name = key($validation_name);
         }
         if (!isset($this->_validation_list[$validation_name])) {
-            trigger_error('Unknown EnviValidator chain selected');
+            trigger_error('Unknown validator chain selected');
         }
 
         $validation_datas =& $this->_validation_list[$validation_name];
         // error flag
         $is_error         = false;
-        foreach ($validation_datas[self::VALIDATOR] as $EnviValidator_data) {
-            $each = each ($EnviValidator_data);
-            $EnviValidator = $each['key'];
+        foreach ($validation_datas[self::VALIDATOR] as $validator_data) {
+            $each = each ($validator_data);
+            $validator = $each['key'];
             $option    = $each['value'];
-            //foreach ($EnviValidator_data as $EnviValidator => $option) {
+            //foreach ($validator_data as $validator => $option) {
             //blankチェック以外のblankはすり抜ける
-            $ck = $this->_validation($EnviValidator, $validation_datas[self::VALIDATE_DATA], $option[self::VALIDATE_MODE]);
+            $ck = $this->_validation($validator, $validation_datas[self::VALIDATE_DATA], $option[self::VALIDATE_MODE]);
             if (!$ck) {
                 //エラーハンドリング
                 $is_error = true;
                 $this->_handleError(
                     $validation_name,
                     $validation_datas[self::FORM_NAME],
-                    $EnviValidator, $validation_datas[self::VALIDATE_DATA],
+                    $validator, $validation_datas[self::VALIDATE_DATA],
                     $option[self::VALIDATE_MODE]
                 );
                 if($option[self::VALIDATOR_CHAIN] === false){
@@ -349,12 +408,12 @@ class EnviValidator
     {
         $is_error = false;
         $res = array();
-        foreach ($this->_validation_list as $EnviValidator_name => $validation_datas) {
-            if ($this->isError($this->execute($EnviValidator_name, false))){
+        foreach ($this->_validation_list as $validator_name => $validation_datas) {
+            if ($this->isError($this->execute($validator_name, false))){
                 $is_error = true;
             }
             //結果
-            $res[$EnviValidator_name] =& $this->_validation_list[$EnviValidator_name][self::VALIDATE_DATA];
+            $res[$validator_name] =& $this->_validation_list[$validator_name][self::VALIDATE_DATA];
         }
 
         if ($is_error) {
@@ -383,20 +442,20 @@ class EnviValidator
      * array("バリデートするフォームデータ名" => フォーム名)
      * 配列を指定することで、フォーム名をつけることができます。
      * フォーム名は、エラー発生時にエラークラスに渡されます。</pre>
-     * @param string|array $EnviValidator バリデータ名,$this->getChainFormat()の結果
-     * @param bool $EnviValidator_chain エラーがあった場合に確認処理を継続するか
+     * @param string|array $validator バリデータ名,$this->getChainFormat()の結果
+     * @param bool $validator_chain エラーがあった場合に確認処理を継続するか
      * @param bool $trim 入力検証データをtrimするかどうか
      * @param integer|boolean VM_METHOD_POST = POSTのみ VM_METHOD_GET = GETのみ VM_METHOD_POST|VM_METHOD_GET = POSTかGETのどちらか。
      * @param mix $validate_mode バリデータオプション
      * @see prepare();
      * @return void
      */
-    public function autoPrepare($validation_name, $EnviValidator, $EnviValidator_chain = true, $trim = false, $post_only = 3, $validate_mode = false)
+    public function autoPrepare($validation_name, $validator, $validator_chain = true, $trim = false, $post_only = 3, $validate_mode = false)
     {
         $this->prepare($validation_name,
-            $EnviValidator,
+            $validator,
             $this->_getValidationData(is_array($validation_name) ? key($validation_name) : $validation_name, $trim, $post_only),
-            $EnviValidator_chain,
+            $validator_chain,
             $validate_mode
         );
     }
@@ -410,16 +469,16 @@ class EnviValidator
      * array("データ名" => "フォーム名")
      * 配列を指定することで、フォーム名をつけることができます。
      * フォーム名は、エラー発生時にエラークラスに渡されます。</pre>
-     * @param string,array $EnviValidator バリデータ名,$this->getChainFormat()の結果
+     * @param string,array $validator バリデータ名,$this->getChainFormat()の結果
      * @param string,bool,object,array,string,int バリデートするデータ
-     * @param bool $EnviValidator_chain エラーがあった場合に確認処理を継続するか
+     * @param bool $validator_chain エラーがあった場合に確認処理を継続するか
      * @param bool $trim 入力検証データをtrimするかどうか
      * @param bool $post_only TRUEで、POSTのみ取得
      * @param bool,string,int,array $validate_mode バリデータオプション
      * @see autoPrepare();
      * @return void
      */
-    public function prepare($validation_name, $EnviValidator, $validation_data, $EnviValidator_chain = true, $validate_mode = false)
+    public function prepare($validation_name, $validator, $validation_data, $validator_chain = true, $validate_mode = false)
     {
         if (is_array($validation_name)) {
             //配列が渡されたら、要素をバリデータ名に、値をフォーム名に
@@ -431,13 +490,13 @@ class EnviValidator
         }
 
         $this->_validation_list[$validation_name][self::VALIDATE_DATA] = $validation_data;
-        if (is_array($EnviValidator)) {
-            $this->_validation_list[$validation_name][self::VALIDATOR]=$EnviValidator;
-        } elseif(isset($this->_EnviValidator_list[strtolower($EnviValidator)]) ||
-                isset($this->_register_EnviValidators[strtolower($EnviValidator)])) {
-            $this->chain($validation_name, $EnviValidator, $EnviValidator_chain, $validate_mode);
+        if (is_array($validator)) {
+            $this->_validation_list[$validation_name][self::VALIDATOR]=$validator;
+        } elseif(isset($this->_validator_list[strtolower($validator)]) ||
+                isset($this->_register_validators[strtolower($validator)])) {
+            $this->chain($validation_name, $validator, $validator_chain, $validate_mode);
         } else {
-            trigger_error('Unknown EnviValidator selected', E_USER_ERROR);
+            trigger_error('Unknown validator selected', E_USER_ERROR);
         }
     }
 
@@ -448,18 +507,21 @@ class EnviValidator
      * userFunction([検証されるデータ], [指定されたオプション]);<br>
      * の形で、指定された関数にわたります。<br>
      * ユーザー定義関数からは、正しい場合true・間違っている場合falseを返してください。<br>
-
-     * @param string $EnviValidator_name 読み出しに使用するバリデータ名
+     *
+     * @param string $validator_name 読み出しに使用するバリデータ名
      * @param string $function_name 関数名
      * @return void
      */
-    public function registerValidators($EnviValidator_name, $function_name)
+    public function registerValidators($validator, $function_name, $error_message = false)
     {
-        if (!function_exists($function_name)) {
+        if (!is_array($function_name) && !function_exists($function_name)) {
             trigger_error('No exists function selected', E_USER_ERROR);
         }
-
-        $this->_register_EnviValidators[strtolower($EnviValidator_name)] = $function_name;
+        if ($error_message) {
+            $this->error()->setUserErrorList($validator, $error_message);
+        }
+        
+        $this->_register_validators[strtolower($validator)] = $function_name;
     }
 
     /**
@@ -469,25 +531,24 @@ class EnviValidator
      * バリデータはchain()で呼び出された順番に、実行されます。
      *
      * @param string $validation_name バリデートするフォームデータ名
-     * @param string $EnviValidator バリデータ名
-     * @param bool $EnviValidator_chain エラーの場合につなげてバリデート処理を行うか
+     * @param string $validator バリデータ名
+     * @param bool $validator_chain エラーの場合につなげてバリデート処理を行うか
      * @param bool,string,int,array $validate_mode バリデータオプション
      * @return void
      */
-    public function chain($validation_name, $EnviValidator, $EnviValidator_chain = true, $validate_mode = false)
+    public function chain($validation_name, $validator, $validator_chain = true, $validate_mode = false)
     {
         if (is_array($validation_name)) {
             $validation_name = key($validation_name);
         }
         if (isset($this->_validation_list[$validation_name])) {
-            $this->_validation_list[$validation_name][self::VALIDATOR][][strtolower($EnviValidator)] = array(
+            $this->_validation_list[$validation_name][self::VALIDATOR][][strtolower($validator)] = array(
                                                                 self::VALIDATE_MODE   => $validate_mode,
-                                                                self::VALIDATOR_CHAIN => $EnviValidator_chain,
+                                                                self::VALIDATOR_CHAIN => $validator_chain,
                                                                 );
         } else {
-            $this->autoPrepare($validation_name, $EnviValidator, $EnviValidator_chain, $validate_mode);
+            $this->autoPrepare($validation_name, $validator, $validator_chain, $validate_mode);
         }
-
     }
 
     /**
@@ -496,24 +557,24 @@ class EnviValidator
      * 入力検証のフォーマットを作成して、簡単に再利用可能にします。
      *
      * @param string $group フォーマットグループ名
-     * @param string $EnviValidator バリデータ名
+     * @param string $validator バリデータ名
      * @param string,int $order チェインされる順番
-     * @param bool $EnviValidator_chain エラーの場合につなげてバリデート処理を行うか
+     * @param bool $validator_chain エラーの場合につなげてバリデート処理を行うか
      * @param bool,string,int,array $validate_mode バリデータオプション
      * @see getChainFormat()
      * @return void
      */
-    public function setChainFormat($group, $EnviValidator, $order = 'AUTO', $EnviValidator_chain = true, $validate_mode = false)
+    public function setChainFormat($group, $validator, $order = 'AUTO', $validator_chain = true, $validate_mode = false)
     {
         if (is_numeric($order)) {
-            $this->chain_format[$group][(int)$order][strtolower($EnviValidator)] = array(
+            $this->chain_format[$group][(int)$order][strtolower($validator)] = array(
                                                                 self::VALIDATE_MODE   => $validate_mode,
-                                                                self::VALIDATOR_CHAIN => $EnviValidator_chain,
+                                                                self::VALIDATOR_CHAIN => $validator_chain,
                                                                 );
         } else {
-            $this->chain_format[$group][][strtolower($EnviValidator)] = array(
+            $this->chain_format[$group][][strtolower($validator)] = array(
                                                                 self::VALIDATE_MODE   => $validate_mode,
-                                                                self::VALIDATOR_CHAIN => $EnviValidator_chain,
+                                                                self::VALIDATOR_CHAIN => $validator_chain,
                                                                 );
         }
     }
@@ -548,14 +609,14 @@ class EnviValidator
      * 全てのチェインを消す場合は、free()メソッドが高速です。
      *
      * @param $validation_name バリデーション名
-     * @param $EnviValidator キャンセルするバリデータ
+     * @param $validator キャンセルするバリデータ
      * @see free()
      * @return void
      */
-    public function unchain($validation_name, $EnviValidator)
+    public function unchain($validation_name, $validator)
     {
         foreach ($this->_validation_list[$validation_name][self::VALIDATOR] as $key => $value) {
-            if(isset($value[strtolower($EnviValidator)])){
+            if(isset($value[strtolower($validator)])){
                 unset($this->_validation_list[$validation_name][self::VALIDATOR][$key]);
                 break;
             }
@@ -596,15 +657,15 @@ class EnviValidator
      * 入力データを簡単に検証します。
      * 正しければ、TRUE違っていれば、FALSEを返します。
      *
-     * @param string $EnviValidator 使用するバリデータ
+     * @param string $validator 使用するバリデータ
      * @param string,arrray $data バリデータにかけるデータ
      * @param string,array $option バリデータオプション
      * @return bool
      */
-    public function validation($EnviValidator, $data, $option)
+    public function validation($validator, $data, $option)
     {
-        $EnviValidator = strtolower($EnviValidator);
-        return $this->_validation($EnviValidator, $data, $option);
+        $validator = strtolower($validator);
+        return $this->_validation($validator, $data, $option);
     }
 
 
@@ -639,23 +700,23 @@ class EnviValidator
     /**
      * バリデートする
      *
-     * @param string $EnviValidator 使用するバリデータ
+     * @param string $validator 使用するバリデータ
      * @param string,arrray $data バリデータにかけるデータ
      * @param string,array $option バリデータオプション
      * @access private
      * @return bool
      */
-    protected function _validation(&$EnviValidator, &$data, &$option)
+    protected function _validation(&$validator, &$data, &$option)
     {
-        if (($EnviValidator !== 'blank' && $EnviValidator !== 'noblank') ?
+        if (($validator !== 'blank' && $validator !== 'noblank') ?
             $this->_typeNoBlank($data, false) : true) {
-            if (isset($this->_EnviValidator_list[$EnviValidator])) {
-                $method =& $this->_EnviValidator_list[$EnviValidator];
+            if (isset($this->_validator_list[$validator])) {
+                $method =& $this->_validator_list[$validator];
                 $ck = $this->$method($data, $option);
-            } elseif (isset($this->_register_EnviValidators[$EnviValidator])) {
-                $ck = call_user_func_array($this->_register_EnviValidators[$EnviValidator], array($data, $option));
+            } elseif (isset($this->_register_validators[$validator])) {
+                $ck = call_user_func_array($this->_register_validators[$validator], array($data, $option));
             } else {
-                trigger_error('Unknown EnviValidator selected', E_USER_ERROR);
+                trigger_error('Unknown validator selected', E_USER_ERROR);
             }
         } else {
             return true;
@@ -673,7 +734,6 @@ class EnviValidator
      */
     protected function _getValidationData($validation_name, &$trim, &$post_only)
     {
-
         if (!strstr($validation_name, '[')) {
             if (($post_only == 3 || $post_only == 1 || is_bool($post_only)) &&
                 (isset($_POST[$validation_name]) !== false ? $_POST[$validation_name] !== '' : false)) {
@@ -684,7 +744,6 @@ class EnviValidator
             } else {
                 $res = $this->_empty_form_data;
             }
-
         } else {
             $regs = array();
             preg_match_all("/([^\\[]*)\\[([^\\]]*)\\]/", $validation_name, $regs);
@@ -705,9 +764,9 @@ class EnviValidator
                     break;
                 }
             }
-
         }
-        if($trim == true) {
+        
+        if ($trim == true) {
             $this->_trimmer($res);
         }
         return $res;
@@ -736,12 +795,12 @@ class EnviValidator
      * @param string $name バリデータチェイン名
      * @return void
      */
-    protected function _handleError($name, $form_name, $EnviValidator, $data, $option)
+    protected function _handleError($name, $form_name, $validator, $data, $option)
     {
         if(!is_object(self::$_error_object)) {
             self::$_error_object = new $this->error_class();
         }
-        self::$_error_object->setError($name, $form_name, $EnviValidator, $data, $option);
+        self::$_error_object->setError($name, $form_name, $validator, $data, $option);
     }
 
 
@@ -755,7 +814,301 @@ class EnviValidator
     */
 
     /**
-     * 数字かどうか
+     * +-- 値が同じであるかどうか
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $check_data
+     * @return      void
+     */
+    protected function _typeEqual(&$ValidationData, $check_data)
+    {
+        return $ValidationData === $check_data;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 値が違うかどうか
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $check_data
+     * @return      void
+     */
+    protected function _typeNotEqual(&$ValidationData, $check_data)
+    {
+        return $ValidationData !== $check_data;
+    }
+    /* ----------------------------------------- */
+    
+    
+    
+
+    /**
+     * +-- 16 進数を表す文字でないかどうかを調べる
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typeNotXdigit(&$ValidationData, $dummy)
+    {
+        return ctype_xdigit($ValidationData);
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- 数字以外の文字が含まれているかどうかを調べる
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typeWithoutDigit(&$ValidationData, $dummy)
+    {
+        return !ctype_digit($ValidationData);
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- 制御文字以外の文字が含まれているかどうかを調べる
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typeWithoutCntrl(&$ValidationData, $dummy)
+    {
+        return !ctype_cntrl($ValidationData);
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- 改行,空白,タブのような印字も制御もできない文字が含まれるかどうか調べる
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typeWithoutGraph(&$ValidationData, $dummy)
+    {
+        return !ctype_graph($ValidationData);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 小文字以外の文字が含まれるかどうかを調べる
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typeWithoutLower(&$ValidationData, $dummy)
+    {
+        return !ctype_lower($ValidationData);
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- 大文字以外の文字が含まれるかどうかを調べる
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typeWithoutUpper(&$ValidationData, $dummy)
+    {
+        return !ctype_upper($ValidationData);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- (改行、タブ、空白、制御文字などの)印字不可能な文字を含むかどうかを調べる
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typeWithoutPrint(&$ValidationData, $dummy)
+    {
+        return !ctype_print($ValidationData);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 記号文字以外を含むかどうかを調べる
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typeWithoutPunct(&$ValidationData, $dummy)
+    {
+        return !ctype_punct($ValidationData);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 空白文字以外を含むかどうかを調べる
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typeWithoutSpace(&$ValidationData, $dummy)
+    {
+        return !ctype_space($ValidationData);
+    }
+    /* ----------------------------------------- */
+    
+    
+    /**
+     * +-- 16 進数を表す文字かどうかを調べる
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typeXdigit(&$ValidationData, $dummy)
+    {
+        return ctype_xdigit($ValidationData);
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- すべての文字が数字かどうかを調べる
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typeDigit(&$ValidationData, $dummy)
+    {
+        return ctype_digit($ValidationData);
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- すべての文字が制御文字であるかどうかを調べます。
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typeCntrl(&$ValidationData, $dummy)
+    {
+        return ctype_cntrl($ValidationData);
+    }
+    /* ----------------------------------------- */
+
+
+
+    /**
+     * +-- すべての文字が空白以外の印字可能な文字かどうかを調べる
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typeGraph(&$ValidationData, $dummy)
+    {
+        return ctype_graph($ValidationData);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- すべての文字が小文字かどうかを調べる
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typeLower(&$ValidationData, $dummy)
+    {
+        return ctype_lower($ValidationData);
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- すべての文字が大文字かどうかを調べる
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typeUpper(&$ValidationData, $dummy)
+    {
+        return ctype_upper($ValidationData);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- すべての文字が(改行、タブなどを含まない)印字可能な文字かどうかを調べる
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typePrint(&$ValidationData, $dummy)
+    {
+        return ctype_print($ValidationData);
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- すべての文字が記号文字かどうかを調べる
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typePunct(&$ValidationData, $dummy)
+    {
+        return ctype_punct($ValidationData);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- すべての文字が空白文字かどうか調べる
+     *
+     * @access      protected
+     * @param       & $ValidationData
+     * @param       var_text $dummy
+     * @return      void
+     */
+    protected function _typeSpace(&$ValidationData, $dummy)
+    {
+        return ctype_space($ValidationData);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * 数値を表す値かどうか
      *
      * @param strings,array $ValidationData 入力検証を行う変数
      * @param bool $dummy ダミー変数
@@ -798,6 +1151,7 @@ class EnviValidator
         return preg_match('/^[0-9][0-9\-]*[0-9]$/', $ValidationData);
     }
 
+
     /**
      * アルファベットかどうか
      *
@@ -807,7 +1161,17 @@ class EnviValidator
     protected function _typeAlphabet(&$ValidationData, $dummy)
     {
         return ctype_alpha($ValidationData);
-
+    }
+    
+    /**
+     * アルファベット以外の文字が含まれるかどうかを調べる
+     *
+     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param bool $dummy ダミー変数
+     */
+    protected function _typeWithoutAlphabet(&$ValidationData, $dummy)
+    {
+        return !ctype_alpha($ValidationData);
     }
 
     /**
@@ -819,7 +1183,18 @@ class EnviValidator
     protected function _typeAlphabetOrNumber(&$ValidationData, $dummy)
     {
         return ctype_alnum($ValidationData);
+    }
 
+
+    /**
+     * アルファベットと数字以外の文字が入っているかどうか
+     *
+     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param bool $dummy ダミー変数
+     */
+    protected function _typeWithoutAlphabetOrNumber(&$ValidationData, $dummy)
+    {
+        return !ctype_alnum($ValidationData);
     }
 
     /**
@@ -844,7 +1219,7 @@ class EnviValidator
      */
     protected function _typeInteger(&$ValidationData, $dummy)
     {
-        if (preg_match('/^[0-9]$/', $ValidationData)) {
+        if (ctype_digit($ValidationData)) {
             return true;
         }
         return preg_match('/^-?[1-9][0-9]*$/', $ValidationData);
@@ -859,10 +1234,7 @@ class EnviValidator
      */
     protected function _typeNaturalNumber(&$ValidationData, $dummy)
     {
-        if (preg_match('/^[0-9]$/', $ValidationData)) {
-            return true;
-        }
-        return preg_match('/^[1-9][0-9]*$/', $ValidationData);
+        return ctype_digit($ValidationData) && $ValidationData > 0;
 
     }
 
@@ -1528,7 +1900,33 @@ class ValidatorError
     */
     protected $_error_message;
     protected $_error_list   = array();
+    protected $_error_user_list   = array();
     protected $_error_default_list = array(
+       'equal'      => '{form}が一致しません。',
+       'notequal'  => '{form}が同じです。',
+       'xdigit'   => '{form}は16進数で入力して下さい。',
+       'digit'    => '{form}は全て数字で入力して下さい。',
+       'cntrl'    => '{form}は制御文字以外が含まれています。',
+       'graph'    => '{form}には空白、タブ、改行、制御文字を含めることが出来ません。',
+       'lower'    => '{form}はすべて小文字である必要があります',
+       'upper'    => '{form}はすべて大文字である必要があります',
+       'print'    => '{form}は空白、タブ、改行、制御文字で入力する必要があります。',
+       'punct'    => '{form}は全て記号になっていません。',
+       'space'    => '{form}は空白文字ではありません。',
+
+       'notxdigit'       => '{form}は16進数での入力はできません',
+       'withoutdigit'    => '{form}には数字以外を含める必要があります。',
+       'withoutcntrl'    => '{form}には制御文字以外の文字を含める必要があります。',
+       'withoutgraph'    => '{form}には空白、タブ、改行、制御文字以外の文字を含める必要があります。',
+       'withoutlower'    => '{form}には小文字以外の文字を含める必要があります。',
+       'withoutupper'    => '{form}には大文字以外の文字を含める必要があります。',
+       'withoutprint'    => '{form}には空白、タブ、改行以外の文字を含める必要があります。',
+       'withoutpunct'    => '{form}には記号以外の文字を含める必要があります。',
+       'withoutspace'    => '{form}には、空白以外の文字を含める必要があります。',
+
+       'withoutalphabet'          => '{form}には、アルファベット以外の文字を含める必要があります。',
+       'withoutalphabetornumber'  => '{form}には、英数字以外の文字を含める必要があります。',
+
         'number'           => '{form}は数字で入力してください。',
         'naturalnumber'    => '{form}は数値で入力してください。',
         'integer'          => '{form}は数値で入力してください。',
@@ -1584,26 +1982,77 @@ class ValidatorError
     public function __construct()
     {
         $this->_error_message =& EnviRequest::getErrorsByRef();
+        
         if (Envi::singleton()->getConfiguration('SYSTEM', 'use_i18n')) {
-            $this->_error_list = Envi::singleton()->getI18n('EnviValidator');
+            $this->_error_user_list = Envi::singleton()->getI18n('validator');
+        } elseif (Envi::singleton()->getConfiguration('VALIDATOR', 'error_list')) {
+            $this->_error_user_list = Envi::singleton()->getConfiguration('VALIDATOR', 'error_list');
         }
     }
+    
+    /**
+     * +-- デフォルトのエラーメッセージを変更します。
+     *
+     * @access      public
+     * @param       string $validator
+     * @param       string $error_message
+     * @return      void
+     */
+    public function setUserErrorList($validator, $error_message)
+    {
+        $this->_error_user_list[$validator] = $error_message;
+    }
+    /* ----------------------------------------- */
+    
+    
+    /**
+     * +-- エラーテキストメッセージを出す
+     *
+     * @access      public
+     * @param       any $name
+     * @param       any $validator
+     * @return      void
+     */
+    public function getErrorText($name, $validator)
+    {
+        if (isset($this->_error_list[$name][$validator])) {
+            return $this->_error_list[$name][$validator];
+        }
 
+        if (isset($this->_error_user_list[$validator])) {
+            return $this->_error_user_list[$validator];
+        }
+        
+        if (isset($this->_error_default_list[$validator])) {
+            return $this->_error_default_list[$validator];
+        }
+
+        if (isset($this->_error_user_list['default'])) {
+            return $this->_error_user_list['default'];
+        }
+        
+        if (isset($this->_error_default_list['default'])) {
+            return $this->_error_default_list['default'];
+        }
+        return '';
+    }
+    /* ----------------------------------------- */
+    
     /**
      * エラーのセット
      *
      * @param string $name バリデーションチェイン名
      * @param string $form_name フォーム名
-     * @param string $EnviValidator バリデータ名
+     * @param string $validator バリデータ名
      * @param string|array $data データ
      * @param mixed $option 渡されたoption
      * @param int $id エラーコード
      * @return void
      */
-    public function setError($name, $form_name, $EnviValidator, $data, $option)
+    public function setError($name, $form_name, $validator, $data, $option)
     {
-        $mess = isset($this->_error_list[$name][$EnviValidator]) ? $this->_error_list[$name][$EnviValidator] : $this->_error_default_list[$EnviValidator];
-        $this->_error_message[$name][$EnviValidator] = str_replace(
+        $mess = $this->getErrorText($name, $validator);
+        $this->_error_message[$name][$validator] = str_replace(
             array(
                 '{name}',
                 '{form}',
@@ -1624,13 +2073,13 @@ class ValidatorError
      * エラーメッセージのセット
      *
      * @param string $name バリデーションチェイン名
-     * @param string $EnviValidator バリデータ名
+     * @param string $validator バリデータ名
      * @param string $message エラーメッセージ
      * @return void
      */
-    public function setErrorMess($name, $EnviValidator, $message)
+    public function setErrorMess($name, $validator, $message)
     {
-        $this->_error_message[$name][$EnviValidator] = $message;
+        $this->_error_message[$name][$validator] = $message;
     }
 
 
@@ -1638,19 +2087,19 @@ class ValidatorError
      * エラーメッセージのセット
      *
      * @param string $name バリデーションチェイン名
-     * @param string $EnviValidator バリデータ名
+     * @param string $validator バリデータ名
      * @param string $message エラーメッセージ
      * @return void
      */
-    public function setErrorList($name, $EnviValidator, $message)
+    public function setErrorList($name, $validator, $message)
     {
-        $this->_error_list[$name][$EnviValidator] = $message;
+        $this->_error_list[$name][$validator] = $message;
     }
 
     /**
      * エラーメッセージを受け取る
      *
-     * @param string,bool $name エラーを取りたいバリデーションチェイン名。空にすると全て取得
+     * @param string,boolean $name エラーを取りたいバリデーションチェイン名。空にすると全て取得
      * @return array
      */
     public function getErrorMessage($name = false)

@@ -3,6 +3,9 @@ if (!isset($argv[2])) {
     eecho('引数が足りません。');
     die;
 }
+
+$_SERVER['HTTP_HOST'] = 'localhost';
+
 require $envi_dir.'EnviLogWriter.php';
 require $envi_dir.'spyc.php';
 

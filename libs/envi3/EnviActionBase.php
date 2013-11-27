@@ -9,7 +9,7 @@
  *
  * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage ActionController
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -28,7 +28,7 @@
  * @abstract
  * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage ActionController
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -67,7 +67,7 @@ abstract class EnviActionBase
      *
      * @abstract
      * @see validate()
-     * @return Envi::DEFAULT | Envi::ERROR | Envi::SUCCESS | boolean
+     * @return Envi::DEFAULT_ACCESS | Envi::ERROR | Envi::SUCCESS | boolean
      */
     public function execute()
     {
@@ -99,11 +99,11 @@ abstract class EnviActionBase
     }
 
     /**
-     * validate()でEnvi::DEFAULTが返った場合の処理。
+     * validate()でEnvi::DEFAULT_ACCESSが返った場合の処理。
      *
      * @abstract
      * @see validate()
-     * @return Envi::DEFAULT | Envi::ERROR | Envi::SUCCESS | boolean
+     * @return Envi::DEFAULT_ACCESS | Envi::ERROR | Envi::SUCCESS | boolean
      */
     public function defaultAccess()
     {
@@ -115,7 +115,7 @@ abstract class EnviActionBase
      *
      * @abstract
      * @see validate()
-     * @return Envi::DEFAULT | Envi::ERROR | Envi::SUCCESS | boolean
+     * @return Envi:: | Envi::ERROR | Envi::SUCCESS | boolean
      */
     public function handleError()
     {

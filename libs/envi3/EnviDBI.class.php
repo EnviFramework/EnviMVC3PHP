@@ -1,6 +1,6 @@
 <?php
 /**
- * 下位互換ようのDBIクラス
+ * 下位互換用のDBIクラス
  *
  * extensionからの利用をおすすめします。
  *
@@ -9,7 +9,7 @@
  *
  * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage DB
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -21,13 +21,13 @@
  */
 
 /**
- * 下位互換ようのDBIクラス
+ * 下位互換用のDBIクラス
  *
  * extensionからの利用をおすすめします。
  *
  * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage DB
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License

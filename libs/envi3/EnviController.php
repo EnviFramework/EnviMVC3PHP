@@ -47,6 +47,17 @@ class EnviController
     private static $_action_chain_name = NULL;
 
     /**
+     * +-- オブジェクト化させない
+     *
+     * @access      private
+     * @return      void
+     */
+    private function __construct()
+    {
+    }
+    /* ----------------------------------------- */
+
+    /**
      * +-- アクションチェインの中かどうか
      *
      * @final

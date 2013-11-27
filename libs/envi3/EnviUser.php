@@ -62,7 +62,17 @@ class EnviUser
 
     private static $_is_session_start = false;
 
-
+    /**
+     * +-- オブジェクト化させない
+     *
+     * @access      private
+     * @return      void
+     */
+    private function __construct()
+    {
+    }
+    /* ----------------------------------------- */
+    
     /**
      * +-- セッションを開始する
      *
