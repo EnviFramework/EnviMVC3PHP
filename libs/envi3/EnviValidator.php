@@ -42,7 +42,7 @@ class validator
     const HOUR_TO_SECOND   = 6;
     const METHOD_POST      = 1;
     const METHOD_GET       = 2;
-    
+
     /**
      * +-- オブジェクト化させない
      *
@@ -470,10 +470,8 @@ class EnviValidator
      * 配列を指定することで、フォーム名をつけることができます。
      * フォーム名は、エラー発生時にエラークラスに渡されます。</pre>
      * @param string,array $validator バリデータ名,$this->getChainFormat()の結果
-     * @param string,bool,object,array,string,int バリデートするデータ
+     * @param string,bool,object,array,string,int $validation_data バリデートするデータ
      * @param bool $validator_chain エラーがあった場合に確認処理を継続するか
-     * @param bool $trim 入力検証データをtrimするかどうか
-     * @param bool $post_only TRUEで、POSTのみ取得
      * @param bool,string,int,array $validate_mode バリデータオプション
      * @see autoPrepare();
      * @return void
@@ -515,13 +513,13 @@ class EnviValidator
      */
     public function registerValidators($validator, $function_name, $error_message = false)
     {
-        if (!is_array($function_name) && !function_exists($function_name)) {
+        if (is_string($function_name) && !function_exists($function_name)) {
             trigger_error('No exists function selected', E_USER_ERROR);
         }
         if ($error_message) {
             $this->error()->setUserErrorList($validator, $error_message);
         }
-        
+
         $this->_register_validators[strtolower($validator)] = $function_name;
     }
 
@@ -609,8 +607,8 @@ class EnviValidator
      * 一度チェインされたバリデータの使用をキャンセルします。<br>
      * 全てのチェインを消す場合は、free()メソッドが高速です。
      *
-     * @param $validation_name バリデーション名
-     * @param $validator キャンセルするバリデータ
+     * @param string $validation_name バリデーション名
+     * @param string $validator キャンセルするバリデータ
      * @see free()
      * @return void
      */
@@ -766,7 +764,7 @@ class EnviValidator
                 }
             }
         }
-        
+
         if ($trim == true) {
             $this->_trimmer($res);
         }
@@ -841,9 +839,9 @@ class EnviValidator
         return $ValidationData !== $check_data;
     }
     /* ----------------------------------------- */
-    
-    
-    
+
+
+
 
     /**
      * +-- 16 進数を表す文字でないかどうかを調べる
@@ -974,8 +972,8 @@ class EnviValidator
         return !ctype_space($ValidationData);
     }
     /* ----------------------------------------- */
-    
-    
+
+
     /**
      * +-- 16 進数を表す文字かどうかを調べる
      *
@@ -1163,7 +1161,7 @@ class EnviValidator
     {
         return ctype_alpha($ValidationData);
     }
-    
+
     /**
      * アルファベット以外の文字が含まれるかどうかを調べる
      *
@@ -1888,11 +1886,20 @@ class EnviValidator
 
 }
 
+
 /**
- * @package Envi3
- * @subpackage EnviMVC
- * @since 0.1
+ * 入力検証エラークラス
+ *
+ * @category   MVC
+ * @package    Envi3
+ * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class ValidatorError
 {
@@ -1983,14 +1990,14 @@ class ValidatorError
     public function __construct()
     {
         $this->_error_message =& EnviRequest::getErrorsByRef();
-        
+
         if (Envi::singleton()->getConfiguration('SYSTEM', 'use_i18n')) {
             $this->_error_user_list = Envi::singleton()->getI18n('validator');
         } elseif (Envi::singleton()->getConfiguration('VALIDATOR', 'error_list')) {
             $this->_error_user_list = Envi::singleton()->getConfiguration('VALIDATOR', 'error_list');
         }
     }
-    
+
     /**
      * +-- デフォルトのエラーメッセージを変更します。
      *
@@ -2004,8 +2011,8 @@ class ValidatorError
         $this->_error_user_list[$validator] = $error_message;
     }
     /* ----------------------------------------- */
-    
-    
+
+
     /**
      * +-- エラーテキストメッセージを出す
      *
@@ -2023,7 +2030,7 @@ class ValidatorError
         if (isset($this->_error_user_list[$validator])) {
             return $this->_error_user_list[$validator];
         }
-        
+
         if (isset($this->_error_default_list[$validator])) {
             return $this->_error_default_list[$validator];
         }
@@ -2031,14 +2038,14 @@ class ValidatorError
         if (isset($this->_error_user_list['default'])) {
             return $this->_error_user_list['default'];
         }
-        
+
         if (isset($this->_error_default_list['default'])) {
             return $this->_error_default_list['default'];
         }
         return '';
     }
     /* ----------------------------------------- */
-    
+
     /**
      * エラーのセット
      *
