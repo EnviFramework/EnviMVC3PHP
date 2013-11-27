@@ -510,6 +510,7 @@ class EnviValidator
      *
      * @param string $validator_name 読み出しに使用するバリデータ名
      * @param string $function_name 関数名
+     * @param string $error_message エラーメッセージ
      * @return void
      */
     public function registerValidators($validator, $function_name, $error_message = false)
