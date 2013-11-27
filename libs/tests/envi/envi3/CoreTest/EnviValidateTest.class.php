@@ -29,7 +29,7 @@ class EnviValidateTest extends testCaseBase
         validator()->free();
     }
     // +------------------------------------------------
-    
+
     /**
      * +-- type:equalテスト
      *
@@ -44,7 +44,7 @@ class EnviValidateTest extends testCaseBase
         $this->assertTrue($validator->validation('equal', 'あいうえお', 'あいうえお'));
     }
     /* ----------------------------------------- */
-    
+
     /**
      * +-- type:notequalテスト
      *
@@ -89,11 +89,11 @@ class EnviValidateTest extends testCaseBase
         $this->assertFalse($validator->validation('digit', '123456789abcdef', false));
     }
     /* ----------------------------------------- */
-    
-    
+
+
     // -------------------------------------------------
     // +------------------------------------------------
-    
+
     /**
      * +-- バリデーター追加のテスト
      *
@@ -106,11 +106,11 @@ class EnviValidateTest extends testCaseBase
         $validator->registerValidators('test_validator', 'envi_validate_test_test_validaror', '{form}test error');
         $this->assertTrue($validator->validation('test_validator', 'test', 'test'));
         $this->assertFalse($validator->validation('test_validator', 'test', 'test2'));
-        
+
         $validator->registerValidators('test_validator2', array(new EnviValidateTestValidator, 'sample'), '{form}test2 error');
         $this->assertTrue($validator->validation('test_validator2', 'test', 'test'));
         $this->assertFalse($validator->validation('test_validator2', 'test', 'test2'));
-        
+
         $_POST['test_data_1'] = 'test1';
         $_POST['test_data_2'] = 'test2';
         $_POST['test_data_3'] = 'test3';
@@ -121,8 +121,8 @@ class EnviValidateTest extends testCaseBase
         $this->assertFalse($validator->isError($res));
         $this->assertEquals($res['test_data_1'], 'test1');
         $this->assertEquals($res['test_data_3'], 'test3');
-        
-        
+
+
         $validator->autoPrepare(array('test_data_2' => 'ttt2'), 'test_validator', true, false, validator::METHOD_POST, 'test1');
         $validator->autoPrepare(array('test_data_4' => 'ttt4'), 'test_validator2', true, false, validator::METHOD_POST, 'test3');
         $res = $validator->executeAll();
@@ -132,10 +132,10 @@ class EnviValidateTest extends testCaseBase
         $this->assertEquals($errors['message'][1], 'ttt4test2 error');
     }
     /* ----------------------------------------- */
-    
-    
+
+
     // -------------------------------------------------
-    
+
 }
 
 function envi_validate_test_test_validaror($validation_data, $option)

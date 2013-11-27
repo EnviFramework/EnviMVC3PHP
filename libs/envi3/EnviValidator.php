@@ -2054,7 +2054,6 @@ class ValidatorError
      * @param string $validator バリデータ名
      * @param string|array $data データ
      * @param mixed $option 渡されたoption
-     * @param int $id エラーコード
      * @return void
      */
     public function setError($name, $form_name, $validator, $data, $option)
