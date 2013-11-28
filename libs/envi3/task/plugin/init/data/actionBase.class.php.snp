@@ -34,6 +34,7 @@
 class actionBase extends EnviActionBase
 {
 
+    protected $renderer;
     /**
      * +-- 一番初めに呼ばれる、メソッド
      *
@@ -120,6 +121,21 @@ class actionBase extends EnviActionBase
         return false;
     }
     /* ----------------------------------------- */
-
-
+    
+    /**
+     * +-- アクションコントローラーから直接レンダラーを実行する
+     *
+     * @access      public
+     * @return      EnviRenderer
+     */
+    public function Renderer()
+    {
+        if (is_null($this->renderer)) {
+            $renderer_path = Envi()->getConfiguration('SYSTEM', 'renderer');
+            $renderer_class = substr(basename($renderer_path), 0, -4);
+            $this->renderer = new $renderer_class();
+        }
+        return $this->renderer;
+    }
+    /* ----------------------------------------- */
 }
