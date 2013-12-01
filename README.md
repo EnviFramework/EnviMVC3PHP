@@ -63,9 +63,10 @@ Is an open source , who hope you'll give me contribute to EnviMVC, I am happy wh
 
 Please refer to the link below and modification of the code , with respect to report bugs .
 
-[ Fork of the source code ] 1. (Https://github.com/EnviMVC/EnviMVC3PHP)
-2 . [Manual · wiki] (https://github.com/EnviMVC/EnviMVC3PHP/wiki)
-3 . [Bug report ] (https://github.com/EnviMVC/EnviMVC3PHP/issues)
+
+1. [ Fork of the source code ](Https://github.com/EnviMVC/EnviMVC3PHP)
+2. [Manual · wiki] (https://github.com/EnviMVC/EnviMVC3PHP/wiki)
+3. [Bug report ] (https://github.com/EnviMVC/EnviMVC3PHP/issues)
 
 
 
@@ -85,12 +86,12 @@ Commit fix , I hope you can be summarized in one .
 I shows you how below .
 
 
-`` `
-name of the branch of git checkout-b pullpeq / any
-branch name that was changed to squash now - git merge
+~~~
+git checkout -b pullpeq/<Name of the branch of any>
+git merge --squash <Branch name you have changed until now>
 git commit
 
-`` `
+~~~
 
 Also , what comments in PullRequest is , did they change . Is it a change for anything . Please include .
 There is no other rules .
@@ -101,7 +102,7 @@ For coding conventions
 --------------------------------------
 
 You must conform to Pear Coding Standards .
-[Here] will be able to see from (http://pear.php.net/manual/ja/standards.php) for terms .
+[Here will be able to see from] (http://pear.php.net/manual/ja/standards.php) for terms .
 
 
 
