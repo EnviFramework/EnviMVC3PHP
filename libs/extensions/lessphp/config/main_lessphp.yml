@@ -5,16 +5,17 @@ all:
   ## Keep /* */ comments in output
   preserve_comments: false
   
-  ## キャッシュの有無
+  ## キャッシュの有無: enable caching
   is_compile_cache: true
   
-  ## 必ずコンパイルするかどうか
+  ## 必ずコンパイルするかどうか:always compiled
   is_force_compile: false
   
   ## compile_idに自動付加するLessファイルのバージョン番号(これを更新すると、再コンパイルされます)
+  ## The version number of the Less files to be automatically added to compile_id (If you update it, it will be recompiled)
   file_version: "1.0"
   
-  ## キャッシュの保存先
+  ## キャッシュの保存先 : Save directory of cache
   cache_path: "<?php echo ENVI_MVC_CACHE_PATH;?>"
   
 dev:
