@@ -694,7 +694,12 @@ class EnviDBIBase
         $this->disconnect();
     }
     /* ----------------------------------------- */
-
+    /**
+     * +-- 最後に実行したSQLを取得する
+     *
+     * @access      public
+     * @return      void
+     */
     public function getLastQuery()
     {
         $sql     = $this->last_query;
@@ -720,4 +725,5 @@ class EnviDBIBase
         $sql = strtr($sql, $values);
         return $sql;
     }
+    /* ----------------------------------------- */
 }
