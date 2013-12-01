@@ -55,3 +55,57 @@ Pear標準コーディング規約に準拠する必要があります。
 
 コードのコミットがなくとも、バグの報告、機能改善の要求だけでも、十分なプロジェクトへの貢献となりますので、発見し次第、[こちら](https://github.com/EnviMVC/EnviMVC3PHP/issues)から報告して下さい。
 
+
+Contribution Guides
+--------------------------------------
+
+Is an open source , who hope you'll give me contribute to EnviMVC, I am happy when you can read the guide .
+
+Please refer to the link below and modification of the code , with respect to report bugs .
+
+[ Fork of the source code ] 1. (Https://github.com/EnviMVC/EnviMVC3PHP)
+2 . [Manual · wiki] (https://github.com/EnviMVC/EnviMVC3PHP/wiki)
+3 . [Bug report ] (https://github.com/EnviMVC/EnviMVC3PHP/issues)
+
+
+
+Execution environment of code
+--------------------------------------
+
+And PHP 5.2, should be developed in an environment where PHP 5.3 is normal operation .
+And PHP5.2, be sure to keep compatibility with PHP5.3.
+In EnviMVC, it does not attempt has been made to officially support PHP 5.4 , but please do not change it is not compatible with PHP 5.4.
+
+
+About PullRequest
+--------------------------------------
+
+If you received a modification of the code , in EnviMVC addressed , please send PullRequest.
+Commit fix , I hope you can be summarized in one .
+I shows you how below .
+
+
+`` `
+name of the branch of git checkout-b pullpeq / any
+branch name that was changed to squash now - git merge
+git commit
+
+`` `
+
+Also , what comments in PullRequest is , did they change . Is it a change for anything . Please include .
+There is no other rules .
+
+
+
+For coding conventions
+--------------------------------------
+
+You must conform to Pear Coding Standards .
+[Here] will be able to see from (http://pear.php.net/manual/ja/standards.php) for terms .
+
+
+
+For bug report
+--------------------------------------
+
+Even if there is no commit code , bug reports , alone request of functional improvement , it will be contributing to the project enough , as soon as discovered , [here ] (https://github.com/EnviMVC/EnviMVC3PHP/issues) Please report it .
