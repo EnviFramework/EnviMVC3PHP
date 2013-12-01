@@ -1,0 +1,35 @@
+all:
+  ## <?php $test_dir = dirname(__FILE__); ?>
+  ## <?php $app_name = substr(basename(__FILE__), 0, strlen(basename(__FILE__))-9); ?>
+
+  scenario:
+    path: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR; ?>scenario.php"
+    class_name: "Scenario"
+
+    dirs:
+      compile: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR; ?>compile"
+
+  app:
+    url: "http://localhost/main.php"
+
+  parameter:
+    headers:
+      # テスト内でデフォルト送信されるヘッダ
+
+      referer: "http://localhost/main.php"
+    get:
+      # テスト内でデフォルトで付加されるクエリストリングス
+
+      XDEBUG_PROFILE:1
+    post:
+      # テスト内でポストする際にデフォルトで付加されるデータ
+
+    cookie:
+      # テスト内でデフォルトで付加されるクッキー
+
+
+    # デフォルトのRequestmethod
+    request_method: "GET"
+  extension:
+    # テスト内で利用するエクステンションの設定
+

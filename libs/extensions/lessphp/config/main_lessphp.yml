@@ -1,0 +1,49 @@
+all:
+  ## Set the output format, includes "default", "compressed"
+  format: "compressed"
+  
+  ## Keep /* */ comments in output
+  preserve_comments: false
+  
+  ## キャッシュの有無
+  is_compile_cache: true
+  
+  ## 必ずコンパイルするかどうか
+  is_force_compile: false
+  
+  ## compile_idに自動付加するLessファイルのバージョン番号(これを更新すると、再コンパイルされます)
+  file_version: "1.0"
+  
+  ## キャッシュの保存先
+  cache_path: "<?php echo ENVI_MVC_CACHE_PATH;?>"
+  
+dev:
+  ## Set the output format, includes "default", "compressed"
+  format: "default"
+  ## Keep /* */ comments in output
+  preserve_comments: true
+  ## キャッシュの有無
+  is_compile_cache: true
+  ## 必ずコンパイルするかどうか
+  is_force_compile: true
+  
+  ## compile_idに自動付加するLessファイルのバージョン番号(これを更新すると、再コンパイルされます)
+  # file_version: "1.0"
+  
+  ## キャッシュの保存先
+  cache_path: "<?php echo ENVI_MVC_CACHE_PATH;?>"
+prod:
+  ## Set the output format, includes "default", "compressed"
+  format: "compressed"
+  ## Keep /* */ comments in output
+  preserve_comments: false
+  ## キャッシュの有無
+  is_compile_cache: true
+  ## 必ずコンパイルするかどうか
+  is_force_compile: false
+  
+  ## compile_idに自動付加するLessファイルのバージョン番号(これを更新すると、再コンパイルされます)
+  # file_version: "1.0"
+  
+  ## キャッシュの保存先
+  cache_path: "<?php echo ENVI_MVC_CACHE_PATH;?>"
