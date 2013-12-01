@@ -1,0 +1,17 @@
+
+  Markdown:
+  ################################
+  # extension()->Markdown()の設定
+  ################################
+    ## ここをtrueにすると、リクエストごとにロードされ、オブジェクトが生成されます
+    constant: false
+    class:
+      ## ファイルの実態
+      resource: "<?php echo ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'markdown'.DIRECTORY_SEPARATOR;?>EnviMarkdownExtension.php"
+      ## クラス名
+      class_name: "EnviMarkdownExtension"
+      ## シングルトン化するか
+      singleton: true
+    router:
+      ## extensionの設定のパス
+      resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.$app_name.'_markdown.yml';?>"

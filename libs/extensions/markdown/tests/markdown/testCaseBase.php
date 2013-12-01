@@ -18,7 +18,7 @@
  * @since      File available since Release 1.0.0
  */
 
-require dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'EnviLessphpExtension.php';
+require dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR.'EnviMarkdownExtension.php';
 
 /**
  * テストのベースクラス
@@ -95,6 +95,7 @@ class testCaseBase extends EnviTestCase
         } else {
             $buff = $ymldatas[$file_path];
         }
+        $res = isset($buff[$env]) ? array_merge($buff['all'], $buff[$env]) : $buff['all'];
         $res = isset($buff[$env]) ? $this->mergeConfiguration($buff['all'], $buff[$env]) : $buff['all'];
         return $res;
     }
