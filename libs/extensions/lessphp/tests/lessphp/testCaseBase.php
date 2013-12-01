@@ -76,6 +76,7 @@ class testCaseBase extends EnviTestCase
      */
     public function shutdown()
     {
+        var_dump(debug_backtrace());
     }
     /* ----------------------------------------- */
 
