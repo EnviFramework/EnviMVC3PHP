@@ -158,6 +158,14 @@ class EnviLogWriter
         // システムファイルを記録する
         $this->_parse_system_config();
 
+        $this->console = EnviLogWriterConsole::singleton();
+        if (isset($this->_system_conf['console'])) {
+            $this->console->_setConsoleLogDir($this->_system_conf['console']['value_log_dir']);
+            $this->console->_setConsoleLogGetKey($this->_system_conf['console']['value_log_get_key']);
+            $this->console->setUseDebugBackTrace($this->_system_conf['console']['flag_use_debug_back_trace']);
+
+
+        }
         // リクエストログを取得する
         if ($this->_system_conf['system']['flag_use_request_log']) {
             list($debug) = debug_backtrace();
@@ -187,11 +195,6 @@ class EnviLogWriter
             $this->_system_conf['system']['value_request_log_type'] === self::PURSER_SERIALIZE ||
             $this->_system_conf['system']['value_request_log_type'] === self::PURSER_XML) {
                 $replace = $res+array('format_time' => strftime($this->_system_conf['system']['value_response_log_date_time_format'], $res['time']));
-            }
-            $this->console = EnviLogWriterConsole::singleton();
-            if (isset($this->_system_conf['console'])) {
-                $this->console->_setConsoleLogDir($this->_system_conf['console']['log_dir']);
-                $this->console->_setConsoleLogGetKey($this->_system_conf['console']['log_get_key']);
             }
 
             // ロギング
@@ -996,6 +999,7 @@ class EnviLogWriter
 
 class EnviLogWriterConsole
 {
+    private $use_debug_back_trace = false;
     private $use_console_log     = false;
     private $is_console_log      = false;
     private $console_log_dir     = NULL;
@@ -1003,23 +1007,22 @@ class EnviLogWriterConsole
     private $console_log_get_hash = NULL;
     private $console_log_write_dir     = NULL;
     private $_performance     = NULL;
-    public static function singleton()
+    private static $instance     = NULL;
+
+    /**
+     * +-- デバッグトレースも記録するかどうかを設定して、元の値を返す
+     *
+     * @access      public
+     * @param       boolean $setter
+     * @return      boolean
+     */
+    public function setUseDebugBackTrace($setter)
     {
-        if (!isset(self::$instance)) {
-            self::$instance = new EnviLogWriterConsole();
-        }
-        return self::$instance;
+        $res = $this->use_debug_back_trace;
+        $this->use_debug_back_trace = $setter;
+        return $res;
     }
-    private function __construct()
-    {
-        if (!defined('LW_START_MTIMESTAMP')) {
-            // 実行時間計測開始
-            $this->_performance = microtime(true);
-        } else {
-            $this->_performance = LW_START_MTIMESTAMP;
-        }
-        $this->use_console_log = envi()->isDebug();
-    }
+    /* ----------------------------------------- */
 
     /**
      * +-- Consoleにのみログを排出します
@@ -1033,13 +1036,59 @@ class EnviLogWriterConsole
         if (!$this->is_console_log) {
             return;
         }
-        list($debug) = debug_backtrace();
+        $memory_get_usage = memory_get_usage();
+        $debug = array();
+        $debug['backtrace'] = debug_backtrace();
+
         $performance = microtime(true) - $this->_performance;
         $debug['performance'] = $performance;
-        $debug['log_text'] = strtr(array("\n" => '\n', "\r" => '\n'), $log_text);
-        $debug['memory_get_usage'] = memory_get_usage();
+        $debug['log_text'] = strtr($log_text, array("\n" => '\n', "\r" => '\n'));
+        $debug['memory_get_usage'] = $memory_get_usage;
 
-        error_log(json_encode($debug), 3, $this->console_log_write_dir.'console.log');
+        $debug = json_encode($debug);
+
+        $umask = umask(0);
+        error_log($debug."\n", 3, $this->console_log_write_dir.'console.log');
+        error_log($debug."\n", 3, $this->console_log_dir.DIRECTORY_SEPARATOR.Envi()->getApp().'console.log');
+
+        umask($umask);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- シングルトン
+     *
+     * @access      public
+     * @static
+     * @return      self
+     */
+    public static function singleton()
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new EnviLogWriterConsole();
+        }
+        return self::$instance;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- コンストラクタ
+     *
+     * @access      private
+     * @return      void
+     */
+    private function __construct()
+    {
+        $this->use_console_log = envi()->isDebug();
+        if (!$this->use_console_log) {
+            return;
+        }
+        if (!defined('LW_START_MTIMESTAMP')) {
+            // 実行時間計測開始
+            $this->_performance = microtime(true);
+        } else {
+            $this->_performance = LW_START_MTIMESTAMP;
+        }
     }
     /* ----------------------------------------- */
 
@@ -1048,12 +1097,20 @@ class EnviLogWriterConsole
         if (!$this->is_console_log) {
             return;
         }
-        list(,$debug) = debug_backtrace();
+
+        $memory_get_usage = memory_get_usage();
+        $debug = array();
+        $debug['backtrace'] = debug_backtrace();
+        array_shift($debug['backtrace']);
         $performance = microtime(true) - $this->_performance;
         $debug['performance'] = $performance;
-        $debug['log_text'] = strtr(array("\n" => '\n', "\r" => '\n'), $log_text);
-        $debug['memory_get_usage'] = memory_get_usage();
-        error_log(json_encode($debug), 3, $this->console_log_write_dir.'system.log');
+        $debug['log_text'] = strtr($log_text, array("\n" => '\n', "\r" => '\n'));
+        $debug['memory_get_usage'] = $memory_get_usage;
+        $debug = json_encode($debug);
+        $umask = umask(0);
+        error_log($debug."\n", 3, $this->console_log_write_dir.'system.log');
+        error_log($debug."\n", 3, $this->console_log_dir.DIRECTORY_SEPARATOR.Envi()->getApp().'system.log');
+        umask($umask);
     }
 
 
@@ -1062,18 +1119,29 @@ class EnviLogWriterConsole
         if (!$this->is_console_log) {
             return;
         }
-
-        list(, $debug) = debug_backtrace();
+        $memory_get_usage = memory_get_usage();
+        $debug = array();
+        $debug['backtrace'] = debug_backtrace();
+        array_shift($debug['backtrace']);
+        array_shift($debug['backtrace']);
+        array_shift($debug['backtrace']);
         $performance = microtime(true) - $this->_performance;
         $debug['performance'] = $performance;
-        $debug['log_text'] = strtr(array("\n" => '\n', "\r" => '\n'), $dbi->getLastQuery());
-        $debug['memory_get_usage'] = memory_get_usage();
-        error_log(json_encode($debug), 3, $this->console_log_write_dir.'query.log');
+        $debug['log_text'] = strtr($dbi->getLastQuery(), array("\n" => '\n', "\r" => '\n'));
+        $debug['memory_get_usage'] = $memory_get_usage;
+        $debug = json_encode($debug);
+
+        $umask = umask(0);
+        error_log($debug."\n", 3, $this->console_log_write_dir.'query.log');
+        error_log($debug."\n", 3, $this->console_log_dir.DIRECTORY_SEPARATOR.Envi()->getApp().'query.log');
+        umask($umask);
     }
 
     public function __destruct()
     {
-        error_log("<?php\nreturn ".var_export(get_included_files(), true), 3, $this->console_log_write_dir.'included_files.log');
+        $debug = get_included_files();
+        error_log("<?php\nreturn ".var_export($debug, true).';', 3, $this->console_log_write_dir.'included_files.log');
+        error_log(json_encode($debug)."\n", 3, $this->console_log_dir.DIRECTORY_SEPARATOR.Envi()->getApp().'included_files.log');
     }
 
     public function _setConsoleLogDir($setter)
@@ -1110,11 +1178,12 @@ class EnviLogWriterConsole
         }
         $this->is_console_log = true;
         $umask = umask(0);
-        $this->console_log_get_hash = sha1(microtime(true));
+        $this->console_log_get_hash = microtime(true).sha1(microtime(true));
         mkdir($this->console_log_dir.DIRECTORY_SEPARATOR.$this->console_log_get_hash, 0777, true);
         umask($umask);
         setcookie($this->console_log_get_hash, $this->console_log_get_hash);
 
-        $this->console_log_write_dir = $this->console_log_dir.DIRECTORY_SEPARATOR.$this->console_log_get_hash;
+        $this->console_log_write_dir = $this->console_log_dir.DIRECTORY_SEPARATOR.$this->console_log_get_hash.DIRECTORY_SEPARATOR;
     }
+
 }

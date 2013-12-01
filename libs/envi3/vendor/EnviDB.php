@@ -197,6 +197,7 @@ class EnviDBIBase
     protected $default_fetch_mode;
     protected $PDO;
     public $last_query;
+    public $last_parameters;
     public $is_tran;
     protected $tran_count = 0;
 
@@ -284,7 +285,6 @@ class EnviDBIBase
      */
     public function &prepare($statement, array $driver_options = array())
     {
-        $this->last_query = $statement;
         $pdos = $this->PDO->prepare($statement, $driver_options);
         $pdos->setFetchMode($this->default_fetch_mode);
         return $pdos;
@@ -304,6 +304,8 @@ class EnviDBIBase
     public function &execute(PDOStatement $pdos, array $driver_options = array())
     {
         $is_string_key = NULL;
+        $last_parameters = array();
+        $this->last_query = $pdos->queryString;
         foreach ($driver_options as $key => $value) {
             if ($is_string_key === NULL) {
                 $is_string_key = !is_numeric($key);
@@ -319,12 +321,16 @@ class EnviDBIBase
             }
             if ($is_string_key) {
                 $pdos->bindValue (':'.$key, $value, $pdo_param_type);
+                $last_parameters[':'.$key] = $value;
             } else {
                 $pdos->bindValue ($key+1, $value, $pdo_param_type);
+                $last_parameters[$key] = $value;
             }
         }
         $pdos->execute();
         $this->last_query = $pdos->queryString;
+        $this->last_parameters = $last_parameters;
+        console()->_queryLog($this);
         return $pdos;
     }
     /* ----------------------------------------- */
@@ -341,14 +347,16 @@ class EnviDBIBase
      */
     public function &query($statement, array $bind = array())
     {
-        $this->last_query = $statement;
         if (is_null($bind)) {
+            $this->last_query = $statement;
             $pdos = $this->PDO->query($statement);
+            $this->last_query = $pdos->queryString;
+            console()->_queryLog($this);
             $pdos->setFetchMode($this->default_fetch_mode);
+            $this->last_parameters = array();
         } else {
             $pdos = $this->execute($this->prepare($statement), $bind);
         }
-        $this->last_query = $pdos->queryString;
         return $pdos;
     }
     /* ----------------------------------------- */
@@ -686,4 +694,30 @@ class EnviDBIBase
         $this->disconnect();
     }
     /* ----------------------------------------- */
+
+    public function getLastQuery()
+    {
+        $sql     = $this->last_query;
+        $values  = $this->last_parameters;
+        $res = '';
+        $prepare_sql = explode('?', $sql);
+        if (isset($values[0])) {
+            $values = array_values($values);
+            foreach ($prepare_sql as $key => $query_front) {
+                $res .= $query_front;
+                if (isset($values[$key])) {
+                    $res .= $this->quotesmart($values[$key]);
+                }
+            }
+            return $res;
+        }
+        if (!count($values)) {
+            return $sql;
+        }
+        foreach ($values as &$item) {
+            $item = $this->quotesmart($item);
+        }
+        $sql = strtr($sql, $values);
+        return $sql;
+    }
 }

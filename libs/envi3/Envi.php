@@ -513,7 +513,7 @@ class Envi
      * +-- Extensionを取得
      *
      * @static
-     * @return EnviLogWriter
+     * @return EnviExtension
      */
     public static function extension()
     {
@@ -701,6 +701,7 @@ class Envi
                 include_once ENVI_MVC_CACHE_PATH.self::$app_key.ENVI_ENV.'.autoload_constant.envicc';
                 $envi->loadExtension();
                 self::$is_rested = true;
+                logger();
             } else {
                 $className = __CLASS__;
                 $envi = self::$instance;
