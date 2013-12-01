@@ -1139,6 +1139,9 @@ class EnviLogWriterConsole
 
     public function __destruct()
     {
+        if (!$this->is_console_log) {
+            return;
+        }
         $debug = get_included_files();
         error_log("<?php\nreturn ".var_export($debug, true).';', 3, $this->console_log_write_dir.'included_files.log');
         error_log(json_encode($debug)."\n", 3, $this->console_log_dir.DIRECTORY_SEPARATOR.Envi()->getApp().'included_files.log');
@@ -1146,7 +1149,7 @@ class EnviLogWriterConsole
 
     public function _setConsoleLogDir($setter)
     {
-        if (empty($setter) || !is_dir($setter)) {
+        if (empty($setter) || !is_dir($setter) || !is_writable($setter)) {
             $this->is_console_log = false;
             return;
         }
