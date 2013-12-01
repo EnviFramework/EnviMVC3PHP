@@ -610,7 +610,7 @@ class Envi
             ob_end_clean();
 
             $buff = spyc_load($buff);
-            $res = isset($buff[ENVI_ENV]) ? array_merge($buff['all'], $buff[ENVI_ENV]) : $buff['all'];
+            $res = isset($buff[ENVI_ENV]) ? $this->mergeConfiguration($buff['all'], $buff[ENVI_ENV]) : $buff['all'];
             $this->configSerialize(ENVI_MVC_CACHE_PATH.$file.ENVI_ENV.'.envicc', $res);
         } else {
             $res      = $this->configUnSerialize(ENVI_MVC_CACHE_PATH.$file.ENVI_ENV.'.envicc');
@@ -618,6 +618,22 @@ class Envi
         return $res;
     }
     /* ----------------------------------------- */
+
+    private function mergeConfiguration($all_conf, $env_conf)
+    {
+        foreach ($all_conf as $key => $values) {
+            if (!isset($env_conf[$key])) {
+                continue;
+            }
+            if (is_array($env_conf[$key]) && !isset($env_conf[$key][0])) {
+                $all_conf[$key] = $this->mergeConfiguration($values, $env_conf[$key]);
+                continue;
+            }
+            return array_merge($all_conf, $env_conf);
+        }
+        return $all_conf;
+    }
+
 
     /**
      * +-- ベースのURLを返す

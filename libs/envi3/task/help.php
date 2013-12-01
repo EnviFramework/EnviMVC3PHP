@@ -33,6 +33,7 @@ if (isOption('--help') || isOption('-h') || isOption('-?') || !isset($argv[1])) 
     cecho('build:', 33);
     cecho('    -model                               ', 32, '\n         OrMapモデルオブジェクトを生成する');
     cecho('    -query                               ', 32, '\n         Create文を作成する');
+    cecho('    -help                                ', 32, '\n         マニュアルの表示');
 
     cecho('clear:', 33);
     cecho('    -cache                               ', 32, '\n         キャッシュの削除(cc)');
@@ -43,9 +44,17 @@ if (isOption('--help') || isOption('-h') || isOption('-?') || !isset($argv[1])) 
     cecho('    -module                              ', 32, '\n       モジュールの作成(module)');
     cecho('    -action                              ', 32, '\n       アクションの作成(action)');
     cecho('    -view                                ', 32, '\n       ビューの作成(view)');
+    cecho('    -help                                ', 32, '\n         マニュアルの表示');
+
+    cecho('unittest:', 33);
+    cecho('    -go                                  ', 32, '\n       ユニットテストの実行(test)');
+    cecho('    -help                                ', 32, '\n       マニュアルの表示');
+    
 
     cecho('yml:', 33);
     cecho('    -test                                ', 32, '\n       YMLの展開テスト');
+    cecho('    -help                                ', 32, '\n       マニュアルの表示');
+    
     exit;
     die;
 }

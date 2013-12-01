@@ -4,9 +4,9 @@
  *
  * EnviRequestはユーザーからのパラメータの受け渡しと、ActionControllerからViewControllerへのパラメータの受け渡しを行うためのクラスです。
  * staticで定義されているため、Envi PHP上のどこからでもアクセスすることが出来ますが、ActionControllerおよび、ViewController以外からの参照はしない方が、エレガントなコードになります。
- * 
+ *
  * 主に三種類
- * 
+ *
  *  XXXParameter
  *   * ユーザーからGETやPOSTで渡ってきた値を取得します。
  *   * 通常は、valodatorを通すため、直接参照する機会は少ないかもしれません。
@@ -14,7 +14,7 @@
  *   * ActionControllerから、ViewControllerへの値の受け渡しをおこないます。
  * *  XXXError
  *   * ActionControllerから、ViewControllerへの値の受け渡しを行う点では、XXXAttributeと同じですが、XXXErrorでは、エラーの情報をViewControllerへと受け渡します。
- *   * validatorを使用した場合は、自動的に値が入ります。 
+ *   * validatorを使用した場合は、自動的に値が入ります。
  *
  * PHP versions 5
  *
@@ -66,6 +66,16 @@ class EnviRequest
     const POST = 1;
     const GET  = 2;
 
+    /**
+     * +-- オブジェクト化させない
+     *
+     * @access      private
+     * @return      void
+     */
+    private function __construct()
+    {
+    }
+    /* ----------------------------------------- */
 
     /**
      * +-- リクエストされたモジュール名を返す
@@ -221,7 +231,7 @@ class EnviRequest
     /**
      * Attributeしたデータを取り出します
      *
-     * @param string $name Attribute名
+     * @param string $key Attribute名
      * @return mixd
      */
     public static function getAttribute($key)
@@ -455,7 +465,8 @@ class EnviRequest
      */
     public static function getError($name)
     {
-        return isset(self::$_error_message[$name]) ? array('message' => self::$_error_message[$name], 'code' => self::$_error_code[$name]) : null;
+        $code = isset(self::$_error_code[$name]) ? self::$_error_code[$name] : 0;
+        return isset(self::$_error_message[$name]) ? array('message' => self::$_error_message[$name], 'code' => $code) : null;
     }
     /* ----------------------------------------- */
 
