@@ -1,0 +1,43 @@
+all:
+  module_name:
+    action_name:
+      form_name:
+        name:
+          ja: フォームの日本語名
+  
+        is_trim: false
+        method: GET|POST
+        validation:
+          -
+            type: noblank
+            # error_message:は空にするとデフォルトのエラーメッセージを使用します。
+            error_message:
+              ja:
+            is_chain: false
+            option:
+          -
+            type: maxlen
+            error_message:
+              ja:
+            is_chain: false
+            option: 300
+  bbs:
+    confirm:
+      writer_name:
+        name:
+          ja: 投稿者名
+        is_trim: false
+        method: POST
+        validation:
+          -
+            type: noblank
+            is_chain: false
+            error_message:
+              ja:
+            option:
+          -
+            type: maxwidth
+            is_chain: false
+            error_message:
+              ja:
+            option: 255

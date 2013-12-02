@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--EmEditor Solution file-->
+<Solution>
+	<Projects>
+		<Project RelativePath="EnviMVCCore.eeproj"/>
+		<Project RelativePath="EnviMVCRenderer.eeproj"/>
+		<Project RelativePath="EnviMVCVendorExtension.eeproj"/>
+	</Projects>
+
+	<GlobalOptions>
+		<SelectedType Value="3"/>
+		<SelectedPath Value="C:\repo\git\enviMVC3PHP\document\EnviMVC.eesln"/>
+		<StartUpProject Value="C:\repo\git\enviMVC3PHP\document\EnviMVCCore.eeproj"/>
+	</GlobalOptions>
+</Solution>

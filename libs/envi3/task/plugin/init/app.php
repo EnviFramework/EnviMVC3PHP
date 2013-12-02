@@ -1,14 +1,21 @@
 <?php
 /**
- * @package Envi3
- * @subpackage
- * @sinse 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
- */
-
-/**
  *  アプリキーの追加タスク
  *
+ *
+ * PHP versions 5
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @version    GIT: $Id$
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      File available since Release 1.0.0
  */
 
 umask(0);
@@ -17,41 +24,73 @@ if (!isset($argv[2])) {
     die;
 }
 $project_name = $argv[2];
+if (!mb_ereg('^[a-zA-Z0-9.\-_]+$', $project_name)) {
+    eecho('英数と._-以外の文字は使えません。');
+    die;
+}
 
-$arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."data".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."work".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."libs".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."libs".DIRECTORY_SEPARATOR."classes";
-$arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."ctrl".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."com".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."com".DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."logs".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."env".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."1".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."2".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."3".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."4".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."5".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."6".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."7".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."8".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."9".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."0".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."a".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."b".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."c".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."d".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."e".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/sessions".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."f".DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/performance".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/alert".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR;
-$arr[] = $base_dir."var/log".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR;
+$project_dir = $current_work_dir;
+while (!is_file($project_dir.'envi.prj') && strlen($project_dir) > 2) {
+    $project_dir = dirname($project_dir).DIRECTORY_SEPARATOR;
+}
+
+if (!is_file($project_dir.'envi.prj')) {
+    echo 'please change directory. envi project directory';
+    die;
+}
+
+$ds = DIRECTORY_SEPARATOR;
+$arr[] = $project_dir."apps".$ds.$project_name.$ds;
+$arr[] = $project_dir."apps".$ds.$project_name.$ds."modules".$ds;
+$arr[] = $project_dir."apps".$ds.$project_name.$ds."libs".$ds;
+$arr[] = $project_dir."apps".$ds.$project_name.$ds."libs".$ds."controller".$ds;
+$arr[] = $project_dir."apps".$ds.$project_name.$ds."libs".$ds."common".$ds;
+$arr[] = $project_dir."apps".$ds.$project_name.$ds."libs".$ds."constant".$ds;
+$arr[] = $project_dir."apps".$ds.$project_name.$ds."libs".$ds."models".$ds;
+$arr[] = $project_dir."apps".$ds.$project_name.$ds."libs".$ds."models".$ds."om";
+
+// テスト用
+$arr[] = $project_dir."tests".$ds.$project_name.$ds;
+$arr[] = $project_dir."tests".$ds.$project_name.$ds."modulesTest".$ds;
+$arr[] = $project_dir."tests".$ds.$project_name.$ds."libsTest".$ds;
+$arr[] = $project_dir."tests".$ds.$project_name.$ds."libsTest".$ds."controllerTest".$ds;
+$arr[] = $project_dir."tests".$ds.$project_name.$ds."libsTest".$ds."commonTest".$ds;
+$arr[] = $project_dir."tests".$ds.$project_name.$ds."libsTest".$ds."constantTest".$ds;
+$arr[] = $project_dir."tests".$ds.$project_name.$ds."libsTest".$ds."modelsTest".$ds;
+
+
+
+$default_config_dir = dirname(__FILE__)."{$ds}..{$ds}..{$ds}..{$ds}default_config{$ds}";
 
 foreach ($arr as $item) {
     mkdir($item);
     echo $item."\n";
+}
+
+
+copy($task_plugin_dir.$module.$ds.'data'.$ds.'scenario.php', $project_dir."tests".$ds.$project_name.$ds.'scenario.php');
+copy($task_plugin_dir.$module.$ds.'data'.$ds.'testCaseBase.php', $project_dir."tests".$ds.$project_name.$ds.'testCaseBase.php');
+
+copy($task_plugin_dir.$module.$ds.'data'.$ds.'actionBase.class.php', $project_dir."apps".$ds.$project_name.$ds."libs".$ds."controller".$ds.'actionBase.class.php');
+copy($task_plugin_dir.$module.$ds.'data'.$ds.'viewBase.class.php', $project_dir."apps".$ds.$project_name.$ds."libs".$ds."controller".$ds.'viewBase.class.php');
+copy($default_config_dir.'main.yml', $project_dir."config{$ds}".$project_name.'.yml');
+copy($default_config_dir.'main_databases.yml', $project_dir."config{$ds}".$project_name.'_databases.yml');
+copy($default_config_dir.'main_di_container.yml', $project_dir."config{$ds}".$project_name.'_di_container.yml');
+copy($default_config_dir.'main_web_type.yml', $project_dir."config{$ds}".$project_name.'_web_type.yml');
+copy($default_config_dir.'main_send_mail.yml', $project_dir."config{$ds}".$project_name.'_send_mail.yml');
+copy($default_config_dir.'main_schema.yml', $project_dir."config{$ds}".$project_name.'_schema.yml');
+
+copy($default_config_dir.'main_test.yml', $project_dir."tests".$ds.$project_name.'_test.yml');
+
+
+touch($project_dir."apps".$ds.$project_name.$ds."modules".$ds.'config.php');
+
+
+$text = file_get_contents($task_plugin_dir.$module.$ds.'data'.$ds.'main.php');
+$text = str_replace(array('%%app_name%%'), array($project_name), $text);
+$text = str_replace(array('%%base_dir%%'), array($base_dir), $text);
+$text = str_replace(array('%%envi_dir%%'), array($envi_dir), $text);
+$text = str_replace(array('%%project_dir%%'), array($project_dir), $text);
+if (!is_file($project_dir.'web'.$ds.$project_name.'.php')) {
+    file_put_contents($project_dir.'web'.$ds.$project_name.'.php', $text);
 }

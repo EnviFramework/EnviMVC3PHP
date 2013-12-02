@@ -1,14 +1,21 @@
 <?php
 /**
- * @package Envi3
- * @subpackage
- * @sinse 0.1
- * @author     Akito<akito-artisan@five-foxes.com>
- */
-
-/**
  * Ruby Rails風の処理を行う、あれこれ。
  *
+ *
+ * PHP versions 5
+ *
+ *
+ * @category   MVC
+ * @package    Envi3
+ * @subpackage EnviMVCCore
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @version    GIT: $Id$
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      File available since Release 1.0.0
  */
 
 // 基本処理の記述
@@ -16,6 +23,8 @@ $start_time = microtime(true);
 set_time_limit(0);
 ini_set('memory_limit', -1);
 
+
+define('ENVI_BASE_DIR', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR);
 
 // 引数の整形
 foreach ($argv as $k => $item) {
@@ -66,7 +75,11 @@ function isOption($name) {
  * 色付 echo
  */
 function cecho($m, $c = 30, $oth = '') {
-     system("echo -e '\e[{$c}m {$m} \e[m{$oth}'");
+    if (DIRECTORY_SEPARATOR === '/') {
+        system("echo -e '\e[{$c}m {$m} \e[m{$oth}'");
+    } else {
+        echo("{$m} {$oth}");
+    }
 }
 
 /**
@@ -87,6 +100,8 @@ function debug_msg($msg)
     }
 
 }
+
+require dirname(__FILE__).DIRECTORY_SEPARATOR.'help.php';
 
 if (!isset($argv[1])) {
     die("error:propaty 1\n");
@@ -111,4 +126,5 @@ if (!is_file($task_file)) {
     die;
 }
 
+require dirname(__FILE__).DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'task.interface.php';
 require $task_file;

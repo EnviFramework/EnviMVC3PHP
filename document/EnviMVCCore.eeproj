@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--EmEditor Project file-->
+<Project>
+<Files>
+	<File RelativePath="..\libs\envi3\Controller.php"/>
+	<File RelativePath="..\libs\envi3\Envi.php"/>
+	<File RelativePath="..\libs\envi3\EnviActionBase.php"/>
+	<File RelativePath="..\libs\envi3\EnviDBI.class.php"/>
+	<File RelativePath="..\libs\envi3\EnviInputFilterBase.class.php"/>
+	<File RelativePath="..\libs\envi3\EnviOutputFilterBase.class.php"/>
+	<File RelativePath="..\libs\envi3\EnviServerStatus.php"/>
+	<File RelativePath="..\libs\envi3\EnviViewBase.php"/>
+	<File RelativePath="..\libs\envi3\extension.php"/>
+	<File RelativePath="..\libs\envi3\logWriter.php"/>
+	<File RelativePath="..\libs\envi3\Request.php"/>
+	<File RelativePath="..\libs\envi3\spyc.php"/>
+	<File RelativePath="..\libs\envi3\User.php"/>
+	<File RelativePath="..\libs\envi3\validator.php"/>
+</Files>
+</Project>

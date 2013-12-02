@@ -1,0 +1,162 @@
+# 使用禁止の関数
+VulnerabilityFunction:
+  -
+    Name: phpinfo
+    Severity: High
+    Description: phpinfo()はデバッグ用の関数です。
+  -
+    Name: var_dump
+    Severity: High
+    Description: var_dump()はデバッグ用の関数です。
+  -
+    Name: print_r
+    Severity: High
+    Description: print_r()はデバッグ用の関数です。
+  -
+    Name: assert
+    Severity: High
+    Description: assert()はデバッグ用の関数です。
+  -
+    Name: eval
+    Severity: High
+    Description: eval()は使用禁止の関数です。
+  -
+    Name: spliti
+    Severity: High
+    Description: spliti()は PHP 5.3.0以降で 非推奨となりました。正規表現を使用しない場合は、explode()を、やむをえず、正規表現を使用する場合は、 preg_split()を使用してください。
+  -
+    Name: split
+    Severity: High
+    Description: split()は PHP 5.3.0以降 で 非推奨となりました。正規表現を使用しない場合は、explode()を、やむをえず、正規表現を使用する場合は、 preg_split()を使用してください。
+
+  -
+    Name: call_user_method
+    Severity: High
+    Description: call_user_method()は PHP 5.3.0 以降で 非推奨となりました。代わりに、call_user_func()を使用します。
+
+  -
+    Name: call_user_method_array
+    Severity: High
+    Description: call_user_method_array()は PHP 5.3.0 以降で 非推奨となりました。代わりに、call_user_func_array()を使用します。
+
+  -
+    Name: call_user_method_array
+    Severity: High
+    Description: call_user_method_array()は PHP 5.3.0 以降で 非推奨となりました。代わりに、call_user_func_array()を使用します。
+
+  -
+    Name: ereg
+    Severity: High
+    Description: ereg()は PHP 5.3.0 以降で 非推奨となりました。代わりに、preg_match()を使用します。
+  -
+    Name: eregi
+    Severity: High
+    Description: eregi()は PHP 5.3.0 以降で 非推奨となりました。代わりに、preg_match()を使用します。
+  -
+    Name: ereg_replace
+    Severity: High
+    Description: ereg_replace()は PHP 5.3.0 以降で 非推奨となりました。代わりに、preg_replace()を使用します。
+  -
+    Name: set_socket_blocking
+    Severity: High
+    Description: set_socket_blocking()は PHP 5.3.0 以降で 非推奨となりました。代わりに、 stream_set_blocking()を使用します。
+  -
+    Name: mysql_db_query
+    Severity: High
+    Description: mysql_db_query()は PHP 5.3.0 以降で 非推奨となりました。代わりに、 mysql_select_db()およびmysql_query()を使用します。
+  -
+    Name: session_register
+    Severity: High
+    Description: session_register()は PHP 5.3.0 以降で 非推奨となりました。$_SESSIONを使用してください。
+  -
+    Name: session_unregister
+    Severity: High
+    Description: session_unregister()は PHP 5.3.0 以降で 非推奨となりました。$_SESSIONを使用してください。
+
+  -
+    Name: session_is_registered
+    Severity: High
+    Description: session_is_registered()は PHP 5.3.0 以降で 非推奨となりました。$_SESSIONを使用してください。
+
+  -
+    Name: define_syslog_variables
+    Severity: High
+    Description: define_syslog_variables()は PHP 5.3.0 以降で 非推奨となりました。
+  -
+    Name: sql_regcase
+    Severity: High
+    Description: sql_regcase()は PHP 5.3.0 以降で 非推奨となりました。
+  -
+    Name: set_magic_quotes_runtime
+    Severity: High
+    Description: set_magic_quotes_runtime()は PHP 5.3.0 以降で 非推奨となりました。
+  -
+    Name: magic_quotes_runtime
+    Severity: High
+    Description: magic_quotes_runtime()は PHP 5.3.0 以降で 非推奨となりました。
+  -
+    Name: dl
+    Severity: High
+    Description: この関数は、PHP 5.3 以降でいくつかの SAPI からは削除されました。
+  -
+    Name: mail
+    Severity: High
+    Description: mail()は低速であり、使用方法を間違えるとセキュリティリスクをはらんでいます。メール送信におけるセキュリティリスクを把握し、Pear::Mailなどの、その他代替手段を利用してください。
+  -
+    Name: mb_send_mail
+    Severity: High
+    Description: mb_send_mail()は低速であり、使用方法を間違えるとセキュリティリスクを孕んでいます。メール送信におけるセキュリティリスクを把握して正しく使用してください。
+  -
+    Name: exec
+    Severity: High
+    Description: どうしても、OSコマンドを実行する際は、セキュリティリスクを理解し、適切に使用してください。
+  -
+    Name: passthru
+    Severity: High
+    Description: どうしても、OSコマンドを実行する際は、セキュリティリスクを理解し、適切に使用してください。
+  -
+    Name: proc_open
+    Severity: High
+    Description: どうしても、OSコマンドを実行する際は、セキュリティリスクを理解し、適切に使用してください。
+  -
+    Name: shell_exec
+    Severity: High
+    Description: どうしても、OSコマンドを実行する際は、セキュリティリスクを理解し、適切に使用してください。
+  -
+    Name: system
+    Severity: High
+    Description: どうしても、OSコマンドを実行する際は、セキュリティリスクを理解し、適切に使用してください。
+  -
+    Name: oci_connect
+    Severity: Medium
+    Description: PDOやその他ベンダーから用意されているDB接続方法を使用してください。
+  -
+    Name: mysql_connect
+    Severity: Medium
+    Description: PDOやその他ベンダーから用意されているDB接続方法を使用してください。
+    
+  -
+    Name: msql_connect
+    Severity: Medium
+    Description: PDOやその他ベンダーから用意されているDB接続方法を使用してください。
+  -
+    Name: pg_connect
+    Severity: Medium
+    Description: PDOやその他ベンダーから用意されているDB接続方法を使用してください。
+    
+  -
+    Name: is_a
+    Severity: Medium
+    Description: is_a()よりもよい代替手段、instanceofを使用してください。
+  
+  -
+    Name: array_key_exists
+    Severity: Low
+    Description: array_key_exists()よりもよい代替手段、isset()の使用を検討してください。
+  -
+    Name: file_exists
+    Severity: Low
+    Description: ファイルの存在確認をするだけなら、is_file()を使用して下さい。
+    
+    
+    
