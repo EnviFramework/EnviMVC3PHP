@@ -16,6 +16,12 @@
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      File available since Release 1.0.0
  */
+
+if (!defined('ENVI_BASE_DIR')) {
+    define('ENVI_BASE_DIR', realpath(dirname(__FILE__).'/../').DIRECTORY_SEPARATOR);
+}
+
+if (!isset($envi_cmd)) {
 /**
  * バッチ用の設定
  *
@@ -37,7 +43,7 @@ ksort($argv);
 
 $fargv = array_flip($argv);
 
-define('ENVI_BASE_DIR', realpath(dirname(__FILE__).'/../').DIRECTORY_SEPARATOR);
+
 
 /** 関数定義 */
 
@@ -102,6 +108,24 @@ function debug_msg($msg)
 
 /* ----------------------------------------- */
 
+
+// ヘルプ・マニュアル
+if (isOption('-h') || isOption('--help') || isOption('-?') || !isset($argv[1])) {
+    // ヘルプ表示
+    cecho('Name:', 33);
+    cecho('    EnviTest.php <テスト用yamlファイルのパス>');
+    cecho('    --help,-h,-?                         ', 32, '\n         このヘルプメッセージを表示します。');
+    cecho('    --debug                              ', 32, '\n         デバッグモードで実行します。');
+    exit;
+}
+
+
+
+// 実行
+$EnviTest = EnviTest::singleton($argv[1]);
+$EnviTest->execute();
+
+}
 
 /**
  * コマンドライン用のクラス
@@ -226,19 +250,4 @@ class EnviTest
 }
 
 
-// ヘルプ・マニュアル
-if (isOption('-h') || isOption('--help') || isOption('-?') || !isset($argv[1])) {
-    // ヘルプ表示
-    cecho('Name:', 33);
-    cecho('    EnviTest.php <テスト用yamlファイルのパス>');
-    cecho('    --help,-h,-?                         ', 32, '\n         このヘルプメッセージを表示します。');
-    cecho('    --debug                              ', 32, '\n         デバッグモードで実行します。');
-    exit;
-}
-
-
-
-// 実行
-$EnviTest = EnviTest::singleton($argv[1]);
-$EnviTest->execute();
 

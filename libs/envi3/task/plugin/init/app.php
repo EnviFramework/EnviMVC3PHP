@@ -68,11 +68,11 @@ foreach ($arr as $item) {
 }
 
 
-copy($task_plugin_dir.$module.$ds.'data'.$ds.'scenario.php', $project_dir."tests".$ds.$project_name.$ds.'scenario.php');
-copy($task_plugin_dir.$module.$ds.'data'.$ds.'testCaseBase.php', $project_dir."tests".$ds.$project_name.$ds.'testCaseBase.php');
+copy($task_plugin_dir.$module.$ds.'data'.$ds.'scenario.php.snp', $project_dir."tests".$ds.$project_name.$ds.'scenario.php');
+copy($task_plugin_dir.$module.$ds.'data'.$ds.'testCaseBase.php.snp', $project_dir."tests".$ds.$project_name.$ds.'testCaseBase.php');
+copy($task_plugin_dir.$module.$ds.'data'.$ds.'actionBase.class.php.snp', $project_dir."apps".$ds.$project_name.$ds."libs".$ds."controller".$ds.'actionBase.class.php');
+copy($task_plugin_dir.$module.$ds.'data'.$ds.'viewBase.class.php.snp', $project_dir."apps".$ds.$project_name.$ds."libs".$ds."controller".$ds.'viewBase.class.php');
 
-copy($task_plugin_dir.$module.$ds.'data'.$ds.'actionBase.class.php', $project_dir."apps".$ds.$project_name.$ds."libs".$ds."controller".$ds.'actionBase.class.php');
-copy($task_plugin_dir.$module.$ds.'data'.$ds.'viewBase.class.php', $project_dir."apps".$ds.$project_name.$ds."libs".$ds."controller".$ds.'viewBase.class.php');
 copy($default_config_dir.'main.yml', $project_dir."config{$ds}".$project_name.'.yml');
 copy($default_config_dir.'main_databases.yml', $project_dir."config{$ds}".$project_name.'_databases.yml');
 copy($default_config_dir.'main_di_container.yml', $project_dir."config{$ds}".$project_name.'_di_container.yml');
@@ -86,7 +86,7 @@ copy($default_config_dir.'main_test.yml', $project_dir."tests".$ds.$project_name
 touch($project_dir."apps".$ds.$project_name.$ds."modules".$ds.'config.php');
 
 
-$text = file_get_contents($task_plugin_dir.$module.$ds.'data'.$ds.'main.php');
+$text = file_get_contents($task_plugin_dir.$module.$ds.'data'.$ds.'main.php.snp');
 $text = str_replace(array('%%app_name%%'), array($project_name), $text);
 $text = str_replace(array('%%base_dir%%'), array($base_dir), $text);
 $text = str_replace(array('%%envi_dir%%'), array($envi_dir), $text);

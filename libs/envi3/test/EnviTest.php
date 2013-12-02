@@ -20,7 +20,7 @@
 /**
  * テスト用dummy
  *
- * @category   Native Application
+ * @category   MVC
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @since File available since Release 1.0.0
@@ -43,7 +43,7 @@ class dummyBase
  * テスト用dummy
  *
  * @category   MVC
- * @package    Envi3
+ * @package    EnviMVCCore
  * @subpackage EnviMVCCore
  * @since File available since Release 1.0.0
  * @author     Akito <akito-artisan@five-foxes.com>
@@ -57,7 +57,7 @@ class Logger extends dummyBase
  * テスト用dummy
  *
  * @category   MVC
- * @package    Envi3
+ * @package    EnviMVCCore
  * @subpackage EnviMVCCore
  * @since File available since Release 1.0.0
  * @author     Akito <akito-artisan@five-foxes.com>
@@ -67,6 +67,20 @@ class Envi extends dummyBase
     public function getLogger()
     {
         return new Logger();
+    }
+    
+    public static function singleton()
+    {
+        static $Envi;
+        if (!isset($Envi)) {
+            $Envi = new Envi;
+        }
+        return $Envi;
+    }
+    
+    public function getConfiguration()
+    {
+        return false;
     }
 }
 
@@ -79,11 +93,7 @@ class Envi extends dummyBase
  */
 function Envi()
 {
-    static $Envi;
-    if (!isset($Envi)) {
-        $Envi = new Envi;
-    }
-    return $Envi;
+    return Envi::singleton();
 }
 /* ----------------------------------------- */
 

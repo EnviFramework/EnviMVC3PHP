@@ -68,7 +68,7 @@ function pascalize($string)
     return $string;
 }
 
-$getter_setter_text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'getSet.class.php');
+$getter_setter_text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'getSet.class.php.snp');
 
 foreach ($config['SCHEMA'] as $table_name => &$schema) {
     $enable_magic = '';
@@ -121,7 +121,7 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
 
     $magic_method = isset($schema['magic_method']) ? $schema['magic_method'] : $config['SETTING']['default_magic_method'];
     if (!$magic_method) {
-        $enable_magic = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'magicEnable.class.php');
+        $enable_magic = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'magicEnable.class.php.snp');
     }
     $getter_setter = '';
     // var_dump($schema);
@@ -153,7 +153,7 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
 
 
 
-    $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'BasePeer.class.php');
+    $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'BasePeer.class.php.snp');
     $text = str_replace(
         array('%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%', '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%'),
         array($class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array),
@@ -163,7 +163,7 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
     file_put_contents($om_dir.'Base'.$class_name.'Peer.class.php', $text);
 
 
-    $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'Base.class.php');
+    $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'Base.class.php.snp');
     $text = str_replace(
         array('%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%', '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%'),
         array($class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array),
@@ -173,7 +173,7 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
     echo $om_dir.'Base'.$class_name.'.class.php'."\n";
     file_put_contents($om_dir.'Base'.$class_name.'.class.php', $text);
 
-    $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'OrmapPeer.class.php');
+    $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'OrmapPeer.class.php.snp');
     $text = str_replace(
         array('%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%', '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%'),
         array($class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array),
@@ -185,7 +185,7 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
     }
 
 
-    $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'Ormap.class.php');
+    $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'Ormap.class.php.snp');
     $text = str_replace(
         array('%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%', '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%'),
         array($class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array),

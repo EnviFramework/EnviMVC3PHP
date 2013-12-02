@@ -61,17 +61,17 @@ foreach ($arr as $item) {
     echo $item."\n";
 }
 
-$text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'actions.class.php');
+$text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'actions.class.php.snp');
 $text = str_replace(array('%%module_name%%'), array($module_name), $text);
 if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."actions".DIRECTORY_SEPARATOR.'actions.class.php')) {
     file_put_contents($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."actions".DIRECTORY_SEPARATOR.'actions.class.php', $text);
 }
 
-$text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'views.class.php');
+$text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'views.class.php.snp');
 $text = str_replace(array('%%module_name%%'), array($module_name), $text);
 if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR.'views.class.php')) {
     file_put_contents($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR.'views.class.php', $text);
 }
 
 
-$text = copy($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'config.php', $module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'config.php');
+$text = copy($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'config.php.snp', $module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'config.php');

@@ -54,7 +54,7 @@ $module_dir = $project_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SE
 $module_test_dir = $project_dir."tests".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modulesTest".DIRECTORY_SEPARATOR;
 
 
-$text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'View.class.php');
+$text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'View.class.php.snp');
 $text = str_replace(array('%%module_name%%', '%%action_name%%'), array($module_name, $action_name), $text);
 
 $list = array('default', 'success', 'error', 'confirm', 'commit');

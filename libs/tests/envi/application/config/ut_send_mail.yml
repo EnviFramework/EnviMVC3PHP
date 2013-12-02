@@ -1,0 +1,36 @@
+all:
+  SETTING:
+    renderer:
+## 好きなrendererを使用してください。ベンダーで用意しているrendererは下記の3つです
+#    renderer:
+#      resource: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviSmartyRenderer.php"
+#      class_name: EnviSmartyRenderer
+#    renderer:
+#      resource: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviTwigRenderer.php"
+#      class_name: EnviTwigRenderer
+#    renderer:
+#      resource: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviPHPRenderer.php"
+#      class_name: EnviPHPRenderer
+    
+## ヘッダの不要な改行の削除や、半角カナの全角化を行う
+    auto_clean: true
+## 環境がdevの時に一律して送信する先を指定する
+## false にするとprod と同じ動きをする
+    dev_send: false
+#    dev_send: exsample@exsample.com
+
+## 環境がstgの時に一律して送信する先を指定する
+## false にするとprod と同じ動きをする
+    stg_send: false
+#    stg_send: exsample@exsample.com
+## 環境がSTGの時に、送信を許可する宛先
+    stg_allow_send:
+      - exsample1@exsample.com
+      - exsample2@exsample.com
+      - exsample3@exsample.com
+## 送信者の設定
+    from:
+## 送信元メールアドレス
+      email: auto-mail@<?php echo $_SERVER['SERVER_NAME'];?>
+## 送信者の名前
+      name: auto-mail@<?php echo $_SERVER['SERVER_NAME'];?>
