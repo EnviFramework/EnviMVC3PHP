@@ -68,7 +68,7 @@ class Envi extends dummyBase
     {
         return new Logger();
     }
-    
+
     public static function singleton()
     {
         static $Envi;
@@ -77,7 +77,7 @@ class Envi extends dummyBase
         }
         return $Envi;
     }
-    
+
     public function getConfiguration()
     {
         return false;
