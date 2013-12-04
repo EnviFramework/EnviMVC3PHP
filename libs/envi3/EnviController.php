@@ -257,4 +257,32 @@ class EnviController
         return self::$_action_chain_name;
     }
     /* ----------------------------------------- */
+
+    /**
+     * +-- 404エラーを発行する
+     *
+     * @final
+     * @access      public
+     * @static
+     * @return      void
+     */
+    final public static function killBy404Error($error_message = '')
+    {
+        throw new Envi404Exception($error_message);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 403エラーを発行する
+     *
+     * @final
+     * @access      public
+     * @static
+     * @return      void
+     */
+    final public static function killBy403Error($error_message = '')
+    {
+        throw new Envi403Exception($error_message);
+    }
+    /* ----------------------------------------- */
 }

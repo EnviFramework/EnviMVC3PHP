@@ -34,7 +34,7 @@ all:
 #      singleton: true
 #    router:
 #      ## extensionの設定のパス
-#      resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.$app_name.'_databases.yml';?>"
+#      resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.$app_name.'_web_type.yml';?>"
 
 ## mailを使用する場合は、コメントを外す
 

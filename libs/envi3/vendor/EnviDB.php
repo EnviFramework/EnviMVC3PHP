@@ -327,6 +327,7 @@ class EnviDBIBase
                 $last_parameters[$key] = $value;
             }
         }
+        console()->stopwatch();
         $pdos->execute();
         $this->last_query = $pdos->queryString;
         $this->last_parameters = $last_parameters;
@@ -349,6 +350,7 @@ class EnviDBIBase
     {
         if (is_null($bind)) {
             $this->last_query = $statement;
+            console()->stopwatch();
             $pdos = $this->PDO->query($statement);
             $this->last_query = $pdos->queryString;
             console()->_queryLog($this);
