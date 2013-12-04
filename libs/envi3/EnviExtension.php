@@ -83,7 +83,9 @@ class EnviExtension
         $class_name = $this->configuration[$name]['class']['class_name'];
 
         if (!isset($this->extensions[$name])) {
-            include_once $this->configuration[$name]['class']['resource'];
+            if (!class_exists($class_name, false)) {
+                include $this->configuration[$name]['class']['resource'];
+            }
             $this->extensions[$name] = new $class_name(
                 Envi::singleton()->parseYml(
                     basename($this->configuration[$name]['router']['resource']),

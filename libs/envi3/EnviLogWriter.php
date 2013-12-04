@@ -876,8 +876,8 @@ class EnviLogWriter
     {
         /** 設定ファイル読み込み */
         $dir = ENVI_MVC_CACHE_PATH;
-        $bk_file = $dir.__CLASS__.ENVI_ENV.Envi::singleton()->getApp().'.envicc';
-        $autoload_constant_cache = $dir.Envi()->getApp().ENVI_ENV.'.autoload_constant.envicc';
+        $bk_file = $dir.__CLASS__.Envi::singleton()->getApp().'.'.ENVI_ENV.'.envicc';
+        $autoload_constant_cache = $dir.Envi()->getApp().'.'.ENVI_ENV.'.autoload_constant.envicc';
         if (is_file($bk_file) && !Envi()->isDebug() && filemtime($bk_file) > filemtime($autoload_constant_cache)) {
             $this->_system_conf = Envi()->unserialize(file_get_contents($bk_file));
             return;

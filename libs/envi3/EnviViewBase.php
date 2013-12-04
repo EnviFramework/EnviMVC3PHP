@@ -70,7 +70,9 @@ abstract class EnviViewBase
     public function setRenderer()
     {
         $renderer_path = Envi()->getConfiguration('SYSTEM', 'renderer');
-        include_once $renderer_path;
+        if (!class_exists($renderer_class, false)) {
+            include $renderer_path;
+        }
         $renderer_class = substr(basename($renderer_path), 0, -4);
         $this->renderer = new $renderer_class();
     }

@@ -226,7 +226,7 @@ class EnviDBIBase
             $pdo_param_type = PDO::PARAM_INT;
         } elseif(is_bool($value)){
             $pdo_param_type = PDO::PARAM_BOOL;
-        } elseif(is_null($value)){
+        } elseif ($value === NULL){
             $pdo_param_type = PDO::PARAM_NULL;
         } else {
             $pdo_param_type = PDO::PARAM_STR;
@@ -301,7 +301,7 @@ class EnviDBIBase
      * @param array $driver_options OPTIONAL:array
      * @return PDOStatement
      */
-    public function &execute(PDOStatement $pdos, array $driver_options = array())
+    public function &execute(PDOStatement $pdos, $driver_options = array())
     {
         $is_string_key = NULL;
         $last_parameters = array();
@@ -312,9 +312,9 @@ class EnviDBIBase
             }
             if (is_int($value)) {
                 $pdo_param_type = PDO::PARAM_INT;
-            } elseif(is_bool($value)){
+            } elseif (is_bool($value)){
                 $pdo_param_type = PDO::PARAM_BOOL;
-            } elseif(is_null($value)){
+            } elseif ($value === NULL){
                 $pdo_param_type = PDO::PARAM_NULL;
             } else {
                 $pdo_param_type = PDO::PARAM_STR;
@@ -346,9 +346,9 @@ class EnviDBIBase
      * @param array $bind bindする値 OPTIONAL:array
      * @return PDOStatement
      */
-    public function &query($statement, array $bind = array())
+    public function &query($statement, $bind = NULL)
     {
-        if (is_null($bind)) {
+        if ($bind === NULL) {
             $this->last_query = $statement;
             console()->stopwatch();
             $pdos = $this->PDO->query($statement);
