@@ -1700,24 +1700,22 @@ class EnviValidator
      * 配列で送信されたデータで、指定されたキーが送信されているかどうか
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param array|string|int $key キー
+     * @param array|string|int $keys キー
      */
     protected function _typeArrayKeyExists(&$ValidationData, $keys)
     {
-        if (is_array($ValidationData)) {
-            if (is_array($keys)){
-                foreach ($keys as $value) {
-                    if (!array_key_exists($value, $ValidationData)) {
-                        return false;
-                    }
-                }
-            } elseif (!array_key_exists($keys, $ValidationData)) {
-                return false;
-            }
-        } else {
+        if (!is_array($ValidationData)) {
             return false;
         }
-        return true;
+        if (is_array($keys)){
+            foreach ($keys as $value) {
+                if (!isset($ValidationData[$value])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return isset($ValidationData[$keys]);
     }
 
     /**

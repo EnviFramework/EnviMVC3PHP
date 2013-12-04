@@ -83,7 +83,7 @@ class EnviController
     {
         $cpm = EnviRequest::$_module_name;
         $cpa = EnviRequest::$_action_name;
-        if (!is_null($module)) {
+        if ($module !== NULL) {
             EnviRequest::$_module_name = $module;
         }
 
@@ -223,7 +223,7 @@ class EnviController
         $post_data = $_POST;
         foreach (self::$_action_chain as $key => $value) {
             self::$_action_chain_name = $key;
-            if (!is_null(self::$_action_chain_data[$key])) {
+            if (self::$_action_chain_data[$key] !== NULL) {
                 $_POST = array_merge($_POST, self::$_action_chain_data[$key]);
             }
             ob_start();

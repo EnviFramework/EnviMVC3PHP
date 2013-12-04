@@ -79,7 +79,7 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
     // DBに接続して、自動的にスキーマ情報を取得する
     if ($auto_schema) {
         $schema['schema'] = array();
-        if (is_null($EnviDBInstance)) {
+        if (!isset($EnviDBInstance)) {
             $EnviDBInstance = new EnviDBInstance($database_yaml);
         }
         $dbi = $EnviDBInstance->getInstance($instance_name);

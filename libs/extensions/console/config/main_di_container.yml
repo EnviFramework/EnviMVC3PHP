@@ -1,13 +1,13 @@
   console:
     constant: false
     class:
-      ## ƒtƒ@ƒCƒ‹‚ÌÀ‘Ô
+      ## ãƒ•ã‚¡ã‚¤ãƒ«ã®å®Ÿæ…‹
       resource: "<?php echo ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'console'.DIRECTORY_SEPARATOR;?>EnviConsoleExtension.php"
-      ## ƒNƒ‰ƒX–¼
+      ## ã‚¯ãƒ©ã‚¹å
       class_name: "EnviConsoleExtension"
-      ## ƒVƒ“ƒOƒ‹ƒgƒ“‰»‚·‚é‚©
+      ## ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³åŒ–ã™ã‚‹ã‹
       singleton: true
     router:
-      ## extension‚Ìİ’è‚ÌƒpƒX
+      ## extensionã®è¨­å®šã®ãƒ‘ã‚¹
       resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.$app_name.'_console.yml';?>"
 
