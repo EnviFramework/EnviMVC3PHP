@@ -30,11 +30,11 @@
  */
 function smarty_function_html_select_time($params, &$smarty)
 {
-    require_once $smarty->_get_plugin_filepath('shared','make_timestamp');
-    require_once $smarty->_get_plugin_filepath('function','html_options');
+    $smarty->_include_plugin_filepath('shared','make_timestamp');
+    $smarty->_include_plugin_filepath('function','html_options');
     /* Default values. */
-    $prefix             = "Time_";
-    $time               = time();
+    $prefix             = 'Time_';
+    $time               = $_SERVER['REQUEST_TIME'];
     $display_hours      = true;
     $display_minutes    = true;
     $display_seconds    = true;

@@ -67,13 +67,13 @@ function smarty_core_read_cache_file(&$params, &$smarty)
 
     if ($smarty->caching == 2 && isset ($_cache_info['expires'])){
         // caching by expiration time
-        if ($_cache_info['expires'] > -1 && (time() > $_cache_info['expires'])) {
+        if ($_cache_info['expires'] > -1 && ($_SERVER['REQUEST_TIME'] > $_cache_info['expires'])) {
             // cache expired, regenerate
             return false;
         }
     } else {
         // caching by lifetime
-        if ($smarty->cache_lifetime > -1 && (time() - $_cache_info['timestamp'] > $smarty->cache_lifetime)) {
+        if ($smarty->cache_lifetime > -1 && ($_SERVER['REQUEST_TIME'] - $_cache_info['timestamp'] > $smarty->cache_lifetime)) {
             // cache expired, regenerate
             return false;
         }

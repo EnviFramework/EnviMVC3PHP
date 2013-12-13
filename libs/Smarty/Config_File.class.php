@@ -97,7 +97,7 @@ class Config_File {
     function set_path($config_path)
     {
         if (!empty($config_path)) {
-            if (!is_string($config_path) || !file_exists($config_path) || !is_dir($config_path)) {
+            if (!is_string($config_path) || !is_file($config_path) || !is_dir($config_path)) {
                 $this->_trigger_error_msg("Bad config file path '$config_path'");
                 return;
             }

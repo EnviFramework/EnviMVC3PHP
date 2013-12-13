@@ -92,8 +92,7 @@ class redirectException extends Exception
         } else {
             echo '<a href="'.$message.'">リダイレクトされない場合はこちらへ</a>';
         }
-
-        // parent::__construct($message, $code, $previous);
+        parent::__construct($message, $code, $previous);
     }
     /* ----------------------------------------- */
 
@@ -129,7 +128,7 @@ class killException extends Exception
      */
     public function __construct($message, $code = 0, Exception $previous = null)
     {
-        // parent::__construct($message, $code, $previous);
+        parent::__construct($message, $code, $previous);
     }
     /* ----------------------------------------- */
 }
@@ -169,7 +168,7 @@ class Envi404Exception extends Exception
         } else {
             header('HTTP/1.0 404 Not Found');
         }
-        // parent::__construct($message, $code, $previous);
+        parent::__construct($message, $code, $previous);
     }
     /* ----------------------------------------- */
 }
@@ -208,7 +207,7 @@ class Envi403Exception extends Exception
         } else {
             header('HTTP/1.0 403 Forbidden');
         }
-        // parent::__construct($message, $code, $previous);
+        parent::__construct($message, $code, $previous);
     }
     /* ----------------------------------------- */
 }
@@ -248,7 +247,7 @@ class EnviException extends Exception
         } else {
             header('HTTP/1.0 403 Forbidden');
         }
-        // parent::__construct($message, $code, $previous);
+        parent::__construct($message, $code, $previous);
     }
     /* ----------------------------------------- */
 }
@@ -322,30 +321,7 @@ class Envi
         $this->_system_conf      = $this->parseYml($app.'.yml');
         $autoload_constant_cache = ENVI_MVC_CACHE_PATH.$app.'.'.ENVI_ENV.'.autoload_constant.envicc';
         if ($debug || !is_file($autoload_constant_cache)) {
-            $autoload_constant_dir = $this->_system_conf['AUTOLOAD_CONSTANT'];
-            $autoload_constant = array();
-            $autoload_constant[] = $this->_system_conf['SYSTEM']['renderer'];
-            if ($autoload_constant_dir) {
-                foreach ($autoload_constant_dir as $dir) {
-                    if (!is_dir($dir)) {
-                        continue;
-                    }
-                    if (!($dh = opendir($dir))) {
-                        continue;
-                    }
-                    while (($file = readdir($dh)) !== false) {
-                        if (strpos($file, '.php')) {
-                            $autoload_constant[] = $dir.$file;
-                        }
-                    }
-                    closedir($dh);
-                }
-            }
-            $cache = "<?php\n";
-            foreach ($autoload_constant as $v) {
-                $cache .= "include '".$v."';\n";
-            }
-            file_put_contents($autoload_constant_cache, $cache);
+            $this->makeAutoLoadConstantCache($autoload_constant_cache);
         }
 
         // 国際化
@@ -365,7 +341,55 @@ class Envi
         if (!$debug && is_file($auto_load_classes_cache)) {
             $this->auto_load_classes = $this->configUnSerialize($auto_load_classes_cache);
         } else {
-            foreach ($this->autoload_dirs as $dir) {
+            $this->makeAutoLoadClassesCache($auto_load_classes_cache);
+        }
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- auto_load_classes_cacheの作成
+     *
+     * @access      protected
+     * @param       var_text $auto_load_classes_cache
+     * @return      void
+     */
+    protected function makeAutoLoadClassesCache($auto_load_classes_cache)
+    {
+        foreach ($this->autoload_dirs as $dir) {
+            if (!is_dir($dir)) {
+                continue;
+            }
+            if (!($dh = opendir($dir))) {
+                continue;
+            }
+            while (($file = readdir($dh)) !== false) {
+                if (preg_match('/\.php/', $file)) {
+                    $class_name = preg_replace("/^(.*)\\.php$/", "\\1", $file);
+                    $class_name = preg_replace("/^(.*)\\.class$/", "\\1", $class_name);
+                    $this->auto_load_classes[$class_name] = $dir.$file;
+                }
+            }
+            closedir($dh);
+        }
+        $this->configSerialize($auto_load_classes_cache, $this->auto_load_classes);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- autoload_constant_cacheの作成
+     *
+     * @access      protected
+     * @param       var_text $autoload_constant_cache
+     * @return      void
+     */
+    protected function makeAutoLoadConstantCache($autoload_constant_cache)
+    {
+        $autoload_constant_dir = $this->_system_conf['AUTOLOAD_CONSTANT'];
+        $autoload_constant = array();
+        $autoload_constant[] = $this->_system_conf['SYSTEM']['renderer'];
+        if ($autoload_constant_dir) {
+            foreach ($autoload_constant_dir as $dir) {
                 if (!is_dir($dir)) {
                     continue;
                 }
@@ -373,16 +397,18 @@ class Envi
                     continue;
                 }
                 while (($file = readdir($dh)) !== false) {
-                    if (mb_ereg('\.php', $file)) {
-                        $class_name = mb_ereg_replace("^(.*)\\.php$", "\\1", $file);
-                        $class_name = mb_ereg_replace("^(.*)\\.class$", "\\1", $class_name);
-                        $this->auto_load_classes[$class_name] = $dir.$file;
+                    if (strpos($file, '.php')) {
+                        $autoload_constant[] = $dir.$file;
                     }
                 }
                 closedir($dh);
             }
-            $this->configSerialize($auto_load_classes_cache, $this->auto_load_classes);
         }
+        $cache = "<?php\n";
+        foreach ($autoload_constant as $v) {
+            $cache .= "include '".$v."';\n";
+        }
+        file_put_contents($autoload_constant_cache, $cache);
     }
     /* ----------------------------------------- */
 
@@ -778,10 +804,10 @@ class Envi
         }
         $base_module_dir = EnviController::isActionChain() ?
             $this->_system_conf['DIRECTORY']['chain_modules'] : $this->_system_conf['DIRECTORY']['modules'];
-        
+
         $this_module = EnviRequest::getThisModule();
         $this_action = EnviRequest::getThisAction();
-        
+
         // Module
         $module_dir = $base_module_dir.$this_module.DIRECTORY_SEPARATOR;
         // Action
@@ -799,10 +825,23 @@ class Envi
         }
         $exists_modules[$this_module] = true;
 
+        // アクションの実行計画を作成する
         // アクションの存在確認
         $action_class_path = $action_dir.$this_action.'Action.class.php';
         $action_sf         = ucwords($this_action);
 
+        // デフォルトのメソッド名をセットする
+        $isPrivate      = 'isPrivate';
+        $isSSL          = 'isSSL';
+        $isSecure       = 'isSecure';
+        $initialize     = 'initialize';
+        $validate       = 'validate';
+        $execute        = 'execute';
+        $defaultAccess  = 'defaultAccess';
+        $handleError    = 'handleError';
+        $shutdown       = 'shutdown';
+
+        // オブジェクトの生成
         if (is_file($action_class_path)) {
             // 1ファイル1アクションのパターン
             if (dirname($action_class_path) !== realpath($action_dir)) {
@@ -813,29 +852,8 @@ class Envi
                 include $action_class_path;
             }
             $action = new $action;
-            if (method_exists($action, 'execute'.$action_sf)) {
-                $execute        = 'execute'.$action_sf;
-                $validate       = method_exists($action, 'validate'.$action_sf) ? 'validate'.$action_sf : 'validate';
-                $defaultAccess  = method_exists($action, 'defaultAccess'.$action_sf) ? 'defaultAccess'.$action_sf : 'defaultAccess';
-                $handleError    = method_exists($action, 'handleError'.$action_sf) ? 'handleError'.$action_sf : 'handleError';
-                $isPrivate      = method_exists($action, 'isPrivate'.$action_sf) ? 'isPrivate'.$action_sf : 'isPrivate';
-                $isSSL          = method_exists($action, 'isSSL'.$action_sf) ? 'isSSL'.$action_sf : 'isSSL';
-                $isSecure       = method_exists($action, 'isSecure'.$action_sf) ? 'isSecure'.$action_sf : 'isSecure';
-                $initialize     = method_exists($action, 'initialize'.$action_sf) ? 'initialize'.$action_sf : 'initialize';
-                $shutdown       = method_exists($action, 'shutdown'.$action_sf) ? 'shutdown'.$action_sf : 'shutdown';
-            } else {
-                $isPrivate      = 'isPrivate';
-                $isSSL          = 'isSSL';
-                $isSecure       = 'isSecure';
-                $initialize     = 'initialize';
-                $validate       = 'validate';
-                $execute        = 'execute';
-                $defaultAccess  = 'defaultAccess';
-                $handleError    = 'handleError';
-                $shutdown       = 'shutdown';
-            }
         } else {
-            $sub_action            = mb_ereg_replace('^([a-z0-9]+).*$', '\1', $this_action);
+            $sub_action            = preg_replace('/^([a-z0-9]+).*$/', '\1', $this_action);
             $action_sub_class_path = $action_dir.$sub_action.'Actions.class.php';
 
             if (is_file($action_sub_class_path)) {
@@ -843,28 +861,16 @@ class Envi
                 if (dirname($action_sub_class_path) !== realpath($action_dir)) {
                     throw new EnviException('directory path error', 10002);
                 }
-                
+
                 $action = $sub_action.'Actions';
                 if (!class_exists($action, false)) {
                     include $action_sub_class_path;
                 }
                 $action = new $action;
-                
-                $action_sub_sf = ucwords(mb_ereg_replace('^'.$sub_action, '', $this_action));
-                if (method_exists($action, 'execute'.$action_sub_sf)) {
-                    $execute        = 'execute'.$action_sub_sf;
-                    $isPrivate      = method_exists($action, 'isPrivate'.$action_sub_sf) ? 'isPrivate'.$action_sub_sf : 'isPrivate';
-                    $isSSL          = method_exists($action, 'isSSL'.$action_sub_sf) ? 'isSSL'.$action_sub_sf : 'isSSL';
-                    $isSecure       = method_exists($action, 'isSecure'.$action_sub_sf) ? 'isSecure'.$action_sub_sf : 'isSecure';
-                    $initialize     = method_exists($action, 'initialize'.$action_sub_sf) ? 'initialize'.$action_sub_sf : 'initialize';
-                    $shutdown       = method_exists($action, 'shutdown'.$action_sub_sf) ? 'shutdown'.$action_sub_sf : 'shutdown';
-                    $validate       = method_exists($action, 'validate'.$action_sub_sf) ? 'validate'.$action_sub_sf : 'validate';
-                    $defaultAccess  = method_exists($action, 'defaultAccess'.$action_sub_sf) ? 'defaultAccess'.$action_sub_sf : 'defaultAccess';
-                    $handleError    = method_exists($action, 'handleError'.$action_sub_sf) ? 'handleError'.$action_sub_sf : 'handleError';
-                } else {
+                $action_sub_sf = ucwords(preg_replace('/^'.$sub_action.'/', '', $this_action));
+                if (!method_exists($action, 'execute'.$action_sub_sf)) {
                     throw new Envi404Exception('execute'.$action_sub_sf.' is not exists', 10003);
                 }
-
             } elseif (is_file($action_dir.'actions.class.php')) {
                 // actions.class.phpにまとめて書くパターン
                 $action_class_path = $action_dir.'actions.class.php';
@@ -872,25 +878,38 @@ class Envi
                 if (!class_exists($action, false)) {
                     include $action_class_path;
                 }
-                
                 $action         = new $action;
-                if (method_exists($action, 'execute'.$action_sf)) {
-                    $execute        = 'execute'.$action_sf;
-                    $validate       = method_exists($action, 'validate'.$action_sf) ? 'validate'.$action_sf : 'validate';
-                    $defaultAccess  = method_exists($action, 'defaultAccess'.$action_sf) ? 'defaultAccess'.$action_sf : 'defaultAccess';
-                    $handleError    = method_exists($action, 'handleError'.$action_sf) ? 'handleError'.$action_sf : 'handleError';
-                    $isPrivate      = method_exists($action, 'isPrivate'.$action_sf) ? 'isPrivate'.$action_sf : 'isPrivate';
-                    $isSSL          = method_exists($action, 'isSSL'.$action_sf) ? 'isSSL'.$action_sf : 'isSSL';
-                    $isSecure       = method_exists($action, 'isSecure'.$action_sf) ? 'isSecure'.$action_sf : 'isSecure';
-                    $initialize     = method_exists($action, 'initialize'.$action_sf) ? 'initialize'.$action_sf : 'initialize';
-                    $shutdown       = method_exists($action, 'shutdown'.$action_sf) ? 'shutdown'.$action_sf : 'shutdown';
-                } else {
+                if (!method_exists($action, 'execute'.$action_sf)) {
                     throw new Envi404Exception('execute'.$action_sf.' is not exists', 10003);
                 }
             } else {
                 throw new Envi404Exception('Action is not exists', 10004);
             }
         }
+
+        // アクションメソッドの実体
+        if (isset($action_sub_sf)) {
+            $execute        = $execute.$action_sub_sf;
+            $isPrivate      = method_exists($action, $isPrivate.$action_sub_sf) ? $isPrivate.$action_sub_sf : $isPrivate;
+            $isSSL          = method_exists($action, $isSSL.$action_sub_sf) ? $isSSL.$action_sub_sf : $isSSL;
+            $isSecure       = method_exists($action, $isSecure.$action_sub_sf) ? $isSecure.$action_sub_sf : $isSecure;
+            $initialize     = method_exists($action, $initialize.$action_sub_sf) ? $initialize.$action_sub_sf : $initialize;
+            $shutdown       = method_exists($action, $shutdown.$action_sub_sf) ? $shutdown.$action_sub_sf : $shutdown;
+            $validate       = method_exists($action, $validate.$action_sub_sf) ? $validate.$action_sub_sf : $validate;
+            $defaultAccess  = method_exists($action, $defaultAccess.$action_sub_sf) ? $defaultAccess.$action_sub_sf : $defaultAccess;
+            $handleError    = method_exists($action, $handleError.$action_sub_sf) ? $handleError.$action_sub_sf : $handleError;
+        } elseif (method_exists($action, $execute.$action_sf)) {
+            $execute        = $execute.$action_sf;
+            $validate       = method_exists($action, $validate.$action_sf) ? $validate.$action_sf : $validate;
+            $defaultAccess  = method_exists($action, $defaultAccess.$action_sf) ? $defaultAccess.$action_sf : $defaultAccess;
+            $handleError    = method_exists($action, $handleError.$action_sf) ? $handleError.$action_sf : $handleError;
+            $isPrivate      = method_exists($action, $isPrivate.$action_sf) ? $isPrivate.$action_sf : $isPrivate;
+            $isSSL          = method_exists($action, $isSSL.$action_sf) ? $isSSL.$action_sf : $isSSL;
+            $isSecure       = method_exists($action, $isSecure.$action_sf) ? $isSecure.$action_sf : $isSecure;
+            $initialize     = method_exists($action, $initialize.$action_sf) ? $initialize.$action_sf : $initialize;
+            $shutdown       = method_exists($action, $shutdown.$action_sf) ? $shutdown.$action_sf : $shutdown;
+        }
+
         try {
             // アクション開始
             if ($is_first && $action->$isPrivate()) {
@@ -949,31 +968,27 @@ class Envi
         } catch (Exception $e) {
             throw $e;
         }
-        $view_class_path = $view_dir.$this_action.'View_'.$view_suffix.'.class.php';
 
+        // ビューの実行計画を作成する
+        $view_class_path = $view_dir.$this_action.'View_'.$view_suffix.'.class.php';
+        // デフォルトのメソッド名
+        $execute        = 'execute';
+        $setRenderer    = 'setRenderer';
+        $initialize     = 'initialize';
+        $shutdown       = 'shutdown';
         if (is_file($view_class_path)) {
+            // 1ファイル１ビューのパターン
             if (dirname($view_class_path) !== realpath($view_dir)) {
                 throw new EnviException('directory path error', 11002);
             }
-            
+
             $view = $this_action.'View';
             if (!class_exists($view, false)) {
                 include $view_class_path;
             }
             $view = new $view;
-            if (method_exists($view, 'execute'.$action_sf)) {
-                $execute        = 'execute'.$action_sf;
-                $setRenderer    = method_exists($view, 'setRenderer'.$action_sf) ? 'setRenderer'.$action_sf : 'setRenderer';
-                $initialize     = method_exists($view, 'initialize'.$action_sf) ? 'initialize'.$action_sf : 'initialize';
-                $shutdown       = method_exists($view, 'shutdown'.$action_sf) ? 'shutdown'.$action_sf : 'shutdown';
-            } else {
-                $execute        = 'execute';
-                $setRenderer    = 'setRenderer';
-                $initialize     = 'initialize';
-                $shutdown       = 'shutdown';
-            }
         } else {
-            $sub_action            = isset($sub_action) ? $sub_action : mb_ereg_replace('^([a-z0-9]+).*$', '\1', $this_action);
+            $sub_action            = isset($sub_action) ? $sub_action : preg_replace('/^([a-z0-9]+).*$/', '\1', $this_action);
             $view_sub_class_path = $view_dir.$sub_action.'Views_'.$view_suffix.'.class.php';
 
             if (is_file($view_sub_class_path)) {
@@ -986,29 +1001,20 @@ class Envi
                     include $view_sub_class_path;
                 }
                 $view = new $view;
-                $action_sub_sf = ucwords(mb_ereg_replace('^'.$sub_action, '', $this_action));
-                if (method_exists($action, 'execute'.$action_sub_sf)) {
-                    $execute        = 'execute'.$action_sub_sf;
-                    $setRenderer    = method_exists($view, 'setRenderer'.$action_sub_sf) ? 'setRenderer'.$action_sub_sf : 'setRenderer';
-                    $initialize     = method_exists($view, 'initialize'.$action_sub_sf) ? 'initialize'.$action_sub_sf : 'initialize';
-                    $shutdown       = method_exists($view, 'shutdown'.$action_sub_sf) ? 'shutdown'.$action_sub_sf : 'shutdown';
-                } else {
-                    throw new Envi404Exception('execute'.$action_sub_sf.' is not exists', 10003);
+                $view_sub_sf = ucwords(preg_replace('/^'.$sub_action.'/', '', $this_action));
+                if (!method_exists($action, 'execute'.$view_sub_sf)) {
+                    throw new Envi404Exception('execute'.$view_sub_sf.' is not exists', 10003);
                 }
 
             }  elseif (is_file($view_dir.'views.class.php')) {
+                // views.class.phpから実行する
                 $view_class_path = $view_dir.'views.class.php';
                 $view = $this_module.'Views';
                 if (!class_exists($view, false)) {
                     include $view_class_path;
                 }
                 $view = new $view;
-                if (method_exists($view, 'execute'.$action_sf)) {
-                    $execute        = 'execute'.$action_sf;
-                    $setRenderer    = method_exists($view, 'setRenderer'.$action_sf) ? 'setRenderer'.$action_sf : 'setRenderer';
-                    $initialize     = method_exists($view, 'initialize'.$action_sf) ? 'initialize'.$action_sf : 'initialize';
-                    $shutdown       = method_exists($view, 'shutdown'.$action_sf) ? 'shutdown'.$action_sf : 'shutdown';
-                } else {
+                if (!method_exists($view, 'execute'.$action_sf)) {
                     throw new Envi404Exception('execute'.$action_sf.' is not exists', 10003);
                 }
             } else {
@@ -1016,6 +1022,18 @@ class Envi
             }
         }
 
+        // ビューの実メソッド名を取得
+        if (isset($view_sub_sf)) {
+            $execute        = $execute.$view_sub_sf;
+            $setRenderer    = method_exists($view, $setRenderer.$view_sub_sf) ? $setRenderer.$view_sub_sf : $setRenderer;
+            $initialize     = method_exists($view, $initialize.$view_sub_sf) ? $initialize.$view_sub_sf : $initialize;
+            $shutdown       = method_exists($view, $shutdown.$view_sub_sf) ? $shutdown.$view_sub_sf : $shutdown;
+        } elseif (method_exists($view, $execute.$action_sf)) {
+            $execute        = $execute.$action_sf;
+            $setRenderer    = method_exists($view, $setRenderer.$action_sf) ? $setRenderer.$action_sf : $setRenderer;
+            $initialize     = method_exists($view, $initialize.$action_sf) ? $initialize.$action_sf : $initialize;
+            $shutdown       = method_exists($view, $shutdown.$action_sf) ? $shutdown.$action_sf : $shutdown;
+        }
         try {
             // View
             // レンダラーセット

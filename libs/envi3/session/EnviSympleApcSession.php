@@ -134,7 +134,7 @@ class EnviSympleApcSession extends EnviSessionBase implements EnviSessionBaseInt
     public function cleanAttributes()
     {
         $session_name = $this->_system_conf['SESSION']['cookie_name'];
-        setcookie ($session_name, '___', time() - 3600);
+        setcookie ($session_name, '___', $_SERVER['REQUEST_TIME'] - 3600);
         return @apc_delete(self::$_session_id);
     }
 

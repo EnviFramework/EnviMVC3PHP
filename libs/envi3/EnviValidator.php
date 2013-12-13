@@ -11,7 +11,7 @@
  *
  * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage Validator
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -26,7 +26,7 @@
  * *
  * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage Validator
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -149,7 +149,7 @@ function validator()
  *
  * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage Validator
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -1521,6 +1521,10 @@ class EnviValidator
         if (is_array($ValidationData)) {
             false;
         }
+
+        if ($kana == true) {
+            $ValidationData = mb_convert_kana($ValidationData,'a');
+        }
         $REG_PATTERN = "/^\d{3}-\d{4}$|^\d{3}-\d{2}$|^\d{3}$/";
         return preg_match($REG_PATTERN, $ValidationData) != false;
     }
@@ -1537,7 +1541,7 @@ class EnviValidator
             false;
         }
         if ($this->_typeMailFormatSymple($ValidationData, $kana)) {
-            list($user, $host) = explode('@',$ValidationData);
+            list(, $host) = explode('@', $ValidationData);
             if (gethostbyname($host)) {
                 return true;
             }
@@ -1594,31 +1598,22 @@ class EnviValidator
     protected function _typeDate(&$ValidationData, &$DateList)
     {
         //プログラマレベルのエラー
-        if(is_array($DateList)){
-            isset($DateList['month']) ? true : trigger_error('Nooption DateList[month] type date', E_USER_ERROR);
-            isset($DateList['day']) ? true : trigger_error('Nooption DateList[day] type date', E_USER_ERROR);
-            isset($DateList['year']) ? true : trigger_error('Nooption DateList[year] type date', E_USER_ERROR);
+        if (is_array($DateList)) {
+            if (!isset($DateList['month'], $DateList['day'], $DateList['year'])) {
+                throw new EnviException('Undefined option selected type year');
+            }
         }
 
         if (!is_array($ValidationData)) {
-            if (strlen($ValidationData) == 8) {
+            if (strlen($ValidationData) === 8) {
                 $month = (int)substr($ValidationData, 4, 2);
                 $day   = (int)substr($ValidationData, 6, 2);
                 $year  = (int)substr($ValidationData, 0, 4);
-            } elseif (strtotime ($ValidationData) != -1) {
-                $month = (int)strftime('%m', strtotime($ValidationData));
-                $day   = (int)strftime('%d', strtotime($ValidationData));
-                $year  = (int)strftime('%Y', strtotime($ValidationData));
             } else {
-                return false;
+                $res = strtotime($ValidationData);
+                return $res !== false && $res !== -1;
             }
-        } elseif((is_array($ValidationData)) ?
-            (
-                isset($ValidationData[$DateList['month']]) &&
-                isset($ValidationData[$DateList['day']]) &&
-                isset($ValidationData[$DateList['year']])
-            ) : false
-        ) {
+        } elseif (is_array($ValidationData) && isset($ValidationData[$DateList['month']], $ValidationData[$DateList['day']], $ValidationData[$DateList['year']])) {
             $month = (int)$ValidationData[$DateList['month']];
             $day   = (int)$ValidationData[$DateList['day']];
             $year  = (int)$ValidationData[$DateList['year']];
@@ -1640,14 +1635,14 @@ class EnviValidator
      */
     protected function _typeTime(&$ValidationData, &$TimeFormat)
     {
+        $format = array(2 => 2,4 => 4,6 => 6);
         //プログラマレベルのエラー
-        if(is_array($TimeFormat)){
-            isset($TimeFormat['hour']) ? true : trigger_error('Nooption TimeFormat[hour] type time', E_USER_ERROR);
-            isset($TimeFormat['minute']) ? true : trigger_error('Nooption TimeFormat[minute] type time', E_USER_ERROR);
-            isset($TimeFormat['second']) ? true : trigger_error('Nooption TimeFormat[second] type time', E_USER_ERROR);
-        }else{
-            $format = array(2=>2,4=>4,6=>6);
-            isset($format[$TimeFormat]) ? true : trigger_error('Undefined option selected type time', E_USER_ERROR);
+        if (is_array($TimeFormat)) {
+            if (!isset($TimeFormat['hour'],$TimeFormat['minute'],$TimeFormat['second'])) {
+                throw new EnviException('Undefined option selected type time');
+            }
+        } elseif (!isset($format[$TimeFormat])) {
+            throw new EnviException('Undefined option selected type time');
         }
 
         if (!is_array($ValidationData) && !is_array($TimeFormat)) {
@@ -1658,20 +1653,14 @@ class EnviValidator
             $hour   = (int)substr($ValidationData, 0, 2);
             $minute = ($len == 4 || $len == 6) ? (int)substr($ValidationData, 2, 2) : 0;
             $second = $len == 6 ? (int)substr($ValidationData, 4, 2) : 0;
-        } elseif ((is_array($ValidationData) && is_array($TimeFormat)) ?
-            (
-                isset($ValidationData[$TimeFormat['hour']]) &&
-                isset($ValidationData[$TimeFormat['minute']]) &&
-                isset($ValidationData[$TimeFormat['second']])
-            ) : false
-        ) {
+        } elseif (is_array($ValidationData) && is_array($TimeFormat) && isset($ValidationData[$TimeFormat['hour']], $ValidationData[$TimeFormat['minute']], $ValidationData[$TimeFormat['second']])) {
             $hour     = (int)$ValidationData[$TimeFormat['hour']];
             $minute   = (int)$ValidationData[$TimeFormat['minute']];
             $second   = (int)$ValidationData[$TimeFormat['second']];
         } else {
             return false;
         }
-            return ($hour >= 0 && $minute >= 0 && $second >= 0 && $hour <= 24 && $minute < 60 && $second < 60);
+        return ($hour >= 0 && $minute >= 0 && $second >= 0 && $hour <= 24 && $minute < 60 && $second < 60);
     }
 
     /**
@@ -1727,7 +1716,7 @@ class EnviValidator
     protected function _typeArrayNumber(&$ValidationData, $dummy)
     {
         if ($this->_typeArray($ValidationData, $dummy)) {
-            foreach ($ValidationData as $key => $value) {
+            foreach ($ValidationData as $value) {
                 if (!$this->_typeNumber($value, $dummy)) {
                     return false;
                 }
@@ -1890,7 +1879,7 @@ class EnviValidator
  *
  * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage Validator
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License

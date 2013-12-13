@@ -35,7 +35,7 @@ if (($handle = opendir($dir.'/'))) {
     while ($file = readdir($handle)) {
         if ($file === '..' || $file === '.') {
             continue;
-        } elseif (is_file($dir . '/' . $file) && mb_ereg("\\.envicc", $file)) {
+        } elseif (is_file($dir . '/' . $file) && preg_match("/\\.envicc/", $file)) {
             unlink($dir . '/' . $file);
             echo $dir . '/' . $file."\n";
         }

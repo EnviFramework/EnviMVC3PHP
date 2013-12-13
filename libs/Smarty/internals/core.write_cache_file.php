@@ -33,7 +33,7 @@ function smarty_core_write_cache_file($params, &$smarty)
 {
 
     // put timestamp in cache header
-    $smarty->_cache_info['timestamp'] = time();
+    $smarty->_cache_info['timestamp'] = $_SERVER['REQUEST_TIME'];
     if ($smarty->cache_lifetime > -1){
         // expiration set
         $smarty->_cache_info['expires'] = $smarty->_cache_info['timestamp'] + $smarty->cache_lifetime;
@@ -96,7 +96,7 @@ function smarty_core_write_cache_file($params, &$smarty)
         $_auto_id = $smarty->_get_auto_id($params['cache_id'], $params['compile_id']);
         $_cache_file = $smarty->_get_auto_filename($smarty->cache_dir, $params['tpl_file'], $_auto_id);
         $_params = array('filename' => $_cache_file, 'contents' => $params['results'], 'create_dirs' => true);
-        require_once(SMARTY_CORE_DIR . 'core.write_file.php');
+        function_exists('smarty_core_write_file') OR require(SMARTY_CORE_DIR . 'core.write_file.php');
         smarty_core_write_file($_params, $smarty);
         return true;
     }

@@ -55,11 +55,12 @@ function smarty_core_load_resource_plugin($params, &$smarty)
     $_plugin_file = $smarty->_get_plugin_filepath('resource', $params['type']);
     $_found = ($_plugin_file != false);
 
-    if ($_found) {            /*
+    if ($_found) {
+        /*
          * If the plugin file is found, it -must- provide the properly named
          * plugin functions.
          */
-        include_once($_plugin_file);
+
 
         /*
          * Locate functions that we require the plugin to provide.
@@ -68,6 +69,9 @@ function smarty_core_load_resource_plugin($params, &$smarty)
         $_resource_funcs = array();
         foreach ($_resource_ops as $_op) {
             $_plugin_func = 'smarty_resource_' . $params['type'] . '_' . $_op;
+            if (!function_exists($_plugin_func)) {
+                include($_plugin_file);
+            }
             if (!function_exists($_plugin_func)) {
                 $smarty->_trigger_fatal_error("[plugin] function $_plugin_func() not found in $_plugin_file", null, null, __FILE__, __LINE__);
                 return;

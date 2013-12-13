@@ -30,7 +30,7 @@ function smarty_modifier_escape($string, $esc_type = 'html', $char_set = NULL)
     if (!is_string($string)) {
         return $string;
     }
-    if (empty($char_set)) {
+    if ($char_set === NULL) {
         $char_set = mb_internal_encoding();
     }
     switch ($esc_type) {

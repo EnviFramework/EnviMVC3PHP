@@ -69,7 +69,7 @@ class EnviApcSession extends EnviSessionBase implements EnviSessionBaseInterface
     public function destroy($id)
     {
         $session_key = 'sess_'.$this->_system_conf['SESSION']['cookie_name'].$id;
-        setcookie (session_name(), $id, time() - 3600);
+        setcookie (session_name(), $id, $_SERVER['REQUEST_TIME'] - 3600);
         return @apc_delete($session_key);
     }
 

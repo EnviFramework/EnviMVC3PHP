@@ -116,6 +116,11 @@ class ParsePHP
      */
     final public function parseFile($contents)
     {
+        $cmd = 'php -l "'.$contents.'"';
+        $tmp = `$cmd`;
+        if (strpos($tmp, 'No syntax errors detected in ') !== 0) {
+            echo $tmp;
+        }
         $this->parse(file_get_contents($contents));
         if (count($this->echo_cache)) {
             array_unshift($this->echo_cache, $contents);
@@ -180,8 +185,9 @@ class ParsePHP
         foreach ($match[1] as &$v) {
             $v = str_replace(array('<br />', '&nbsp;'), '', $v);
         }
-        unset($v);
-        return $match[1];
+        preg_match_all('/(include_once|include|require|require_once)(&nbsp;|\(|<)/', $contents, $match2);
+
+        return array_merge(($match[1]), ($match2[1]));
     }
     /* ----------------------------------------- */
 
@@ -281,7 +287,7 @@ class ParsePHP_Executer
         if (is_dir($path)) {
             if ($dh = opendir($path)) {
                 while (($file = readdir($dh)) !== false) {
-                    if (is_file($path.DIRECTORY_SEPARATOR.$file) && strpos($path.DIRECTORY_SEPARATOR.$file, '.php')) {
+                    if (is_file($path.DIRECTORY_SEPARATOR.$file) && preg_match('/\.php$/', $path.DIRECTORY_SEPARATOR.$file)) {
                         $ParsePHP2 = clone $ParsePHP;
                         $ParsePHP2->parseFile(realpath($path.DIRECTORY_SEPARATOR.$file));
                         unset($ParsePHP2);

@@ -143,7 +143,7 @@ class EnviWebType
         } elseif (strstr($user_agent, 'Android')) {
             $web = self::ANDROID;
             // $web = self::PC;
-        } elseif (ereg('\.(ido|ezweb)\.ne\.jp$', $remote_host)) {
+        } elseif (preg_match('/\.(ido|ezweb)\.ne\.jp$/', $remote_host)) {
             if (isset($_SERVER['HTTP_X_UP_SUBNO'])) {
                 // EZweb WAP2.0 端末用の処理
                 if (isset($_SERVER['HTTP_X_UP_DEVCAP_MULTIMEDIA'])) {

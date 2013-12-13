@@ -202,10 +202,10 @@ abstract class EnviOrMapBase
     public function __call ($name , $arguments)
     {
         if (strPos($name, 'get') === 0) {
-            $name = strtolower(substr(mb_ereg_replace('([A-Z])', '_\1', $name), 4));
+            $name = strtolower(substr(preg_replace('/([A-Z])/', '_\1', $name), 4));
             return isset($this->to_save[$name]) ? $this->to_save[$name] : NULL;
         } elseif (strPos($name, 'set') === 0) {
-            $name = strtolower(substr(mb_ereg_replace('([A-Z])', '_\1', $name), 4));
+            $name = strtolower(substr(preg_replace('/([A-Z])/', '_\1', $name), 4));
             $this->to_save[$name] = $arguments[0];
             $this->_is_modify = true;
             return;

@@ -157,6 +157,28 @@ VulnerabilityFunction:
     Name: file_exists
     Severity: Low
     Description: ファイルの存在確認をするだけなら、is_file()を使用して下さい。
-    
-    
+  -
+    Name: include_once
+    Severity: Low
+    Description: class_exists() OR include '';のほうが高速です
+  -
+    Name: require_once
+    Severity: Low
+    Description: class_exists() OR require '';のほうが高速です
+  -
+    Name: phpversion
+    Severity: Low
+    Description: PHP_VERSION定数ほうが高速です
+  -
+    Name: php_uname
+    Severity: Low
+    Description: PHP_OS定数ほうが高速です
+  -
+    Name: php_sapi_name
+    Severity: Low
+    Description: PHP_SAPI定数ほうが高速です
+  -
+    Name: time
+    Severity: Low
+    Description: $_SERVER['REQUEST_TIME']変数ほうが高速です
     

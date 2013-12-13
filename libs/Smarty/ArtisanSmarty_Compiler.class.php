@@ -415,14 +415,14 @@ class Smarty_Compiler extends Smarty
                 }
             }
             $_plugins_params .= '))';
-            $plugins_code = "<?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');\nsmarty_core_load_plugins($_plugins_params, \$this); ?>\n";
+            $plugins_code = "<?php function_exists('smarty_core_load_plugins') OR require(SMARTY_CORE_DIR . 'core.load_plugins.php');\nsmarty_core_load_plugins($_plugins_params, \$this); ?>\n";
             $template_header .= $plugins_code;
             $this->_plugin_info = array();
             $this->_plugins_code = $plugins_code;
         }
 
         if ($this->_init_smarty_vars) {
-            $template_header .= "<?php require_once(SMARTY_CORE_DIR . 'core.assign_smarty_interface.php');\nsmarty_core_assign_smarty_interface(null, \$this); ?>\n";
+            $template_header .= "<?php function_exists('smarty_core_assign_smarty_interface') OR require(SMARTY_CORE_DIR . 'core.assign_smarty_interface.php');\nsmarty_core_assign_smarty_interface(null, \$this); ?>\n";
             $this->_init_smarty_vars = false;
         }
 
@@ -631,9 +631,9 @@ class Smarty_Compiler extends Smarty
         else if ($plugin_file = $this->_get_plugin_filepath('compiler', $tag_command)) {
             $found = true;
 
-            include_once $plugin_file;
-
             $plugin_func = 'smarty_compiler_' . $tag_command;
+            function_exists($plugin_func) OR include $plugin_file;
+
             if (!is_callable($plugin_func)) {
                 $message = "plugin function $plugin_func() not found in $plugin_file\n";
                 $have_function = false;
@@ -706,9 +706,8 @@ class Smarty_Compiler extends Smarty
         else if ($plugin_file = $this->_get_plugin_filepath('block', $tag_command)) {
             $found = true;
 
-            include_once $plugin_file;
-
             $plugin_func = 'smarty_block_' . $tag_command;
+            function_exists($plugin_func) OR include $plugin_file;
             if (!function_exists($plugin_func)) {
                 $message = "plugin function $plugin_func() not found in $plugin_file\n";
                 $have_function = false;
@@ -791,9 +790,9 @@ class Smarty_Compiler extends Smarty
         else if ($plugin_file = $this->_get_plugin_filepath('function', $tag_command)) {
             $found = true;
 
-            include_once $plugin_file;
 
             $plugin_func = 'smarty_function_' . $tag_command;
+            function_exists($plugin_func) OR include $plugin_file;
             if (!function_exists($plugin_func)) {
                 $message = "plugin function $plugin_func() not found in $plugin_file\n";
                 $have_function = false;
@@ -957,7 +956,7 @@ class Smarty_Compiler extends Smarty
 
         $_params = "array('args' => array(".implode(', ', (array)$arg_list)."))";
 
-        return "<?php require_once(SMARTY_CORE_DIR . 'core.run_insert_handler.php');\necho smarty_core_run_insert_handler($_params, \$this); ?>" . $this->_additional_newline;
+        return "<?php function_exists('smarty_core_run_insert_handler') OR require(SMARTY_CORE_DIR . 'core.run_insert_handler.php');\necho smarty_core_run_insert_handler($_params, \$this); ?>" . $this->_additional_newline;
     }
 
     /**
@@ -1041,7 +1040,7 @@ class Smarty_Compiler extends Smarty
 
         $_params = "array('smarty_file' => " . $attrs['file'] . ", 'smarty_assign' => '$assign_var', 'smarty_once' => $once_var, 'smarty_include_vars' => array(".implode(',', $arg_list)."))";
 
-        return "<?php require_once(SMARTY_CORE_DIR . 'core.smarty_include_php.php');\nsmarty_core_smarty_include_php($_params, \$this); ?>" . $this->_additional_newline;
+        return "<?php function_exists('smarty_core_smarty_include_php') OR require(SMARTY_CORE_DIR . 'core.smarty_include_php.php');\nsmarty_core_smarty_include_php($_params, \$this); ?>" . $this->_additional_newline;
     }
 
 
@@ -2183,7 +2182,7 @@ class Smarty_Compiler extends Smarty
                 if ($prefilter === false) {
                     unset($this->_plugins['prefilter'][$filter_name]);
                     $_params = array('plugins' => array(array('prefilter', $filter_name, null, null, false)));
-                    require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
+                    function_exists('smarty_core_load_plugins') OR require(SMARTY_CORE_DIR . 'core.load_plugins.php');
                     smarty_core_load_plugins($_params, $this);
                 }
             }
@@ -2193,7 +2192,7 @@ class Smarty_Compiler extends Smarty
                 if ($postfilter === false) {
                     unset($this->_plugins['postfilter'][$filter_name]);
                     $_params = array('plugins' => array(array('postfilter', $filter_name, null, null, false)));
-                    require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
+                    function_exists('smarty_core_load_plugins') OR require(SMARTY_CORE_DIR . 'core.load_plugins.php');
                     smarty_core_load_plugins($_params, $this);
                 }
             }

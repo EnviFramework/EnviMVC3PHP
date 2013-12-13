@@ -46,8 +46,8 @@
  */
 function smarty_function_html_select_date($params, &$smarty)
 {
-    require_once $smarty->_get_plugin_filepath('shared','make_timestamp');
-    require_once $smarty->_get_plugin_filepath('function','html_options');
+    $smarty->_include_plugin_filepath('shared','make_timestamp');
+    $smarty->_include_plugin_filepath('function','html_options');
     /* Default values. */
     $prefix          = "Date_";
     $start_year      = strftime("%Y");
@@ -86,7 +86,7 @@ function smarty_function_html_select_date($params, &$smarty)
     $field_design    = '%s%s%s';
     /* String printed between the different fields. */
     $field_separator = "\n";
-    $time = time();
+    $time = $_SERVER['REQUEST_TIME'];
     $all_empty       = null;
     $day_empty       = null;
     $month_empty     = null;

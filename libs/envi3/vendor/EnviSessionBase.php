@@ -34,9 +34,9 @@
 abstract class EnviSessionBase
 {
 
-    private static  $_is_login = '_is_login';
-    private static  $_is_gzip = true;
-    private static  $_session_id = null;
+    protected static  $_is_login = '_is_login';
+    protected static  $_is_gzip = true;
+    protected static  $_session_id = null;
 
     /**
      * +-- 新しいセッションIDを発行する
