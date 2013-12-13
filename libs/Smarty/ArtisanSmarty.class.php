@@ -1440,7 +1440,7 @@ class Smarty
             $func_name = 'smarty_'.$type.'_'.$name;
         break;
         }
-        if (!function_exists($func_name)) {
+        if (function_exists($func_name)) {
             return;
         }
 
