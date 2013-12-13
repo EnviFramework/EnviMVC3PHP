@@ -68,28 +68,33 @@ class EnviMemcache
         $con = self::getConnection($name);
         $key = self::$prefix[$name].$key;
         self::$cache[$name][$key] = $var;
+        if ($flag) {
+            $flag = MEMCACHE_COMPRESSED;
+        }
         return $con->set($key, $var, $flag, $expire);
     }
 
-    public static function get($key,  $name= 'default', $flag = false)
+    public static function get($key,  $name= 'default')
     {
         $con = self::getConnection($name);
         $key = self::$prefix[$name].$key;
 
         if (!isset(self::$cache[$name][$key])) {
-            self::$cache[$name][$key] = $con->get($key);
+            $flags = NULL;
+            self::$cache[$name][$key] = $con->get($key, $flags);
         }
         return self::$cache[$name][$key];
     }
 
-    public static function has($key, $name= 'default', $flag = false)
+    public static function has($key, $name= 'default')
     {
         $con = self::getConnection($name);
         $key = self::$prefix[$name].$key;
         if (isset(self::$cache[$name][$key]) && self::$cache[$name][$key] !== FALSE) {
             return true;
         }
-        self::$cache[$name][$key] = $con->get($key, $flag);
+        $flags = NULL;
+        self::$cache[$name][$key] = $con->get($key, $flags);
         return self::$cache[$name][$key] !== FALSE;
     }
 

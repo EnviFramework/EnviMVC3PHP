@@ -34,9 +34,9 @@
 class EnviSympleApcSession extends EnviSessionBase implements EnviSessionBaseInterface
 {
 
-    private static  $_envi_system_value = "__ENVI_USER__";
-    private static  $_attribute = array();
-    private static  $_is_login = '_is_login';
+    protected static  $_envi_system_value = "__ENVI_USER__";
+    protected static  $_attribute = array();
+    protected static  $_is_login = '_is_login';
 
     private static  $_session_id = null;
 

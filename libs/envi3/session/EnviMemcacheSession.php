@@ -36,9 +36,9 @@
 class EnviMemcacheSession extends EnviSessionBase implements EnviSessionBaseInterface
 {
 
-    private static  $_is_login = '_is_login';
-    private static  $_is_gzip = true;
-    private static  $_session_id = null;
+    protected static  $_is_login = '_is_login';
+    protected static  $_is_gzip = true;
+    protected static  $_session_id = null;
 
 
     public function sessionStart()
