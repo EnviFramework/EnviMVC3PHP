@@ -40,7 +40,7 @@ function smarty_function_counter($params, &$smarty)
 	$name = isset($params['name']) ? $params['name'] : 'default';
 	$etc_dir = $smarty->_get_etc_dir();
 
-	if(file_exists($etc_dir.$name."_counter.php") && !isset($params["reset"])){
+	if(is_file($etc_dir.$name."_counter.php") && !isset($params["reset"])){
 
 		$counter=unserialize(file_get_contents($etc_dir.$name."_counter.php"));
 		$counter_ck=(mktime(0,0,0,date("m"),date("d"),date("Y"))-$counter["time_stamp"]);

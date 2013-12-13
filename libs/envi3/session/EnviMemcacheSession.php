@@ -36,9 +36,9 @@
 class EnviMemcacheSession extends EnviSessionBase implements EnviSessionBaseInterface
 {
 
-    private static  $_is_login = '_is_login';
-    private static  $_is_gzip = true;
-    private static  $_session_id = null;
+    protected static  $_is_login = '_is_login';
+    protected static  $_is_gzip = true;
+    protected static  $_session_id = null;
 
 
     public function sessionStart()
@@ -70,7 +70,7 @@ class EnviMemcacheSession extends EnviSessionBase implements EnviSessionBaseInte
         //セッション開始
         self::$_session_id = $key;
         EnviMemcache::set($key, serialize(array()), $this->_system_conf['SESSION']['cookie_lifetime'], 'session', self::$_is_gzip);
-        setcookie (session_name(), $key, time()+$this->_system_conf['SESSION']['cookie_lifetime']);
+        setcookie (session_name(), $key, $_SERVER['REQUEST_TIME']+$this->_system_conf['SESSION']['cookie_lifetime']);
     }
 
     public function open($save_path, $session_name)

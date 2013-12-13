@@ -58,12 +58,14 @@ class EnviController
     /* ----------------------------------------- */
 
     /**
-     * +-- アクションチェインの中かどうか
+     * +-- アクションチェインの中かどうかを返す
+     *
+     * 実行中のアクションコントローラーが、アクションチェインで実行されているかどうかを返します。
      *
      * @final
      * @access public
      * @static
-     * @return boolean
+     * @return boolean アクションチェインで実行されている場合は、true。そうでない場合は、false;
      */
     final public static function isActionChain()
     {
@@ -131,9 +133,9 @@ class EnviController
      * @final
      * @access public
      * @static
-     * @param string $action
-     * @param string $module OPTIONAL:NULL
-     * @param string $url OPTIONAL:NULL
+     * @param string $action アクション名
+     * @param string $module モジュール名。省略された場合は、実行中のモジュールになります。OPTIONAL:NULL
+     * @param string $url フロントコントローラーへのURL。省略された場合は、実行中のフロントコントローラーになります。OPTIONAL:NULL
      * @return string
      */
     final public static function generateUrl($action, $module = NULL, $url = NULL)
@@ -192,6 +194,8 @@ class EnviController
     /**
      * +-- アクションチェインしたアクションを実行リストから削除する
      *
+     * EnviController::setActionChain()したアクションを実行リストから削除します。
+     *
      * @final
      * @access public
      * @static
@@ -207,6 +211,10 @@ class EnviController
 
     /**
      * +-- アクションを連続して実行して、出力を受け取る
+     *
+     * EnviController::setActionChain()したアクションを連続して実行して、その出力の配列を受け取ります。
+     *
+     * このメソッドは、出力バッファリングを使用しています。
      *
      * @final
      * @access public
@@ -250,7 +258,7 @@ class EnviController
      * @final
      * @access public
      * @static
-     * @return string
+     * @return string 実行中のアクションチェイン名
      */
     final public static function getActionChainName()
     {
@@ -264,6 +272,7 @@ class EnviController
      * @final
      * @access      public
      * @static
+     * @param string $error_message エラーメッセージ OPTIONAL:''
      * @return      void
      */
     final public static function killBy404Error($error_message = '')
@@ -278,6 +287,7 @@ class EnviController
      * @final
      * @access      public
      * @static
+     * @param string $error_message エラーメッセージ OPTIONAL:''
      * @return      void
      */
     final public static function killBy403Error($error_message = '')

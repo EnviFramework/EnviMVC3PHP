@@ -47,7 +47,7 @@ function smarty_core_write_compiled_include($params, &$smarty)
     $_include_compiled .= $params['plugins_code'];
     $_include_compiled .= "<?php";
 
-    $this_varname = ((double)phpversion() >= 5.0) ? '_smarty' : 'this';
+    $this_varname = ((double)PHP_VERSION >= 5.0) ? '_smarty' : 'this';
     for ($_i = 0, $_for_max = count($_match_source); $_i < $_for_max; $_i++) {
         $_match =& $_match_source[$_i];
         $source = $_match[4];
@@ -93,7 +93,7 @@ $source
     $_params = array('filename' => $_compile_path,
                      'contents' => $_include_compiled, 'create_dirs' => true);
 
-    require_once(SMARTY_CORE_DIR . 'core.write_file.php');
+    function_exists('smarty_core_write_file') OR require(SMARTY_CORE_DIR . 'core.write_file.php');
     smarty_core_write_file($_params, $smarty);
     return true;
 }

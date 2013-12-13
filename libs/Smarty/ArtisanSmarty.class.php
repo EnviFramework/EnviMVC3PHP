@@ -947,7 +947,7 @@ class Smarty
         switch ($type) {
             case 'output':
                 $_params = array('plugins' => array(array($type . 'filter', $name, null, null, false)));
-                require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
+                function_exists('smarty_core_load_plugins') OR require(SMARTY_CORE_DIR . 'core.load_plugins.php');
                 smarty_core_load_plugins($_params, $this);
                 break;
 
@@ -980,14 +980,15 @@ class Smarty
         $_auto_id = $this->_get_auto_id($cache_id, $compile_id);
 
         if (!empty($this->cache_handler_func)) {
+            $dummy = NULL;
             return call_user_func_array($this->cache_handler_func,
-                                  array('clear', &$this, &$dummy, $tpl_file, $cache_id, $compile_id, $exp_time));
+                                  array('clear', $this, $dummy, $tpl_file, $cache_id, $compile_id, $exp_time));
         } else {
             $_params = array('auto_base' => $this->cache_dir,
                             'auto_source' => $tpl_file,
                             'auto_id' => $_auto_id,
                             'exp_time' => $exp_time);
-            require_once(SMARTY_CORE_DIR . 'core.rm_auto.php');
+            function_exists('smarty_core_rm_auto') OR require(SMARTY_CORE_DIR . 'core.rm_auto.php');
             return smarty_core_rm_auto($_params, $this);
         }
 
@@ -1027,7 +1028,7 @@ class Smarty
             'cache_id' => $cache_id,
             'compile_id' => $compile_id
         );
-        require_once(SMARTY_CORE_DIR . 'core.read_cache_file.php');
+        function_exists('smarty_core_read_cache_file') OR require(SMARTY_CORE_DIR . 'core.read_cache_file.php');
         return smarty_core_read_cache_file($_params, $this);
     }
 
@@ -1061,7 +1062,7 @@ class Smarty
                         'auto_id' => $compile_id,
                         'exp_time' => $exp_time,
                         'extensions' => array('.inc', '.php'));
-        require_once(SMARTY_CORE_DIR . 'core.rm_auto.php');
+        function_exists('smarty_core_rm_auto') OR require(SMARTY_CORE_DIR . 'core.rm_auto.php');
         return smarty_core_rm_auto($_params, $this);
     }
 
@@ -1179,7 +1180,7 @@ class Smarty
         if ($this->debugging) {
             // capture time for debugging info
             $_params = array();
-            require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
+            function_exists('smarty_core_get_microtime') OR require(SMARTY_CORE_DIR . 'core.get_microtime.php');
             $_debug_start_time = smarty_core_get_microtime($_params, $this);
             $this->_smarty_debug_info[] = array('type'      => 'template',
                                                 'filename'  => $resource_name,
@@ -1204,20 +1205,20 @@ class Smarty
                 'compile_id' => $compile_id,
                 'results' => null
             );
-            require_once(SMARTY_CORE_DIR . 'core.read_cache_file.php');
+            function_exists('smarty_core_read_cache_file') OR require(SMARTY_CORE_DIR . 'core.read_cache_file.php');
             if (smarty_core_read_cache_file($_params, $this)) {
                 $_smarty_results = $_params['results'];
                 if (!empty($this->_cache_info['insert_tags'])) {
                     $_params = array('plugins' => $this->_cache_info['insert_tags']);
-                    require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
+                    function_exists('smarty_core_load_plugins') OR require(SMARTY_CORE_DIR . 'core.load_plugins.php');
                     smarty_core_load_plugins($_params, $this);
                     $_params = array('results' => $_smarty_results);
-                    require_once(SMARTY_CORE_DIR . 'core.process_cached_inserts.php');
+                    function_exists('smarty_core_process_cached_inserts') OR require(SMARTY_CORE_DIR . 'core.process_cached_inserts.php');
                     $_smarty_results = smarty_core_process_cached_inserts($_params, $this);
                 }
                 if (!empty($this->_cache_info['cache_serials'])) {
                     $_params = array('results' => $_smarty_results);
-                    require_once(SMARTY_CORE_DIR . 'core.process_compiled_include.php');
+                    function_exists('smarty_core_process_compiled_include') OR require(SMARTY_CORE_DIR . 'core.process_compiled_include.php');
                     $_smarty_results = smarty_core_process_compiled_include($_params, $this);
                 }
 
@@ -1227,9 +1228,9 @@ class Smarty
                     {
                         // capture time for debugging info
                         $_params = array();
-                        require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
+                        function_exists('smarty_core_get_microtime') OR require(SMARTY_CORE_DIR . 'core.get_microtime.php');
                         $this->_smarty_debug_info[$_included_tpls_idx]['exec_time'] = smarty_core_get_microtime($_params, $this) - $_debug_start_time;
-                        require_once(SMARTY_CORE_DIR . 'core.display_debug_console.php');
+                        function_exists('smarty_core_display_debug_console') OR require(SMARTY_CORE_DIR . 'core.display_debug_console.php');
                         $_smarty_results .= smarty_core_display_debug_console($_params, $this);
                     }
                     if ($this->cache_modified_check) {
@@ -1239,7 +1240,7 @@ class Smarty
                         if (@count($this->_cache_info['insert_tags']) == 0
                             && !$this->_cache_serials
                             && $_gmt_mtime == $_last_modified_date) {
-                            if (php_sapi_name()=='cgi')
+                            if (PHP_SAPI === 'cgi')
                                 header('Status: 304 Not Modified');
                             else
                                 header('HTTP/1.1 304 Not Modified');
@@ -1264,7 +1265,7 @@ class Smarty
             } else {
                 $this->_cache_info['template'][$resource_name] = true;
                 if ($this->cache_modified_check && $display) {
-                    header('Last-Modified: '.gmdate('D, d M Y H:i:s', time()).' GMT');
+                    header('Last-Modified: '.gmdate('D, d M Y H:i:s', $_server['request_time']).' GMT');
                 }
             }
         }
@@ -1310,9 +1311,9 @@ class Smarty
                         'cache_id' => $cache_id,
                         'compile_id' => $compile_id,
                         'results' => $_smarty_results);
-            require_once(SMARTY_CORE_DIR . 'core.write_cache_file.php');
+            function_exists('smarty_core_write_cache_file') OR require(SMARTY_CORE_DIR . 'core.write_cache_file.php');
             smarty_core_write_cache_file($_params, $this);
-            require_once(SMARTY_CORE_DIR . 'core.process_cached_inserts.php');
+            function_exists('smarty_core_process_cached_inserts') OR require(SMARTY_CORE_DIR . 'core.process_cached_inserts.php');
             $_smarty_results = smarty_core_process_cached_inserts($_params, $this);
 
             if ($this->_cache_serials) {
@@ -1331,9 +1332,9 @@ class Smarty
             if ($this->debugging) {
                 // capture time for debugging info
                 $_params = array();
-                require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
+                function_exists('smarty_core_get_microtime') OR require(SMARTY_CORE_DIR . 'core.get_microtime.php');
                 $this->_smarty_debug_info[$_included_tpls_idx]['exec_time'] = (smarty_core_get_microtime($_params, $this) - $_debug_start_time);
-                require_once(SMARTY_CORE_DIR . 'core.display_debug_console.php');
+                function_exists('smarty_core_display_debug_console') OR require(SMARTY_CORE_DIR . 'core.display_debug_console.php');
                 echo smarty_core_display_debug_console($_params, $this);
             }
             error_reporting($_smarty_old_error_level);
@@ -1353,7 +1354,7 @@ class Smarty
      */
     function config_load($file, $section = null, $scope = 'global')
     {
-        require_once($this->_get_plugin_filepath('function', 'config_load'));
+        $this->_include_plugin_filepath('function', 'config_load');
         smarty_function_config_load(array('file' => $file, 'section' => $section, 'scope' => $scope), $this);
     }
 
@@ -1419,8 +1420,33 @@ class Smarty
     function _get_plugin_filepath($type, $name)
     {
         $_params = array('type' => $type, 'name' => $name);
-        require_once(SMARTY_CORE_DIR . 'core.assemble_plugin_filepath.php');
+        function_exists('smarty_core_assemble_plugin_filepath') OR require(SMARTY_CORE_DIR . 'core.assemble_plugin_filepath.php');
         return smarty_core_assemble_plugin_filepath($_params, $this);
+    }
+
+    function _include_plugin_filepath($type, $name)
+    {
+        switch ($type) {
+        case 'shared':
+            $func_name = 'smarty_'.$name;
+        break;
+        case 'function':
+        case 'modifier':
+        case 'compiler':
+        case 'outputfilter':
+            $func_name = 'smarty_'.$type.'_'.$name;
+        break;
+        default:
+            $func_name = 'smarty_'.$type.'_'.$name;
+        break;
+        }
+        if (!function_exists($func_name)) {
+            return;
+        }
+
+        $_params = array('type' => $type, 'name' => $name);
+        function_exists('smarty_core_assemble_plugin_filepath') OR require(SMARTY_CORE_DIR . 'core.assemble_plugin_filepath.php');
+        include smarty_core_assemble_plugin_filepath($_params, $this);
     }
 
    /**
@@ -1432,7 +1458,7 @@ class Smarty
      */
     function _is_compiled($resource_name, $compile_path)
     {
-        if (!$this->force_compile && file_exists($compile_path)) {
+        if (!$this->force_compile && is_file($compile_path)) {
             if (!$this->compile_check) {
                 // no need to check compiled file
                 return true;
@@ -1477,12 +1503,12 @@ class Smarty
         if ($this->_compile_source($resource_name, $_source_content, $_compiled_content, $_cache_include)) {
             // if a _cache_serial was set, we also have to write an include-file:
             if ($this->_cache_include_info) {
-                require_once(SMARTY_CORE_DIR . 'core.write_compiled_include.php');
+                function_exists('smarty_core_write_compiled_include') OR require(SMARTY_CORE_DIR . 'core.write_compiled_include.php');
                 smarty_core_write_compiled_include(array_merge($this->_cache_include_info, array('compiled_content'=>$_compiled_content, 'resource_name'=>$resource_name)),  $this);
             }
 
             $_params = array('compile_path'=>$compile_path, 'compiled_content' => $_compiled_content);
-            require_once(SMARTY_CORE_DIR . 'core.write_compiled_resource.php');
+            function_exists('smarty_core_write_compiled_resource') OR require(SMARTY_CORE_DIR . 'core.write_compiled_resource.php');
             smarty_core_write_compiled_resource($_params, $this);
 
             return true;
@@ -1502,11 +1528,13 @@ class Smarty
      */
     function _compile_source($resource_name, &$source_content, &$compiled_content, $cache_include_path=null)
     {
-        if (file_exists(SMARTY_DIR . $this->compiler_file)) {
-            require_once(SMARTY_DIR . $this->compiler_file);
-        } else {
-            // use include_path
-            require_once($this->compiler_file);
+        if (!class_exists($this->compiler_class, false)) {
+            if (is_file(SMARTY_DIR . $this->compiler_file)) {
+                require(SMARTY_DIR . $this->compiler_file);
+            } else {
+                // use include_path
+                require($this->compiler_file);
+            }
         }
 
 
@@ -1644,7 +1672,7 @@ class Smarty
                 $this->trigger_error('unable to read resource: "' . $params['resource_name'] . '"');
             }
         } else if ($_return && $this->security) {
-            require_once(SMARTY_CORE_DIR . 'core.is_secure.php');
+            function_exists('smarty_core_is_secure') OR require(SMARTY_CORE_DIR . 'core.is_secure.php');
             if (!smarty_core_is_secure($_params, $this)) {
                 if (!$params['quiet'])
                     $this->trigger_error('(secure mode) accessing "' . $params['resource_name'] . '" is not allowed');
@@ -1694,13 +1722,13 @@ class Smarty
                 // use the first directory where the file is found
                 foreach ((array)$params['resource_base_path'] as $_curr_path) {
                     $_fullpath = $_curr_path . DIRECTORY_SEPARATOR . $params['resource_name'];
-                    if (file_exists($_fullpath) && is_file($_fullpath)) {
+                    if (is_file($_fullpath) && is_file($_fullpath)) {
                         $params['resource_name'] = $_fullpath;
                         return true;
                     }
                     // didn't find the file, try include_path
                     $_params = array('file_path' => $_fullpath);
-                    require_once(SMARTY_CORE_DIR . 'core.get_include_path.php');
+                    function_exists('smarty_core_get_include_path') OR require(SMARTY_CORE_DIR . 'core.get_include_path.php');
                     if(smarty_core_get_include_path($_params, $this)) {
                         $params['resource_name'] = $_params['new_file_path'];
                         return true;
@@ -1709,11 +1737,11 @@ class Smarty
                 return false;
             } else {
                 /* absolute path */
-                return file_exists($params['resource_name']);
+                return is_file($params['resource_name']);
             }
         } elseif (empty($this->_plugins['resource'][$params['resource_type']])) {
             $_params = array('type' => $params['resource_type']);
-            require_once(SMARTY_CORE_DIR . 'core.load_resource_plugin.php');
+            function_exists('smarty_core_load_resource_plugin') OR require(SMARTY_CORE_DIR . 'core.load_resource_plugin.php');
             smarty_core_load_resource_plugin($_params, $this);
         }
 
@@ -1731,8 +1759,8 @@ class Smarty
     function _run_mod_handler()
     {
         $_args = func_get_args();
-        list($_modifier_name, $_map_array) = array_splice($_args, 0, 2);
-        list($_func_name, $_tpl_file, $_tpl_line) =
+        list($_modifier_name) = array_splice($_args, 0, 2);
+        list($_func_name) =
             $this->_plugins['modifier'][$_modifier_name];
 
         $_var = $_args[0];
@@ -1767,7 +1795,7 @@ class Smarty
      * @return string
      */
      function _read_file($filename){
-          if (file_exists($filename) && ($handle = @fopen($filename, "r"))) {
+          if (is_file($filename) && ($handle = @fopen($filename, "r"))) {
                $contents = preg_replace("~%%%(.*?)%%%~","",mb_convert_encoding(fread($handle, filesize($filename)), mb_internal_encoding(), "AUTO"));
                fclose($handle);
                return $contents;
@@ -1821,7 +1849,7 @@ class Smarty
     function _unlink($resource, $exp_time = null)
     {
         if(isset($exp_time)) {
-            if(time() - @filemtime($resource) >= $exp_time) {
+            if($_SERVER['REQUEST_TIME'] - @filemtime($resource) >= $exp_time) {
                 return @unlink($resource);
             }
         } else {
@@ -1898,7 +1926,7 @@ class Smarty
     {
         if ($this->debugging) {
             $_params = array();
-            require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
+            function_exists('smarty_core_get_microtime') OR require(SMARTY_CORE_DIR . 'core.get_microtime.php');
             $debug_start_time = smarty_core_get_microtime($_params, $this);
             $this->_smarty_debug_info[] = array('type'      => 'template',
                                                   'filename'  => $params['smarty_include_tpl_file'],
@@ -1929,7 +1957,7 @@ class Smarty
         if ($this->debugging) {
             // capture time for debugging info
             $_params = array();
-            require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
+            function_exists('smarty_core_get_microtime') OR require(SMARTY_CORE_DIR . 'core.get_microtime.php');
             $this->_smarty_debug_info[$included_tpls_idx]['exec_time'] = smarty_core_get_microtime($_params, $this) - $debug_start_time;
         }
 

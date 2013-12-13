@@ -126,5 +126,175 @@ if (!is_file($task_file)) {
     die;
 }
 
+/**
+ * +-- コンソールロガーを取得
+ *
+ * @static
+ * @return EnviLogWriter
+ */
+function console()
+{
+    return EnviLogWriterConsoleLog::singleton();
+}
+/* ----------------------------------------- */
+
+/**
+ * @package
+ * @subpackage
+ * @sinse 0.1
+ * @author     akito<akito-artisan@five-foxes.com>
+ */
+class EnviLogWriterConsoleLog
+{
+    private static $instance     = NULL;
+    /**
+     * +-- デバッグトレースも記録するかどうかを設定して、元の値を返す
+     *
+     * @access      public
+     * @param       boolean $setter
+     * @return      boolean
+     */
+    public function setUseDebugBackTrace($setter)
+    {
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- Consoleにのみログを排出します
+     *
+     * @access      public
+     * @param       var_text $log_text
+     * @return      void
+     */
+    public function info($log_text)
+    {
+    }
+    /* ----------------------------------------- */
+
+
+
+    /**
+     * +-- Consoleにのみログを排出します
+     *
+     * @access      public
+     * @param       var_text $log_text
+     * @return      void
+     */
+    public function log($log_text)
+    {
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- Consoleにのみログを排出します
+     *
+     * @access      public
+     * @param       var_text $log_text
+     * @return      void
+     */
+    public function error($log_text)
+    {
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- Consoleにのみログを排出します
+     *
+     * @access      public
+     * @param       var_text $log_text
+     * @return      void
+     */
+    public function warn($log_text)
+    {
+    }
+    /* ----------------------------------------- */
+
+    protected function writeLog($debug)
+    {
+    }
+
+
+    /**
+     * +-- シングルトン
+     *
+     * @access      public
+     * @static
+     * @return      self
+     */
+    public static function singleton()
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new EnviLogWriterConsoleLog();
+        }
+        return self::$instance;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- コンストラクタ
+     *
+     * @access      private
+     * @return      void
+     */
+    private function __construct()
+    {
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- システムログ(直接コールできません)
+     *
+     * @access      public
+     * @param       var_text $log_text
+     * @param       var_text $log_type
+     * @return      void
+     */
+    public function _systemLog($log_text, $log_type)
+    {
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- ストップウオッチの使用
+     *
+     * @access      public
+     * @return      差分
+     */
+    public function stopwatch()
+    {
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- クエリログ(直接コールできません)
+     *
+     * @access      public
+     * @param       & $dbi
+     * @return      void
+     */
+    public function _queryLog(&$dbi)
+    {
+    }
+    /* ----------------------------------------- */
+
+    public function __destruct()
+    {
+    }
+
+    public function _setConsoleLogDir($setter)
+    {
+    }
+    public function _setConsoleLogGetKey($setter)
+    {
+    }
+
+    private function initialize()
+    {
+    }
+
+}
+
+
+
 require dirname(__FILE__).DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'task.interface.php';
 require $task_file;

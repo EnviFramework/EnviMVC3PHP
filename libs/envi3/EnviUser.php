@@ -54,9 +54,6 @@ class EnviUser
 {
 
     private static $_system_conf;
-    private static  $_envi_system_value = '__ENVI_USER__';
-    private static  $_attribute = array();
-    private static  $_is_login = '_is_login';
     public static $session;
 
 
@@ -72,7 +69,7 @@ class EnviUser
     {
     }
     /* ----------------------------------------- */
-    
+
     /**
      * +-- セッションを開始する
      *
@@ -115,7 +112,7 @@ class EnviUser
     /**
      * +-- ログアウト状態にする
      *
-     * EnviUser::isLogin() でログイン状態にある場合に、ログアウト状態にします。
+     * EnviUser::login() でログインした状態にある場合に、ログアウト状態にします。
      * すでにログイン状態にない場合は、特に何もせず、エラーも返しません。
      *
      *
@@ -133,7 +130,7 @@ class EnviUser
     /**
      * +-- ログイン状態かどうかを確認する
      *
-     * EnviUser::isLogin() でログイン状態にあるかどうかを確認します。
+     * EnviUser::login() でログインした状態にあるかどうかを確認します。
      *
      * @return boolean
      */

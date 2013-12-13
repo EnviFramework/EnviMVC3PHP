@@ -24,7 +24,7 @@ if (!isset($argv[2])) {
     die;
 }
 $project_name = $argv[2];
-if (!mb_ereg('^[a-zA-Z0-9.\-_]+$', $project_name)) {
+if (!preg_match('/^[a-zA-Z0-9.\-_]+$/', $project_name)) {
     eecho('英数と._-以外の文字は使えません。');
     die;
 }

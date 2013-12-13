@@ -184,7 +184,7 @@ class EnviRequest
         }
         // アクション名
         if (count($exp_pathinfo)) {
-            self::$_request_action_name = mb_ereg_replace("\\.".$_system_conf['SYSTEM']['ext'].'$', '', array_shift($exp_pathinfo));
+            self::$_request_action_name = preg_replace("/\\.".$_system_conf['SYSTEM']['ext'].'$/', '', array_shift($exp_pathinfo));
         }
 
         self::$_ext_path_info = $exp_pathinfo;
@@ -245,7 +245,7 @@ class EnviRequest
         }
         $fga = func_get_args();
         $data = self::$_attribute;
-        foreach ($fga as $id => $node) {
+        foreach ($fga as $node) {
             if (is_array($data) && isset($data[$node])) {
                 $data = $data[$node];
                 continue;
@@ -387,11 +387,14 @@ class EnviRequest
     public static function getErrors()
     {
         $i = 0;
+        $res = array();
+        $res['message'] = array();
+        $res['keys'] = array();
         foreach (self::$_error_message as $key => $values) {
-            foreach ($values as $id => $value) {
+            foreach ($values as $value) {
                 $res['message'][$i] = $value;
                 $res['keys'][$key][] = $i;
-                $i++;
+                ++$i;
             }
         }
         $res['count'] = $i;

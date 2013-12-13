@@ -51,9 +51,9 @@ class EnviSecureSession extends EnviSessionBase implements EnviSessionBaseInterf
         'e' => 'e/',
         'f' => 'f/',
     );
-    private static  $_envi_system_value = "__ENVI_USER__";
-    private static  $_attribute = array();
-    private static  $_is_login = '_is_login';
+    protected static  $_envi_system_value = "__ENVI_USER__";
+    protected static  $_attribute = array();
+    protected static  $_is_login = '_is_login';
 
     public $_system_conf;
     public $sess_base_save_path;
@@ -94,7 +94,7 @@ class EnviSecureSession extends EnviSessionBase implements EnviSessionBaseInterf
     {
         $dir = substr(sha1(substr($id, 0, 10)), 0, 1);
         $sess_file = session_save_path().DIRECTORY_SEPARATOR.'.sess_'.$id;
-        setcookie (session_name(), $id, time() - 3600);
+        setcookie (session_name(), $id, $_SERVER['REQUEST_TIME'] - 3600);
         return @unlink($sess_file);
     }
 
@@ -109,7 +109,7 @@ class EnviSecureSession extends EnviSessionBase implements EnviSessionBaseInterf
                 }
 
                 if (is_file($this->sess_base_save_path.$a.DIRECTORY_SEPARATOR.$file)) {
-                    $lifetime = time()-filemtime($this->sess_base_save_path.$a.DIRECTORY_SEPARATOR.$file);
+                    $lifetime = $_SERVER['REQUEST_TIME']-filemtime($this->sess_base_save_path.$a.DIRECTORY_SEPARATOR.$file);
                     if ($lifetime > $maxlifetime) {
                         if (!@unlink($this->sess_base_save_path.$a.DIRECTORY_SEPARATOR.$file)) {
                             return false;

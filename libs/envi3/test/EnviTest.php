@@ -7,7 +7,7 @@
  *
  * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -20,11 +20,16 @@
 /**
  * テスト用dummy
  *
- * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
- * @since File available since Release 1.0.0
+ * @category   MVC
+ * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class dummyBase
 {
@@ -42,11 +47,16 @@ class dummyBase
 /**
  * テスト用dummy
  *
+ * @package    Envi3
  * @category   MVC
- * @package    EnviMVCCore
- * @subpackage EnviMVCCore
- * @since File available since Release 1.0.0
+ * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class Logger extends dummyBase
 {
@@ -56,11 +66,16 @@ class Logger extends dummyBase
 /**
  * テスト用dummy
  *
+ * @package    Envi3
  * @category   MVC
- * @package    EnviMVCCore
- * @subpackage EnviMVCCore
- * @since File available since Release 1.0.0
+ * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class Envi extends dummyBase
 {
@@ -103,7 +118,7 @@ function Envi()
  *
  * @package    Envi3
  * @category   MVC
- * @subpackage EnviMVCCore
+ * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -127,7 +142,7 @@ if (!defined('ENVI_ENV')) {
  *
  * @package    Envi3
  * @category   MVC
- * @subpackage EnviMVCCore
+ * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -254,7 +269,7 @@ function extension()
  *
  * @package    Envi3
  * @category   MVC
- * @subpackage EnviMVCCore
+ * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -945,6 +960,51 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
 
+
+    /**
+     * +-- $string が(Preg)正規表現 $pattern にマッチしない場合にエラー $message を報告します。
+     *
+     * @access public
+     * @param  $pattern
+     * @param  $string
+     * @param  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertPregMatch($pattern, $string, $message = '')
+    {
+        if (!!is_array($pattern) || !!is_array($string)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if (!(preg_match($pattern, $string) === true)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- $string が(Preg)正規表現 $pattern にマッチする場合にエラー $message を報告します。
+     *
+     * @access public
+     * @param  $pattern
+     * @param  $string
+     * @param  $message OPTIONAL:''
+     * @return boolean
+     */
+    public function assertNotPregMatch($format, $string, $message = '')
+    {
+        if (!!is_array($format) || !!is_array($string)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        if ((preg_match($format, $string) === true)) {
+            throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return true;
+    }
+    /* ----------------------------------------- */
+
+
+
     /**
      * +-- $string が書式文字列 $format にマッチしない場合にエラー $message を報告します。
      *
@@ -1365,7 +1425,7 @@ abstract class EnviTestCase extends EnviTestAssert
  *
  * @package    Envi3
  * @category   MVC
- * @subpackage EnviMVCCore
+ * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License

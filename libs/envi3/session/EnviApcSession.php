@@ -34,9 +34,9 @@
 class EnviApcSession extends EnviSessionBase implements EnviSessionBaseInterface
 {
 
-    private static  $_envi_system_value = "__ENVI_USER__";
-    private static  $_attribute = array();
-    private static  $_is_login = '_is_login';
+    protected static  $_envi_system_value = "__ENVI_USER__";
+    protected static  $_attribute = array();
+    protected static  $_is_login = '_is_login';
 
     public $_system_conf;
     public $sess_base_save_path;
@@ -69,7 +69,7 @@ class EnviApcSession extends EnviSessionBase implements EnviSessionBaseInterface
     public function destroy($id)
     {
         $session_key = 'sess_'.$this->_system_conf['SESSION']['cookie_name'].$id;
-        setcookie (session_name(), $id, time() - 3600);
+        setcookie (session_name(), $id, $_SERVER['REQUEST_TIME'] - 3600);
         return @apc_delete($session_key);
     }
 

@@ -12,7 +12,7 @@
  *
  * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage Logger
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -58,7 +58,7 @@ function console()
  *
  * @category   MVC
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage Logger
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -128,7 +128,6 @@ class EnviLogWriter
     /**#@-*/
 
     private static $instance;
-    private $_log_memory = false;
     private $console;
 
     public static function singleton()
@@ -173,7 +172,7 @@ class EnviLogWriter
         if ($this->_system_conf['system']['flag_use_request_log']) {
             list($debug) = debug_backtrace();
             $res = array(
-                'time'        => time(),
+                'time'        => $_SERVER['REQUEST_TIME'](),
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
                 'performance' => $this->getExecutionTime(),
@@ -231,7 +230,7 @@ class EnviLogWriter
 
         list($debug) = debug_backtrace();
         $res = array(
-            'time'        => time(),
+            'time'        => $_SERVER['REQUEST_TIME'](),
             'message'     => $message,
             'line'        => $debug['line'],
             'file'        => $debug['file'],
@@ -256,7 +255,7 @@ class EnviLogWriter
         }
         list($debug) = debug_backtrace();
         $res = array(
-            'time'        => time(),
+            'time'        => $_SERVER['REQUEST_TIME'](),
             'message'     => $message,
             'line'        => $debug['line'],
             'file'        => $debug['file'],
@@ -281,7 +280,7 @@ class EnviLogWriter
         }
         list($debug) = debug_backtrace();
         $res = array(
-            'time'        => time(),
+            'time'        => $_SERVER['REQUEST_TIME'](),
             'message'     => $message,
             'line'        => $debug['line'],
             'file'        => $debug['file'],
@@ -306,7 +305,7 @@ class EnviLogWriter
         }
         list($debug) = debug_backtrace();
         $res = array(
-            'time'        => time(),
+            'time'        => $_SERVER['REQUEST_TIME'](),
             'message'     => $message,
             'line'        => $debug['line'],
             'file'        => $debug['file'],
@@ -331,7 +330,7 @@ class EnviLogWriter
         }
         list($debug) = debug_backtrace();
         $res = array(
-            'time'        => time(),
+            'time'        => $_SERVER['REQUEST_TIME'](),
             'message'     => $message,
             'line'        => $debug['line'],
             'file'        => $debug['file'],
@@ -372,7 +371,7 @@ class EnviLogWriter
             }
             list($debug) = debug_backtrace();
             $res = array(
-                'time'        => time(),
+                'time'        => $_SERVER['REQUEST_TIME'](),
                 'message'     => $error_obj->getMessage(),
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
@@ -388,7 +387,7 @@ class EnviLogWriter
             }
             list($debug) = debug_backtrace();
             $res = array(
-                'time'        => time(),
+                'time'        => $_SERVER['REQUEST_TIME'](),
                 'message'     => $error_obj->getUserInfo(),
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
@@ -404,7 +403,7 @@ class EnviLogWriter
             }
             list($debug) = debug_backtrace();
             $res = array(
-                'time'        => time(),
+                'time'        => $_SERVER['REQUEST_TIME'](),
                 'message'     => $error_obj->getDebugInfo(),
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
@@ -437,7 +436,7 @@ class EnviLogWriter
         $debug = $gc[0];
         if (isset($debug['class']) ? $debug['class'] !== 'EnviLogWriter' : true) {
             $res = array(
-                'time'        => time(),
+                'time'        => $_SERVER['REQUEST_TIME'](),
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
                 'performance' => $this->getExecutionTime(),
@@ -445,7 +444,7 @@ class EnviLogWriter
         } else {
             $debug = $gc[1];
             $res = array(
-                'time'        => time(),
+                'time'        => $_SERVER['REQUEST_TIME'](),
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
                 'performance' => $this->getExecutionTime(),
@@ -524,115 +523,117 @@ class EnviLogWriter
      */
     private function _writeValiableLog($mode = 'request', $res = array())
     {
-        if ($this->_system_conf[$mode]['value_track_'.$mode.'_type'][0]) {
+        $track_mode_type = 'value_track_'.$mode.'_type';
+        $mode_log_type = 'value_'.$mode.'_log_type';
+        if ($this->_system_conf[$mode][$track_mode_type][0]) {
             $md5list = explode(',', $this->_system_conf[$mode]['value_md5_server_key']);
             if ($this->_system_conf[$mode]['flag_limit_server_track']) {
                 $limit = explode(',', $this->_system_conf[$mode]['value_server_track_key']);
             } else {
                 $limit = false;
             }
-            if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
+            if ($this->_system_conf['system'][$mode_log_type] === self::PURSER_TEXT) {
                 $res['%s'] = $this->_parseArrayList($_SERVER, $md5list, $limit);
-            } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE || $this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
+            } elseif ($this->_system_conf['system'][$mode_log_type] === self::PURSER_SERIALIZE || $this->_system_conf['system'][$mode_log_type] === self::PURSER_XML) {
                 $res['_SERVER'] = $this->_getArrayList($_SERVER, $md5list, $limit);
             }
         }
-        if ($this->_system_conf[$mode]['value_track_'.$mode.'_type'][1]) {
+        if ($this->_system_conf[$mode][$track_mode_type][1]) {
             $md5list = explode(',', $this->_system_conf[$mode]['value_md5_cookie_key']);
             if ($this->_system_conf[$mode]['flag_limit_cookie_track']) {
                 $limit = explode(',', $this->_system_conf[$mode]['value_cookie_track_key']);
             } else {
                 $limit = false;
             }
-            if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
+            if ($this->_system_conf['system'][$mode_log_type] === self::PURSER_TEXT) {
                 $res['%c'] = $this->_parseArrayList($_COOKIE, $md5list, $limit);
-            } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE || $this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
+            } elseif ($this->_system_conf['system'][$mode_log_type] === self::PURSER_SERIALIZE || $this->_system_conf['system'][$mode_log_type] === self::PURSER_XML) {
                 $res['_COOKIE'] = $this->_getArrayList($_COOKIE, $md5list, $limit);
             }
         }
-        if ($this->_system_conf[$mode]['value_track_'.$mode.'_type'][2]) {
+        if ($this->_system_conf[$mode][$track_mode_type][2]) {
             $md5list = explode(',', $this->_system_conf[$mode]['value_md5_env_key']);
             if ($this->_system_conf[$mode]['flag_limit_env_track']) {
                 $limit = explode(',', $this->_system_conf[$mode]['value_envtrack_key']);
             } else {
                 $limit = false;
             }
-            if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
+            if ($this->_system_conf['system'][$mode_log_type] === self::PURSER_TEXT) {
                 $res['%e'] = $this->_parseArrayList($_ENV, $md5list, $limit);
-            } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE || $this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
+            } elseif ($this->_system_conf['system'][$mode_log_type] === self::PURSER_SERIALIZE || $this->_system_conf['system'][$mode_log_type] === self::PURSER_XML) {
                 $res['_ENV'] = $this->_getArrayList($_ENV, $md5list, $limit);
             }
         }
-        if ($this->_system_conf[$mode]['value_track_'.$mode.'_type'][3]) {
+        if ($this->_system_conf[$mode][$track_mode_type][3]) {
             $md5list = explode(',', $this->_system_conf[$mode]['value_md5_post_key']);
             if ($this->_system_conf[$mode]['flag_limit_post_track']) {
                 $limit = explode(',', $this->_system_conf[$mode]['value_post_track_key']);
             } else {
                 $limit = false;
             }
-            if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
+            if ($this->_system_conf['system'][$mode_log_type] === self::PURSER_TEXT) {
                 $res['%P'] = $this->_parseArrayList($_POST, $md5list, $limit);
-            } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE || $this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
+            } elseif ($this->_system_conf['system'][$mode_log_type] === self::PURSER_SERIALIZE || $this->_system_conf['system'][$mode_log_type] === self::PURSER_XML) {
                 $res['_POST'] = $this->_getArrayList($_POST, $md5list, $limit);
             }
         }
-        if ($this->_system_conf[$mode]['value_track_'.$mode.'_type'][4]) {
+        if ($this->_system_conf[$mode][$track_mode_type][4]) {
             $md5list = explode(',', $this->_system_conf[$mode]['value_md5_get_key']);
             if ($this->_system_conf[$mode]['flag_limit_get_track']) {
                 $limit = explode(',', $this->_system_conf[$mode]['value_get_track_key']);
             } else {
                 $limit = false;
             }
-            if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
+            if ($this->_system_conf['system'][$mode_log_type] === self::PURSER_TEXT) {
                 $res['%q'] = $this->_parseArrayList($_GET, $md5list, $limit);
-            } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE || $this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
+            } elseif ($this->_system_conf['system'][$mode_log_type] === self::PURSER_SERIALIZE || $this->_system_conf['system'][$mode_log_type] === self::PURSER_XML) {
                 $res['_GET'] = $this->_getArrayList($_GET, $md5list, $limit);
             }
         }
-        if ($this->_system_conf[$mode]['value_track_'.$mode.'_type'][5]) {
+        if ($this->_system_conf[$mode][$track_mode_type][5]) {
             $md5list = explode(',', $this->_system_conf[$mode]['value_md5_file_key']);
             if ($this->_system_conf[$mode]['flag_limit_file_track']) {
                 $limit = explode(',', $this->_system_conf[$mode]['value_file_track_key']);
             } else {
                 $limit = false;
             }
-            if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
+            if ($this->_system_conf['system'][$mode_log_type] === self::PURSER_TEXT) {
                 $res['%F'] = $this->_parseArrayList($_FILES, $md5list, $limit);
-            } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE || $this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
+            } elseif ($this->_system_conf['system'][$mode_log_type] === self::PURSER_SERIALIZE || $this->_system_conf['system'][$mode_log_type] === self::PURSER_XML) {
                 $res['_FILES'] = $this->_getArrayList($_FILES, $md5list, $limit);
             }
         }
-        if ($this->_system_conf[$mode]['value_track_'.$mode.'_type'][6]) {
+        if ($this->_system_conf[$mode][$track_mode_type][6]) {
             $md5list = explode(',', $this->_system_conf[$mode]['value_md5_session_key']);
             if ($this->_system_conf[$mode]['flag_limit_session_track']) {
                 $limit = explode(',', $this->_system_conf[$mode]['value_session_track_key']);
             } else {
                 $limit = false;
             }
-            if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
+            if ($this->_system_conf['system'][$mode_log_type] === self::PURSER_TEXT) {
                 $res['%S'] = $this->_parseArrayList($_SESSION, $md5list, $limit);
-            } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE || $this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
-                $res['_SESSION'] = $this->_getArrayList($_GET, $md5list, $limit);
+            } elseif ($this->_system_conf['system'][$mode_log_type] === self::PURSER_SERIALIZE || $this->_system_conf['system'][$mode_log_type] === self::PURSER_XML) {
+                $res['_SESSION'] = $this->_getArrayList($_SESSION, $md5list, $limit);
             }
         }
-        if ($this->_system_conf[$mode]['value_track_'.$mode.'_type'][7]) {
+        if ($this->_system_conf[$mode][$track_mode_type][7]) {
             $md5list = explode(',', $this->_system_conf[$mode]['value_md5_globals_key']);
             if ($this->_system_conf[$mode]['flag_limit_globals_track']) {
                 $limit = explode(',', $this->_system_conf[$mode]['value_globals_track_key']);
             } else {
                 $limit = false;
             }
-            if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
+            if ($this->_system_conf['system'][$mode_log_type] === self::PURSER_TEXT) {
                 $res['%g'] = $this->_parseArrayList($GLOBALS, $md5list, $limit);
-            } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE || $this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
+            } elseif ($this->_system_conf['system'][$mode_log_type] === self::PURSER_SERIALIZE || $this->_system_conf['system'][$mode_log_type] === self::PURSER_XML) {
                 $res['GLOBALS'] = $this->_getArrayList($GLOBALS, $md5list, $limit);
             }
         }
-        if ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_TEXT) {
+        if ($this->_system_conf['system'][$mode_log_type] === self::PURSER_TEXT) {
             $message = str_replace(array_keys($res), array_values($res), $this->_system_conf['system']['value_'.$mode.'_log_format']);
-        } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_SERIALIZE) {
+        } elseif ($this->_system_conf['system'][$mode_log_type] === self::PURSER_SERIALIZE) {
             $message = urlencode(serialize($res));
-        } elseif ($this->_system_conf['system']['value_'.$mode.'_log_type'] === self::PURSER_XML) {
+        } elseif ($this->_system_conf['system'][$mode_log_type] === self::PURSER_XML) {
             $res = array($mode => $res);
             $message = $this->_xmlCreate($res);
         }
@@ -1013,10 +1014,9 @@ class EnviLogWriterConsoleEmpty extends EnviLogWriterConsole
      * +-- デバッグトレースも記録するかどうかを設定して、元の値を返す
      *
      * @access      public
-     * @param       boolean $setter
-     * @return      boolean
+     * @return      void
      */
-    public function setUseDebugBackTrace($setter)
+    public function setUseDebugBackTrace()
     {
     }
     /* ----------------------------------------- */
@@ -1025,10 +1025,9 @@ class EnviLogWriterConsoleEmpty extends EnviLogWriterConsole
      * +-- Consoleにのみログを排出します
      *
      * @access      public
-     * @param       var_text $log_text
      * @return      void
      */
-    public function log($log_text)
+    public function log()
     {
     }
     /* ----------------------------------------- */
@@ -1060,7 +1059,7 @@ class EnviLogWriterConsoleEmpty extends EnviLogWriterConsole
     }
     /* ----------------------------------------- */
 
-    public function _systemLog($log_text)
+    public function _systemLog()
     {
     }
 
@@ -1069,15 +1068,15 @@ class EnviLogWriterConsoleEmpty extends EnviLogWriterConsole
     }
 
 
-    public function _queryLog(&$dbi)
+    public function _queryLog()
     {
     }
 
 
-    public function _setConsoleLogDir($setter)
+    public function _setConsoleLogDir()
     {
     }
-    public function _setConsoleLogGetKey($setter)
+    public function _setConsoleLogGetKey()
     {
     }
 
@@ -1105,11 +1104,23 @@ class EnviLogWriterConsole
     }
 }
 
+
 /**
- * @package
- * @subpackage
- * @sinse 0.1
- * @author     akito<akito-artisan@five-foxes.com>
+ * コンソールログ記録クラス
+ *
+ * ブラウザのコンソールログや、envi コマンドでのログ収集が可能な形式での、ロギングです。
+ * 振る舞いは、設定ファイルに依存します。
+ *
+ * @category   MVC
+ * @package    Envi3
+ * @subpackage Logger
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
  */
 class EnviLogWriterConsoleLog extends EnviLogWriterConsole
 {
@@ -1263,11 +1274,13 @@ class EnviLogWriterConsoleLog extends EnviLogWriterConsole
         if (!$this->use_console_log) {
             return;
         }
-        if (!defined('LW_START_MTIMESTAMP')) {
+        if (defined('LW_START_MTIMESTAMP')) {
+            $this->_performance = LW_START_MTIMESTAMP;
+        } elseif (isset($_SERVER['REQUEST_TIME_FLOAT'])) {
+            $this->_performance = $_SERVER['REQUEST_TIME_FLOAT'];
+        } else {
             // 実行時間計測開始
             $this->_performance = microtime(true);
-        } else {
-            $this->_performance = LW_START_MTIMESTAMP;
         }
     }
     /* ----------------------------------------- */
@@ -1428,7 +1441,7 @@ class EnviLogWriterConsoleLog extends EnviLogWriterConsole
         $this->console_log_get_hash = microtime(true).sha1(microtime(true));
         mkdir($this->console_log_dir.DIRECTORY_SEPARATOR.$this->console_log_get_hash, 0777, true);
         umask($umask);
-        setcookie($this->console_log_get_key, $this->console_log_get_hash, time()+36000, '/');
+        setcookie($this->console_log_get_key, $this->console_log_get_hash, $_SERVER['REQUEST_TIME']()+36000, '/');
 
         $this->console_log_write_dir = $this->console_log_dir.DIRECTORY_SEPARATOR.$this->console_log_get_hash.DIRECTORY_SEPARATOR;
     }

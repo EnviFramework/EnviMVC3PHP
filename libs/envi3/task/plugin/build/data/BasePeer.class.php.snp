@@ -243,7 +243,7 @@ class Base%%class_name%%Peer
                 $add_query_str .= ",:{$column}_mul_{$key}";
                 $bind_array["{$column}_mul_{$key}"] = $item;
             }
-            $sql = mb_ereg_replace(":{$column}([^a-z0-9A=Z])", substr($add_query_str, 1)."\\1", $sql);
+            $sql = preg_replace("/\\:{$column}([^a-z0-9A-Z])/", substr($add_query_str, 1)."\\1", $sql);
         }
         return str_replace(array('__TABLE__'), array($table_name), $sql);
     }

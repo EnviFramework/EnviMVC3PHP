@@ -33,7 +33,7 @@ function smarty_function_hidden($params, &$smarty)
 
 function make_hidden(&$params, &$smarty, $item, $name = false)
 {
-    require_once $smarty->_get_plugin_filepath('shared','escape_special_chars');
+    $smarty->_include_plugin_filepath('shared','escape_special_chars');
     foreach ($item as $key => $value) {
         if (isset($params["split"][$key])) {
             continue;

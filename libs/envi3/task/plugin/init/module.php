@@ -25,11 +25,11 @@ if (!isset($argv[3])) {
 
 $project_name = $argv[2];
 $module_name = $argv[3];
-if (!mb_ereg('^[a-zA-Z0-9.\-_]+$', $project_name)) {
+if (!preg_match('/^[a-zA-Z0-9.\-_]+$/', $project_name)) {
     eecho('英数と._-以外の文字は使えません。');
     die;
 }
-if (!mb_ereg('^[a-zA-Z0-9.\-_]+$', $module_name)) {
+if (!preg_match('/^[a-zA-Z0-9.\-_]+$/', $module_name)) {
     eecho('英数と._-以外の文字は使えません。');
     die;
 }

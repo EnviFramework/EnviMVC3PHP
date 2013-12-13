@@ -46,7 +46,7 @@
  */
 function smarty_function_html_image($params, &$smarty)
 {
-    require_once $smarty->_get_plugin_filepath('shared','escape_special_chars');
+    $smarty->_include_plugin_filepath('shared','escape_special_chars');
 
     $alt = '';
     $file = '';
@@ -105,12 +105,12 @@ function smarty_function_html_image($params, &$smarty)
     if(!isset($params['width']) || !isset($params['height'])) {
         if ($smarty->security &&
             ($_params = array('resource_type' => 'file', 'resource_name' => $_image_path)) &&
-            (require_once(SMARTY_CORE_DIR . 'core.is_secure.php')) &&
+            (function_exists('smarty_core_is_secure') OR require(SMARTY_CORE_DIR . 'core.is_secure.php')) &&
             (!smarty_core_is_secure($_params, $smarty)) ) {
             $smarty->trigger_error("html_image: (secure) '$_image_path' not in secure directory", E_USER_NOTICE);
 
         } elseif (!$_image_data = @getimagesize($_image_path)) {
-            if(!file_exists($_image_path)) {
+            if(!is_file($_image_path)) {
                 $smarty->trigger_error("html_image: unable to find '$_image_path'", E_USER_NOTICE);
                 return;
             } else if(!is_readable($_image_path)) {

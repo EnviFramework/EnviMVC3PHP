@@ -38,7 +38,7 @@ function smarty_function_config_load($params, &$smarty)
 {
         if ($smarty->debugging) {
             $_params = array();
-            require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
+            function_exists('smarty_core_get_microtime') OR require(SMARTY_CORE_DIR . 'core.get_microtime.php');
             $_debug_start_time = smarty_core_get_microtime($_params, $smarty);
         }
 
@@ -75,7 +75,7 @@ function smarty_function_config_load($params, &$smarty)
         else
             $_compile_file = $smarty->_get_compile_path($_file_path);
 
-        if($smarty->force_compile || !file_exists($_compile_file)) {
+        if($smarty->force_compile || !is_file($_compile_file)) {
             $_compile = true;
         } elseif ($smarty->compile_check) {
             $_params = array('resource_name' => $_file,
@@ -90,7 +90,7 @@ function smarty_function_config_load($params, &$smarty)
         if($_compile) {
             // compile config file
             if(!is_object($smarty->_conf_obj)) {
-                require_once SMARTY_DIR . $smarty->config_class . '.class.php';
+                class_exists($smarty->config_class(), false) OR require SMARTY_DIR . $smarty->config_class . '.class.php';
                 $smarty->_conf_obj = new $smarty->config_class();
                 $smarty->_conf_obj->overwrite = $smarty->config_overwrite;
                 $smarty->_conf_obj->booleanize = $smarty->config_booleanize;
@@ -113,7 +113,7 @@ function smarty_function_config_load($params, &$smarty)
                 $_output = '<?php $_config_vars = unserialize(\'' . strtr(serialize($_config_vars),array('\''=>'\\\'', '\\'=>'\\\\')) . '\'); ';
             }
             $_params = (array('compile_path' => $_compile_file, 'compiled_content' => $_output, 'resource_timestamp' => $_params['resource_timestamp']));
-            require_once(SMARTY_CORE_DIR . 'core.write_compiled_resource.php');
+            function_exists('smarty_core_write_compiled_resource') OR require(SMARTY_CORE_DIR . 'core.write_compiled_resource.php');
             smarty_core_write_compiled_resource($_params, $smarty);
         } else {
             include($_compile_file);
@@ -138,7 +138,7 @@ function smarty_function_config_load($params, &$smarty)
 
         if ($smarty->debugging) {
             $_params = array();
-            require_once(SMARTY_CORE_DIR . 'core.get_microtime.php');
+            function_exists('smarty_core_get_microtime') OR require(SMARTY_CORE_DIR . 'core.get_microtime.php');
             $smarty->_smarty_debug_info[] = array('type'      => 'config',
                                                 'filename'  => $_file.' ['.$_section.'] '.$_scope,
                                                 'depth'     => $smarty->_inclusion_depth,

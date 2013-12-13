@@ -173,7 +173,10 @@ class EnviDB
      */
     public static function isError(&$obj)
     {
-        return false;
+        if ($obj === NULL) {
+            return true;
+        }
+        return stripos(get_class($obj), 'error') !== false;
     }
     /* ----------------------------------------- */
 }
@@ -578,59 +581,7 @@ class EnviDBIBase
         }
         $first = true;
         $arr = array();
-        switch ($mode) {
-        case EnviDB::AUTOQUERY_INSERT:
-            $values = '';
-            $names = '';
-            foreach ($table_fields as $key => $value) {
-                $key = trim($key);
-                if ($first) {
-                    $first = false;
-                } else {
-                    $names .= ',';
-                    $values .= ',';
-                }
-                $names .= '`'.$key.'`';
-                $values .= '?';
-                $arr[] = $value;
-            }
-            $table_fields = $arr;
-            return 'INSERT INTO '.$table.' ('.$names.') VALUES ('.$values.')';
-        case EnviDB::AUTOQUERY_INSERT_IGNORE:
-            $values = '';
-            $names = '';
-            foreach ($table_fields as $key => $value) {
-                $key = trim($key);
-                if ($first) {
-                    $first = false;
-                } else {
-                    $names .= ',';
-                    $values .= ',';
-                }
-                $names .= '`'.$key.'`';
-                $values .= '?';
-                $arr[] = $value;
-            }
-            $table_fields = $arr;
-            return 'INSERT IGNORE INTO '.$table.' ('.$names.') VALUES ('.$values.')';
-        case EnviDB::AUTOQUERY_REPLACE:
-            $values = '';
-            $names = '';
-            foreach ($table_fields as $key => $value) {
-                $key = trim($key);
-                if ($first) {
-                    $first = false;
-                } else {
-                    $names .= ',';
-                    $values .= ',';
-                }
-                $names .= '`'.$key.'`';
-                $values .= '?';
-                $arr[] = $value;
-            }
-            $table_fields = $arr;
-            return 'REPLACE INTO '.$table.' ('.$names.') VALUES ('.$values.')';
-        case EnviDB::AUTOQUERY_UPDATE:
+        if ($mode === EnviDB::AUTOQUERY_UPDATE) {
             $set = '';
             foreach ($table_fields as $key => $value) {
                 $key = trim($key);
@@ -646,10 +597,39 @@ class EnviDBIBase
             if ($where) {
                 $sql .= ' WHERE '.$where;
             }
+            // table_fields置き換え
             $table_fields = $arr;
             return $sql;
+        }
+        $values = '';
+        $names = '';
+        foreach ($table_fields as $key => $value) {
+            $key = trim($key);
+            if ($first) {
+                $first = false;
+            } else {
+                $names .= ',';
+                $values .= ',';
+            }
+            $names .= '`'.$key.'`';
+            $values .= '?';
+            $arr[] = $value;
+        }
+        // table_fields置き換え
+        $table_fields = $arr;
+        switch ($mode) {
+        case EnviDB::AUTOQUERY_INSERT:
+            return 'INSERT INTO '.$table.' ('.$names.') VALUES ('.$values.')';
+        break;
+        case EnviDB::AUTOQUERY_INSERT_IGNORE:
+            return 'INSERT IGNORE INTO '.$table.' ('.$names.') VALUES ('.$values.')';
+        break;
+        case EnviDB::AUTOQUERY_REPLACE:
+            return 'REPLACE INTO '.$table.' ('.$names.') VALUES ('.$values.')';
+        break;
         default:
             throw new PDOException;
+        break;
         }
     }
 
