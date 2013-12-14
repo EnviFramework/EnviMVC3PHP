@@ -172,7 +172,7 @@ class EnviLogWriter
         if ($this->_system_conf['system']['flag_use_request_log']) {
             list($debug) = debug_backtrace();
             $res = array(
-                'time'        => $_SERVER['REQUEST_TIME'](),
+                'time'        => $_SERVER['REQUEST_TIME'],
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
                 'performance' => $this->getExecutionTime(),
@@ -230,7 +230,7 @@ class EnviLogWriter
 
         list($debug) = debug_backtrace();
         $res = array(
-            'time'        => $_SERVER['REQUEST_TIME'](),
+            'time'        => $_SERVER['REQUEST_TIME'],
             'message'     => $message,
             'line'        => $debug['line'],
             'file'        => $debug['file'],
@@ -255,7 +255,7 @@ class EnviLogWriter
         }
         list($debug) = debug_backtrace();
         $res = array(
-            'time'        => $_SERVER['REQUEST_TIME'](),
+            'time'        => $_SERVER['REQUEST_TIME'],
             'message'     => $message,
             'line'        => $debug['line'],
             'file'        => $debug['file'],
@@ -280,7 +280,7 @@ class EnviLogWriter
         }
         list($debug) = debug_backtrace();
         $res = array(
-            'time'        => $_SERVER['REQUEST_TIME'](),
+            'time'        => $_SERVER['REQUEST_TIME'],
             'message'     => $message,
             'line'        => $debug['line'],
             'file'        => $debug['file'],
@@ -305,7 +305,7 @@ class EnviLogWriter
         }
         list($debug) = debug_backtrace();
         $res = array(
-            'time'        => $_SERVER['REQUEST_TIME'](),
+            'time'        => $_SERVER['REQUEST_TIME'],
             'message'     => $message,
             'line'        => $debug['line'],
             'file'        => $debug['file'],
@@ -330,7 +330,7 @@ class EnviLogWriter
         }
         list($debug) = debug_backtrace();
         $res = array(
-            'time'        => $_SERVER['REQUEST_TIME'](),
+            'time'        => $_SERVER['REQUEST_TIME'],
             'message'     => $message,
             'line'        => $debug['line'],
             'file'        => $debug['file'],
@@ -371,7 +371,7 @@ class EnviLogWriter
             }
             list($debug) = debug_backtrace();
             $res = array(
-                'time'        => $_SERVER['REQUEST_TIME'](),
+                'time'        => $_SERVER['REQUEST_TIME'],
                 'message'     => $error_obj->getMessage(),
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
@@ -387,7 +387,7 @@ class EnviLogWriter
             }
             list($debug) = debug_backtrace();
             $res = array(
-                'time'        => $_SERVER['REQUEST_TIME'](),
+                'time'        => $_SERVER['REQUEST_TIME'],
                 'message'     => $error_obj->getUserInfo(),
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
@@ -403,7 +403,7 @@ class EnviLogWriter
             }
             list($debug) = debug_backtrace();
             $res = array(
-                'time'        => $_SERVER['REQUEST_TIME'](),
+                'time'        => $_SERVER['REQUEST_TIME'],
                 'message'     => $error_obj->getDebugInfo(),
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
@@ -436,7 +436,7 @@ class EnviLogWriter
         $debug = $gc[0];
         if (isset($debug['class']) ? $debug['class'] !== 'EnviLogWriter' : true) {
             $res = array(
-                'time'        => $_SERVER['REQUEST_TIME'](),
+                'time'        => $_SERVER['REQUEST_TIME'],
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
                 'performance' => $this->getExecutionTime(),
@@ -444,7 +444,7 @@ class EnviLogWriter
         } else {
             $debug = $gc[1];
             $res = array(
-                'time'        => $_SERVER['REQUEST_TIME'](),
+                'time'        => $_SERVER['REQUEST_TIME'],
                 'line'        => $debug['line'],
                 'file'        => $debug['file'],
                 'performance' => $this->getExecutionTime(),
@@ -1441,7 +1441,7 @@ class EnviLogWriterConsoleLog extends EnviLogWriterConsole
         $this->console_log_get_hash = microtime(true).sha1(microtime(true));
         mkdir($this->console_log_dir.DIRECTORY_SEPARATOR.$this->console_log_get_hash, 0777, true);
         umask($umask);
-        setcookie($this->console_log_get_key, $this->console_log_get_hash, $_SERVER['REQUEST_TIME']()+36000, '/');
+        setcookie($this->console_log_get_key, $this->console_log_get_hash, $_SERVER['REQUEST_TIME']+36000, '/');
 
         $this->console_log_write_dir = $this->console_log_dir.DIRECTORY_SEPARATOR.$this->console_log_get_hash.DIRECTORY_SEPARATOR;
     }
