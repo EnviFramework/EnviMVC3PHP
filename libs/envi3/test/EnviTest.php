@@ -17,250 +17,8 @@
  * @since      File available since Release 1.0.0
  */
 
-/**
- * テスト用dummy
- *
- * @package    Envi3
- * @category   MVC
- * @subpackage UnitTest
- * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
- * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
- * @version    Release: @package_version@
- * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
- * @since      Class available since Release 1.0.0
- */
-class dummyBase
-{
-    public function __get($key)
-    {
-    }
-    public function __set($key, $val)
-    {
-    }
-    public function __call($func_name, $arg_arr)
-    {
-    }
-}
-
-/**
- * テスト用dummy
- *
- * @package    Envi3
- * @category   MVC
- * @subpackage UnitTest
- * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
- * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
- * @version    Release: @package_version@
- * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
- * @since      Class available since Release 1.0.0
- */
-class Logger extends dummyBase
-{
-}
 
 
-/**
- * テスト用dummy
- *
- * @package    Envi3
- * @category   MVC
- * @subpackage UnitTest
- * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
- * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
- * @version    Release: @package_version@
- * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
- * @since      Class available since Release 1.0.0
- */
-class Envi extends dummyBase
-{
-    public function getLogger()
-    {
-        return new Logger();
-    }
-
-    public static function singleton()
-    {
-        static $Envi;
-        if (!isset($Envi)) {
-            $Envi = new Envi;
-        }
-        return $Envi;
-    }
-
-    public function getConfiguration()
-    {
-        return false;
-    }
-}
-
-/**
- * +-- Envi
- *
- * Envi
- *
- * @return Envi
- */
-function Envi()
-{
-    return Envi::singleton();
-}
-/* ----------------------------------------- */
-
-/**
- * テスト用例外
- *
- *
- * @package    Envi3
- * @category   MVC
- * @subpackage UnitTest
- * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
- * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
- * @version    Release: @package_version@
- * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
- * @since      Class available since Release 1.0.0
- */
-class EnviTestException extends exception
-{
-
-}
-
-if (!defined('ENVI_ENV')) {
-    define('ENVI_ENV', 'unittest');
-}
-
-/**
- * test用エクステンションloader
- *
- *
- * @package    Envi3
- * @category   MVC
- * @subpackage UnitTest
- * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
- * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
- * @version    Release: @package_version@
- * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
- * @since      Class available since Release 1.0.0
- */
-class extension
-{
-    private $configuration;
-    private $extensions;
-    private static $instance;
-
-    /**
-     * +-- コンストラクタ
-     *
-     * @access private
-     * @param  $configuration
-     * @return void
-     */
-    private function __construct()
-    {
-        $this->configuration = EnviTest::singleton()->system_conf['extension'];
-        foreach ($this->configuration as $name => $v) {
-            if (!$v['constant']) {
-                continue;
-            }
-            include_once $v['class']['resource'];
-            $class_name = $v['class']['class_name'];
-            $this->extensions[$name] = new $class_name(EnviTest::singleton()->parseYml(basename($v['router']['resource']), dirname($v['router']['resource']).DIRECTORY_SEPARATOR));
-        }
-    }
-    /* ----------------------------------------- */
-
-    /**
-     * +-- エクステンションのオブジェクト取得(magicmethod)
-     *
-     * @access public
-     * @param  $name
-     * @param  $arguments
-     * @return object
-     */
-    public function __call($name, $arguments)
-    {
-        if (!isset($this->configuration[$name])) {
-            throw new EnviTestException($name.' extensionが見つかりませんでした');
-        }
-        $class_name = $this->configuration[$name]['class']['class_name'];
-
-        if (!isset($this->configuration[$name]['class']['singleton']) || !$this->configuration[$name]['class']['singleton']) {
-            if (!isset($this->extensions[$name])) {
-                include_once $this->configuration[$name]['class']['resource'];
-                $this->extensions[$name] = array();
-            }
-            $c = count($this->extensions[$name]);
-            $this->extensions[$name][$c] = $class_name(EnviTest::singleton()->parseYml(basename($this->configuration[$name]['router']['resource']), dirname($this->configuration[$name]['router']['resource']).DIRECTORY_SEPARATOR));
-            return $this->extensions[$name][$c];
-        } elseif (!isset($this->extensions[$name])) {
-            include_once $this->configuration[$name]['class']['resource'];
-            $this->extensions[$name] = new $class_name(EnviTest::singleton()->parseYml(basename($this->configuration[$name]['router']['resource']), dirname($this->configuration[$name]['router']['resource']).DIRECTORY_SEPARATOR));
-        }
-        return $this->extensions[$name];
-    }
-    /* ----------------------------------------- */
-
-    /**
-     * +-- メインのAction実行が完了したタイミングで、暗黙的に実行されるMethodを実行
-     *
-     * @access public
-     * @return void
-     */
-    public function executeLastShutdownMethod()
-    {
-        foreach ($this->extensions as $name => $val) {
-            $shutdownMethod = false;
-            if (isset($this->configuration[$name]['class']['lastShutdownMethod'])) {
-                $shutdownMethod = $this->configuration[$name]['class']['lastShutdownMethod'];
-            }
-            if (!$shutdownMethod) {
-                continue;
-            }
-            if (is_array($val)) {
-                foreach ($val as $obj) {
-                    $obj->$shutdownMethod();
-                }
-            } else {
-                $val->$shutdownMethod();
-            }
-        }
-    }
-    /* ----------------------------------------- */
-
-    public static function _singleton($configuration = NULL)
-    {
-        if (!isset(self::$instance)) {
-            self::$instance = new extension($configuration);
-        }
-        return self::$instance;
-    }
-
-    public function free()
-    {
-        $this->extensions = array();
-    }
-
-}
-
-/**
- * +-- シングルトン
- *
- * @return extension
- */
-function extension()
-{
-    return extension::_singleton();
-}
-/* ----------------------------------------- */
 
 /**
  * テストAssert
@@ -1415,8 +1173,6 @@ abstract class EnviTestCase extends EnviTestAssert
         $this->request_url = $this->system_conf['app']['url']."/{$module}/{$action}";
     }
 
-
-
 }
 
 /**
@@ -1487,4 +1243,458 @@ class EnviTestScenario
 
 }
 
+
+
+/**
+ * @package    Envi3
+ * @category   MVC
+ * @subpackage UnitTest
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
+ */
+abstract class EnviTestBlankMockBase
+{
+    public function __get($key)
+    {
+    }
+    public function __set($key, $val)
+    {
+    }
+    public function __call($func_name, $arg_arr)
+    {
+    }
+}
+/* ----------------------------------------- */
+
+/**
+ * @package    Envi3
+ * @category   MVC
+ * @subpackage UnitTest
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
+ */
+class EnviMock
+{
+
+    /**
+     * +-- コンストラクタ
+     *
+     * static クラスなので、privateコンストラクタ
+     *
+     * @access      private
+     * @return      void
+     */
+    private function __construct()
+    {
+
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- モックの取得
+     *
+     * @access      public
+     * @static
+     * @param       string $class_name モックを作成するクラス名
+     * @return      EnviTestMockEditor
+     */
+    public static function mock($class_name)
+    {
+        if (!function_exists('runkit_class_emancipate')) {
+            throw new Exception('please install runkit.http://pecl.php.net/package-changelog.php?package=runkit');
+        }
+        $mock_editor = new EnviTestMockEditor($class_name);
+        if (!class_exists($class_name, false)) {
+            self::addMockClass($class_name);
+        }
+        return $mock_editor;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- モッククラスの作成
+     *
+     * @access      public
+     * @static
+     * @param       string $class_name
+     * @return      void
+     */
+    private static function addMockClass($class_name)
+    {
+        $cf = tmpfile();
+        $file_path = stream_get_meta_data($cf);
+        $file_path = $file_path['uri'];
+        fwrite($cf, '<?php
+        class '.$class_name.' extends EnviTestBlankMockBase
+        {
+        }'
+        );
+        include $file_path;
+    }
+    /* ----------------------------------------- */
+}
+/* ----------------------------------------- */
+
+/**
+ * @package    Envi3
+ * @category   MVC
+ * @subpackage UnitTest
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
+ */
+class EnviTestMockEditor
+{
+    private $class_name;
+    private $method_name;
+    private $with;
+    private $times;
+
+    /**
+     * +-- コンストラクタ
+     *
+     * @access      public
+     * @param       any $cla_name
+     * @return      void
+     */
+    public function __construct($class_name)
+    {
+        $this->class_name = $class_name;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- メソッド一覧
+     *
+     * @access      public
+     * @return      array
+     */
+    public function getMethods()
+    {
+        return get_class_methods($this->class_name);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 継承を解除する
+     *
+     * @access      public
+     * @return      EnviTestMockEditor
+     */
+    public function emancipate()
+    {
+        runkit_class_emancipate($this->class_name);
+        runkit_class_adopt($class_name , 'EnviTestBlankMockBase');
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- メソッドを削除する
+     *
+     * @access      public
+     * @param       any $method
+     * @return      EnviTestMockEditor
+     */
+    public function removeMethod($method)
+    {
+        if (method_exists($this->class_name, $method)) {
+            runkit_method_remove($this->class_name, $method);
+        }
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 空のメソッドを定義する。既にメソッドが定義されている場合は、空のメソッドに置き換える
+     *
+     * @access      public
+     * @param       any $method
+     * @return      EnviTestMockEditor
+     */
+    public function blankMethod($method)
+    {
+        $this->removeMethod($method);
+        runkit_method_add($this->class_name, $method, '', '');
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- 複数の空メソッドを定義する。既に定義済の場合は、空のメソッドに置き換える
+     *
+     * @access      public
+     * @param       array $methods
+     * @return      EnviTestMockEditor
+     */
+    public function blankMethodByArray(array $methods)
+    {
+        foreach ($methods as $method) {
+            $this->blankMethod($method);
+        }
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 全ての定義済メソッドを空メソッドに置き換える
+     *
+     * @access      public
+     * @return      EnviTestMockEditor
+     */
+    public function blankMethodAll()
+    {
+        foreach ($this->getMethods() as $method) {
+            $this->blankMethod($method);
+        }
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 制約を追加するためのメソッドを定義します。
+     *
+     * @access      public
+     * @param       string $method_name
+     * @return      EnviTestMockEditor
+     */
+    public function shouldReceive($method_name)
+    {
+        $this->free();
+        $this->method_name = $method_name;
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- このメソッドにのみ期待される引数のリストの制約を追加します。
+     *
+     * @access      public
+     * @return      EnviTestMockEditor
+     */
+    public function with()
+    {
+        $this->with = func_get_args();
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- メソッドが二回以上呼び出されないことを定義します
+     *
+     * @access      public
+     * @return      EnviTestMockEditor
+     */
+    public function once()
+    {
+        $this->times = 1;
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- メソッドが三回以上呼び出されないことを定義します
+     *
+     * @access      public
+     * @return      EnviTestMockEditor
+     */
+    public function twice()
+    {
+        $this->times = 2;
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- メソッドが呼び出されないことを定義します
+     *
+     * @access      public
+     * @return      EnviTestMockEditor
+     */
+    public function never()
+    {
+        $this->times = -1;
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- メソッドが$n回以上呼び出されないことを定義します。
+     *
+     * @access      public
+     * @param       any $n
+     * @return      EnviTestMockEditor
+     */
+    public function times($n)
+    {
+        $this->times = $n;
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- 期待メソッドが0回以上呼び出すことができますことを宣言します。そうでない場合に設定しない限り、これは、すべてのメソッドのデフォルトです。
+     *
+     * @access      public
+     * @return      EnviTestMockEditor
+     */
+    public function zeroOrMoreTimes()
+    {
+        $this->times = false;
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+
+
+    /**
+     * +-- 戻り値を設定します。
+     *
+     * この後のモックメソッドの全ての呼び出しは常にこの宣言に指定された値を返すことに注意してください。
+     *
+     * @access      public
+     * @param       any $res
+     * @return      EnviTestMockEditor
+     */
+    public function andReturn($res)
+    {
+        $this->removeMethod($this->method_name);
+        $method_script = $this->createMethodScript();
+        $method_script .= 'return '.var_export($res, true).';';
+        runkit_method_add($this->class_name, $this->method_name, '', $method_script);
+        $this->free();
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- NULLを返すメソッドであると定義します
+     *
+     * @access      public
+     * @return      EnviTestMockEditor
+     */
+    public function andReturnNull()
+    {
+        $this->removeMethod($this->method_name);
+        $method_script = $this->createMethodScript();
+        $method_script .= 'return NULL;';
+        runkit_method_add($this->class_name, $this->method_name, '', $method_script);
+
+        $this->free();
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+
+
+    /**
+     * +-- 呼び出された場合、このメソッドは、指定された例外オブジェクトをスローすることを宣言します。
+     *
+     * @access      public
+     * @param       any $exception_class_name
+     * @param       any $message OPTIONAL:''
+     * @return      EnviTestMockEditor
+     */
+    public function andThrow($exception_class_name, $message = '')
+    {
+        if (is_object($exception_class_name)) {
+            $message = $exception_class_name->getMessage();
+            $exception_class_name = get_class($exception_class_name);
+        }
+        $this->removeMethod($this->method_name);
+        $method_script = $this->createMethodScript();
+        $method_script .= ' throw new '.$exception_class_name.'('.var_export($message, true).');';
+        runkit_method_add($this->class_name, $this->method_name, '', $method_script);
+
+        $this->free();
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+
+    private function createMethodScript()
+    {
+        $method_script = "\n";
+
+        if (is_integer($this->times)) {
+            $method_script .= 'static $times = 0;
+                if ($times < '.$this->times.') {
+                    ++$times;
+                } else {
+                    $e = new EnviTestMockException("duplicate call method");
+                    $e->setArgument('.$this->method_name.');
+                    $e->setArgument(func_get_args());
+                    $e->setArgument('.var_export($this->with, true).');
+                    throw $e;
+                }
+                ';
+        }
+
+        if (is_array($this->with)) {
+            $method_script .= 'if (func_get_args() !== '.var_export($this->with, true).') {
+                $e = new EnviTestMockException("arguments Error");
+                $e->setArgument('.$this->method_name.');
+                $e->setArgument(func_get_args());
+                $e->setArgument('.var_export($this->with, true).');
+                throw $e;
+            }
+            ';
+        }
+        return $method_script;
+    }
+
+
+
+    private function free()
+    {
+        $this->method_name = '';
+        $this->with = false;
+        $this->once = false;
+        return $this;
+    }
+
+}
+/* ----------------------------------------- */
+
+/**
+ * @package    Envi3
+ * @category   MVC
+ * @subpackage UnitTest
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @since      Class available since Release 1.0.0
+ */
+class EnviTestMockException extends exception
+{
+   public $argument;
+   public function setArgument($setter)
+   {
+       $this->argument[] = $setter;
+   }
+}
+/* ----------------------------------------- */
 

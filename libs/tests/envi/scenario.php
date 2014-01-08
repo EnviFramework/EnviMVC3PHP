@@ -1,6 +1,6 @@
 <?php
 /**
- * ƒeƒXƒg‚ÌScenarioƒNƒ‰ƒX
+ * ãƒ†ã‚¹ãƒˆã®Scenarioã‚¯ãƒ©ã‚¹
  *
  *
  * PHP versions 5
@@ -25,7 +25,7 @@ require_once dirname(__FILE__).'/../../envi3/test/EnviTest.php';
 require_once dirname(__FILE__).'/testCaseBase.php';
 
 /**
- * ƒeƒXƒg‚ÌScenarioƒNƒ‰ƒX
+ * ãƒ†ã‚¹ãƒˆã®Scenarioã‚¯ãƒ©ã‚¹
  *
  *
  * PHP versions 5
@@ -47,7 +47,7 @@ class Scenario extends EnviTestScenario
     public static $stack_data;
 
     /**
-     * +-- ƒf[ƒ^ƒXƒ^ƒbƒN—p
+     * +-- ãƒ‡ãƒ¼ã‚¿ã‚¹ã‚¿ãƒƒã‚¯ç”¨
      *
      * @access public
      * @static
@@ -62,7 +62,7 @@ class Scenario extends EnviTestScenario
     /* ----------------------------------------- */
 
     /**
-     * +-- ƒXƒ^ƒbƒN‚µ‚½ƒf[ƒ^‚ðŽæ“¾‚·‚é—p
+     * +-- ã‚¹ã‚¿ãƒƒã‚¯ã—ãŸãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹ç”¨
      *
      * @access public
      * @static
@@ -76,7 +76,7 @@ class Scenario extends EnviTestScenario
     /* ----------------------------------------- */
 
     /**
-     * +-- ŽÀs‚·‚éƒeƒXƒg‚Ì”z—ñ‚ðYaml‚©‚ç•Ô‚·
+     * +-- å®Ÿè¡Œã™ã‚‹ãƒ†ã‚¹ãƒˆã®é…åˆ—ã‚’Yamlã‹ã‚‰è¿”ã™
      *
      * @access public
      * @return array
