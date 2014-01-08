@@ -1,15 +1,10 @@
 <?php
 if (!isset($argv[2])) {
-    eecho('引数が足りません。show man => envi test-help');
+    eecho('蠑墓焚縺瑚ｶｳ繧翫∪縺帙ｓ縲Ｔhow man => envi test-help');
     die;
 }
 
-// Envi2のディレクトリのパスを指定する。
+// Envi2縺ｮ繝�繧｣繝ｬ繧ｯ繝医Μ縺ｮ繝代せ繧呈欠螳壹☆繧九�
 $envi_dir = ENVI_BASE_DIR;
 $envi_cmd = true;
 require $envi_dir.'test/EnviTestCmd.php';
-
-
-// 実行
-$EnviTest = EnviTest::singleton($argv[2]);
-$EnviTest->execute();

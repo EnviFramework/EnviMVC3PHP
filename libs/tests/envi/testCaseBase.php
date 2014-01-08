@@ -1,6 +1,6 @@
 <?php
 /**
- * ƒeƒXƒg‚Ìƒx[ƒXƒNƒ‰ƒX
+ * ãƒ†ã‚¹ãƒˆã®ãƒ™ãƒ¼ã‚¹ã‚¯ãƒ©ã‚¹
  *
  *
  * PHP versions 5
@@ -23,7 +23,7 @@ define('APP_BASE', dirname(__FILE__).DIRECTORY_SEPARATOR.'application'.DIRECTORY
 define('T_ENVI_BASE', dirname(__FILE__).DIRECTORY_SEPARATOR.'../../envi3/');
 
 /**
- * ƒeƒXƒg‚Ìƒx[ƒXƒNƒ‰ƒX
+ * ãƒ†ã‚¹ãƒˆã®ãƒ™ãƒ¼ã‚¹ã‚¯ãƒ©ã‚¹
  *
  *
  * PHP versions 5
@@ -44,7 +44,7 @@ class testCaseBase extends EnviTestCase
 {
 
     /**
-     * +-- ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+     * +-- ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
      *
      * @access public
      * @return void
@@ -57,7 +57,7 @@ class testCaseBase extends EnviTestCase
     /* ----------------------------------------- */
 
     /**
-     * +-- ‰Šú‰»
+     * +-- åˆæœŸåŒ–
      *
      * @access public
      * @return void
@@ -69,7 +69,7 @@ class testCaseBase extends EnviTestCase
 
 
     /**
-     * +-- I—¹ˆ—‚ð‚·‚é
+     * +-- çµ‚äº†å‡¦ç†ã‚’ã™ã‚‹
      *
      * @access public
      * @return void

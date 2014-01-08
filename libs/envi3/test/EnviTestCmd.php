@@ -17,10 +17,6 @@
  * @since      File available since Release 1.0.0
  */
 
-if (!defined('ENVI_BASE_DIR')) {
-    define('ENVI_BASE_DIR', realpath(dirname(__FILE__).'/../').DIRECTORY_SEPARATOR);
-}
-
 if (!isset($envi_cmd)) {
 /**
  * バッチ用の設定
@@ -119,13 +115,41 @@ if (isOption('-h') || isOption('--help') || isOption('-?') || !isset($argv[1])) 
     exit;
 }
 
+}
+
+
+if (!isset($envi_cmd)) {
+    $test_key = $argv[1];
+} else {
+    $test_key = $argv[2];
+}
 
 
 // 実行
-$EnviTest = EnviTest::singleton($argv[1]);
+$EnviTest = EnviTest::singleton($test_key);
+
+// 設定ファイルから Envi自体の実行方法を選択する
+if (!isset($EnviTest->system_conf['parameter']['test_mode'], $EnviTest->system_conf['app']['key']) ||
+$EnviTest->system_conf['parameter']['test_mode'] === 'dummy') {
+    include dirname(__FILE__).DIRECTORY_SEPARATOR.'EnviDummy.php';
+} elseif ($EnviTest->system_conf['parameter']['test_mode'] === 'resist_only') {
+    define('ENVI_SERVER_STATUS_CONF', dirname(__FILE__).DIRECTORY_SEPARATOR.'test.conf');
+    if (isset($EnviTest->system_conf['app']['appkey_path']) && $EnviTest->system_conf['app']['appkey_path'] !== '') {
+        define('ENVI_MVC_APPKEY_PATH', $EnviTest->system_conf['app']['appkey_path']);
+    }
+    if (isset($EnviTest->system_conf['app']['cache_path']) && $EnviTest->system_conf['app']['cache_path'] !== '') {
+        define('ENVI_MVC_CACHE_PATH', $EnviTest->system_conf['app']['appkey_path']);
+    }
+
+    include(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'Envi.php');
+    Envi::registerOnly($EnviTest->system_conf['app']['key'], true);
+}
+
+if (!defined('ENVI_BASE_DIR')) {
+    define('ENVI_BASE_DIR', dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR);
+}
 $EnviTest->execute();
 
-}
 
 /**
  * コマンドライン用のクラス

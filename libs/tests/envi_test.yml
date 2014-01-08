@@ -10,7 +10,14 @@ all:
       envi3: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR; ?>envi3"
 
   app:
-    url: "http://localhost/main.php"
+    # リクエストURL
+    url: "http://localhost/<?php echo $app_name;?>.php"
+    # アプリキー
+    key: "<?php echo $app_name;?>"
+    # コンフィグファイルのパス(defaultでいい場合は省略可能)
+    appkey_path: ""
+    # キャッシュディレクトリのパス(defaultでいい場合は省略可能)
+    cache_path: ""
 
   parameter:
     headers:
@@ -27,7 +34,11 @@ all:
     cookie:
       # テスト内でデフォルトで付加されるクッキー
 
-
+    # テストモード
+    # dummy => EnviおよびLoggerをダミーのものに置き換えて実行します(デフォルト)
+    # resist_only => 通常通りEnviを実行します。
+    test_mode: "dummy"
+    
     # デフォルトのRequestmethod
     request_method: "GET"
   extension:
