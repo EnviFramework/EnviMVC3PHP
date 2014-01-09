@@ -163,7 +163,7 @@ class EnviTestAssert
     }
 
     /**
-     * +-- $className::attribute_name が存在しない場合にエラー $message を報告します。
+     * +-- $className::attribute_name が存在する場合にエラー $message を報告します。
      *
      * @access public
      * @param  $attribute_name
@@ -323,7 +323,7 @@ class EnviTestAssert
     }
     /* ----------------------------------------- */
     /**
-     * +-- 空でかどうか
+     * +-- 空でないかどうか
      *
      * @access public
      * @param  $a
@@ -955,7 +955,7 @@ class EnviTestAssert
      * @param  $message OPTIONAL:''
      * @return boolean
      */
-    public function assertStringNotEqualsFile($suffix, $string, $message = '')
+    public function assertStringNotEqualsFile($expected_file, $string, $message = '')
     {
         if (!!is_array($expected_file) || !!is_array($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
@@ -967,17 +967,17 @@ class EnviTestAssert
     }
 
     /**
-     * +-- $string が $suffix で始まっていない場合にエラー $message を報告します。
+     * +-- $string が $prefix で始まっていない場合にエラー $message を報告します。
      *
      * @access public
      * @return boolean
      */
-    public function assertStringStartsWith()
+    public function assertStringStartsWith($prefix, $string, $message = '')
     {
-        if (!!is_array($suffix) || !!is_array($string)) {
+        if (!!is_array($prefix) || !!is_array($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        if (!(mb_strpos($string, $suffix) === 0)) {
+        if (!(mb_strpos($string, $prefix) === 0)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         return true;
@@ -985,17 +985,17 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- $string が $suffix で始まっている場合にエラー $message を報告します。
+     * +-- $string が $prefix で始まっている場合にエラー $message を報告します。
      *
      * @access public
      * @return boolean
      */
-    public function assertStringNotStartsWith()
+    public function assertStringNotStartsWith($prefix, $string, $message = '')
     {
-        if (!!is_array($suffix) || !!is_array($string)) {
+        if (!!is_array($prefix) || !!is_array($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        if (!(mb_strpos($string, $suffix) === 0)) {
+        if (!(mb_strpos($string, $prefix) === 0)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         return true;
@@ -1007,7 +1007,7 @@ class EnviTestAssert
 
     }
     /**
-     * +-- $valueが$containにマッチしない
+     * +-- アサーションの追加
      *
      * @access public
      * @param  $value
