@@ -1310,9 +1310,17 @@ class EnviMock
      */
     public static function mock($class_name)
     {
-        if (!function_exists('runkit_class_emancipate')) {
-            throw new Exception('please install runkit.http://pecl.php.net/package-changelog.php?package=runkit');
+        if (!extension_loaded('runkit')) {
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                $res = dl('runkit.dll');
+            } else {
+                $res = dl('runkit.so');
+            }
+            if ($res) {
+                throw new Exception('please install runkit.http://pecl.php.net/package-changelog.php?package=runkit');
+            }
         }
+
         $mock_editor = new EnviTestMockEditor($class_name);
         if (!class_exists($class_name, false)) {
             self::addMockClass($class_name);
