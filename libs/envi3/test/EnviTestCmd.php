@@ -196,16 +196,42 @@ class EnviTest
             include_once $test_val['class_path'];
             $test_obj = new $test_val['class_name'];
             $test_obj->system_conf = $this->system_conf;
-            $methods = isset($test_val['methods']) && count($test_val['methods']) ?
-                $test_val['methods'] : get_class_methods($test_val['class_name']);
-            foreach ($methods as $method) {
-                if (!strpos($method, 'Test')) {
+            $methods = array();
+            if (isset($test_val['methods']) && count($test_val['methods'])) {
+                $methods = array_fill($test_val['methods']);
+            }
+
+
+            $docs_class = $this->parseClassDocsTag($test_val['class_path']);
+            foreach ($docs_class as $method => $docs) {
+                if (isset($docs['test'])) {
+                    $methods[$method] = true;
+                }
+            }
+
+            $results = array();
+            foreach (get_class_methods($test_val['class_name']) as $method) {
+                if (!isset($methods[$method]) && !mb_ereg('Test$', $method)) {
                     continue;
                 }
                 $test_obj->initialize();
                 try{
-                    $test_obj->$method();
+                    $provider = array();
+                    if (isset($docs_class[$method]['dataProvider'])) {
+                        $provider_method = $docs_class[$method]['dataProvider'][0][0];
+                        $provider = array_values($test_obj->$provider_method());
+                    }
+                    if (isset($docs_class[$method]['depends'])) {
+                        foreach ($docs_class[$method]['depends'] as $val) {
+                            if (!isset($results[$val[0]])) {
+                                throw new EnviTestDependsException;
+                            }
+                            $provider[] = $results[$val[0]];
+                        }
+                    }
+                    $results[$method] = call_user_func_array(array($test_obj, $method), $provider);
                     $this->sendOKMessage($test_val['class_name'].'::'.$method);
+                } catch (EnviTestDependsException $e) {
                 } catch (EnviTestException $e) {
                     $trace = $e->getTrace();
                     $this->sendNGMessage($test_val['class_name'].'::'.$method." line on {$trace[0]['line']}".'  '.$e->getMessage());
@@ -233,6 +259,31 @@ class EnviTest
         $buff = spyc_load($buff);
         $res = isset($buff['test']) ? array_merge($buff['all'], $buff['test']) : $buff['all'];
         return $res;
+    }
+
+
+
+
+    protected function parseClassDocsTag($file)
+    {
+        $pattern = '/\n *\/\*\*\n( *\*.*\n)+[\n ]*public[\n ]*function[\n ]*[^(]+/';
+
+        preg_match_all($pattern , file_get_contents($file), $matches);
+        $class_list = array();
+        foreach ($matches[0] as $val) {
+            mb_ereg('public[\n ]*function[\n ]*([^(]+)', $val, $match);
+            $class_name = $match[1];
+            preg_match_all('/@(.*)\n/' ,$val, $match);
+            $docs = array();
+            foreach ($match[1] as $doc) {
+                $doc = mb_ereg_replace(' +', ' ', $doc);
+                $doc = explode(' ', $doc);
+                $tag = trim(array_shift($doc));
+                $docs[$tag][] = $doc;
+            }
+            $class_list[$class_name] = $docs;
+        }
+        return $class_list;
     }
 
     /**
@@ -273,5 +324,8 @@ class EnviTest
 
 }
 
+class EnviTestDependsException extends Exception
+{
 
+}
 

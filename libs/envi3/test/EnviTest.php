@@ -1221,11 +1221,15 @@ class EnviTestScenario
         if (is_dir($dir_name)) {
             if ($dh = opendir($dir_name)) {
                 while (($file = readdir($dh)) !== false) {
-                    if (!strpos($file, 'Test')) {
+                    if (strpos($file, '.') === 0) {
                         continue;
                     }
                     if (is_dir($dir_name.DIRECTORY_SEPARATOR.$file)) {
                         $arr = $this->getTestByDir($dir_name.DIRECTORY_SEPARATOR.$file, $node +1, $arr);
+                        continue;
+                    }
+                    if (!mb_ereg('Test(\.class)?\.php$', $file)) {
+                        continue;
                     }
                     if (is_file($dir_name.DIRECTORY_SEPARATOR.$file) && $node > 0) {
                         $arr[] = array(
