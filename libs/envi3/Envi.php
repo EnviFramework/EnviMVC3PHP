@@ -444,10 +444,12 @@ class Envi
 
 
     /**
-     * +-- デバッグモードかどうか
+     * +-- デバッグモードかどうかを取得する
+     *
+     * デバッグモードで実行されているかを確認し、デバッグモードならtrueそうでないならｆａｌｓｅを返します。
      *
      * @access public
-     * @return boolean
+     * @return boolean デバッグモードならtrueそうでないならｆａｌｓｅを返します。
      */
     public function isDebug()
     {
@@ -459,7 +461,7 @@ class Envi
      * +-- コンフィグデータをすべて返します
      *
      * @access public
-     * @return array
+     * @return array 定義された全てのコンフィグデータ
      */
     public function &getConfigurationAll()
     {
@@ -472,10 +474,12 @@ class Envi
     /**
      * +-- コンフィグデータを返します
      *
+     * 取得したいコンフィグデータを指定して、返します。
+     *
      * @access public
-     * @param string $key
+     * @param string $key 取得したいコンフィグのキー
      * @param string $key2 可変長引数です。OPTIONAL:....
-     * @return mixed
+     * @return mixed 定義されたコンフィグデータ
      */
     public function getConfiguration($key)
     {
@@ -494,8 +498,10 @@ class Envi
     /**
      * +-- アプリキーを返す
      *
+     * Dispatchで指定した、アプリキーを返します。
+     *
      * @access public
-     * @return string
+     * @return string アプリキー
      */
     public function getApp()
     {
@@ -509,7 +515,7 @@ class Envi
      * @access public
      * @param  $key
      * @param  $string_key OPTIONAL:NULL
-     * @return array
+     * @return array 国際化設定情報
      */
     public function getI18n($key, $string_key = NULL)
     {
@@ -523,7 +529,7 @@ class Envi
      * @access public
      * @param string $string_key
      * @param array $replace
-     * @return string
+     * @return string 国際化テキスト
      */
     public function getText($string_key, array $replace)
     {
@@ -538,8 +544,11 @@ class Envi
     /**
      * +-- Extensionを取得
      *
+     * このメソッドは、extension()関数と同義です。
+     * 使用方法は、エクステンションの項目を参考にしてください。
+     *
      * @static
-     * @return EnviExtension
+     * @return EnviExtension エクステンションオブジェクト
      */
     public static function extension()
     {
@@ -550,6 +559,9 @@ class Envi
 
     /**
      * +-- Validatorを取得
+     *
+     * このメソッドは、validator()関数と同義です。
+     * 使用方法は、バリデーションの項目を参考にしてください。
      *
      * @static
      * @return EnviLogWriter
@@ -563,6 +575,9 @@ class Envi
     /**
      * +-- Loggerを取得
      *
+     * このメソッドは、logger()関数と同義です。
+     * 使用方法は、ロギングの項目を参考にしてください。
+     *
      * @static
      * @return EnviLogWriter
      */
@@ -574,6 +589,9 @@ class Envi
 
     /**
      * +-- Extensionを取得(後方互換用)
+     *
+     * このメソッドは、extension()関数と同義です。
+     * 使用方法は、エクステンションの項目を参考にしてください。
      *
      * @static
      * @return EnviLogWriter
@@ -588,6 +606,9 @@ class Envi
     /**
      * +-- Validatorを取得(後方互換用)
      *
+     * このメソッドは、validator()関数と同義です。
+     * 使用方法は、バリデーションの項目を参考にしてください。
+     *
      * @static
      * @return EnviLogWriter
      */
@@ -600,6 +621,9 @@ class Envi
 
     /**
      * +-- Loggerを取得(後方互換用)
+     *
+     * このメソッドは、logger()関数と同義です。
+     * 使用方法は、ロギングの項目を参考にしてください。
      *
      * @static
      * @return EnviLogWriter
@@ -664,10 +688,10 @@ class Envi
 
 
     /**
-     * +-- ベースのURLを返す
+     * +-- ベースのURLを返します。
      *
      * @access public
-     * @return string
+     * @return string ベースURL「」
      */
     public function getBaseUrl()
     {
@@ -677,9 +701,11 @@ class Envi
     /* ----------------------------------------- */
 
     /**
-     * +-- 処理を中断する
+     * +-- Enviで実行されているすべての処理を中断して、終了します。
      *
      * EnviController::kill()と機能は一緒です。
+     * exit()は処理を完全に終了してしまうため、使用しないほうが無難です。このメソッドは、安全に終了します。
+     * 例外を使用しているため、try句内では、正常に動作しない可能性があります。
      *
      * @access public
      * @param string $kill OPTIONAL:''
@@ -1111,6 +1137,9 @@ class Envi
 
     /**
      * +-- レジストのみを行う(コマンドライン用)
+     *
+     * dispatch()の代わりに使用します。Enviの機能をコマンドラインで使用したい場合などに使用します。
+     * Enviの初期設定のみを行い、Actionなどの解決は行いません。
      *
      * @access      public
      * @static

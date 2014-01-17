@@ -39,13 +39,15 @@
 class EnviTestAssert
 {
     /**
-     * +-- 配列にキーがあるかどうか
+     * +-- 配列にキーがあるかどうかを確認し、ない場合はエラー$message を報告します。
+     *
+     * このアサーションは、$arrayにキー$keyが存在するかどうかを確認し、存在しない場合はエラー$message を報告します。
      *
      * @access public
-     * @param string $key
-     * @param array $array
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param string $key 確認するキー
+     * @param array $array 確認する配列
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertArrayHasKey($key, $array, $message = '')
     {
@@ -60,13 +62,15 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- 配列にキーがないかどうか
+     * +-- 配列にキーがないかどうかを確認し、ある場合はエラー$message を報告します。
+     *
+     * このアサーションは、$arrayにキー$keyが存在しないかどうかを確認し、存在する場合はエラー$message を報告します。
      *
      * @access public
-     * @param string $key
-     * @param array $array
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param string $key 確認するキー
+     * @param array $array 確認する配列
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertArrayNotHasKey($key, $array, $message = '')
     {
@@ -81,13 +85,15 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- 配列に値があるかどうか
+     * +-- $arrayに値$valueが存在するかどうかを確認します。 存在しない場合はエラー$message を報告します。
+     *
+     * このアサーションは、$arrayに値$valueが存在するかどうかを確認します。 存在しない場合はエラー $message を報告します。
      *
      * @access public
-     * @param  $value
-     * @param array $array
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $value 存在確認する値
+     * @param array $array 確認する配列
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertArrayHasValue($value, $array, $message = '')
     {
@@ -103,13 +109,15 @@ class EnviTestAssert
 
 
     /**
-     * +-- 配列に値がないかどうか
+     * +-- $arrayに値$valueが存在しないかどうかを確認します。 存在する場合はエラー$message を報告します。
+     *
+     * このアサーションは、$arrayに値$valueが存在するかどうかを確認します。 存在しない場合はエラー $message を報告します。
      *
      * @access public
-     * @param  $value
-     * @param  $array
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $value 存在確認する値
+     * @param mixed $array 確認する配列
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertArrayNotHasValue($value, $array, $message = '')
     {
@@ -124,12 +132,14 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- 配列かどうか
+     * +-- 配列かどうかを確認します。配列でない場合はエラー$message を報告します。
+     *
+     * このアサーションは、配列かどうかを確認します。配列でない場合はエラー$message を報告します。
      *
      * @access public
-     * @param  $a
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $a 確認する値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertArray($a, $message = '')
     {
@@ -142,13 +152,15 @@ class EnviTestAssert
 
 
     /**
-     * +-- $className::attribute_name が存在しない場合にエラー $message を報告します。
+     * +-- $class_name::$attribute_name() が存在しない場合にエラー $message を報告します。
+     *
+     * このアサーションは、$class_nameクラスに、$attribute_nameメソッドが存在するかを確認します。存在しない場合にエラー $message を報告します。
      *
      * @access public
-     * @param  $attribute_name
-     * @param  $class_name
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $attribute_name メソッド名
+     * @param mixed $class_name クラス名
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertClassHasAttribute($attribute_name, $class_name, $message = '')
     {
@@ -163,13 +175,15 @@ class EnviTestAssert
     }
 
     /**
-     * +-- $className::attribute_name が存在する場合にエラー $message を報告します。
+     * +-- $class_name::attribute_name() が存在する場合にエラー $message を報告します。
+     *
+     * このアサーションは、$class_nameクラスに、$attribute_nameメソッドが存在するかを確認します。存在しない場合にエラー $message を報告します。
      *
      * @access public
-     * @param  $attribute_name
-     * @param  $class_name
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $attribute_name メソッド名
+     * @param mixed $class_name クラス名
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertClassNotHasAttribute($attribute_name, $class_name, $message = '')
     {
@@ -184,15 +198,16 @@ class EnviTestAssert
     }
 
     /**
-     * +-- $valueが$array要素でない場合エラーを返します。
+     * +-- $arrayに値$valueが存在するかどうかを確認します。 存在しない場合はエラー $message を報告します。
      *
-     * assertArrayHasValueとの違いは、$valueにstring以外使用でき無い点です
+     * このアサーションは、$arrayに値$valueが存在するかどうかを確認します。 存在しない場合はエラー $message を報告します。
+     * assertArrayHasValueとの違いは、$valueにstring以外使用でき無い点です。
      *
      * @access public
-     * @param  $value
-     * @param  $array
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $value 存在確認する値
+     * @param mixed $array 確認する配列
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertContains($value, $array, $message = '')
     {
@@ -207,14 +222,15 @@ class EnviTestAssert
 
 
     /**
-     * +-- $valueが$array要素の場合エラーを返します。
+     * +-- $arrayに値$valueが存在しないかどうかを確認します。 存在する場合はエラー $message を報告します。
      *
-     * assertArrayNotHasValueとの違いは、$valueにstring以外使用でき無い点です
+     * このアサーションは、$arrayに値$valueが存在しないかどうかを確認します。 存在する場合はエラー $message を報告します。
+     * assertArrayNotHasValueとの違いは、$valueにstring以外使用でき無い点です。
      *
      * @access public
-     * @param  $value
-     * @param  $array
-     * @param  $message OPTIONAL:''
+     * @param mixed $value 存在確認する値
+     * @param mixed $array 確認する配列
+     * @param string $message OPTIONAL:''
      * @return boolean
      */
     public function assertNotContains($value, $array, $message = '')
@@ -227,8 +243,18 @@ class EnviTestAssert
         }
         return true;
     }
-
-    public function assertContainsOnly($type, $array, $message)
+    /**
+     * +-- $arrayの中身の型が $type だけではない場合にエラー $message を報告します。
+     *
+     * このアサーションは、配列$arrayの中身の型が$typeとなっているかを確認します。$type以外が存在す場合はエラー $message を報告します。
+     *
+     * @access public
+     * @param mixed $type 型の名前
+     * @param mixed $array 確認する配列
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
+     */
+    public function assertContainsOnly($type, $array, $message = '')
     {
         if (!(is_array($array) && !is_array($value))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
@@ -240,17 +266,20 @@ class EnviTestAssert
         }
         return true;
     }
+    /* ----------------------------------------- */
 
     /**
-     * +-- $arrayの中身の型が $type だけではない場合にエラー $message を報告します。
+     * +-- $arrayの中身の型が $type だけの場合にエラー $message を報告します。
+     *
+     * このアサーションは、配列$arrayの中身の型が$type以外となっているかを確認します。$typeが存在す場合はエラー $message を報告します。
      *
      * @access public
-     * @param  $type
-     * @param  $array
-     * @param  $message
-     * @return boolean
+     * @param mixed $type 型の名前
+     * @param mixed $array 確認する配列
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
-    public function assertNotContainsOnly($type, $array, $message)
+    public function assertNotContainsOnly($type, $array, $message = '')
     {
         if (!(is_array($array) && !is_array($value))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
@@ -267,11 +296,13 @@ class EnviTestAssert
     /**
      * +-- $array の要素数が $count でない場合にエラー $message を報告します。
      *
+     * このアサーションは、配列$arrayの要素数が、$countであることを確認します。違う場合は、$message を報告します。
+     *
      * @access public
-     * @param  $count
-     * @param  $array
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $count 配列の要素数
+     * @param mixed $array 確認する配列
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertCount($count, $array, $message = '')
     {
@@ -288,11 +319,13 @@ class EnviTestAssert
     /**
      * +-- $array の要素数が $count の場合にエラー $message を報告します。
      *
+     * このアサーションは、配列$arrayの要素数が、$countででないことを確認します。違う場合は、$message を報告します。
+     *
      * @access public
-     * @param  $count
-     * @param  $array
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $count 配列の要素数
+     * @param mixed $array 確認する配列
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertNotCount($count, $array, $message = '')
     {
@@ -307,12 +340,23 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- 空かどうか
+     * +-- 空であるかを確認し、空の場合は、エラー $message を報告します。
+     *
+     * このアサーションは空であるかを確認し、空の場合は、エラー $message を報告します。
+     * 下記のような値が、空であると判断されます。
+     * + "" (空文字列)
+     * + 0 (整数 の 0)
+     * + 0.0 (浮動小数点数の 0)
+     * + "0" (文字列 の 0)
+     * + NULL
+     * + FALSE
+     * + array() (空の配列)
+     * + $var; (変数が宣言されているが、値が設定されていない)
      *
      * @access public
-     * @param  $a
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $a 確認する値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertEmpty($a, $message = '')
     {
@@ -322,13 +366,25 @@ class EnviTestAssert
         return true;
     }
     /* ----------------------------------------- */
+
     /**
-     * +-- 空でないかどうか
+     * +-- 空でないかを確認し、空の場合は、エラー $message を報告します。
+     *
+     * このアサーションは空でないかを確認し、空の場合は、エラー $message を報告します。
+     * 下記のような値が、空であると判断されます。
+     * + "" (空文字列)
+     * + 0 (整数 の 0)
+     * + 0.0 (浮動小数点数の 0)
+     * + "0" (文字列 の 0)
+     * + NULL
+     * + FALSE
+     * + array() (空の配列)
+     * + $var; (変数が宣言されているが、値が設定されていない)
      *
      * @access public
-     * @param  $a
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $a 確認する値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertNotEmpty($a, $message = '')
     {
@@ -342,13 +398,15 @@ class EnviTestAssert
 
 
     /**
-     * +-- 同じかどうか
+     * +-- 2 つの変数 $a と $b が等しいかどうかを確認し、等しくない場合にエラー $message を報告します。
+     *
+     * このアサーションは2 つの変数 $a と $b が等しいかどうかを確認し、等しくない場合にエラー $message を報告します。
      *
      * @access public
-     * @param  $a
-     * @param  $b
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $a 確認する値
+     * @param mixed $b 確認する値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertEquals($a, $b, $message = '')
     {
@@ -360,13 +418,15 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- 違うかどうか
+     * +-- 2 つの変数 $a と $b が等しくないかどうかを確認し、等しい場合にエラー $message を報告します。
+     *
+     * このアサーションは2つの変数 $a と $b が等しくないかどうかを確認し、等しい場合にエラー $message を報告します。
      *
      * @access public
-     * @param  $a
-     * @param  $b
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $a 確認する値
+     * @param mixed $b 確認する値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertNotEquals($a, $b, $message = '')
     {
@@ -378,12 +438,14 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- falseかどうか
+     * +-- falseかどうかを確認します。 そうでない場合はエラー $message を報告します。
+     *
+     * このアサーションは、falseかどうかを確認します。 そうでない場合はエラー $message を報告します。
      *
      * @access public
-     * @param  $a
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $a 確認する値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertFalse($a, $message = '')
     {
@@ -395,13 +457,15 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- 同じファイルかどうか
+     * +-- 指定されたファイルが同じファイルかどうかを確認します。 そうでない場合はエラー $message を報告します。
+     *
+     * このアサーションは、指定されたファイルが同じファイルかどうかを確認します。 そうでない場合はエラー $message を報告します。
      *
      * @access public
-     * @param  $a
-     * @param  $b
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param string $a 確認するファイル名
+     * @param string $b 確認するファイル名
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertFileEquals($a, $b, $message = '')
     {
@@ -413,13 +477,15 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- 同じファイルでないかどうか
+     * +-- 指定されたファイルが同じファイルでないかどうかを確認します。 そうでない場合はエラー $message を報告します。
+     *
+     * このアサーションは、指定されたファイルが同じファイルでないかどうかを確認します。 そうでない場合はエラー $message を報告します。
      *
      * @access public
-     * @param  $a
-     * @param  $b
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param string $a 確認するファイル名
+     * @param string $b 確認するファイル名
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertFileNotEquals($a, $b, $message = '')
     {
@@ -431,12 +497,14 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- ファイルが存在するかどうか
+     * +-- ファイルが存在するかどうかを確認します。 そうでない場合はエラー $message を報告します。
+     *
+     * このアサーションは、ファイルが存在するかどうかを確認します。 そうでない場合はエラー $message を報告します。
      *
      * @access public
-     * @param  $a
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $a 確認するファイルパス
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertFileExists($a, $message = '')
     {
@@ -448,12 +516,14 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- ファイルが存在しないかどうか
+     * +-- ファイルが存在しないかどうかを確認します。 そうでない場合はエラー $message を報告します。
+     *
+     * このアサーションは、ファイルが存在しないかどうかを確認します。 そうでない場合はエラー $message を報告します。
      *
      * @access public
-     * @param  $a
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $a 確認するファイルパス
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertNotFileExists($a, $message = '')
     {
@@ -465,13 +535,15 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- $a > $b かどうか
+     * +-- $a > $b かどうかを確認します。 そうでない場合はエラー $message を報告します。
+     *
+     * このアサーションは、$a > $b かどうかを確認します。 そうでない場合はエラー $message を報告します。
      *
      * @access public
-     * @param  $a
-     * @param  $b
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $a 確認する値
+     * @param mixed $b 確認する値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertGreaterThan($a, $b, $message = '')
     {
@@ -483,13 +555,15 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- $a>=$bかどうか
+     * +-- $a>=$bかどうかを確認します。 そうでない場合はエラー $message を報告します。
+     *
+     * このアサーションは、$a>=$bかどうかを確認します。 そうでない場合はエラー $message を報告します。
      *
      * @access public
-     * @param  $a
-     * @param  $b
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $a 確認する値
+     * @param mixed $b 確認する値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertGreaterThanOrEqual($a, $b, $message = '')
     {
@@ -503,14 +577,17 @@ class EnviTestAssert
     /**
      * +-- $actual が $expected のインスタンスでない場合にエラー $message を報告します。
      *
+     * このアサーションは、$actual が $expected のインスタンスでない場合にエラー $message を報告します。
+     *
      * @access public
-     * @param  $expected
-     * @param  $actual
-     * @return boolean
+     * @param string $expected クラス名
+     * @param mixed $actual オブジェクト
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
-    public function assertInstanceOf($expected, $actual, $message)
+    public function assertInstanceOf($expected, $actual, $message = '')
     {
-        if (!!is_array($expected)) {
+        if (!is_object($actual) || !is_string($expected)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!($actual instanceof $expected)) {
@@ -524,14 +601,17 @@ class EnviTestAssert
     /**
      * +-- $actual が $expected のインスタンスの場合にエラー $message を報告します。
      *
+     * このアサーションは、$actual が $expected のインスタンスの場合にエラー $message を報告します。
+     *
      * @access public
-     * @param  $expected
-     * @param  $actual
-     * @return boolean
+     * @param string $expected クラス名
+     * @param mixed $actual オブジェクト
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
-    public function assertNotInstanceOf($expected, $actual, $message)
+    public function assertNotInstanceOf($expected, $actual, $message = '')
     {
-        if (!!is_array($expected)) {
+        if (!is_object($actual) || !is_string($expected)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (($actual instanceof $expected)) {
@@ -544,14 +624,17 @@ class EnviTestAssert
     /**
      * +-- $actual の型が $expected でない場合にエラー $message を報告します。
      *
+     * このアサーションは、$actual の型が $expected でない場合にエラー $message を報告します。
+     *
      * @access public
-     * @param  $expected
-     * @param  $actual
-     * @return boolean
+     * @param string $expected 型名
+     * @param mixed $actual 調べる値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
-    public function assertInternalType($expected, $actual)
+    public function assertInternalType($expected, $actual, $message = '')
     {
-        if (!!is_array($expected)) {
+        if (!is_string($expected)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(gettype($actual) === $expected)) {
@@ -563,14 +646,17 @@ class EnviTestAssert
     /**
      * +-- $actual の型が $expected の場合にエラー $message を報告します。
      *
+     * このアサーションは、$actual の型が $expected の場合にエラー $message を報告します。
+     *
      * @access public
-     * @param  $expected
-     * @param  $actual
-     * @return boolean
+     * @param string $expected 型名
+     * @param mixed $actual 調べる値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
-    public function assertNotInternalType($expected, $actual)
+    public function assertNotInternalType($expected, $actual, $message = '')
     {
-        if (!!is_array($expected)) {
+        if (!is_string($expected)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((gettype($actual) === $expected)) {
@@ -581,13 +667,15 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- $a<$bかどうか
+     * +-- $a<$bかどうかを確認し、そうでない場合にエラー $message を報告します。
+     *
+     * このアサーションは、$a<$bかどうかを確認し、そうでない場合にエラー $message を報告します。
      *
      * @access public
-     * @param  $a
-     * @param  $b
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $a 調べる値
+     * @param mixed $b 調べる値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertLessThan($a, $b, $message = '')
     {
@@ -599,13 +687,15 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- $a<=$bかどうか
+     * +-- $a<=$bかどうかを確認し、そうでない場合にエラー $message を報告します。
+     *
+     * このアサーションは、$a<=$bかどうかを確認し、そうでない場合にエラー $message を報告します。
      *
      * @access public
-     * @param  $a
-     * @param  $b
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $a 調べる値
+     * @param mixed $b 調べる値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertLessThanOrEqual($a, $b, $message = '')
     {
@@ -617,12 +707,14 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- Nullかどうか
+     * +-- Nullかどうかを確認し、そうでない場合にエラー $message を報告します。
+     *
+     * このアサーションは、Nullかどうかを確認し、そうでない場合にエラー $message を報告します。
      *
      * @access public
-     * @param  $a
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $a 調べる値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertNull($a, $message = '')
     {
@@ -634,17 +726,19 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- $object->attribute_name が存在しない場合にエラー $message を報告します。
+     * +-- オブジェクト$objectにメソッド$attribute_name があるかを確認し、存在しない場合にエラー $message を報告します。
+     *
+     * このアサーションは、オブジェクト$objectにメソッド$attribute_name があるかを確認し、存在しない場合にエラー $message を報告します。
      *
      * @access public
-     * @param  $attribute_name
-     * @param  $object
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param string $attribute_name メソッド名
+     * @param mixed $object 調べるオブジェクト
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertObjectHasAttribute($attribute_name, $object, $message = '')
     {
-        if (!!is_array($attribute_name)) {
+        if (!is_string($attribute_name)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(method_exists($object, $attribute_name) === true)) {
@@ -655,17 +749,19 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- $object->attribute_name が存在する場合にエラー $message を報告します。
+     * +-- オブジェクト$objectにメソッド$attribute_name がないかを確認し、存在する場合にエラー $message を報告します。
+     *
+     * このアサーションは、オブジェクト$objectにメソッド$attribute_name がないかを確認し、存在する場合にエラー $message を報告します。
      *
      * @access public
-     * @param  $attribute_name
-     * @param  $object
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param string $attribute_name メソッド名
+     * @param mixed $object 調べるオブジェクト
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertObjectNotHasAttribute($attribute_name, $object, $message = '')
     {
-        if (!!is_array($attribute_name)) {
+        if (!is_string($attribute_name)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((method_exists($object, $attribute_name) === true)) {
@@ -678,15 +774,17 @@ class EnviTestAssert
     /**
      * +-- $string が正規表現 $pattern にマッチしない場合にエラー $message を報告します。
      *
+     * このアサーションは、$string が正規表現 $pattern にマッチしない場合にエラー $message を報告します。
+     *
      * @access public
-     * @param  $pattern
-     * @param  $string
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param string $pattern 正規表現
+     * @param mixed $string 調べる値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertRegExp($pattern, $string, $message = '')
     {
-        if (!!is_array($pattern) || !!is_array($string)) {
+        if (!is_string($pattern) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(mb_ereg($pattern, $string) === true)) {
@@ -699,15 +797,17 @@ class EnviTestAssert
     /**
      * +-- $string が正規表現 $pattern にマッチする場合にエラー $message を報告します。
      *
+     * このアサーションは、$string が正規表現 $pattern にマッチする場合にエラー $message を報告します。
+     *
      * @access public
-     * @param  $pattern
-     * @param  $string
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param string $pattern 正規表現
+     * @param mixed $string 調べる値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertNotRegExp($format, $string, $message = '')
     {
-        if (!!is_array($format) || !!is_array($string)) {
+        if (!is_string($format) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((mb_ereg($format, $string) === true)) {
@@ -722,15 +822,17 @@ class EnviTestAssert
     /**
      * +-- $string が(Preg)正規表現 $pattern にマッチしない場合にエラー $message を報告します。
      *
+     * このアサーションは、$string が(Preg)正規表現 $pattern にマッチしない場合にエラー $message を報告します。
+     *
      * @access public
-     * @param  $pattern
-     * @param  $string
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param string $pattern 正規表現
+     * @param mixed $string 調べる値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertPregMatch($pattern, $string, $message = '')
     {
-        if (!!is_array($pattern) || !!is_array($string)) {
+        if (!is_string($pattern) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(preg_match($pattern, $string) === true)) {
@@ -743,15 +845,17 @@ class EnviTestAssert
     /**
      * +-- $string が(Preg)正規表現 $pattern にマッチする場合にエラー $message を報告します。
      *
+     * このアサーションは、$string が(Preg)正規表現 $pattern にマッチする場合にエラー $message を報告します。
+     *
      * @access public
-     * @param  $pattern
-     * @param  $string
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param string $pattern 正規表現
+     * @param mixed $string 調べる値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertNotPregMatch($format, $string, $message = '')
     {
-        if (!!is_array($format) || !!is_array($string)) {
+        if (!is_string($format) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((preg_match($format, $string) === true)) {
@@ -764,17 +868,19 @@ class EnviTestAssert
 
 
     /**
-     * +-- $string が書式文字列 $format にマッチしない場合にエラー $message を報告します。
+     * +-- $string が書式文字列 $pattern にマッチしない場合にエラー $message を報告します。
+     *
+     * このアサーションは、$string が書式文字列 $pattern にマッチしない場合にエラー $message を報告します。
      *
      * @access public
-     * @param  $pattern
-     * @param  $string
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param string $pattern 書式文字列
+     * @param mixed $string 調べる値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertStringMatchesFormat($pattern, $string, $message = '')
     {
-        if (!!is_array($pattern) || !!is_array($string)) {
+        if (!is_string($pattern) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(sprintf($pattern, $string) === true)) {
@@ -785,17 +891,19 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- $string が書式文字列 $format にマッチする場合にエラー $message を報告します。
+     * +-- $string が書式文字列 $pattern にマッチする場合にエラー $message を報告します。
+     *
+     * このアサーションは、$string が書式文字列 $pattern にマッチする場合にエラー $message を報告します。
      *
      * @access public
-     * @param  $pattern
-     * @param  $string
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param string $pattern 書式文字列
+     * @param mixed $string
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertStringNotMatchesFormat($pattern, $string, $message = '')
     {
-        if (!!is_array($pattern) || !!is_array($string)) {
+        if (!is_string($pattern) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((sprintf($pattern, $string) === true)) {
@@ -806,17 +914,19 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- $string が $formatFile の内容にマッチしない場合にエラー $message を報告します。
+     * +-- $string が $format_file の内容にマッチしない場合にエラー $message を報告します。
+     *
+     * このアサーションは、$string が $format_file の内容にマッチしない場合にエラー $message を報告します。
      *
      * @access public
-     * @param  $format_file
-     * @param  $string
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $format_file ファイルパス
+     * @param mixed $string 文字列
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertStringMatchesFormatFile($format_file, $string, $message = '')
     {
-        if (!!is_array($format_file) || !!is_array($string) || is_file($format_file)) {
+        if (!is_string($format_file) || !is_string($string) || is_file($format_file)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(file_get_contents($format_file) === $string)) {
@@ -828,17 +938,19 @@ class EnviTestAssert
 
 
     /**
-     * +-- $string が $formatFile の内容にマッチする場合にエラー $message を報告します。
+     * +-- $string が $format_file の内容にマッチする場合にエラー $message を報告します。
+     *
+     * このアサーションは、$string が $format_file の内容にマッチする場合にエラー $message を報告します。
      *
      * @access public
-     * @param  $format_file
-     * @param  $string
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $format_file ファイルパス
+     * @param mixed $string 文字列
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertStringNotMatchesFormatFile($format_file, $string, $message = '')
     {
-        if (!!is_array($format_file) || !!is_array($string) || is_file($format_file)) {
+        if (!is_string($format_file) || !is_string($string) || is_file($format_file)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((file_get_contents($format_file) === $string)) {
@@ -849,13 +961,15 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- 型と、値が同じかどうか
+     * +-- 型と、値が同じかどうかを確認し、そうでない場合にエラー $message を報告します。
+     *
+     * このアサーションは、型と、値が同じかどうかを確認し、そうでない場合にエラー $message を報告します。
      *
      * @access public
-     * @param  $a
-     * @param  $b
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $a 確認する値
+     * @param mixed $b 確認する値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertSame($a, $b, $message = '')
     {
@@ -867,13 +981,15 @@ class EnviTestAssert
     /* ----------------------------------------- */
 
     /**
-     * +-- 型と、値が違うかどうか
+     * +-- 型と、値が違うかどうかを確認し、そうでない場合にエラー $message を報告します。
+     *
+     * このアサーションは、型と、値が違うかどうかを確認し、そうでない場合にエラー $message を報告します。
      *
      * @access public
-     * @param  $a
-     * @param  $b
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $a 確認する値
+     * @param mixed $b 確認する値
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertNotSame($a, $b, $message = '')
     {
@@ -887,15 +1003,17 @@ class EnviTestAssert
     /**
      * +-- $string が $suffix で終わっていない場合にエラー $message を報告します。
      *
+     * このアサーションは、$string が $suffix で終わっていない場合にエラー $message を報告します。
+     *
      * @access public
-     * @param  $suffix
-     * @param  $string
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $suffix 終端文字列
+     * @param mixed $string 確認する文字列
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertStringEndsWith($suffix, $string, $message = '')
     {
-        if (!!is_array($suffix) || !!is_array($string)) {
+        if (!is_string($suffix) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(mb_strpos($string, $suffix) === mb_strlen($string))) {
@@ -907,15 +1025,17 @@ class EnviTestAssert
     /**
      * +-- $string が $suffix で終わっている場合にエラー $message を報告します。
      *
+     * このアサーションは、$string が $suffix で終わっている場合にエラー $message を報告します。
+     *
      * @access public
-     * @param  $suffix
-     * @param  $string
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $suffix 終端文字列
+     * @param mixed $string 確認する文字列
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertStringNotEndsWith($suffix, $string, $message = '')
     {
-        if (!!is_array($suffix) || !!is_array($string)) {
+        if (!is_string($suffix) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((mb_strpos($string, $suffix) === mb_strlen($string))) {
@@ -927,15 +1047,17 @@ class EnviTestAssert
     /**
      * +-- expected_file で指定したファイルの内容に $string が含まれない場合にエラー $message を報告します。
      *
+     * このアサーションは、expected_file で指定したファイルの内容に $string が含まれない場合にエラー $message を報告します。
+     *
      * @access public
-     * @param  $expected_file
-     * @param  $string
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $expected_file ファイルパス
+     * @param mixed $string 調べる文字列
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertStringEqualsFile($expected_file, $string, $message = '')
     {
-        if (!!is_array($expected_file) || !!is_array($string)) {
+        if (!is_string($expected_file) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(mb_strpos($string, file_get_contents($expected_file)) !== false)) {
@@ -949,15 +1071,17 @@ class EnviTestAssert
     /**
      * +-- expected_file で指定したファイルの内容に $string が含まれる場合にエラー $message を報告します。
      *
+     * このアサーションは、expected_file で指定したファイルの内容に $string が含まれる場合にエラー $message を報告します。
+     *
      * @access public
-     * @param  $expected_file
-     * @param  $string
-     * @param  $message OPTIONAL:''
-     * @return boolean
+     * @param mixed $expected_file ファイルパス
+     * @param mixed $string 調べる文字列
+     * @param string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertStringNotEqualsFile($expected_file, $string, $message = '')
     {
-        if (!!is_array($expected_file) || !!is_array($string)) {
+        if (!is_string($expected_file) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((mb_strpos($string, file_get_contents($expected_file)) !== false)) {
@@ -969,12 +1093,17 @@ class EnviTestAssert
     /**
      * +-- $string が $prefix で始まっていない場合にエラー $message を報告します。
      *
-     * @access public
-     * @return boolean
+     * このアサーションは、$string が $prefix で始まっていない場合にエラー $message を報告します。
+     *
+     * @access      public
+     * @param       mixed $prefix 先頭文字列
+     * @param       mixed $string 調べる文字列
+     * @param       string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return      boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertStringStartsWith($prefix, $string, $message = '')
     {
-        if (!!is_array($prefix) || !!is_array($string)) {
+        if (!is_string($prefix) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(mb_strpos($string, $prefix) === 0)) {
@@ -987,12 +1116,17 @@ class EnviTestAssert
     /**
      * +-- $string が $prefix で始まっている場合にエラー $message を報告します。
      *
-     * @access public
-     * @return boolean
+     * このアサーションは、$string が $prefix で始まっている場合にエラー $message を報告します。
+     *
+     * @access      public
+     * @param       mixed $prefix 先頭文字列
+     * @param       mixed $string 調べる文字列
+     * @param       string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return      boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
     public function assertStringNotStartsWith($prefix, $string, $message = '')
     {
-        if (!!is_array($prefix) || !!is_array($string)) {
+        if (!is_string($prefix) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(mb_strpos($string, $prefix) === 0)) {
@@ -1006,15 +1140,17 @@ class EnviTestAssert
     {
 
     }
+
     /**
      * +-- アサーションの追加
      *
      * @access public
-     * @param  $value
+     * @param mixed $value
      * @param EnviTestContain $contain
-     * @return boolean
+     * @param       string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return      boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
-    public function assertThat($value, EnviTestContain $contain)
+    public function assertThat($value, EnviTestContain $contain, $message = '')
     {
         if (!($contain->execute($value))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
@@ -1022,14 +1158,18 @@ class EnviTestAssert
         return true;
     }
     /* ----------------------------------------- */
+
     /**
-     * +-- trueかどうか
+     * +-- trueかどうかを確認します。 そうでない場合はエラー $message を報告します。
+     *
+     * このアサーションは、trueかどうかを確認します。 そうでない場合はエラー $message を報告します。
      *
      * @access public
-     * @param  $a
-     * @return boolean
+     * @param mixed $a 確認する値
+     * @param       string $message OPTIONAL:'' 表示するエラーメッセージ
+     * @return      boolean OKの場合trueを返します。 テストがNGの場合は、何も返しません。
      */
-    public function assertTrue($a)
+    public function assertTrue($a, $message = '')
     {
         if (!($a === true)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
@@ -1211,9 +1351,9 @@ class EnviTestScenario
      * +-- DIRECTORYの再帰検索
      *
      * @access public
-     * @param  $dir_name
-     * @param  $node OPTIONAL:0
-     * @param  $arr OPTIONAL:array
+     * @param mixed $dir_name
+     * @param mixed $node OPTIONAL:0
+     * @param mixed $arr OPTIONAL:array
      * @return array
      */
     public function getTestByDir($dir_name, $node = 0, $arr = array())
