@@ -50,8 +50,12 @@ class EnviDBInstance
     /**
      * +-- instanceの取得
      *
+     * デフォルトでは、
+     * `extension()->DBI->getInstance($db_key);`
+     * というような感じでコールします。直接、クラスインスタンスを作成することはありません。
+     *
      * @access public
-     * @param  $db_key
+     * @param string $db_key yamlで設定した接続キー
      * @return DBIBase
      */
     public function getInstance($db_key)

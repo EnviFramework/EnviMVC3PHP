@@ -1365,7 +1365,9 @@ class EnviTestScenario
                         continue;
                     }
                     if (is_dir($dir_name.DIRECTORY_SEPARATOR.$file)) {
-                        $arr = $this->getTestByDir($dir_name.DIRECTORY_SEPARATOR.$file, $node +1, $arr);
+                        if (mb_ereg('Test$', $file)) {
+                            $arr = $this->getTestByDir($dir_name.DIRECTORY_SEPARATOR.$file, $node +1, $arr);
+                        }
                         continue;
                     }
                     if (!mb_ereg('Test(\.class)?\.php$', $file)) {
