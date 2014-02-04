@@ -1554,7 +1554,7 @@ class EnviTestMockEditor
     public function emancipate()
     {
         runkit_class_emancipate($this->class_name);
-        runkit_class_adopt($class_name , 'EnviTestBlankMockBase');
+        runkit_class_adopt($this->class_name , 'EnviTestBlankMockBase');
         return $this;
     }
     /* ----------------------------------------- */
