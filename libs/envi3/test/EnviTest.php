@@ -787,7 +787,7 @@ class EnviTestAssert
         if (!is_string($pattern) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        if (!(mb_ereg($pattern, $string) === true)) {
+        if (!(mb_ereg($pattern, $string))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         return true;
@@ -810,7 +810,7 @@ class EnviTestAssert
         if (!is_string($format) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        if ((mb_ereg($format, $string) === true)) {
+        if ((mb_ereg($format, $string))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         return true;
