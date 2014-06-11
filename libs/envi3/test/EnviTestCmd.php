@@ -197,6 +197,8 @@ class EnviTest
 
 
         $arr = $scenario->execute();
+        $is_ng = false;
+
         // カバレッジ
         $code_coverage = false;
         if (isset($this->system_conf['code_coverage']) && $this->system_conf['code_coverage']['use']) {
@@ -250,7 +252,7 @@ class EnviTest
                     $methods[$method] = true;
                 }
             }
-            $is_ng = false;
+
             $results = array();
             foreach (get_class_methods($test_val['class_name']) as $method) {
                 if (!isset($methods[$method]) && !mb_ereg('Test$', $method)) {

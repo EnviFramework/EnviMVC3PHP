@@ -20,6 +20,13 @@
 
 $scenario_dir = dirname(__FILE__).DIRECTORY_SEPARATOR;
 define('ENVI_TEST_YML', basename(dirname(__FILE__)).'.yml');
+$cmd = 'cp -rf '.ENVI_BASE_DIR.'/test/* '.dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/test/';
+`$cmd`;
+$cmd = 'cp -rf '.ENVI_BASE_DIR.'/util/* '.dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/util/';
+`$cmd`;
+
+
+
 
 require_once ENVI_BASE_DIR.'/test/EnviTest.php';
 require_once dirname(__FILE__).'/testCaseBase.php';

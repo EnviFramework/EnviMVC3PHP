@@ -21,12 +21,17 @@
  */
 
 /**
+ * +-- テストの共通基底クラス
+ *
+ * EnviTestAssertで継承されているため、自動生成される、EnviTestCaseでも自動的に継承されます。
+ *
+ * 現在は、テストフレームワークが持つ機能を除き、callメソッドのみを提供します。
+ *
  * @package
  * @subpackage
  * @abstract
  * @since      File available since Release 1.0.0
  * @author     akito<akito-artisan@five-foxes.com>
- * @doc_ignore
  */
 abstract class EnviTestBase
 {
@@ -78,7 +83,7 @@ abstract class EnviTestBase
     }
     /* ----------------------------------------- */
 }
-
+/* ----------------------------------------- */
 
 /**
  * テストAssert

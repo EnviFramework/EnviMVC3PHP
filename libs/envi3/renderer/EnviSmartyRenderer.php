@@ -2,6 +2,14 @@
 /**
  * ArtisanSmartyレンダラー
  *
+ * Smartyをマルチバイトに改造した、ArtisanSmartyを使用したレンダラーです。
+ *
+ * 通常のSmartyとは違い、デフォルトのSmartyタグは、`<%ldelim%>` `<%rdelim%>`となりますので、注意して下さい。
+ *
+ *
+ *
+ *
+ *
  * PHP versions 5
  *
  *
