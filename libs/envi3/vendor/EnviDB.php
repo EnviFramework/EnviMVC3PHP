@@ -2,6 +2,14 @@
 /**
  * DB処理
  *
+ * [PDO](http://jp2.php.net/manual/ja/book.pdo.php)をラップした、DBへのアクセスを提供するエクステンションです。
+ *
+ * エクステンション設定で設定された接続情報によって、接続先を設定できます。
+ *
+ * [データアクセサ](/c/man/v3/core/db/データアクセサ)や、[データオブジェクト](/c/man/v3/core/db/データオブジェクト)を使用することによって、プログラム側での、水平分割、垂直分割にも対応できます。
+ *
+ * `envi build-model`の使用方法や、クラスリファレンス以外の、詳しい使用方法は、[こちらを参照して下さい](/c/man/v3/core/db)
+ *
  * PHP versions 5
  *
  *
@@ -13,8 +21,8 @@
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
- * @since      File available since Release 1.0.0
+ * @see        http://www.enviphp.net/
+ * @since      File available since Release 3.1.0
  */
 
 /**
@@ -28,8 +36,8 @@
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
- * @since      Class available since Release 1.0.0
+ * @see        http://www.enviphp.net/
+ * @since      Class available since Release 3.1.0
  */
 class EnviDBInstance
 {
@@ -40,6 +48,7 @@ class EnviDBInstance
      * @access public
      * @param  $config
      * @return void
+     * @doc_ignore
      */
     public function __construct($config)
     {
@@ -51,8 +60,12 @@ class EnviDBInstance
      * +-- instanceの取得
      *
      * デフォルトでは、
-     * `extension()->DBI->getInstance($db_key);`
-     * というような感じでコールします。直接、クラスインスタンスを作成することはありません。
+     * `extension()->DBI()->getInstance($db_key);`
+     * という形でコールします。直接、クラスインスタンスを作成することはありません。
+     *
+     * また、build-modelで生成される、データアクセサは、必ず`extension()->DBI()->getInstance($db_key);`として、エクステンションにアクセスします。
+     *
+     * 別名を使用したい場合は、テンプレートを変更して下さい。
      *
      * @access public
      * @param string $db_key yamlで設定した接続キー
@@ -78,7 +91,7 @@ class EnviDBInstance
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @see        http://www.enviphp.net/
  * @since      Class available since Release 1.0.0
  */
 class EnviDB
@@ -92,15 +105,25 @@ class EnviDB
 
 
     /**
-     * +-- Enviから呼ばれるメソッド。必ず作る
+     * +-- DSNパラメータから接続インスタンスを作成します。
+     *
+     * dsnパラメータ配列を利用して、接続インスタンスを作成します。
+     * 同一リクエスト内であれば、インスタンスはプールされ、同じinstance_nameが指定された場合は、プールされた接続情報が返されます。
+     *
+     * 通常は、直接コールされることは無く、エクステンションから、`extension()->DBI->()->getInstance('instance_name')`形式でコールされ、DSNパラメータは、その設定ファイルに記述されます。
+     *
+     *
      *
      * @access public
      * @static
-     * @param  $param
-     * @param  $instance_name
+     * @param array $param 接続パラメータ
+     * @param string $instance_name インスタンス名
      * @return EnviDBIBase
+     * @see EnviDBInstance::getInstance()
+     * @deprecated `extension()->DBI->()->getInstance()`を使用して下さい。
+     * @see EnviDBInstance::getInstance()
      */
-    public static function getConnection($param, $instance_name)
+    public static function getConnection(array $param, $instance_name)
     {
         if (isset(self::$connections[$instance_name])) {
             return self::$connections[$instance_name];
@@ -143,12 +166,18 @@ class EnviDB
     /**
      * +-- EnviDBIBaseを取得する
      *
+     * dsnパラメータおよび、ユーザーパスワードを指定して、DB インスタンスクラスを作成します。
+     * `EnviDB::getConnection()`とは違いコールする度に新しい接続インスタンスを作成します。
+     *
      * @access public
      * @static
-     * @param  $dsn
-     * @param  $user OPTIONAL:false
-     * @param  $password OPTIONAL:false
+     * @param string|array $dsn DSN
+     * @param string|boolean $user DSNにユーザー名を記述しない場合、ユーザー名を指定する OPTIONAL:false
+     * @param string|boolean $password DSNパスワード名を記述しない場合、ユーザー名を指定する OPTIONAL:false
+     * @param boolean $is_pool コネクションプールの使用 OPTIONAL:false
      * @return EnviDBIBase
+     * @deprecated `extension()->DBI->()->getInstance()`を使用して下さい。
+     * @see EnviDBInstance::getInstance()
      */
     public static function connect($dsn, $user = false, $password = false, $is_pool = false)
     {
@@ -169,16 +198,24 @@ class EnviDB
     /* ----------------------------------------- */
 
     /**
-     * +-- ダミー
+     * +-- $objがNULLもしくは、オブジェクト名にerrorと言う文字列が入っていた場合に、trueを返します
+     *
+     * PearDBのDB::isError();の代わりに用意されているメソッドです。
+     *
+     * 単純なGREPでの置き換えで、移行出来るように用意されていますが、
+     * EnviDBでは、例外を使用するため、このメソッドを使用する意味はありません。
      *
      * @static
-     * @param & $obj
+     * @param mixed $obj チェックする変数
      * @return boolean
+     * @deprecated ダミークラスです。
      */
     public static function isError(&$obj)
     {
         if ($obj === NULL) {
             return true;
+        } elseif (is_object($obj)) {
+            return false;
         }
         return stripos(get_class($obj), 'error') !== false;
     }
@@ -196,7 +233,7 @@ class EnviDB
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @see        http://www.enviphp.net/
  * @since      Class available since Release 1.0.0
  */
 class EnviDBIBase
@@ -211,6 +248,8 @@ class EnviDBIBase
     /**
      * +-- PDOオブジェクトを返す
      *
+     * DBに接続されたPDOオブジェクトを返します
+     *
      * @access public
      * @return PDO
      */
@@ -221,11 +260,13 @@ class EnviDBIBase
     /* ----------------------------------------- */
 
     /**
-     * クオートする
+     * +-- スマートにクオートする
+     *
+     * $valueをクオートして返します。
      *
      * @access public
      * @param mixied $value クオートするデータ
-     * @return string
+     * @return string クオートされた文字列
      */
     public function quotesmart($value)
     {
@@ -245,9 +286,12 @@ class EnviDBIBase
     /**
      * +-- 文字列をエスケープする
      *
+     * EnviDBIBase::quotesmart()と等価です。
+     *
      * @access public
      * @param mixied $str クオートするデータ
-     * @return string
+     * @return string クオートされた文字列
+     * @see EnviDBIBase::quotesmart()
      */
     public function quote($str)
     {
@@ -258,8 +302,82 @@ class EnviDBIBase
     /**
      * +-- インスタンス全体のフェッチモードを指定する
      *
+     * フェッチモードは下記から選択できます。
+     *
+     *
+     * PDO::FETCH_LAZY (integer)
+     * : 取得する方法として、 結果セットが返すカラム名と同じ名前の変数を有するオブジェクトとして各行を返す方法を 指定します。 PDO::FETCH_LAZY は、アクセスされたものと同じ名前のオブジェクト変数を作成します。 PDOStatement::fetchAll() の中では使えません。
+     *
+     *
+     * PDO::FETCH_ASSOC (integer)
+     * : 結果セットの対応するカラム名にふられているものと同じキーを付けた 連想配列として各行を返す取得方法を指定します。 もし結果セットが複数のカラムを同名で含む場合、 PDO::FETCH_ASSOC はカラム名毎に 1 つの値のみ返します。
+     *
+     *
+     * PDO::FETCH_NAMED (integer)
+     * : 結果セットの対応するカラム名にふられているものと同じキーを付けた 連想配列として各行を返す取得方法を指定します。 もし結果セットが複数のカラムを同名で含む場合、 PDO::FETCH_NAMED はカラム名毎に値の配列を返します。
+     *
+     *
+     * PDO::FETCH_NUM (integer)
+     * : 結果セットの対応するカラム番号にふられているものと同じ添字を付けた 配列として各行を返す取得方法を指定します。番号は0から始まります。
+     *
+     *
+     * PDO::FETCH_BOTH (integer)
+     * : 結果セットと同じカラム名と0から始まるカラム番号を付けた配列として各行を返す 方法を指定します。
+     *
+     *
+     * PDO::FETCH_OBJ (integer)
+     * : 結果セットが返すカラム名と同じ名前のプロパティを有する オブジェクトとして各行を返す方法を指定します。
+     *
+     *
+     * PDO::FETCH_BOUND (integer)
+     * : 結果セットのカラムの値を PDOStatement::bindParam() または PDOStatement::bindColumn() メソッドでバインドされた PHP変数に代入し、TRUEを返すという取得方法を指定します。
+     *
+     *
+     * PDO::FETCH_COLUMN (integer)
+     * : 結果セットの次の行から指定された一つのカラムのみを返す取得方法を指定します。
+     *
+     *
+     * PDO::FETCH_CLASS (integer)
+     * : カラムをクラスのプロパティにマップしつつ、 指定されたクラスの新規インスタンスを返す取得方法を指定します。
+     *
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.alert .alert-warning}
+     * 注意: 要求されたクラスにプロパティが存在しない場合は、マジックメソッド __set() がコールされます。
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     *
+     * PDO::FETCH_INTO (integer)
+     * : カラムをクラスのプロパティにマップしつつ、 指定されたクラスの既存のインスタンスを更新する取得方法を指定します。
+     *
+     *
+     * PDO::FETCH_FUNC (integer)
+     * : データをその場で扱う方法を完全にカスタマイズできるようにします (PDOStatement::fetchAll() の中でしか使えません)。
+     *
+     *
+     * PDO::FETCH_GROUP (integer)
+     * : 値で返すグループ。 PDO::FETCH_COLUMN あるいは PDO::FETCH_KEY_PAIR と組み合わせます。
+     *
+     *
+     * PDO::FETCH_UNIQUE (integer)
+     * : 一意な値だけを取得します。
+     *
+     *
+     * PDO::FETCH_KEY_PAIR (integer)
+     * : ふたつのカラムからなる結果を配列で取得します。最初のカラムの値がキー、二番目のカラムの内容が値となります。 PHP 5.2.3 以降で使用可能です。
+     *
+     *
+     * PDO::FETCH_CLASSTYPE (integer)
+     * : 最初のカラムの値からクラス名を決定します。
+     *
+     *
+     * PDO::FETCH_SERIALIZE (integer)
+     * : PDO::FETCH_INTO と同様ですが、 シリアライズした文字列としてオブジェクトを提供します。 PHP 5.1.0 以降で使用可能です。 PHP 5.3.0 以降、このフラグを設定した場合はコンストラクタが呼ばれないようになりました。
+     *
+     *
+     * PDO::FETCH_PROPS_LATE (integer)
+     * : コンストラクタを呼んでからプロパティを設定します。 PHP 5.2.0 以降で使用可能です。
+     *
+     *
      * @access public
-     * @param  $fetch_mode
+     * @param integer $fetch_mode フェッチモード
      * @return void
      */
     public function setFetchMode($fetch_mode)
@@ -271,9 +389,16 @@ class EnviDBIBase
     /**
      * +-- 最後にインサートされたIDを返す
      *
+     * 最後に挿入された行の ID、 あるいはシーケンスオブジェクトから次の値をを返します。
+     * これは、構成しているドライバに依存します。例えば PDO_PGSQL の場合、name パラメータにシーケンスオブジェクト名を指定する必要があります。
+     *
+     * もし name パラメータにシーケンス名が指定されなかった場合、 PDO::lastInsertId() はデータベースに挿入された最後の行の行IDに相当する文字列を返します。
+     *
+     * もし name パラメータにシーケンス名が指定された場合、 PDO::lastInsertId() は指定されたシーケンスオブジェクトから取得した最後の値に相当する 文字列を返します。
+     *
      * @access public
-     * @param  $name OPTIONAL:NULL
-     * @return integer|boolean
+     * @param string  $name ID が返されるべきシーケンスオブジェクト名を指定します。 OPTIONAL:NULL
+     * @return integer|boolean データベースに挿入された行IDに相当する文字列
      */
     public function lastInsertId($name = NULL)
     {
@@ -283,12 +408,36 @@ class EnviDBIBase
 
 
     /**
-     * +-- PDO::prepare()へのラッパー
+     * +-- SQLを実行する準備を行い、SQLオブジェクトを返す
+     *
+     * [PDO::prepare](http://jp1.php.net/manual/ja/pdo.prepare.php)へのラッパーです。
+     *
+     * [EnviDBIBase::execute()](/c/man/v3/reference/vendor/EnviDB/EnviDBIBase/execute) メソッドによって実行される SQL ステートメントを準備します。
+     * SQL ステートメントは、文が実行されるときに実際の値に置き換えられる 0 個もしくはそれ以上の名前 (:name) もしくは疑問符 (?) パラメータマークを含むことができます。
+     * 名前と疑問符パラメータを同一 SQL ステートメント中で使用することはできません。
+     * どちらか一方か、他のパラメータ形式を使用してください。
+     * ユーザーの入力をバインドする際にはこれらのパラメータを使います。
+     * ユーザーの入力を直接クエリに含めてはいけません。
+     *
+     * [EnviDBIBase::execute()](/c/man/v3/reference/vendor/EnviDB/EnviDBIBase/execute) をコールする際には、 文に渡すパラメータにはそれぞれ固有のパラメータマークを設定する必要があります。
+     * エミュレーションモードが有効になっていない限り、 ひとつのプリペアドステートメントの中で、同じ名前のパラメータマークを 複数使用することはできません。
+     *
+     * ~~~~~~~~~~~~~~~~~~~~~ {.alert .alert-warning}
+     *   __注意：__
+     * パラメータマーカーが表せるのは、データリテラルだけです。
+     * リテラルの一部やキーワード、識別子、その他のクエリのパーツをパラメータにバインドすることはできません。
+     * たとえば、SQL 文の IN() 句などで、 ひとつのパラメータに複数の値を割り当てることはできません。
+     * ~~~~~~~~~~~~~~~~~~~~~
+     *
+     * 異なるパラメータを用いて複数回実行されるような文に対し EnviDBIBase::prepare() と [EnviDBIBase::execute()](/c/man/v3/reference/vendor/EnviDB/EnviDBIBase/execute)  をコールすることで、 ドライバがクライアントまたはサーバー側にクエリプランやメタ情報を キャッシュさせるよう調整するため、 アプリケーションのパフォーマンスを最適化します。また、 パラメータに手動でクオートする必要がなくなるので SQL インジェクション攻撃から保護する助けになります。
+     *
+     * 元々この機能をサポートしていないドライバに対して プリペアドステートメントとバインドパラメータをエミュレートします。
+     * このため、ある形式をサポートしているがその他の形式をサポートしていない ドライバの場合、名前もしくは疑問符形式のパラメータを他の適当な値に 書き換えることも可能です。
      *
      * @access public
      * @param string $statement sql
      * @param array $driver_options OPTIONAL:array
-     * @return PDOStatement
+     * @return PDOStatement 結果オブジェクト
      */
     public function &prepare($statement, array $driver_options = array())
     {
@@ -301,12 +450,20 @@ class EnviDBIBase
 
 
     /**
-     * +-- PDOS::execute()へのラッパー
+     * +-- プリペアドステートメントを実行する
+     *
+     * [PDO::prepare](http://jp1.php.net/manual/ja/pdostatement.execute.php)へのラッパーです。
+     *
+     * プリペアドステートメントを実行します。もし、プリペアドステートメントが パラメータマーカを含む場合、次のいずれかを行わなければなりません。
+     *
+     * * パラメータマーカに PHP 変数をバインドするため [PDOStatement::bindParam()](http://jp1.php.net/manual/ja/pdostatement.bindparam.php) をコールする。
+     *   * 関連づけされたパラメータマーカがあれば、バインドされた変数は入力値を渡す もしくは出力値を受け取ります。
+     * * あるいは、$driver_optionsに入力専用のパラメータ値の配列を渡す
      *
      * @access public
      * @param PDOStatement $pdos
      * @param array $driver_options OPTIONAL:array
-     * @return PDOStatement
+     * @return PDOStatement 結果オブジェクト
      */
     public function &execute(PDOStatement $pdos, $driver_options = array())
     {
@@ -344,14 +501,28 @@ class EnviDBIBase
     /* ----------------------------------------- */
 
     /**
-     * +-- バインドメカニズムを利用出来るようにした、query
+     * +-- SQL ステートメントを実行し、結果セットを PDOStatement オブジェクトとして返す
      *
-     * 第二引数に何も入れなければ、単にPDO::query()へのrapperとなります
+     * EnviDBIBase::query() は、一回の関数コールの中で SQL ステートメントを実行し、このステートメントにより返された 結果セット (ある場合) を PDOStatement オブジェクトとして返します。
+     *
+     * [PDO::query](http://jp1.php.net/manual/ja/pdo.query.php)とは違い、$statementにバインドメカニズムを使用することが出来ます。
+     *
+     * 詳しい記述方法は、
+     * [EnviDBIBase::execute()](/c/man/v3/reference/vendor/EnviDB/EnviDBIBase/prepare)
+     * を参考にして下さい。
+     *
+     * 複数回発行する必要があるステートメントの場合、[EnviDBIBase::execute()](/c/man/v3/reference/vendor/EnviDB/EnviDBIBase/prepare)で PDOStatement ステートメントを準備し、
+     *  EnviDBIBase::execute() でそのステートメントを 複数回発行する方がより良いパフォーマンスを得られると実感するでしょう。
+     *
+     * EnviDBIBase::query() を次にコールする前に 結果セット内の全てのデータを取得しない場合、そのコールは失敗します。
+     * PDOStatement::closeCursor() をコールし、 次に EnviDBIBase::query() をコールする前に PDOStatement オブジェクトに関連付けられたリソースを解放してください。
      *
      * @access public
-     * @param string $statement sql
-     * @param array $bind bindする値 OPTIONAL:array
-     * @return PDOStatement
+     * @param string $statement 実行するSQL
+     * @param array $bind バインドする配列 OPTIONAL:array
+     * @return PDOStatement 結果オブジェクト
+     * @see EnviDBIBase::prepare()
+     * @see EnviDBIBase::execute()
      */
     public function &query($statement, $bind = NULL)
     {
@@ -371,13 +542,23 @@ class EnviDBIBase
     /* ----------------------------------------- */
 
     /**
-     * +-- 実行したクエリの結果を配列ですべて返します
+     * +-- クエリを実行し、全ての結果行を含む配列を返す
+     *
+     * SQLを実行し、全ての結果行を含む配列を返します。
+     *
+     * `EnviDBIBase::query($statement, $bind)->fetchAll($fetch_mode);`
+     *
+     * とほぼ等価の処理を行います。
      *
      * @access public
-     * @param string $statement SQL
-     * @param array $bind OPTIONAL:array
-     * @param integer $fetch_mode OPTIONAL:false
-     * @return array
+     * @param string $statement 実行するSQL
+     * @param array $bind バインドする配列 OPTIONAL:array
+     * @param integer $fetch_mode フェッチモード OPTIONAL:false
+     * @return array 結果配列
+     * @see EnviDBIBase::prepare()
+     * @see EnviDBIBase::execute()
+     * @see EnviDBIBase::query()
+     * @see EnviDBIBase::setFetchMode()
      */
     public function getAll($statement, array $bind = array(), $fetch_mode = false)
     {
@@ -388,13 +569,23 @@ class EnviDBIBase
     /* ----------------------------------------- */
 
     /**
-     * +-- 実行したクエリの結果を配列で一行返します
+     * +-- クエリを実行し、結果の最初の一行を返す
+     *
+     * SQLを実行し、結果の最初の一行を返します。
+     *
+     * `EnviDBIBase::query($statement, $bind)->fetch($fetch_mode);`
+     *
+     * とほぼ等価の処理を行います。
      *
      * @access public
-     * @param string $statement SQL
-     * @param array $bind OPTIONAL:array
-     * @param integer $fetch_mode OPTIONAL:false
-     * @return array
+     * @param string $statement 実行するSQL
+     * @param array $bind バインドする配列 OPTIONAL:array
+     * @param integer $fetch_mode フェッチモード OPTIONAL:false
+     * @return mixed fetch_modeに合わせた結果
+     * @see EnviDBIBase::prepare()
+     * @see EnviDBIBase::execute()
+     * @see EnviDBIBase::query()
+     * @see EnviDBIBase::setFetchMode()
      */
     public function getRow($statement, array $bind = array(), $fetch_mode = false)
     {
@@ -406,12 +597,22 @@ class EnviDBIBase
 
 
     /**
-     * +-- 実行したクエリの結果を1カラム分だけ返します
+     * +-- クエリを実行し、結果の1カラム分だけ返す
+     *
+     * SQLを実行し、結果を1カラム分だけ返します
+     *
+     * `EnviDBIBase::query($statement, $bind)->fetchColumn(0);`
+     *
+     * とほぼ等価の処理を行います。
      *
      * @access public
-     * @param string $statement SQL
-     * @param array $bind OPTIONAL:array
-     * @return string
+     * @param string $statement 実行するSQL
+     * @param array $bind バインドする配列 OPTIONAL:array
+     * @return string SQLの実行結果
+     * @see EnviDBIBase::prepare()
+     * @see EnviDBIBase::execute()
+     * @see EnviDBIBase::query()
+     * @see EnviDBIBase::setFetchMode()
      */
     public function getOne($statement, array $bind = array())
     {
@@ -423,13 +624,20 @@ class EnviDBIBase
 
 
     /**
-     * +-- 実行したクエリの結果を配列で縦1行返します
+     * +-- クエリを実行し、結果の特定列を配列で取得する
+     *
+     * SQLを実行し、結果の特定列を配列で取得します。
+     * $colで指定する場所は、一番最初の列が0となります。
      *
      * @access public
-     * @param string $statement SQL
-     * @param  $col OPTIONAL:0
-     * @param array $bind OPTIONAL:array
-     * @return array
+     * @param string $statement 実行するSQL
+     * @param integer $col 取得列 OPTIONAL:0
+     * @param array $bind バインドする配列 OPTIONAL:array
+     * @return array 結果配列
+     * @see EnviDBIBase::prepare()
+     * @see EnviDBIBase::execute()
+     * @see EnviDBIBase::query()
+     * @see EnviDBIBase::setFetchMode()
      */
     public function getCol($statement, $col = 0, array $bind = array())
     {
@@ -445,10 +653,20 @@ class EnviDBIBase
     /**
      * +-- クエリでマッチした数を返します
      *
+     * SQLを実行し、結果行数を返します。
+     *
+     * `EnviDBIBase::query($statement, $bind)->rowCount();`
+     *
+     * とほぼ等価の処理です。
+     *
      * @access public
-     * @param string $statement SQL
-     * @param array $bind OPTIONAL:array
-     * @return integer
+     * @param string $statement 実行するSQL
+     * @param array $bind バインドする配列 OPTIONAL:array
+     * @return integer 結果行数
+     * @see EnviDBIBase::prepare()
+     * @see EnviDBIBase::execute()
+     * @see EnviDBIBase::query()
+     * @see EnviDBIBase::setFetchMode()
      */
     public function count($statement, array $bind = array())
     {
@@ -462,8 +680,20 @@ class EnviDBIBase
     /**
      * +-- Transaction開始
      *
+     * オートコミットモードをオフにします。オートコミットモードがオフの間、 PDO オブジェクトを通じてデータベースに加えた変更は [EnviDBIBase::commit()](/c/man/v3/reference/vendor/EnviDB/EnviDBIBase/commit)をコールするまでコミットされません。
+     * [EnviDBIBase::rollback()](/c/man/v3/reference/vendor/EnviDB/EnviDBIBase/rollback) をコールすると、 データベースへの全ての変更をロールバックし、 オートコミットモードに設定された接続を返します。
+     *
+     * MySQL を含むいくつかのデータベースでは、DROP TABLE や CREATE TABLE のようなデータベース定義言語 (DDL) ステートメントがトランザクション中に 発行される場合、暗黙的なコミットが自動的に発行されます。
+     * この暗黙的なコミットにより、そのトランザクション境界で 他のあらゆる変更をロールバックすることができなくなるでしょう。
+     *
+     * また、簡易的にトランザクションのネストに対応しています。
+     * 複数回EnviDBIBase::beginTransaction()した場合は、同じ数だけ、[EnviDBIBase::commit()](/c/man/v3/reference/vendor/EnviDB/EnviDBIBase/commit) するまで、commitされません。
+     * [EnviDBIBase::rollback()](/c/man/v3/reference/vendor/EnviDB/EnviDBIBase/rollback)はネストを解除して、すべて元に戻します。
+     *
      * @access public
-     * @return boolean
+     * @return boolean 成功すればtrue
+     * @see EnviDBIBase::rollback()
+     * @see EnviDBIBase::commit()
      */
     public function beginTransaction()
     {
@@ -479,8 +709,19 @@ class EnviDBIBase
     /**
      * +-- トランザクションのロールバック
      *
+     * [EnviDBIBase::beginTransaction()](/c/man/v3/reference/vendor/EnviDB/EnviDBIBase/beginTransaction) によって開始された 現在のトランザクションをロールバックします。
+     * 有効なトランザクションがない場合は PDOException をスローします。
+     *
+     * データベースがオートコミットモードに設定されている場合、 この関数はトランザクションをロールバックした後に オートコミットモードを元に戻します。
+     *
+     * MySQL を含むいくつかのデータベースでは、DROP TABLE や CREATE TABLE のようなデータベース定義言語 (DDL) ステートメントがトランザクション中に 発行される場合、暗黙的なコミットが自動的に発行されます。
+     * この暗黙的なコミットにより、そのトランザクション境界で 他のあらゆる変更をロールバックすることができなくなるでしょう。
+     *
+     *
      * @access public
-     * @return boolean
+     * @return boolean 成功すればtrue
+     * @see EnviDBIBase::beginTransaction()
+     * @see EnviDBIBase::commit()
      */
     public function rollback()
     {
@@ -493,8 +734,12 @@ class EnviDBIBase
     /**
      * +-- トランザクションのコミット
      *
+     * トランザクションをコミットし、 次に [EnviDBIBase::beginTransaction()](/c/man/v3/reference/vendor/EnviDB/EnviDBIBase/beginTransaction) で新たなトランザクションが開始されるまで、 データベース接続をオートコミットモードに戻します。
+     *
      * @access public
-     * @return boolean
+     * @return boolean 成功すればtrue
+     * @see EnviDBIBase::beginTransaction()
+     * @see EnviDBIBase::rollback()
      */
     public function commit()
     {
@@ -509,14 +754,17 @@ class EnviDBIBase
     /* ----------------------------------------- */
 
     /**
-     * +-- INSERT文やREPLACE分、UPDATE文を配列から実行する
+     * +-- INSERT文やREPLACE文、UPDATE文を配列から実行する
+     *
+     * INSERT文やREPLACE文、UPDATE文を配列から実行し、結果オブジェクトを返します。
      *
      * @access public
      * @param string $table テーブル名
      * @param array $table_fields フィールドの配列
      * @param integer $mode OPTIONAL:EnviDB::AUTOQUERY_INSERT
      * @param string $where UPDATE時のWHERE文 OPTIONAL:false
-     * @return PDOStatement
+     * @return PDOStatement 結果オブジェクト
+     * @see EnviDBIBase::query()
      */
     public function autoExecute($table, array $table_fields, $mode = EnviDB::AUTOQUERY_INSERT, $where = false)
     {
@@ -526,10 +774,15 @@ class EnviDBIBase
     /* ----------------------------------------- */
 
     /**
-     * +-- トランザクション中かどうか
+     * +-- トランザクション中かどうかを返します。
+     *
+     *
+     * inTransaction()と等価です。
+     * 現在 [EnviDBIBase::beginTransaction()](/c/man/v3/reference/vendor/EnviDB/EnviDBIBase/beginTransaction)でオートコミットがoffになっているかどうかを確認します。
      *
      * @access public
-     * @return boolean
+     * @return boolean トランザクション中ならTRUE
+     * @see EnviDBIBase::beginTransaction()
      */
     public function isTran()
     {
@@ -538,10 +791,14 @@ class EnviDBIBase
     /* ----------------------------------------- */
 
     /**
-     * +-- トランザクション中かどうか
+     * +-- トランザクション中かどうかを返します
+     *
+     * isTran()と等価です。
+     * 現在 [EnviDBIBase::beginTransaction()](/c/man/v3/reference/vendor/EnviDB/EnviDBIBase/beginTransaction)でオートコミットがoffになっているかどうかを確認します。
      *
      * @access public
-     * @return boolean
+     * @return boolean トランザクション中ならTRUE
+     * @see EnviDBIBase::beginTransaction()
      */
     public function inTransaction()
     {
@@ -550,10 +807,13 @@ class EnviDBIBase
     /* ----------------------------------------- */
 
     /**
-     * +-- トランザクションのネスト回数
+     * +-- トランザクションのネスト回数を返します
+     *
+     * 現在のトランザクションのネスト回数を返します。
      *
      * @access public
-     * @return integer
+     * @return integer トランザクションのネスト回数
+     * @see EnviDBIBase::beginTransaction()
      */
     public function transactionCount()
     {
@@ -563,10 +823,14 @@ class EnviDBIBase
 
 
     /**
-     * +-- 接続解除
+     * +-- コネクションを解放し、DBへの接続を切断します
+     *
+     * コネクションを解放し、DBへの接続を切断します。
+     * オブジェクト自体をunset()した場合も、コネクションが解放されます。通常はそちらの方法を選択して下さい。
      *
      * @access public
      * @return void
+     * @deprecated EnviDBIBaseオブジェクト自体を破棄して下さい
      */
     public function disconnect()
     {
@@ -680,11 +944,16 @@ class EnviDBIBase
         $this->disconnect();
     }
     /* ----------------------------------------- */
+
     /**
      * +-- 最後に実行したSQLを取得する
      *
+     * このオブジェクト内で最後に実行したSQLを取得します。
+     *
+     * DB自体の機能を利用する場合と違い、取得単位はオブジェクト単位となります。
+     *
      * @access      public
-     * @return      void
+     * @return      string 最後に実行したSQL
      */
     public function getLastQuery()
     {

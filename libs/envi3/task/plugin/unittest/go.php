@@ -4,7 +4,7 @@ if (!isset($argv[2])) {
     die;
 }
 
-// Envi2のディレクトリのパスを指定する。
+// Envi3のディレクトリのパスを指定する。
 $envi_dir = ENVI_BASE_DIR;
 $envi_cmd = true;
 require $envi_dir.'test/EnviTestCmd.php';

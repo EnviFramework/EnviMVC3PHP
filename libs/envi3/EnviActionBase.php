@@ -1,8 +1,13 @@
 <?php
 /**
- * アクション基底クラス
+ * アクションコントローラー基底クラス
  *
- * アクションを書くときは必ずこのクラスを継承すること。
+ * アクションコントローラーの基底クラスです。
+ *
+ * アクションコントローラーを書くときは必ずこのクラスを継承して下さい。
+ *
+ * 通常であれば、このクラスを直接継承することは無く、`envi init-app`によって生成される、actionBaseを介して継承されます。
+ *
  *
  * PHP versions 5
  *
@@ -15,15 +20,19 @@
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
  */
 
 
 /**
- * アクション基底クラス
+ * アクションコントローラー基底クラス
  *
- * アクションを書くときは必ずこのクラスを継承すること。
+ * アクションコントローラーの基底クラスです。
+ *
+ * アクションコントローラーを書くときは必ずこのクラスを継承して下さい。
+ *
+ * 通常であれば、このクラスを直接継承することは無く、`envi init-app`によって生成される、actionBaseを介して継承されます。
  *
  * @abstract
  * @category   MVC
@@ -34,7 +43,7 @@
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @see        http://www.enviphp.net/
  * @since      Class available since Release 1.0.0
  */
 abstract class EnviActionBase
@@ -91,7 +100,7 @@ abstract class EnviActionBase
      * バリデータを通して、処理を分岐させる。
      *
      * @abstract
-     * @return Envi::DEFAULT | Envi::ERROR | Envi::SUCCESS | boolean
+     * @return Envi::DEFAULT_ACCESS | Envi::ERROR | Envi::SUCCESS | boolean
      */
     public function validate()
     {
@@ -115,7 +124,7 @@ abstract class EnviActionBase
      *
      * @abstract
      * @see validate()
-     * @return Envi:: | Envi::ERROR | Envi::SUCCESS | boolean
+     * @return Envi::DEFAULT_ACCESS | Envi::ERROR | Envi::SUCCESS | boolean
      */
     public function handleError()
     {
@@ -123,7 +132,12 @@ abstract class EnviActionBase
     }
 
     /**
-     * セキュアなページかどうか。
+     * セキュアなページかどうか
+     *
+     * [EnviUser::isLogin()](/c/man/v3/reference/EnviUser/EnviUser/isLogin)がtrueの場合のみ、
+     * アクセス可能なアクションコントローラーとして定義します。
+     *
+     * 制限に引っかかった場合は、Envi403Exceptionを発行し、403ヘッダを出力します。
      *
      * @abstract
      * @return boolean
@@ -135,6 +149,13 @@ abstract class EnviActionBase
 
     /**
      * Controllerから直接呼ばれるアクションかどうか？
+     *
+     * ディスパッチャーから直接アクセスされず、
+     * [EnviController::forward()](/c/man/v3/reference/EnviController/EnviController/forward)や、
+     * [アクションチェイン](/c/man/v3/core/action_chain)でのみアクセス可能なアクションコントローラーとして定義されます。
+     *
+     * 制限に引っかかった場合は、Envi404Exceptionを発行し、404ヘッダを出力します。
+     *
      *
      * @abstract
      * @return boolean

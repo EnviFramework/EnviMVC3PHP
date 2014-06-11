@@ -14,7 +14,7 @@
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
  */
 
@@ -49,12 +49,14 @@ if (isOption('--help') || isOption('-h') || isOption('-?') || !isset($argv[1])) 
     cecho('unittest:', 33);
     cecho('    -go                                  ', 32, '\n       ユニットテストの実行(test)');
     cecho('    -help                                ', 32, '\n       マニュアルの表示');
-    
+    cecho('    -init                                ', 32, '\n       テストグループをカレントディレクトリに追加する');
+    cecho('    -add                                 ', 32, '\n       テストをカレントディレクトリに追加する');
+
 
     cecho('yml:', 33);
     cecho('    -test                                ', 32, '\n       YMLの展開テスト');
     cecho('    -help                                ', 32, '\n       マニュアルの表示');
-    
+
     exit;
     die;
 }

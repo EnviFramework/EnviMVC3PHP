@@ -13,8 +13,9 @@
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
+ * @doc_ignore
  */
 
 if (!isset($envi_cmd)) {
@@ -163,13 +164,16 @@ $EnviTest->execute();
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @see        http://www.enviphp.net/
  * @since      Class available since Release 1.0.0
+ * @doc_ignore
  */
 class EnviTest
 {
     public $system_conf;
     private static $instance;
+
+    protected $parser;
 
     /**
      * +-- コンストラクタ
@@ -191,10 +195,48 @@ class EnviTest
         $scenario              = new $this->system_conf['scenario']['class_name'];
         $scenario->system_conf = $this->system_conf;
 
+
         $arr = $scenario->execute();
+        // カバレッジ
+        $code_coverage = false;
+        if (isset($this->system_conf['code_coverage']) && $this->system_conf['code_coverage']['use']) {
+            if (!class_exists('EnviCodeCoverage', false)) {
+                include dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'util'.DIRECTORY_SEPARATOR.'EnviCodeCoverage.php';
+            }
+            $code_coverage = EnviCodeCoverage::factory();
+            if (isset($this->system_conf['code_coverage']['black_list']) &&
+                is_array($this->system_conf['code_coverage']['black_list'])) {
+                foreach ($this->system_conf['code_coverage']['black_list'] as $black_list) {
+                    if (is_file($black_list)) {
+                        $code_coverage->filter()->addBlackList($black_list);
+                    } elseif (is_dir($black_list)) {
+                        $code_coverage->filter()->addBlackListByDirectory($black_list);
+                    }
+                }
+            }
+            if (isset($this->system_conf['code_coverage']['white_list']) &&
+                is_array($this->system_conf['code_coverage']['white_list'])) {
+                foreach ($this->system_conf['code_coverage']['white_list'] as $black_list) {
+                    if (is_file($black_list)) {
+                        $code_coverage->filter()->addWhiteList($black_list);
+                    } elseif (is_dir($black_list)) {
+                        $code_coverage->filter()->addWhiteListByDirectory($black_list);
+                    }
+                }
+            }
+
+
+            $code_coverage->start();
+        }
         foreach ($arr as $test_val) {
+            if (is_object($code_coverage)) {
+                $code_coverage->filter()->addBlackList($test_val['class_path']);
+            }
             include_once $test_val['class_path'];
             $test_obj = new $test_val['class_name'];
+            if (is_object($code_coverage)) {
+                $test_obj->code_coverage = $code_coverage;
+            }
             $test_obj->system_conf = $this->system_conf;
             $methods = array();
             if (isset($test_val['methods']) && count($test_val['methods'])) {
@@ -202,13 +244,13 @@ class EnviTest
             }
 
 
-            $docs_class = $this->parseClassDocsTag($test_val['class_path']);
+            $docs_class = $this->getMethodDocsTagSimple($test_val['class_path']);
             foreach ($docs_class as $method => $docs) {
                 if (isset($docs['test'])) {
                     $methods[$method] = true;
                 }
             }
-
+            $is_ng = false;
             $results = array();
             foreach (get_class_methods($test_val['class_name']) as $method) {
                 if (!isset($methods[$method]) && !mb_ereg('Test$', $method)) {
@@ -233,9 +275,11 @@ class EnviTest
                     $this->sendOKMessage($test_val['class_name'].'::'.$method);
                 } catch (EnviTestDependsException $e) {
                 } catch (EnviTestException $e) {
+                    $is_ng = true;
                     $trace = $e->getTrace();
                     $this->sendNGMessage($test_val['class_name'].'::'.$method." line on {$trace[0]['line']}".'  '.$e->getMessage());
                 } catch (exception $e) {
+                    $is_ng = true;
                     $this->sendErrorMessage($test_val['class_name'].'::'.$method." line on {$trace[0]['line']}".'  '.$e);
                 }
                 $test_obj->shutdown();
@@ -243,6 +287,84 @@ class EnviTest
             }
         }
         echo round(microtime(true) - $start_time, 5)." : test end \r\n";
+        if ($code_coverage !== false && !$is_ng) {
+            $code_coverage_data = $code_coverage->getCodeCoverage();
+            echo 'total : '.$code_coverage_data['cover_rate']."% : test coverage \r\n";
+            foreach ($code_coverage_data['class_coverage_data'] as $class_name => $class_item) {
+                $file_contents_arr = NULL;
+                echo $class_name." total: ".$class_item['class']['cover_rate']."% covered. \r\n";
+                foreach ($class_item['methods'] as $method_name => $method_item) {
+                    if (isset($this->system_conf['code_coverage']['use_all_covered_filter']) && $this->system_conf['code_coverage']['use_all_covered_filter']) {
+                        if ($method_item['cover_rate'] == 100) {
+                            continue;
+                        }
+                    }
+                    echo $class_name.'::'.$method_name." ".$method_item['cover_rate']."% covered. \r\n";
+                    if ($method_item['cover_count'][EnviCodeCoverage::COVERD] === $method_item['cover_count'][EnviCodeCoverage::TOTAL_COVER] ||
+                        $method_item['cover_count'][EnviCodeCoverage::COVERD] === 0) {
+                        continue;
+                    }
+                    if ($file_contents_arr === NULL) {
+                        $file_contents_arr = file($class_item['file_name']);
+                    }
+                    if (isset($this->system_conf['code_coverage']['use_coverage_detail']) && $this->system_conf['code_coverage']['use_coverage_detail']) {
+                        $this->showCoverError($method_item['detail'], $file_contents_arr);
+                    }
+                }
+            }
+
+            if ($this->system_conf['code_coverage']['save_path']) {
+                file_put_contents($this->system_conf['code_coverage']['save_path'], json_encode($code_coverage_data, true));
+            }
+        }
+    }
+
+    /**
+     * +-- Coverageのエラー出力を出すかどうか
+     *
+     * @access      private
+     * @param       & $detail
+     * @param       & $file_contents_arr
+     * @return      void
+     */
+    private function showCoverError(&$detail, &$file_contents_arr)
+    {
+        $start_line = false;
+        $end_line   = false;
+        foreach ($detail as $line => $coverage_data) {
+            if ($coverage_data[2] === false && $start_line === false) {
+                $start_line = $line;
+                $end_line = $line;
+            } elseif ($coverage_data[2] === false && $start_line !== false) {
+                $end_line = $line;
+
+            } elseif ($coverage_data[2] === true && $start_line !== false) {
+                $this->showSauce($detail, $file_contents_arr, $start_line-2, $end_line+2);
+                $start_line = false;
+                $end_line   = false;
+            }
+        }
+        if ($start_line !== false) {
+            $this->showSauce($detail, $file_contents_arr, $start_line-2, $line+2);
+        }
+    }
+    /* ----------------------------------------- */
+
+    private function showSauce(&$detail, &$file_contents_arr, $start_line, $end_line)
+    {
+        $start_line = max(0, $start_line-1);
+        $end_line = min(count($file_contents_arr), $end_line-1);
+        while ($start_line <= $end_line) {
+            $start_line++;
+            $line_text = str_pad($start_line, 5, ' ', STR_PAD_LEFT);
+            $code_coverage = '';
+            if (isset($detail[$start_line])) {
+                $code_coverage = min($detail[$start_line][EnviCodeCoverage::COVERD], $detail[$start_line][EnviCodeCoverage::TOTAL_COVER])
+                    .'/'.$detail[$start_line][EnviCodeCoverage::TOTAL_COVER];
+            }
+            $code_coverage = str_pad($code_coverage, 10, ' ', STR_PAD_LEFT);
+            echo $line_text,$code_coverage,' : '.$file_contents_arr[$start_line-1];
+        }
     }
 
     public function parseYml($file, $dir = ENVI_MVC_APPKEY_PATH)
@@ -261,29 +383,27 @@ class EnviTest
         return $res;
     }
 
-
-
-
-    protected function parseClassDocsTag($file)
+    /**
+     * +-- コードパーサを返す
+     *
+     * @access      public
+     * @return      void
+     */
+    public function parser()
     {
-        $pattern = '/\n *\/\*\*\n( *\*.*\n)+[\n ]*public[\n ]*function[\n ]*[^(]+/';
-
-        preg_match_all($pattern , file_get_contents($file), $matches);
-        $class_list = array();
-        foreach ($matches[0] as $val) {
-            mb_ereg('public[\n ]*function[\n ]*([^(]+)', $val, $match);
-            $class_name = $match[1];
-            preg_match_all('/@(.*)\n/' ,$val, $match);
-            $docs = array();
-            foreach ($match[1] as $doc) {
-                $doc = mb_ereg_replace(' +', ' ', $doc);
-                $doc = explode(' ', $doc);
-                $tag = trim(array_shift($doc));
-                $docs[$tag][] = $doc;
+        if (!$this->parser) {
+            if (!class_exists('EnviCodeParser', false)) {
+                include dirname(dirname(__FILE__)).'/util/EnviCodeParser.php';
             }
-            $class_list[$class_name] = $docs;
+            $this->parser = new EnviCodeParser;
         }
-        return $class_list;
+       return $this->parser;
+    }
+    /* ----------------------------------------- */
+
+    protected function getMethodDocsTagSimple($file_name)
+    {
+        return $this->parser()->getMethodDocsTagSimple($file_name);
     }
 
     /**
@@ -291,8 +411,7 @@ class EnviTest
      *
      * @access public
      * @static
-     * @param  $app OPTIONAL:false
-     * @param  $debug OPTIONAL:false
+     * @param boolean $app OPTIONAL:false
      * @return Envi
      */
     public static function singleton($app = false)
