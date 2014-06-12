@@ -1880,6 +1880,7 @@ class EnviTestMockEditor
     private $copy_method_list = array();
     private $default_extends;
     private $default_methods;
+    private $mock_hash;
 
 
     /**
@@ -1900,6 +1901,7 @@ class EnviTestMockEditor
         if (count($default_extends)) {
             $this->default_extends = array_shift($default_extends);
         }
+        $this->mock_hash = mt_rand().sha1(microtime());
     }
     /* ----------------------------------------- */
 
@@ -2276,7 +2278,8 @@ class EnviTestMockEditor
     {
         $this->removeMethod($this->method_name);
         $method_script = $this->createMethodScript();
-        $method_script .= 'return '.var_export($res, true).';';
+        EnviTestMockAndReturn::$return_values[$this->mock_hash] = $res;
+        $method_script .= 'return EnviTestMockAndReturn::$return_values['.$this->mock_hash.'];';
         runkit_method_add($this->class_name, $this->method_name, '', $method_script);
         $this->free();
         return $this;
@@ -2384,10 +2387,41 @@ class EnviTestMockEditor
 }
 /* ----------------------------------------- */
 
+/**
+ * @package    Envi3
+ * @category   MVC
+ * @subpackage UnitTest
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        http://www.enviphp.net/
+ * @since      Class available since Release 1.0.0
+ * @doc_ignore
+ * @codeCoverageIgnore
+ */
 class EnviTestMockTemporary
 {
 }
-
+/**
+ * @package    Envi3
+ * @category   MVC
+ * @subpackage UnitTest
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        http://www.enviphp.net/
+ * @since      Class available since Release 1.0.0
+ * @doc_ignore
+ * @codeCoverageIgnore
+ */
+class EnviTestMockAndReturn
+{
+    public static $return_values = array();
+}
 
 /**
  * @package    Envi3
@@ -2401,6 +2435,7 @@ class EnviTestMockTemporary
  * @see        http://www.enviphp.net/
  * @since      Class available since Release 1.0.0
  * @doc_ignore
+ * @codeCoverageIgnore
  */
 class EnviTestMockException extends exception
 {
