@@ -5,8 +5,8 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
+ * @category   EnviMVC拡張
+ * @package    ユーザーセッション
  * @subpackage EnviUserSession
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -20,8 +20,8 @@
 /**
  * APCを使用したSESSION
  *
- * @package    Envi3
- * @category   MVC
+ * @category   EnviMVC拡張
+ * @package    ユーザーセッション
  * @subpackage EnviUserSession
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -31,7 +31,7 @@
  * @see        http://www.enviphp.net/
  * @since      Class available since Release 1.0.0
  */
-class EnviApcSession extends EnviSessionBase implements EnviSessionBaseInterface
+class EnviApcSession extends EnviSessionBase implements EnviSessionInterface
 {
 
     protected static  $_envi_system_value = "__ENVI_USER__";

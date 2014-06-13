@@ -3,13 +3,13 @@
  * 自動テスト用の処理
  *
  *
- * 詳細は、[自動テスト](http://www.enviphp.net/c/man/v3/core/unittest)を参照して下さい。
  *
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
+
+ * @category   自動テスト
+ * @package    UnitTest
  * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -27,8 +27,10 @@
  *
  * 現在は、テストフレームワークが持つ機能を除き、callメソッドのみを提供します。
  *
- * @package
- * @subpackage
+
+ * @category   自動テスト
+ * @package    UnitTest
+ * @subpackage UnitTest
  * @abstract
  * @since      File available since Release 1.0.0
  * @author     akito<akito-artisan@five-foxes.com>
@@ -94,8 +96,8 @@ abstract class EnviTestBase
  *
  *
  *
- * @package    Envi3
- * @category   MVC
+ * @category   自動テスト
+ * @package    UnitTest
  * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -1333,8 +1335,9 @@ abstract class EnviTestAssert extends EnviTestBase
  * EnviTestCaseはすべてのテストクラスで継承されるクラスです。
  * envi コマンドで生成されるテスト以外に手動でテストクラスを作成する場合も、必ずこのクラスを継承して下さい。
  *
- * @package Envi3
- * @subpackage EnviTest
+ * @category   自動テスト
+ * @package    UnitTest
+ * @subpackage UnitTest
  * @since 0.1
  * @author     Akito <akito-artisan@five-foxes.com>
  */
@@ -1640,8 +1643,8 @@ abstract class EnviTestCase extends EnviTestAssert
  * シナリオクラスで継承されるクラス
  *
  *
- * @package    Envi3
- * @category   MVC
+ * @category   自動テスト
+ * @package    UnitTest
  * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -1713,8 +1716,8 @@ class EnviTestScenario
 
 
 /**
- * @package    Envi3
- * @category   MVC
+ * @category   自動テスト
+ * @package    UnitTest
  * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -1761,8 +1764,8 @@ abstract class EnviTestBlankMockBase
  *
  * 内部では、runkitを使用しているため、必要に応じてエクステンションをインストールする必要性があります。
  *
- * @package    Envi3
- * @category   MVC
+ * @category   自動テスト
+ * @package    UnitTest
  * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -1802,7 +1805,7 @@ class EnviMock
      * @access      public
      * @static
      * @param       string $class_name モックを作成するクラス名
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditor モック操作オブジェクト
      */
     public static function mock($class_name)
     {
@@ -1860,8 +1863,8 @@ class EnviMock
  * EnviTestMockEditorはすべてメソッドチェーンで実行されます。
  *
  *
- * @package    Envi3
- * @category   MVC
+ * @category   自動テスト
+ * @package    UnitTest
  * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -2237,13 +2240,13 @@ class EnviTestMockEditor
 
 
     /**
-     * +-- 期待メソッドが0回以上呼び出すことができますことを宣言します。そうでない場合に設定しない限り、これは、すべてのメソッドのデフォルトです。
+     * +-- 期待メソッドが0回以上呼び出すことができることを宣言します。これは、すべてのメソッドのデフォルトです。
      *
      *
      * EnviTestMockEditor::shouldReceive()から、メソッドチェーンで呼び出されます。
      *
-     * 期待メソッドが0回以上呼び出すことができますことを宣言します。
-     * そうでない場合に設定しない限り、これは、すべてのメソッドのデフォルトです。
+     * 期待メソッドが0回以上呼び出すことができることを宣言します。
+     * 設定変更しない限り、これは、すべてのメソッドのデフォルトです。
      *
      * @access      public
      * @return      EnviTestMockEditor
@@ -2388,8 +2391,9 @@ class EnviTestMockEditor
 /* ----------------------------------------- */
 
 /**
- * @package    Envi3
- * @category   MVC
+
+ * @category   自動テスト
+ * @package    UnitTest
  * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -2405,8 +2409,9 @@ class EnviTestMockTemporary
 {
 }
 /**
- * @package    Envi3
- * @category   MVC
+
+ * @category   自動テスト
+ * @package    UnitTest
  * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -2424,8 +2429,8 @@ class EnviTestMockAndReturn
 }
 
 /**
- * @package    Envi3
- * @category   MVC
+ * @category   自動テスト
+ * @package    UnitTest
  * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project

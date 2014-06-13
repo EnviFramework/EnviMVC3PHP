@@ -3,9 +3,9 @@
  *
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviCodeCoverage
+ * @category   自動テスト
+ * @package    UnitTest
+ * @subpackage CodeCoverage
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -13,15 +13,16 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      Class available since Release v3.3.3.5
+ * @doc_ignore
  */
 
 /**
  *
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviCodeCoverage
+ * @category   自動テスト
+ * @package    UnitTest
+ * @subpackage CodeCoverage
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License

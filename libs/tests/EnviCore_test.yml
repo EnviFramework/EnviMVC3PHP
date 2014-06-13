@@ -1,7 +1,10 @@
 all:
   ## <?php $test_dir = dirname(__FILE__); ?>
   ## <?php $app_name = substr(basename(__FILE__), 0, strlen(basename(__FILE__))-9); ?>
-
+  time_out:
+    large: 60
+    medium: 10
+    small: 1
   code_coverage:
     use: true
     use_coverage_detail: true
@@ -13,6 +16,8 @@ all:
       - "<?php echo $test_dir.'/../envi3/EnviRequest.php'; ?>"
       - "<?php echo $test_dir.'/../envi3/Envi.php'; ?>"
     white_list:
+      - "<?php echo ENVI_BASE_DIR; ?>EnviValidator.php"
+      - "<?php echo ENVI_BASE_DIR; ?>EnviMath.php"
       
 
   scenario:

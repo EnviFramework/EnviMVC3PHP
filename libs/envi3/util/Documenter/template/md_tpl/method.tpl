@@ -141,8 +141,10 @@ foreach ($doc_array['param'] as $val) {
 <?php
     if (isset($doc_array['return'][0][0]) && $doc_array['return'][0][0] === 'void') {
         ?>このメソッドは返り値を返しません<?php
-    } elseif (!isset($doc_array['return'][0][1])) {
+    } elseif (!isset($doc_array['return'][0][0])) {
         ?>　　　<?php
+    } elseif (!isset($doc_array['return'][0][1])) {
+        ?><?=$doc_array['return'][0][0]?><?php
     } else {
         ?><?=$doc_array['return'][0][1]?><?php
     }
@@ -174,9 +176,8 @@ foreach ($doc_array['see'] as $see) {
     if (!isset($method_list[$see[0]])) {
         continue;
     }
-    mb_ereg('document/man/(.*).md$', $method_list[$see[0]]['man_path'], $man_path);
 
-    echo "* [",$see[0],"](/c/man/v3/reference/",$man_path[1],") — ",$method_list[$see[0]]['token']->getDocBlockToken()->getDocBlockSubject(),"\n";
+    echo "* [",$see[0],"](",$driver->writePathToManPath($write_path),") — ",$method_list[$see[0]]['token']->getDocBlockToken()->getDocBlockSubject(),"\n";
 
 }
 

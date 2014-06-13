@@ -2,13 +2,13 @@
 /**
  * DI登録されたエクステンションのロード
  *
- * extention()->エクステンション名()<br />
+ * extention()->エクステンション名()
  * でオブジェクトを取得できます。
  *
  * PHP versions 5
  *
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
@@ -27,7 +27,7 @@
  *
  * でオブジェクトを取得できます。
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>

@@ -9,9 +9,9 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
+ * @category   EnviMVC拡張
+ * @package    EnviPHPが用意するエクステンション
+ * @subpackage LessphpExtension
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -27,9 +27,9 @@ if (!class_exists('lessc', false)) {
 /**
  *  Lessphpを使用するためのエクステンション
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
+ * @category   EnviMVC拡張
+ * @package    EnviPHPが用意するエクステンション
+ * @subpackage LessphpExtension
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -47,10 +47,10 @@ class EnviLessphpExtension
      * +-- コンストラクタ
      *
      * @access      public
-     * @param       var_text $system_conf
+     * @param       array $system_conf 設定
      * @return      void
      */
-    public function __construct($system_conf)
+    public function __construct(array $system_conf)
     {
         $this->system_conf = $system_conf;
         $this->less_php = new lessc;
@@ -67,8 +67,8 @@ class EnviLessphpExtension
      * +-- ファイルを指定してコンパイルする
      *
      * @access      public
-     * @param       string $file_path
-     * @param       string $compile_id OPTIONAL:NULL
+     * @param       string $file_path ファイルパス
+     * @param       string $compile_id コンパイルID OPTIONAL:NULL
      * @return      string
      */
     public function compileFile($file_path, $compile_id = NULL)
@@ -98,9 +98,9 @@ class EnviLessphpExtension
      * +-- 文字列を指定してコンパイルする
      *
      * @access      public
-     * @param       string $string
-     * @param       string $compile_id
-     * @param       string $base_file_path OPTIONAL:NULL
+     * @param       string $string コンパイルするテキスト
+     * @param       string $compile_id コンパイルID
+     * @param       string $base_file_path ベースファイルパス OPTIONAL:NULL
      * @return      string
      */
     public function compile($string, $compile_id, $base_file_path = NULL)
@@ -147,10 +147,10 @@ class EnviLessphpExtension
 
 /**
  *  EnviLessphpExtension専用の例外
- *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
+ * *
+ * @category   EnviMVC拡張
+ * @package    EnviPHPが用意するエクステンション
+ * @subpackage LessphpExtension
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License

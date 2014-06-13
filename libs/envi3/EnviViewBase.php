@@ -8,8 +8,8 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
+ * @category   フレームワーク基礎処理
+ * @package    ベースクラス
  * @subpackage ViewController
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -18,6 +18,7 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
+ * @subpackage_main
  */
 
 
@@ -27,8 +28,8 @@
  * ビューを書くときは必ずこのクラスを継承すること。
  *
  * @abstract
- * @category   MVC
- * @package    Envi3
+ * @category   フレームワーク基礎処理
+ * @package    ベースクラス
  * @subpackage ViewController
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project

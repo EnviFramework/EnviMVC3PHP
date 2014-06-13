@@ -7,8 +7,8 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
+ * @category   EnviMVC拡張
+ * @package    EnviPHPが用意するエクステンション
  * @subpackage DB
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -25,8 +25,8 @@
  *
  * extensionからの利用をおすすめします。
  *
- * @category   MVC
- * @package    Envi3
+ * @category   EnviMVC拡張
+ * @package    EnviPHPが用意するエクステンション
  * @subpackage DB
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project

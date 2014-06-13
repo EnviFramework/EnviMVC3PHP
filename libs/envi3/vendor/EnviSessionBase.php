@@ -1,12 +1,21 @@
 <?php
 /**
- * セッションの基底クラス
+ * ユーザーセッション
+ *
+ * __EnviMVC__では、$_SESSIONの仕組みをラップする様々な仕組みを提供します。
+ *
+ * 標準でも
+ * * ファイル
+ * * Apc
+ * * Memcache
+ *
+ * の三種類を用意している他、インターフェース  EnviSessionInterface を実装することで、自由にセッションの仕組みを書き換えることが出来ます。
  *
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
+ * @category   EnviMVC拡張
+ * @package    ユーザーセッション
  * @subpackage EnviUserSession
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -15,12 +24,14 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
+ * @subpackage_main
+*/
 
 /**
  * セッションの基底クラス
  *
- * @package    Envi3
- * @category   MVC
+ * @category   EnviMVC拡張
+ * @package    ユーザーセッション
  * @subpackage EnviUserSession
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -65,8 +76,22 @@ abstract class EnviSessionBase
 
 }
 
-
-interface EnviSessionBaseInterface
+/**
+ * セッションのインターフェイス
+ *
+ * @category   EnviMVC拡張
+ * @package    ユーザーセッション
+ * @subpackage EnviUserSession
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        http://www.enviphp.net/
+ * @since      Class available since Release 1.0.0
+ * @abstract
+ */
+interface EnviSessionInterface
 {
 
     /**

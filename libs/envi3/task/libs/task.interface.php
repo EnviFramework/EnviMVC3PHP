@@ -16,6 +16,7 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      File available since Release 1.0.0
+ * @doc_ignore
  */
 
 interface EnviTask

@@ -13,8 +13,8 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
+ * @category   EnviMVC拡張
+ * @package    EnviPHPが用意するエクステンション
  * @subpackage DB
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -23,13 +23,14 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      File available since Release 3.1.0
+ * @subpackage_main
  */
 
 /**
  * DIから呼ばれるクラス
  *
- * @package    Envi3
- * @category   MVC
+ * @category   EnviMVC拡張
+ * @package    EnviPHPが用意するエクステンション
  * @subpackage DB
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -84,7 +85,8 @@ class EnviDBInstance
 /**
  * pearDB風のインスタンスを提供するためのラッパー
  *
- * @package    Envi3
+ * @category   EnviMVC拡張
+ * @package    EnviPHPが用意するエクステンション
  * @subpackage DB
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -226,7 +228,8 @@ class EnviDB
 /**
  * DBの処理
  *
- * @package    Envi3
+ * @category   EnviMVC拡張
+ * @package    EnviPHPが用意するエクステンション
  * @subpackage DB
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project

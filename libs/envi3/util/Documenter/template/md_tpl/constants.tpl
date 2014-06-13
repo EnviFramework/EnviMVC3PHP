@@ -3,7 +3,7 @@
 <?php
 $is_flag = false;
 foreach ($class_list as $class_name => $class_item) {
-    $arr = $class_item['token']->getConstantList();
+    $arr = $class_item['class_item']['token']->getConstantList();
     if (!(is_array($arr) && count($arr))) {
         continue;
     }

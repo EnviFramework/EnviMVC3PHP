@@ -5,8 +5,8 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
+ * @category   EnviMVC拡張
+ * @package    ユーザーセッション
  * @subpackage EnviUserSession
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -22,8 +22,8 @@
  * PHP標準の$_SESSIONは使用しません。
  *
  *
- * @package    Envi3
- * @category   MVC
+ * @category   EnviMVC拡張
+ * @package    ユーザーセッション
  * @subpackage EnviUserSession
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -33,7 +33,7 @@
  * @see        http://www.enviphp.net/
  * @since      Class available since Release 1.0.0
  */
-class EnviMemcacheSession extends EnviSessionBase implements EnviSessionBaseInterface
+class EnviMemcacheSession extends EnviSessionBase implements EnviSessionInterface
 {
 
     protected static  $_is_login = '_is_login';

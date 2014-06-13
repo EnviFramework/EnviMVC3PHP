@@ -9,9 +9,9 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
+ * @category   EnviMVC拡張
+ * @package    EnviPHPが用意するエクステンション
+ * @subpackage ConsoleExtension
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -24,9 +24,9 @@
 /**
  * コンソールログを使用するためのエクステンションクラス
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
+ * @category   EnviMVC拡張
+ * @package    EnviPHPが用意するエクステンション
+ * @subpackage ConsoleExtension
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -47,10 +47,10 @@ class EnviConsoleExtension
      * +-- コンストラクタ
      *
      * @access      public
-     * @param       var_text $system_conf
+     * @param       array $system_conf 設定
      * @return      void
      */
-    public function __construct($system_conf)
+    public function __construct(array $system_conf)
     {
         $this->system_console_config = Envi()->getConfiguration('LOGGER', 'console');
         $this->system_conf = $system_conf;

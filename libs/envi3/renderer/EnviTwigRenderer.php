@@ -10,8 +10,8 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
+ * @category   EnviMVC拡張
+ * @package    レンダラ
  * @subpackage Renderer
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -31,8 +31,8 @@ require ENVI_BASE_DIR."..{$ds}Twig{$ds}Autoloader.php";
  * Twigを利用した、テンプレートレンダラーです。
  * Twigはデフォルトのまま使用されます。
  *
- * @category   MVC
- * @package    Envi3
+ * @category   EnviMVC拡張
+ * @package    レンダラ
  * @subpackage Renderer
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project

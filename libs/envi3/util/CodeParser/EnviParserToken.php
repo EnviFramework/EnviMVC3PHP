@@ -1,8 +1,8 @@
 <?php
 /**
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviCodeParser
+ * @category   ユーティリティ
+ * @package    コードパース
+ * @subpackage CodeParser
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -10,12 +10,13 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      Class available since Release v3.3.3.5
+ * @doc_ignore
  */
 
 /**
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviCodeParser
+ * @category   ユーティリティ
+ * @package    コードパース
+ * @subpackage CodeParser
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -138,7 +139,7 @@ class EnviParserToken_DOC_COMMENT extends EnviParserToken
             if (strpos($arr[$i], '* @') === 0) {
                 return $res;
             }
-            $res .= mb_ereg_replace('\* ?('.preg_quote($strip_text).')?', '', $arr[$i])."\r\n";
+            $res .= mb_ereg_replace('^\* ?('.preg_quote($strip_text).')?', '', $arr[$i])."\r\n";
         }
         return $res;
     }

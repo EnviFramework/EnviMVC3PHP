@@ -6,9 +6,9 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
+ * @category   自動テスト
+ * @package    EnviTest
+ * @subpackage UnitTestDummy
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2012 Artisan Project
  * @license    http://www.php.net/license/3_0.txt  PHP License 3.0
@@ -22,9 +22,9 @@
 /**
  * テスト用dummy
  *
- * @package    Envi3
- * @category   MVC
- * @subpackage UnitTest
+ * @category   自動テスト
+ * @package    EnviTest
+ * @subpackage UnitTestDummy
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -49,9 +49,9 @@ class dummyBase
 /**
  * テスト用dummy
  *
- * @package    Envi3
- * @category   MVC
- * @subpackage UnitTest
+ * @category   自動テスト
+ * @package    EnviTest
+ * @subpackage UnitTestDummy
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -68,9 +68,9 @@ class Logger extends dummyBase
 /**
  * テスト用dummy
  *
- * @package    Envi3
- * @category   MVC
- * @subpackage UnitTest
+ * @category   自動テスト
+ * @package    EnviTest
+ * @subpackage UnitTestDummy
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -118,9 +118,9 @@ function Envi()
  * テスト用例外
  *
  *
- * @package    Envi3
- * @category   MVC
- * @subpackage UnitTest
+ * @category   自動テスト
+ * @package    EnviTest
+ * @subpackage UnitTestDummy
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -134,6 +134,25 @@ class EnviTestException extends exception
 
 }
 
+/**
+ * テスト用例外
+ *
+ *
+ * @category   自動テスト
+ * @package    EnviTest
+ * @subpackage UnitTestDummy
+ * @author     Akito <akito-artisan@five-foxes.com>
+ * @copyright  2011-2013 Artisan Project
+ * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @version    Release: @package_version@
+ * @link       https://github.com/EnviMVC/EnviMVC3PHP
+ * @see        http://www.enviphp.net/
+ * @since      Class available since Release 1.0.0
+ */
+class EnviException extends exception
+{
+
+}
 if (!defined('ENVI_ENV')) {
     define('ENVI_ENV', 'unittest');
 }
@@ -142,9 +161,9 @@ if (!defined('ENVI_ENV')) {
  * test用エクステンションloader
  *
  *
- * @package    Envi3
- * @category   MVC
- * @subpackage UnitTest
+ * @category   自動テスト
+ * @package    EnviTest
+ * @subpackage UnitTestDummy
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License

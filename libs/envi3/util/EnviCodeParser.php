@@ -3,9 +3,9 @@
  * PHPファイルをパースするクラスです
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviCodeParser
+ * @category   ユーティリティ
+ * @package    コードパース
+ * @subpackage CodeParser
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -13,6 +13,7 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      Class available since Release v3.3.3.5
+ * @subpackage_main
  */
 
 require dirname(__FILE__).'/CodeParser/EnviParserToken.php';
@@ -22,9 +23,9 @@ require dirname(__FILE__).'/CodeParser/EnviParserResult.php';
  * PHPファイルをパースするクラスです
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviCodeParser
+ * @category   ユーティリティ
+ * @package    コードパース
+ * @subpackage CodeParser
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -86,6 +87,26 @@ class EnviCodeParser
         $res = array();
         foreach ($pattern['FUNCTION'] as $function_name => $arr) {
             $res[$function_name] = $arr['doc_block'];
+        }
+        return $res;
+    }
+    /* ----------------------------------------- */
+
+
+
+    /**
+     * +-- FunctionとそのDocBlockをそのまま取得します
+     *
+     * @access      public
+     * @param       string $file_name
+     * @return      array
+     */
+    public function getClassDocsTagSimple($file_name)
+    {
+        $pattern = $this->getDocTagList($file_name);
+        $res = array();
+        foreach ($pattern['CLASS'] as $class_name => $arr) {
+            $res[$class_name] = $arr['doc_block'];
         }
         return $res;
     }

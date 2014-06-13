@@ -1,6 +1,26 @@
 <?php
 /**
- * PHPレンダラー
+ * レンダラー
+ *
+ * はじめに
+ * ------------------------------------------------
+ * レンダラーは、その名の通り、画面出力を司る機能です。
+ * EnviMVCでは、開発者が好みのテンプレートエンジンを自由に組み込むことが出来ます。
+ *
+ * EnviRendererインターフェイス継承し、必要部分を実装することで、自由にレンダラーを作成できます。
+ *
+ * 標準で3つのレンダラーと、自動エスケープ機能の付いた、3つのレンダラーを提供します。
+ *
+ *
+ * Tips
+ * ------------------------------------------------
+ * Viewコントローラーで記述する、レンダラーオブジェクトは、アクションコントローラーで生成しても構いません。
+ *
+ * その場合は、Viewコントローラーを使用しません。
+ * レンダラで`display()`したあと、`return false;`または、単に、`return;`、`return Envi::NONE;`等の方法で、Viewコントローラーへの遷移を止めて下さい。
+ *
+ *
+ *
  *
  * PHP versions 5
  *
@@ -15,10 +35,11 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
+ * @subpackage_main
  */
 
 /**
- * PHPレンダラー
+ * レンダラーのインターフェイス
  *
  * @category   EnviMVC拡張
  * @package    レンダラ
@@ -31,15 +52,8 @@
  * @see        http://www.enviphp.net/
  * @since      Class available since Release 1.0.0
  */
-class EnviPHPRenderer
+interface EnviRenderer
 {
-    private $_system_conf;
-    private $parameter;
-    private $display_ref;
-    public function __construct()
-    {
-        $this->_system_conf = Envi()->getConfigurationAll();
-    }
 
     /**
      * +-- templateに値を格納する
@@ -48,11 +62,7 @@ class EnviPHPRenderer
      * @param mixed $value 値
      * @return void
      */
-    public function setAttribute($name, $value)
-    {
-        $this->assign($name, $value);
-    }
-    /* ----------------------------------------- */
+    public function setAttribute($name, $value);
 
     /**
      * +-- templateに値を格納する
@@ -63,11 +73,7 @@ class EnviPHPRenderer
      * @see EnviPHPRenderer::setAttribute()
      * @deprecated EnviPHPRenderer::setAttribute()を使用して下さい。
      */
-    public function assign($name, $value)
-    {
-        $this->parameter[$name] = $value;
-    }
-    /* ----------------------------------------- */
+    public function assign($name, $value);
 
     /**
      * +-- 画面に描画する
@@ -80,25 +86,11 @@ class EnviPHPRenderer
      * @param       stiring $dummy2 ダミー変数 OPTIONAL:NULL
      * @return      void
      */
-    public function display($file_name, $cache_id  = NULL, $dummy2 = NULL)
-    {
-        //
-        if ($this->parameter) {
-            extract($this->parameter);
-        }
-        include $this->_system_conf['DIRECTORY']['modules'].EnviRequest::getThisModule().DIRECTORY_SEPARATOR.$this->_system_conf['DIRECTORY']['templates'].$file_name;
-    }
-    /* ----------------------------------------- */
+    public function display($file_name, $cache_id  = NULL, $dummy2 = NULL);
 
-    public function is_cached($file_name, $cache_id  = NULL, $dummy2 = NULL)
-    {
-        //
-    }
+    public function is_cached($file_name, $cache_id  = NULL, $dummy2 = NULL);
 
-    public function clear_cache($file_name, $cache_id  = NULL, $dummy2 = NULL)
-    {
-        //
-    }
+    public function clear_cache($file_name, $cache_id  = NULL, $dummy2 = NULL);
 
 
     /**
@@ -112,17 +104,7 @@ class EnviPHPRenderer
      * @param       stiring $dummy2 ダミー変数 OPTIONAL:NULL
      * @return      stiring
      */
-    public function displayRef($file_name, $cache_id  = NULL, $dummy2 = NULL)
-    {
-        ob_start();
-        if ($this->parameter) {
-            extract($this->parameter);
-        }
-        include $this->_system_conf['DIRECTORY']['modules'].EnviRequest::getThisModule().DIRECTORY_SEPARATOR.$this->_system_conf['DIRECTORY']['templates'].$file_name;
-        $this->display_ref = ob_get_contents();
-        ob_end_clean();
-        return $this->display_ref;
-    }
+    public function displayRef($file_name, $cache_id  = NULL, $dummy2 = NULL);
     /* ----------------------------------------- */
 
 }

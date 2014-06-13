@@ -1,8 +1,10 @@
 <?php
 /**
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviCodeParser
+ * コードパース結果オブジェクト
+ *
+ * @category   ユーティリティ
+ * @package    コードパース
+ * @subpackage CodeParser
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -13,9 +15,16 @@
  */
 
 /**
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviCodeParser
+ * コードパース結果オブジェクト
+ *
+ * EnviCodeParserでパースされたコードは、EnviParserResultオブジェクトに格納されます。
+ *
+ * EnviParserResultでは、各トークンが、EnviParserTokenオブジェクトに分割されて保存されます。
+ *
+ *
+ * @category   ユーティリティ
+ * @package    コードパース
+ * @subpackage CodeParser
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -195,9 +204,6 @@ class EnviParserResult implements ArrayAccess, Countable, SeekableIterator
         return $res;
     }
     /* ----------------------------------------- */
-
-
-
 
 
 

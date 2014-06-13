@@ -13,9 +13,9 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
+ * @category   ユーティリティ
+ * @package    ドキュメンテーション
+ * @subpackage Documenter
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -38,9 +38,9 @@ require dirname(__FILE__).DIRECTORY_SEPARATOR.'Documenter/EnviDocumenterDriver.p
  *
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
+ * @category   ユーティリティ
+ * @package    ドキュメンテーション
+ * @subpackage Documenter
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -53,7 +53,17 @@ class EnviDocumenter
 {
     private $code_parser;
     private $driver;
-    private $method_list = array();
+    public $method_list    = array();
+    public $class_list     = array();
+    public $file_list      = array();
+    public $package_list   = array();
+    public $category_list  = array(
+    'フレームワーク基礎処理' => array(),
+    'EnviMVC拡張' => array(),
+    '自動テスト' => array(),
+    'ユーティリティ' => array(),
+
+    );
 
 
     /**
@@ -67,7 +77,7 @@ class EnviDocumenter
     public function __construct($docs_dir = NULL, $template_dir = NULL)
     {
         $this->code_parser = new EnviCodeParser;
-        $this->driver = new EnviDocumenterDriver($docs_dir, $template_dir);
+        $this->driver = new EnviDocumenterDriver($this, $docs_dir, $template_dir);
     }
     /* ----------------------------------------- */
 
@@ -98,7 +108,7 @@ class EnviDocumenter
 
 
         // クラスリストの正規化
-        $class_list = $cpr->getClassList();
+        $class_list = array_merge($cpr->getClassList(), $cpr->getInterfaceList(), $cpr->getTraitList());
         foreach ($class_list as $class_name => $class_item) {
             if (!($class_item['token']->getDocBlockToken() instanceof EnviParserToken)) {
                 unset($class_list[$class_name]);
@@ -109,6 +119,45 @@ class EnviDocumenter
                 unset($class_list[$class_name]);
                 continue;
             }
+            $class_item['doc_block_array'] = $doc_block_array;
+            $package_name = isset($doc_block_array['package'][0]) ? join(' ', $doc_block_array['package'][0]) : 'DefaultPackage';
+            $sub_package_name = isset($doc_block_array['subpackage'][0]) ? join(' ', $doc_block_array['subpackage'][0]) : 'DefaultSubPackage';
+            $category_name = isset($doc_block_array['category'][0]) ? join(' ', $doc_block_array['category'][0]) : 'DefaultCategory';
+            if (!trim($package_name)) {
+                var_dump($class_name);
+                die;
+            }
+
+
+            $this->class_list[$class_name]['methods'] = array();
+            $class_item['file_path']  = $file_name;
+            $class_item['man_path']   = $this->driver->makeWritePath($file_name).'/'.urlencode($package_name).'/'.$sub_package_name.'/'.$class_name.'.md';
+            $class_item['cpr']        = $cpr;
+            $class_item['file_name']  = mb_ereg_replace('\.php$', '', basename($cpr->getFileName()));
+
+            $this->class_list[$class_name]['class_item'] = $class_item;
+            if (!isset($this->package_list[$package_name][$sub_package_name])) {
+                $this->package_list[$package_name][$sub_package_name] = array(
+                    'file_doc'               => $file_doc,
+                    'package_name'           => $package_name,
+                    'package_man_path'       => $this->driver->makeWritePath($file_name).'/'.urlencode($package_name).'.md',
+                    'sub_package_man_path'   => $this->driver->makeWritePath($file_name).'/'.urlencode($package_name).'/'.$sub_package_name.'.md',
+                    'constant_man_path'      => $this->driver->makeWritePath($file_name).'/'.urlencode($package_name).'/'.$sub_package_name.'/constant.md',
+                    'intro_man_path'         => $this->driver->makeWritePath($file_name).'/'.urlencode($package_name).'/'.$sub_package_name.'/intro.md',
+                    'setup_man_path'         => $this->driver->makeWritePath($file_name).'/'.urlencode($package_name).'/'.$sub_package_name.'/setup.md',
+                    'class_list' => array(),
+                );
+            }
+            $this->category_list[$category_name][$package_name][$sub_package_name] =& $this->package_list[$package_name][$sub_package_name];
+            if ($class_item['file_name'] == $sub_package_name) {
+                $this->package_list[$package_name][$sub_package_name]['file_doc'] = $file_doc;
+            } elseif (strpos('@subpackage_main', (string)$file_doc) !== false) {
+                $this->package_list[$package_name][$sub_package_name]['file_doc'] = $file_doc;
+            }
+
+            $this->package_list[$package_name][$sub_package_name]['class_list'][$class_name] = &$this->class_list[$class_name];
+            $this->file_list[$file_name][$class_name] = &$this->class_list[$class_name];
+
             foreach ($class_item['methods'] as $method_name => $method) {
                 if (!($method->getDocBlockToken() instanceof EnviParserToken)) {
                     unset($class_list[$class_name]['methods'][$method_name]);
@@ -134,22 +183,26 @@ class EnviDocumenter
                     unset($class_list[$class_name]['methods'][$method_name]);
                     continue;
                 }
-
-                $this->method_list[$method->getMethodName()] = array(
-                    'class_array' => $class_list[$class_name],
+                $method_full_name = $class_name.'::'.$method_name;
+                $this->method_list[$method_full_name] = array(
+                    'method_name'     => $method_name,
+                    'doc_block_array' => $doc_block_array,
+                    'class_array'    => $class_list[$class_name],
                     'file_doc_token' => $file_doc,
-                    'class_name'  => $class_name,
-                    'class_token' => $class_item['token'],
-                    'file_path'   => $file_name,
-                    'token'       => $method,
-                    'class_token' => $class_list[$class_name]['token'],
-                    'cpr'         => $cpr,
-                    'man_path'    => $this->driver->makeWritePath($file_name).'/'.$class_name.'/'.$method->getName().'.md',
-                    'file_name' => mb_ereg_replace('\.php$', '', basename($cpr->getFileName())),
+                    'class_name'     => $class_name,
+                    'class_token'    => $class_item['token'],
+                    'file_path'      => $file_name,
+                    'token'          => $method,
+                    'class_token'    => $class_list[$class_name]['token'],
+                    'cpr'            => $cpr,
+                    'man_path'       => $this->driver->makeWritePath($file_name).'/'.urlencode($package_name).'/'.$sub_package_name.'/'.$class_name.'/'.$method->getName().'.md',
+                    'file_name'      => mb_ereg_replace('\.php$', '', basename($cpr->getFileName())),
                 );
+                $this->class_list[$class_name]['methods'][$method_full_name] =& $this->method_list[$method_full_name];
             }
         }
 
+/*
         $this->driver->fileWriter($class_list, $token_list, $cpr);
 
         $this->driver->constantWriter($class_list, $cpr);
@@ -157,24 +210,43 @@ class EnviDocumenter
             $this->driver->classWriter($class_name, $class_item['token'], $class_item['methods'], $cpr);
         }
         $this->cliWrite($file_name.' parse end');
+*/
     }
     /* ----------------------------------------- */
 
     public function parse($file_name, $suffix = '.php', $prefix = '')
     {
         $start_time = microtime(true);
-        if (is_file($file_name)) {
-            $this->parseFile($file_name);
-        } elseif (is_dir($file_name)) {
-            $file_path_list = $this->getFileListByDirectory($file_name, $suffix, $prefix);
-            foreach ($file_path_list as $file_path) {
-                $this->parseFile($file_path);
+        $file_name_list = explode(',', $file_name);
+        foreach ($file_name_list as $file_name) {
+            if (is_file($file_name)) {
+                $this->parseFile($file_name);
+            } elseif (is_dir($file_name)) {
+                $file_path_list = $this->getFileListByDirectory($file_name, $suffix, $prefix);
+                foreach ($file_path_list as $file_path) {
+                    $this->parseFile($file_path);
+                }
             }
         }
+
         $this->cliWrite('method list writing');
         foreach ($this->method_list as $method_name => $item) {
-            $this->driver->methodWriter($this->method_list, $method_name);
+            $this->driver->methodWriter($method_name);
         }
+        $this->cliWrite('class list writing');
+        foreach ($this->class_list as $class_name => $class_item) {
+            $this->driver->classWriter($class_name);
+        }
+
+        $this->cliWrite('package_list list writing');
+        foreach ($this->package_list as $package_name => $sub_packages) {
+            $this->driver->packageWriter($package_name);
+            foreach ($sub_packages as $sub_package_name => $sub_packages) {
+                $this->driver->subPackageWriter($package_name, $sub_package_name);
+                $this->driver->constantWriter($package_name, $sub_package_name);
+            }
+        }
+        $this->driver->categoryWriter();
         $this->cliWrite('parse end:'.(microtime(true)-$start_time).'sec');
     }
 

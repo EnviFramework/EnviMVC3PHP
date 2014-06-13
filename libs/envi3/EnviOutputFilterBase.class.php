@@ -5,9 +5,9 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage Filter
+ * @category   EnviMVC拡張
+ * @package    フィルタ
+ * @subpackage OutputFilter
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -15,6 +15,7 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
+ * @subpackage_main
  */
 
 
@@ -22,9 +23,9 @@
  * OutFilter基底クラス
  *
  * @abstract
- * @category   MVC
- * @package    Envi3
- * @subpackage Filter
+ * @category   EnviMVC拡張
+ * @package    フィルタ
+ * @subpackage OutputFilter
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
