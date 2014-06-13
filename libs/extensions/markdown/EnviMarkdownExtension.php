@@ -9,9 +9,9 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
+ * @category   EnviMVC拡張
+ * @package    EnviPHPが用意するエクステンション
+ * @subpackage MarkdownExtension
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -30,9 +30,9 @@ use \Michelf\Markdown, \Michelf\SmartyPants,\Michelf\MarkdownExtra;
 /**
  *  MarkdownExtraを使用するためのエクステンション
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
+ * @category   EnviMVC拡張
+ * @package    EnviPHPが用意するエクステンション
+ * @subpackage MarkdownExtension
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -49,10 +49,10 @@ class EnviMarkdownExtension
      * +-- コンストラクタ
      *
      * @access      public
-     * @param       var_text $system_conf
+     * @param       array $system_conf コンフィグ
      * @return      void
      */
-    public function __construct($system_conf)
+    public function __construct(array $system_conf)
     {
         $system_conf['predef_urls']    = isset($system_conf['predef_urls']) && is_array($system_conf['predef_urls']) ? $system_conf['predef_urls'] : array();
         $system_conf['predef_titles']  = isset($system_conf['predef_titles']) && is_array($system_conf['predef_titles']) ? $system_conf['predef_titles'] : array();
@@ -66,8 +66,8 @@ class EnviMarkdownExtension
      * +-- ファイルを指定してコンパイルする
      *
      * @access      public
-     * @param       string $file_path
-     * @param       string $compile_id OPTIONAL:NULL
+     * @param       string $file_path ファイルパス
+     * @param       string $compile_id コンパイルID OPTIONAL:NULL
      * @return      string
      */
     public function compileFile($file_path, $compile_id = NULL, $extra = NULL)
@@ -97,9 +97,9 @@ class EnviMarkdownExtension
      * +-- 文字列を指定してコンパイルする
      *
      * @access      public
-     * @param       string $string
-     * @param       string $compile_id
-     * @param       string $base_file_path OPTIONAL:NULL
+     * @param       string $string コンパイルする文字列
+     * @param       string $compile_id コンパイルID OPTIONAL:NULL
+     * @param       string $extra エクストラフラグ OPTIONAL:NULL
      * @return      string
      */
     public function compile($string, $compile_id, $extra = NULL)
@@ -124,8 +124,8 @@ class EnviMarkdownExtension
      * +-- transformを実行する
      *
      * @access      public
-     * @param       var_text $text
-     * @param       var_text $extra OPTIONAL:NULL
+     * @param       string $text 変換する文字列
+     * @param       string $extra OPTIONAL:NULL
      * @return      string
      */
     public function transform($text, $extra = NULL)
@@ -142,8 +142,8 @@ class EnviMarkdownExtension
      * +-- ファイルからtransformを実行する
      *
      * @access      public
-     * @param       var_text $text
-     * @param       var_text $extra OPTIONAL:NULL
+     * @param       string $file_path 変換するファイルのパス
+     * @param       string $extra OPTIONAL:NULL
      * @return      string
      */
     public function transformFile($file_path, $extra = NULL)

@@ -29,7 +29,7 @@
  * PHP versions 5
  *
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage Validator
  * @author     Akito <akito-artisan@five-foxes.com>
@@ -39,13 +39,14 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
+ * @subpackage_main
 */
 
 /**
  * このクラスは、定数を提供するのみです。
  *
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage Validator
  * @author     Akito <akito-artisan@five-foxes.com>
@@ -150,79 +151,80 @@ function validator()
  * 本マニュアルでは、例2の方法を使用して、記載していきます。
  *
  * バリデータのリスト
- * Upper Version 3.3.1
- * - 'equal'            => 値が同じであるかどうか
- * - 'notequal'         => 値が違うかどうか
- * - 'xdigit'           => 16 進数を表す文字かどうかを調べる
- * - 'digit'            => すべての文字が数字かどうかを調べる
- * - 'cntrl'            => すべての文字が制御文字であるかどうかを調べます。
- * - 'graph'            => すべての文字が空白以外の印字可能な文字かどうかを調べる
- * - 'lower'            => すべての文字が小文字かどうかを調べる
- * - 'upper'            => すべての文字が大文字かどうかを調べる
- * - 'print'            => すべての文字が印字可能な文字かどうかを調べる
- * - 'punct'            => すべての文字が記号文字かどうかを調べる
- * - 'space'            => すべての文字が空白文字かどうか調べる
- * - 'notxdigit'         => 16 進数を表す文字でないかどうかを調べる
- * - 'withoutdigit'      => 数字以外の文字が含まれているかどうかを調べる
- * - 'withoutcntrl'      => 制御文字以外の文字が含まれているかどうかを調べる
- * - 'withoutgraph'      => 改行,空白,タブのような印字も制御もできない文字が含まれるかどうか調べる
- * - 'withoutlower'      => 小文字以外の文字が含まれるかどうかを調べる
- * - 'withoutupper'      => 大文字以外の文字が含まれるかどうかを調べる
- * - 'withoutprint'      => (改行、タブ,空白,制御文字などの)印字不可能な文字を含むかどうかを調べる
- * - 'withoutpunct'      => 記号文字以外を含むかどうかを調べる
- * - 'withoutspace'      => 空白文字以外を含むかどうかを調べる
- * - 'withoutalphabet'              => アルファベット以外を含むかどうかを調べる
- * - 'withoutalphabetornumber'      => アルファベットと数字以外を含むかどうかを調べる
- * Upper Version 3.3.0
- * - "number"           => 数値かどうか。小数点も許容します。(OPTION:なし)
- * - "naturalnumber"    => 整数かどうか。0も許容します。(OPTION:なし)
- * - "integer"          => 数字かどうか。小数点は使用出来ません(OPTION:なし)
- * - "numbermax"        => 数値の最大(OPTION:最大数)
- * - "numbermin"        => 数値の最小(OPTION:最少数)
- * - "alphabet"         => アルファベットかどうか(OPTION:なし)
- * - "alphabetornumber" => アルファベットもしくは数字かどうか(OPTION:なし)
- * - "rome"             => ローマ字区域(半角英語+半角数字+半角記号)の文字列か(OPTION:半角化するか)
- * - "maxlen"           => 最大文字数(OPTION:最大数)
- * - "minlen"           => 最小文字数(OPTION:最小数)
- * - "maxwidth"         => 最大文字幅。全角2半角1(OPTION:最大数)
- * - "minwidth"         => 最小文字幅。全角2半角1(OPTION:最少数)
- * - "blank"            => 空白かどうか(OPTION:なし)
- * - "noblank"          => 空白でないか(OPTION:なし)
- * - "nosubmit"         => 送信されているか(OPTION:なし)
- * - "encoding"         => 文字のエンコーディング(OPTION:エンコード名)
- * - "notags"           => タグが含まれていないか(OPTION:なし)
- * - "depend"           => 機種依存文字が含まれていないか(OPTION:なし)
- * - "mailformat"       => メールフォーマットの文字列になっているか(OPTION:なし)
- * - "mailsimple"       => simpleなメールフォーマットチェック
- * - "mail"             => ドメインも確認(OPTION:なし)
- * - "hiragana"         => ひらがなか(OPTION:カタカナをひらがなに直すか)
- * - "katakana"         => カタカナか(OPTION:ひらがなをカタカナに直すか)
- * - "hfurigana"        => ひらがなのふりがなか(OPTION:カタカナをひらがなに直すか)
- * - "kfurigana"        => カタカナのフリガナか(OPTION:ひらがなをカタカナに直すか)
- * - "urlformat"        => URLフォーマットの文字列になっているか(OPTION:なし)
- * - "url"              => ドメインも確認(OPTION:なし)
- * - "telephone"        => 電話番号のフォーマットになっているか
- * - "postcodeformat"   => 郵便番号のフォーマットになっているか(OPTION:なし)
- * - "whitelist"        => ホワイトリストに含まれているか(OPTION:ホワイトリストの配列)
- * - "date"             => YYYYMMDD形式のデータもしくは配列が、日付フォーマットになっているか(OPTION:array("year" => "年の配列キー","month" => "月の配列キー","day" => "日の配列キー"))
- * - "time"             => 時間フォーマットになっているか(OPTION:時間のフォーマット。定数参照)
- * - "array"            => 配列か(OPTION:なし)
- * - "notarray"         => でないか配列か(OPTION:なし)
- * - "arraykeyexists"   => 配列の中に指定されたキーが入っているか
- * - "arraynumber"      => 配列の中身は全て数字か(OPTION:なし)
- * - "arraynumbermax"   => 配列の中身の数字の合計最大(OPTION:最大数)
- * - "arraynumbermin"   => 配列の中身の数字の合計最小(OPTION:最小数)
- * - "arraycountmax"    => 配列の数の最大(OPTION:最大数)
- * - "arraycountmin"    => 配列の数の最小(OPTION:最小数)
- * - "arrayunique"      => 配列の値がuniqueかどうか(空文字列・NULLはuniqueチェックから省くかどうか)
- * - "maxbr"            => 改行数の最大(OPTION:最大数)
- * - "minbr"            => 改行数の最小(OPTION:最小数)
- * - "dirpath"          => 存在するディレクトリパスか(OPTION:なし)
- * - "file"             => 存在するファイルか(OPTION:なし)
- * - "ereg"             => ルビー互換の正規表現にマッチするか(OPTION:正規表現)
- * - "preg"             => パール互換の正規表現にマッチするか(OPTION:正規表現)
+ * --------------------------------------------------------------
+ * * Upper Version 3.3.1
+ *   * 'equal'            => 値が同じであるかどうか
+ *   * 'notequal'         => 値が違うかどうか
+ *   * 'xdigit'           => 16 進数を表す文字かどうかを調べる
+ *   * 'digit'            => すべての文字が数字かどうかを調べる
+ *   * 'cntrl'            => すべての文字が制御文字であるかどうかを調べます。
+ *   * 'graph'            => すべての文字が空白以外の印字可能な文字かどうかを調べる
+ *   * 'lower'            => すべての文字が小文字かどうかを調べる
+ *   * 'upper'            => すべての文字が大文字かどうかを調べる
+ *   * 'print'            => すべての文字が印字可能な文字かどうかを調べる
+ *   * 'punct'            => すべての文字が記号文字かどうかを調べる
+ *   * 'space'            => すべての文字が空白文字かどうか調べる
+ *   * 'notxdigit'         => 16 進数を表す文字でないかどうかを調べる
+ *   * 'withoutdigit'      => 数字以外の文字が含まれているかどうかを調べる
+ *   * 'withoutcntrl'      => 制御文字以外の文字が含まれているかどうかを調べる
+ *   * 'withoutgraph'      => 改行,空白,タブのような印字も制御もできない文字が含まれるかどうか調べる
+ *   * 'withoutlower'      => 小文字以外の文字が含まれるかどうかを調べる
+ *   * 'withoutupper'      => 大文字以外の文字が含まれるかどうかを調べる
+ *   * 'withoutprint'      => (改行、タブ,空白,制御文字などの)印字不可能な文字を含むかどうかを調べる
+ *   * 'withoutpunct'      => 記号文字以外を含むかどうかを調べる
+ *   * 'withoutspace'      => 空白文字以外を含むかどうかを調べる
+ *   * 'withoutalphabet'              => アルファベット以外を含むかどうかを調べる
+ *   * 'withoutalphabetornumber'      => アルファベットと数字以外を含むかどうかを調べる
+ * * Upper Version 3.3.0
+ *   * "number"           => 数値かどうか。小数点も許容します。(OPTION:なし)
+ *   * "naturalnumber"    => 整数かどうか。0も許容します。(OPTION:なし)
+ *   * "integer"          => 数字かどうか。小数点は使用出来ません(OPTION:なし)
+ *   * "numbermax"        => 数値の最大(OPTION:最大数)
+ *   * "numbermin"        => 数値の最小(OPTION:最少数)
+ *   * "alphabet"         => アルファベットかどうか(OPTION:なし)
+ *   * "alphabetornumber" => アルファベットもしくは数字かどうか(OPTION:なし)
+ *   * "rome"             => ローマ字区域(半角英語+半角数字+半角記号)の文字列か(OPTION:半角化するか)
+ *   * "maxlen"           => 最大文字数(OPTION:最大数)
+ *   * "minlen"           => 最小文字数(OPTION:最小数)
+ *   * "maxwidth"         => 最大文字幅。全角2半角1(OPTION:最大数)
+ *   * "minwidth"         => 最小文字幅。全角2半角1(OPTION:最少数)
+ *   * "blank"            => 空白かどうか(OPTION:なし)
+ *   * "noblank"          => 空白でないか(OPTION:なし)
+ *   * "nosubmit"         => 送信されているか(OPTION:なし)
+ *   * "encoding"         => 文字のエンコーディング(OPTION:エンコード名)
+ *   * "notags"           => タグが含まれていないか(OPTION:なし)
+ *   * "depend"           => 機種依存文字が含まれていないか(OPTION:なし)
+ *   * "mailformat"       => メールフォーマットの文字列になっているか(OPTION:なし)
+ *   * "mailsimple"       => simpleなメールフォーマットチェック
+ *   * "mail"             => ドメインも確認(OPTION:なし)
+ *   * "hiragana"         => ひらがなか(OPTION:カタカナをひらがなに直すか)
+ *   * "katakana"         => カタカナか(OPTION:ひらがなをカタカナに直すか)
+ *   * "hfurigana"        => ひらがなのふりがなか(OPTION:カタカナをひらがなに直すか)
+ *   * "kfurigana"        => カタカナのフリガナか(OPTION:ひらがなをカタカナに直すか)
+ *   * "urlformat"        => URLフォーマットの文字列になっているか(OPTION:なし)
+ *   * "url"              => ドメインも確認(OPTION:なし)
+ *   * "telephone"        => 電話番号のフォーマットになっているか
+ *   * "postcodeformat"   => 郵便番号のフォーマットになっているか(OPTION:なし)
+ *   * "whitelist"        => ホワイトリストに含まれているか(OPTION:ホワイトリストの配列)
+ *   * "date"             => YYYYMMDD形式のデータもしくは配列が、日付フォーマットになっているか(OPTION:array("year" => "年の配列キー","month" => "月の配列キー","day" => "日の配列キー"))
+ *   * "time"             => 時間フォーマットになっているか(OPTION:時間のフォーマット。定数参照)
+ *   * "array"            => 配列か(OPTION:なし)
+ *   * "notarray"         => でないか配列か(OPTION:なし)
+ *   * "arraykeyexists"   => 配列の中に指定されたキーが入っているか
+ *   * "arraynumber"      => 配列の中身は全て数字か(OPTION:なし)
+ *   * "arraynumbermax"   => 配列の中身の数字の合計最大(OPTION:最大数)
+ *   * "arraynumbermin"   => 配列の中身の数字の合計最小(OPTION:最小数)
+ *   * "arraycountmax"    => 配列の数の最大(OPTION:最大数)
+ *   * "arraycountmin"    => 配列の数の最小(OPTION:最小数)
+ *   * "arrayunique"      => 配列の値がuniqueかどうか(空文字列・NULLはuniqueチェックから省くかどうか)
+ *   * "maxbr"            => 改行数の最大(OPTION:最大数)
+ *   * "minbr"            => 改行数の最小(OPTION:最小数)
+ *   * "dirpath"          => 存在するディレクトリパスか(OPTION:なし)
+ *   * "file"             => 存在するファイルか(OPTION:なし)
+ *   * "ereg"             => ルビー互換の正規表現にマッチするか(OPTION:正規表現)
+ *   * "preg"             => パール互換の正規表現にマッチするか(OPTION:正規表現)
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage Validator
  * @author     Akito <akito-artisan@five-foxes.com>
@@ -2148,7 +2150,7 @@ class EnviValidator
 /**
  * 入力検証エラークラス
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage Validator
  * @author     Akito <akito-artisan@five-foxes.com>

@@ -1,12 +1,16 @@
 <?php
 /**
- * アクセス者の情報を解析
+ * リクエストユーザーの情報を解析
+ *
+ * リクエスト元のブラウザ情報や、ホスト情報を解析して、使用端末情報を取得します。
+ *
+ *
  *
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
+ * @category   EnviMVC拡張
+ * @package    EnviPHPが用意するエクステンション
  * @subpackage WebType
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -23,7 +27,8 @@
  *
  * リクエスト元のブラウザ情報や、ホスト情報を解析して、使用端末情報を取得します。
  *
- * @package    Envi3
+ * @category   EnviMVC拡張
+ * @package    EnviPHPが用意するエクステンション
  * @subpackage WebType
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -65,7 +70,7 @@ class EnviWebType
      */
     public function __construct($system_conf)
     {
-    //TUKAデバイスマップ
+        //TUKAデバイスマップ
         $this->Envi_hdml_smaf_map = array('HI11' => 4, 'KC11' => 4, 'HI12' => 4, 'KC12' => 4, 'KCT4' => 4, 'KCT5' => 4, 'KCT6' => 4, 'KCT7' => 4,
                         'SN12' => 16, 'SN14' => 16, 'SN13' => 16, 'HI13' => 16, 'SN15' => 16, 'SN16' => 16, 'KC13' => 16,
                         'HI14' => 16, 'CA14' => 16, 'SN17' => 16, 'HI21' => 16, 'TST3' => 16, 'KCT8' => 16, 'TST4' => 16,
@@ -98,8 +103,22 @@ class EnviWebType
             'NTT4955595097255-000' => 1, 'CANSL70' => 1, 'CANSL50' => 1, 'CANVL20' => 1, 'CANVL10' => 1, 'CANVL1' => 1, 'SHAUXWB10' => 1, 'SHAUX-W71' => 1,
             'SHAUX-W70' => 1, 'SHAUXW51' => 1, 'MGCUFL3' => 1, 'MGCUFL1' => 1, 'MGCKXL6' => 1, 'KMEKXL5' => 1
         );
-        $this->remote_host = @gethostbyaddr($_SERVER['REMOTE_ADDR']);
     }
+
+    /**
+     * +-- リクエストユーザーのホスト名を取得する
+     *
+     * @access      public
+     * @return      string
+     */
+    public function getUserRemoteHost()
+    {
+        if (!$this->remote_host) {
+            $this->remote_host = @gethostbyaddr($_SERVER['REMOTE_ADDR']);
+        }
+        return $this->remote_host;
+    }
+    /* ----------------------------------------- */
 
     /**
      * +-- UserAgentから、OSやブラウザ情報を取得します
@@ -119,6 +138,14 @@ class EnviWebType
         }
         if (preg_match('/DreamPassport/', $user_agent)) {
             $blo['os'] = 'DreamFlyer';
+        } elseif (preg_match("/Android *(\d)/i", $user_agent, $matches)) {
+            $blo['os'] = "Android $matches[1]";
+        } elseif (preg_match("/iPod touch/", $user_agent)) {
+            $blo['os'] = 'iPod touch';
+        } elseif (preg_match("/iPhone/", $user_agent)) {
+            $blo['os'] = 'iPhone';
+        } elseif (preg_match("/iPad/", $user_agent)) {
+            $blo['os'] = 'iPad';
         } elseif (preg_match("/Win 9x 4.90/", $user_agent)) {
             $blo['os'] = 'Windows Me';
         } elseif (preg_match("/Windows 98/", $user_agent)) {
@@ -137,6 +164,14 @@ class EnviWebType
             $blo['os'] = 'Windows 2000';
         } elseif (preg_match("/Windows NT 5/", $user_agent)) {
             $blo['os'] = 'Windows 2000';
+        } elseif (preg_match("/Windows NT 6.0/", $user_agent)) {
+            $blo['os'] = 'Windows Vista';
+        } elseif (preg_match("/Windows NT 6.1/", $user_agent)) {
+            $blo['os'] = 'Windows 7';
+        } elseif (preg_match("/Windows NT 6.2; ARM; Trident/6.0/", $user_agent)) {
+            $blo['os'] = 'Windows RT';
+        } elseif (preg_match("/Windows NT 6.2/", $user_agent)) {
+            $blo['os'] = 'Windows 8';
         } elseif (preg_match("/Windows NT/", $user_agent)) {
             $blo['os'] = 'Windows NT';
         } elseif (preg_match("/WinNT/", $user_agent)) {
@@ -181,6 +216,8 @@ class EnviWebType
             $blo['os'] = 'KDDI';
         } elseif (preg_match("/J-PHONE/", $user_agent)) {
             $blo['os'] = 'Vodafone';
+        } elseif (preg_match("/Softbank/", $user_agent)) {
+            $blo['os'] = 'Softbank';
         } elseif (isset($_SERVER['HTTP_X_UP_SUBNO'])) {
             $blo['os'] = "AU";
         } elseif (preg_match("/UP.Browser/", $user_agent) && !isset($_SERVER['HTTP_X_UP_SUBNO'])) {
@@ -193,7 +230,7 @@ class EnviWebType
             $blo['os'] = 'Another HTML-lint';
         } else {
             if (preg_match("/Mozilla\/(\d)/i", $user_agent, $matches)) {
-            $mv = $matches[1];
+                $mv = $matches[1];
             if  (preg_match("/NetCaptor *(\d)/i", $user_agent, $matches)) {
                 $blo['os'] = 'Unknown (NetCaptor)';
             } elseif (preg_match("/MSIE *(\d)/i", $user_agent, $matches)) {
@@ -281,6 +318,8 @@ class EnviWebType
                 $blo['browser'] = "Camino $matches[1].x";
             } elseif (preg_match("/Galeon\/(\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Galeon $matches[1].x";
+            } elseif (preg_match("/Chrome *(\d)/i", $user_agent, $matches)) {
+                $blo['browser'] = "Chrome $matches[1].x";
             } elseif (preg_match("/Safari/", $user_agent, $matches)) {
                 $blo['browser'] = 'Safari';
             } elseif (preg_match("/Konqueror\/(\d)/i", $user_agent, $matches)) {
@@ -363,7 +402,7 @@ class EnviWebType
         if (isset($this->_cash['getWeb'][$user_agent])) {
             return $this->_cash['getWeb'][$user_agent];
         }
-        $remote_host = $remote_host === NULL ? $this->remote_host : $remote_host;
+        $remote_host = $remote_host === NULL ? $this->getUserRemoteHost() : $remote_host;
         if (strstr($user_agent, 'KDDI') && strstr($user_agent, 'Opera')) {
             $web = self::OHTER;
         } elseif (strstr($user_agent, 'iPhone')) {
@@ -428,7 +467,7 @@ class EnviWebType
         if (isset($this->_cash['getCharacter'])) {
             return $this->_cash['getCharacter'];
         }
-        $info['remote_host'] = $this->remote_host;
+        $info['remote_host'] = $this->getUserRemoteHost();
         $info['web'] = $this->getWeb();
         switch ($info['web']) {
             case self::DEBUG:

@@ -6,9 +6,10 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
+ *
+ * @category   テスト
+ * @package    テスト
+ * @subpackage TestCode
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -16,7 +17,11 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      File available since Release 1.0.0
+ * @doc_ignore
  */
+
+require_once ENVI_BASE_DIR.'/test/EnviTest.php';
+require_once dirname(__FILE__).'/testCaseBase.php';
 
 $scenario_dir = dirname(__FILE__).DIRECTORY_SEPARATOR;
 define('ENVI_TEST_YML', basename(dirname(__FILE__)).'.yml');
@@ -25,22 +30,44 @@ $cmd = 'cp -rf '.ENVI_BASE_DIR.'/test/* '.dirname(__FILE__).DIRECTORY_SEPARATOR.
 $cmd = 'cp -rf '.ENVI_BASE_DIR.'/util/* '.dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/util/';
 `$cmd`;
 
+$test = array(dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/test/EnviTest.php', dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/test/EnviDummy.php');
 
+$test = array_merge($test, glob(dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/util/EnviCode*.php'));
+$test = array_merge($test, glob(dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/util/CodeCoverage/*.php'));
+$test = array_merge($test, glob(dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/util/CodeParser/*.php'));
+foreach ($test as $k => $file_path) {
+    $file = file($file_path);
+    $rep_file = array();
+    $name_space = 'namespace envitest\unit;'."\n";
+    if ($k === 0) {
+        $name_space .= 'class exception extends \exception{}'."\n";
+        $name_space .= 'interface ArrayAccess{}'."\n";
+        $name_space .= 'interface Countable{}'."\n";
+        $name_space .= 'interface SeekableIterator{}'."\n";
+    }
+    foreach ($file as $line) {
+        $rep_file[] = $line;
+        if ($name_space) {
+            $rep_file[] = $name_space;
+            $name_space = '';
+        }
+    }
+    file_put_contents($file_path, join('', $rep_file));
 
-
-require_once ENVI_BASE_DIR.'/test/EnviTest.php';
-require_once dirname(__FILE__).'/testCaseBase.php';
+}
+foreach ($test as $k => $file_path) {
+    require_once $file_path;
+}
 
 /**
  * テストのScenarioクラス
  *
  *
- * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
+ * @category   テスト
+ * @package    テスト
+ * @subpackage TestCode
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License

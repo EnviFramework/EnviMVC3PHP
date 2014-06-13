@@ -17,7 +17,7 @@
  * PHP versions 5
  *
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage Logger
  * @author     Akito <akito-artisan@five-foxes.com>
@@ -27,6 +27,7 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
+ * @subpackage_main
  */
 
 
@@ -75,7 +76,7 @@ function console()
  * Envi::logger()->debug('someting message');
  * としてください。
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage Logger
  * @author     Akito <akito-artisan@five-foxes.com>
@@ -1036,8 +1037,9 @@ class EnviLogWriter
     /**#@-*/
 // -------------------------------------------------------------
 }
+
 /**
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage Logger
  * @doc_ignore
@@ -1048,6 +1050,7 @@ class EnviLogWriter
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      Class available since Release 3.3.2.1
+ * @doc_ignore
  */
 class EnviLogWriterConsoleEmpty extends EnviLogWriterConsole
 {
@@ -1126,7 +1129,7 @@ class EnviLogWriterConsoleEmpty extends EnviLogWriterConsole
 }
 
 /**
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage Logger
  * @doc_ignore
@@ -1137,6 +1140,7 @@ class EnviLogWriterConsoleEmpty extends EnviLogWriterConsole
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      Class available since Release 3.3.2.1
+ * @doc_ignore
  */
 class EnviLogWriterConsole
 {
@@ -1176,7 +1180,7 @@ class EnviLogWriterConsole
  * logger()->console()->debug('someting message');
  * としてください。
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage Logger
  * @author     Akito <akito-artisan@five-foxes.com>

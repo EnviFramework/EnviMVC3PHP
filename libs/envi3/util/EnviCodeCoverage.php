@@ -1,8 +1,13 @@
 <?php
 /**
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviCodeCoverage
+ * コードカバレッジ計測
+ *
+ * コードカバレッジをサポートするには Xdebug 2.1.3以降及び、
+ * [tokenizer](http://www.php.net/manual/ja/tokenizer.installation.php)拡張モジュールが必要です。
+ *
+ * @category   自動テスト
+ * @package    UnitTest
+ * @subpackage CodeCoverage
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -10,12 +15,19 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      Class available since Release v3.3.3.5
+ * @subpackage_main
  */
 
 /**
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviCodeCoverage
+ * コードカバレッジ計測
+ *
+ *
+ * コードカバレッジをサポートするには Xdebug 2.1.3以降及び、
+ * [tokenizer](http://www.php.net/manual/ja/tokenizer.installation.php)拡張モジュールが必要です。
+ *
+ * @category   自動テスト
+ * @package    UnitTest
+ * @subpackage CodeCoverage
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -40,6 +52,12 @@ class EnviCodeCoverage
      * @var EnviCodeCoverageParser
      */
     private $parser;
+
+    /**
+     * @var EnviCodeCoverageParser
+     */
+    private $is_nothing = false;
+
 
     /**
      * Code coverage data.
@@ -106,6 +124,27 @@ class EnviCodeCoverage
     /* ----------------------------------------- */
 
 
+    public function setCover(array $cover)
+    {
+        $this->driver->setCover($cover);
+    }
+
+    public function unSetCover()
+    {
+        $this->driver->unSetCover();
+    }
+
+    public function startNothing()
+    {
+        $this->finish();
+        $this->is_nothing = true;
+    }
+    public function endNothing()
+    {
+        $this->is_nothing = false;
+        $this->start();
+    }
+
     /**
      * +-- ドライバオブジェクトを返す
      *
@@ -151,6 +190,9 @@ class EnviCodeCoverage
      */
     public function start()
     {
+        if ($this->is_nothing) {
+            return;
+        }
         $this->driver->start();
     }
     /* ----------------------------------------- */
@@ -163,6 +205,9 @@ class EnviCodeCoverage
      */
     public function finish()
     {
+        if ($this->is_nothing) {
+            return;
+        }
         $data = $this->driver->finish();
         foreach ($data as $file_name => $coverage_data) {
             if (!isset($this->coverage_data[$file_name])) {
@@ -208,7 +253,6 @@ class EnviCodeCoverage
         if ($add_white_list_file) {
             $this->addWhiteListFiles();
         }
-
         $clone_coverage_data = $this->coverage_data;
         $cover_count = array(0, 0);
         $class_coverage_data = array();
@@ -316,8 +360,6 @@ class EnviCodeCoverage
         }
         return $class_name::factory($this);
     }
-
-
 
 }
 

@@ -5,12 +5,12 @@
  * フロントのPHP内で、
  * require
  * してください。
- * 必要なコードのlordなどFW動作に必要なことを適宜行います。
+ * オートローダーの設定を含む、必要なコードのロードなどのFW動作に必要なことを適宜行います。
  *
  * PHP versions 5
  *
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
@@ -20,6 +20,7 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
+ * @subpackage_main
  */
 
 
@@ -62,7 +63,7 @@ define('ENVI_ENV', EnviServerStatus()->getServerStatus());
  * +-- Redirect用の例外
  *
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
@@ -104,7 +105,7 @@ class redirectException extends Exception
  *
  *
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
@@ -139,7 +140,7 @@ class killException extends Exception
  *
  *
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
@@ -178,7 +179,7 @@ class Envi404Exception extends Exception
  *
  *
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
@@ -218,7 +219,7 @@ class Envi403Exception extends Exception
  *
  *
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
@@ -282,7 +283,7 @@ function Envi($app = false, $debug = false)
  *
  *
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
@@ -442,6 +443,8 @@ class Envi
      * @access public
      * @static
      * @return Envi
+     * @deprecated `Envi()`関数を使用して下さい。
+     * @doc_ignore
      */
     public static function singleton()
     {

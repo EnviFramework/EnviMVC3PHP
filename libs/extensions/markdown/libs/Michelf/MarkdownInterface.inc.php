@@ -1,4 +1,10 @@
 <?php
+/**
+ * @package
+ * @subpackage
+ * @sinse 0.1
+ * @doc_ignore
+ */
 
 # Use this file if you cannot use class autoloading. It will include all the
 # files needed for the MarkdownInterface interface.

@@ -5,9 +5,9 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage ORMAP
+ * @category   EnviMVC拡張
+ * @package    EnviPHPが用意するエクステンション
+ * @subpackage DB
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -22,9 +22,9 @@
  * PropelPDO風のオブジェクトを作成するベースクラス
  *
  * @abstract
- * @category   MVC
- * @package    Envi3
- * @subpackage ORMAP
+ * @category   EnviMVC拡張
+ * @package    EnviPHPが用意するエクステンション
+ * @subpackage DB
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License

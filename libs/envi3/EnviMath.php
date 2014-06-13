@@ -7,9 +7,9 @@
  * PHP versions 5
  *
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage Math
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -17,15 +17,16 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
+ * @subpackage_main
  */
 
 /**
  * Mathクラス
  *
  *
- * @category   MVC
+ * @category   フレームワーク基礎処理
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage Math
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License

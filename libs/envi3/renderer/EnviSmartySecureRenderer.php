@@ -13,8 +13,8 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
+ * @category   EnviMVC拡張
+ * @package    レンダラ
  * @subpackage Renderer
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -36,8 +36,8 @@ require 'ArtisanSmarty.class.php';
  *
  * レンダラーは自由に作成することが出来るため、コピーまたは継承を用いて修正することが出来ます。
  *
- * @category   MVC
- * @package    Envi3
+ * @category   EnviMVC拡張
+ * @package    レンダラ
  * @subpackage Renderer
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project

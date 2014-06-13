@@ -12,8 +12,8 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
+ * @category   フレームワーク基礎処理
+ * @package    ベースクラス
  * @subpackage ActionController
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -22,6 +22,7 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
+ * @subpackage_main
  */
 
 
@@ -35,8 +36,8 @@
  * 通常であれば、このクラスを直接継承することは無く、`envi init-app`によって生成される、actionBaseを介して継承されます。
  *
  * @abstract
- * @category   MVC
- * @package    Envi3
+ * @category   フレームワーク基礎処理
+ * @package    ベースクラス
  * @subpackage ActionController
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project

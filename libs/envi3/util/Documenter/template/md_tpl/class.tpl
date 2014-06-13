@@ -12,19 +12,19 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 <?php foreach ($methods as $method_name => $method) { ?>
 <?php
-$doc_array = $method->getDocBlockToken()->getDocBlockArray();
+$doc_array = $method['token']->getDocBlockToken()->getDocBlockArray();
 $return_text = '';
 if (isset($doc_array['return'][0][0])) {
     $return_text = $doc_array['return'][0][0];
 }
 
-$keywords = $method->getKeywords();
+$keywords = $method['token']->getKeywords();
 if (is_array($keywords)) {
     $keywords = join(' ', $keywords);
 }
 
 
-$arguments = $method->getArguments();
+$arguments = $method['token']->getArguments();
 
 $i = 0;
 foreach ($arguments as $k => $v) {
@@ -39,7 +39,7 @@ foreach ($arguments as $k => $v) {
     ) {
         $arguments[$k] .= $doc_array['param'][$i][0].' '.$k;
     } else {
-        echo $method->getMethodName().' error';
+        echo $method['token']->getMethodName().' error';
         var_dump($doc_array['param'][$i]);
         var_dump($k);
         die();
@@ -54,7 +54,7 @@ if (is_array($arguments)) {
     $argument = join(', ', $arguments);
 }
 ?>
-<?=$keywords?> <?=$return_text?> <?=$method->getName()?> (<?=$argument?>)
+<?=$keywords?> <?=$return_text?> <?=$method['token']->getName()?> (<?=$argument?>)
 <?php } ?>
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,6 +62,6 @@ if (is_array($arguments)) {
 目次
 ---------------------------------------------------------------
 <?php foreach ($methods as $method_name => $method) { ?>
-  * [<?=$method->getMethodName()?>](./<?=$class_name?>/<?=$method->getName()?>) — <?=$method->getDocBlockToken()->getDocBlockSubject()?>
+  * [<?=$method['token']->getMethodName()?>](<?=$driver->writePathToManPath($method['man_path'])?>) — <?=$method['token']->getDocBlockToken()->getDocBlockSubject()?>
 
 <?php } ?>

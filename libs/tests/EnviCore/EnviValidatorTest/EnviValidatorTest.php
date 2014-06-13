@@ -6,9 +6,11 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
+
+ *
+ * @category   テスト
+ * @package    テスト
+ * @subpackage TestCode
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -16,6 +18,7 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      File available since Release 1.0.0
+ * @doc_ignore
  */
 
 
@@ -23,12 +26,10 @@
  *
  *
  *
- * PHP versions 5
  *
- *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
+ * @category   テスト
+ * @package    テスト
+ * @subpackage TestCode
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -1623,7 +1624,7 @@ class EnviValidatorTest extends testCaseBase
      * @depends     autoPrepare
      * @test
      */
-    public function chain($validator)
+    public function chainTest($validator)
     {
         $_POST['email'] = 'aaaaap@example.jp';
         $validator->chain('id', 'maxwidth', false, 10);
@@ -1651,10 +1652,10 @@ class EnviValidatorTest extends testCaseBase
      *
      * @access      public
      * @return      void
-     * @depends     chain
+     * @depends     chainTest
      * @test
      */
-    public function executeAll($validator)
+    public function executeAllTest($validator)
     {
         $res = array();
         $res['success'] = $validator->executeAll();
@@ -1672,10 +1673,10 @@ class EnviValidatorTest extends testCaseBase
      *
      * @access      public
      * @return      void
-     * @depends     chain
+     * @depends     chainTest
      * @test
      */
-    public function execute($validator)
+    public function executeTest($validator)
     {
         $res = $validator->execute(array('id' => 'id'));
         $this->assertFalse(validator()->isError($res));
@@ -1698,10 +1699,10 @@ class EnviValidatorTest extends testCaseBase
      *
      * @access      public
      * @return      void
-     * @depends     executeAll
+     * @depends     executeAllTest
      * @test
      */
-    public function isError($res_array)
+    public function isErrorTest($res_array)
     {
         $this->assertTrue(validator()->isError($res_array['error']));
         $this->assertFalse(validator()->isError($res_array['success']));
@@ -1712,10 +1713,10 @@ class EnviValidatorTest extends testCaseBase
      *
      * @access      public
      * @return      void
-     * @depends     chain
+     * @depends     chainTest
      * @test
      */
-    public function unchain($validator)
+    public function unchainTest($validator)
     {
         $validation_setting = $validator->getValidationSetting('body');
         $validator->unchain('body', 'noblank');
@@ -1732,7 +1733,7 @@ class EnviValidatorTest extends testCaseBase
      *
      * @access      public
      * @return      void
-     * @depends     chain
+     * @depends     chainTest
      * @test
      */
     public function freeTest($validator)

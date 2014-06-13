@@ -3,9 +3,9 @@
  *
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviCodeCoverage
+ * @category   自動テスト
+ * @package    UnitTest
+ * @subpackage CodeCoverage
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -13,15 +13,16 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      Class available since Release v3.3.3.5
+ * @doc_ignore
  */
 
 /**
  *
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviCodeCoverage
+ * @category   自動テスト
+ * @package    UnitTest
+ * @subpackage CodeCoverage
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -87,18 +88,61 @@ class EnviCodeCoverageParser
     }
     /* ----------------------------------------- */
 
+
+    public function addIgnoredLine($file_name, array $ignored_lines, array $cover_class, array$cover_method)
+    {
+        $use_cover = count($cover_class) || count($cover_method);
+        if (!$use_cover) {
+            return $ignored_lines;
+        }
+        $class_name = '';
+
+        $token_result = $this->parseFile($file_name);
+        $token_list  = $token_result->getTokenList();
+        foreach ($token_list as $token) {
+            switch ($token->getTokenName()) {
+            case 'INTERFACE':
+            case 'TRAIT':
+            case 'CLASS':
+            case 'FUNCTION':
+                if ($token->getTokenName() === 'FUNCTION' && !isset($cover_method[$class_name][$token->getName()])) {
+                    $end_line = $token->getEndLine();
+                    for ($i = $token->getLine(); $i <= $end_line; $i++) {
+                        $ignored_lines[] = $i;
+                    }
+                    break;
+                }
+                $class_name = $token->getName();
+
+                if (!isset($cover_class[$class_name])) {
+                    $end_line = $token->getEndLine();
+                    for ($i = $token->getLine(); $i <= $end_line; $i++) {
+                        $ignored_lines[] = $i;
+                    }
+                    break;
+                }
+                break;
+            }
+        }
+        $ignored_lines = array_unique($ignored_lines);
+        sort($ignored_lines);
+        return $ignored_lines;
+    }
+
     /**
      * +-- code coverage 計測範囲外行を取得する
      *
      * @access      public
      * @param       string $file_name ファイルパス
+     * @param       array $cover_class カバークラス
+     * @param       array $cover_method カバーメソッド
      * @return      array
      */
-    public function getSkipLine($file_name)
+    public function getSkipLine($file_name, array $cover_class, array$cover_method)
     {
 
         if (isset($this->ignored_lines[$file_name])) {
-            return $this->ignored_lines[$file_name];
+            return $this->addIgnoredLine($file_name, $this->ignored_lines[$file_name], $cover_class, $cover_method);
         }
         $this->ignored_lines[$file_name] = array();
         $ignore                        = false;
@@ -232,7 +276,7 @@ class EnviCodeCoverageParser
 
         sort($this->ignored_lines[$file_name]);
 
-        return $this->ignored_lines[$file_name];
+        return $this->addIgnoredLine($file_name, $this->ignored_lines[$file_name], $cover_class, $cover_method);
     }
     /* ----------------------------------------- */
 

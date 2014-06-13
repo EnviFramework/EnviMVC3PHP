@@ -9,7 +9,8 @@ all:
     save_path: '<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name; ?>_code_coverage.log'
     black_list:
       - "<?php echo ENVI_BASE_DIR; ?>"
-      - "<?php echo $test_dir.DIRECTORY_SEPARATOR; ?>"
+      - "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR; ?>scenario.php"
+      - "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR; ?>testCaseBase.php"
     white_list:
       
 
@@ -20,7 +21,7 @@ all:
 
     dirs:
       # テストファイルのディレクトリ
-      assertion: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.'EnviMathTest'.DIRECTORY_SEPARATOR; ?>"
+      assertion: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.'EnviTestTest'.DIRECTORY_SEPARATOR; ?>"
 
 
   app:

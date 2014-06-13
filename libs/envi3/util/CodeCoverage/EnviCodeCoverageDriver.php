@@ -3,9 +3,9 @@
  *
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviCodeCoverage
+ * @category   自動テスト
+ * @package    UnitTest
+ * @subpackage CodeCoverage
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -13,15 +13,16 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      Class available since Release v3.3.3.5
+ * @doc_ignore
  */
 
 /**
  *
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviCodeCoverage
+ * @category   自動テスト
+ * @package    UnitTest
+ * @subpackage CodeCoverage
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -35,6 +36,11 @@ class EnviCodeCoverageDriver
     private $filter;
     private $code_coverage;
     private static $driver_start = false;
+
+    /**
+     * @var string covered file
+     */
+    private $cover = array('method' => array(), 'class' => array());
 
     /**
      * +-- クラスのビルダ
@@ -51,6 +57,25 @@ class EnviCodeCoverageDriver
         return $obj;
     }
     /* ----------------------------------------- */
+
+
+    public function setCover(array $cover)
+    {
+        foreach ($cover as $cover_method) {
+            $tmp = explode('::', $cover_method, 2);
+            if (count($tmp) === 2) {
+                $this->cover['method'][$tmp[0]][$tmp[1]] = $cover_method;
+            } else {
+                $this->cover['class'][$cover_method] = $cover_method;
+            }
+        }
+    }
+
+    public function unSetCover()
+    {
+        $this->cover = array('method' => array(), 'class' => array());
+    }
+
 
     /**
      * +-- code_coverage開始
@@ -90,13 +115,13 @@ class EnviCodeCoverageDriver
     private function filter(array &$data)
     {
         foreach (array_keys($data) as $file_name) {
-            if (!file_exists($file_name) ||
+            if (!is_file($file_name) ||
                 $this->code_coverage->filter()->isFiltered($file_name)) {
                 unset($data[$file_name]);
                 continue;
             }
 
-            foreach ($this->code_coverage->parser()->getSkipLine($file_name) as $line) {
+            foreach ($this->code_coverage->parser()->getSkipLine($file_name, $this->cover['class'], $this->cover['method']) as $line) {
                 unset($data[$file_name][$line]);
             }
             foreach ($data[$file_name] as $line => $v) {
@@ -108,6 +133,7 @@ class EnviCodeCoverageDriver
                 unset($data[$file_name]);
             }
         }
+        // var_dump($data);
         return $data;
     }
 }
