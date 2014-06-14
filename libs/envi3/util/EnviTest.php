@@ -1,6 +1,6 @@
 <?php
 /**
- * 自動テスト用の処理
+ * 自動テスト
  *
  *
  *
@@ -53,9 +53,8 @@ abstract class EnviTestBase
     /**
      * +-- $objの$methodを、アクセス権に関係なく実行する
      *
-     * runkit を使用して、$objの$methodを、アクセス権に関係なく実行します。
+     * $objの$methodを、アクセス権に関係なく実行します。
      *
-     * PHP5.3以降であれば、リフレクションメソッドを使用する方がよりよいです。
      *
      * @access      public
      * @param       objedt $obj 実行するオブジェクト
@@ -65,23 +64,38 @@ abstract class EnviTestBase
      */
     public function call($obj, $method, array $args = array())
     {
-        if (!extension_loaded('runkit')) {
-            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                $res = dl('runkit.dll');
-            } else {
-                $res = dl('runkit.so');
+        $reflection = false;
+        if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
+            $reflection = new ReflectionMethod($obj, $method);
+            $default_accessible = $reflection->isPublic();
+            $reflection->setAccessible(true);
+        } else {
+             if (!extension_loaded('runkit')) {
+                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                    $res = dl('runkit.dll');
+                } else {
+                    $res = dl('runkit.so');
+                }
+                if ($res) {
+                    throw new Exception('please install runkit.http://pecl.php.net/package-changelog.php?package=runkit');
+                }
             }
-            if ($res) {
-                throw new Exception('please install runkit.http://pecl.php.net/package-changelog.php?package=runkit');
-            }
+            $class_name = get_class($obj);
+            $executer_method = $method.time().sha1(microtime());
+            $code = 'return call_user_func_array(array($this, "'.$method.'"), func_get_args());';
+            runkit_method_add($class_name, $executer_method, '', $code, RUNKIT_ACC_PUBLIC);
         }
-        $class_name = get_class($obj);
-        $executer_method = $method.time().sha1(microtime());
-        $code = 'return call_user_func_array(array($this, "'.$method.'"), func_get_args());';
+        try{
+            $res = call_user_func_array(array($obj, $executer_method), $args);
+        } catch (exception $e) {
+            if ($reflection instanceof ReflectionMethod) {
+                $reflection->setAccessible($default_accessible);
+            } else {
+                runkit_method_remove($class_name, $executer_method);
+            }
+            throw $e;
+        }
 
-        runkit_method_add($class_name, $executer_method, '', $code, RUNKIT_ACC_PUBLIC);
-        $res = call_user_func_array(array($obj, $executer_method), $args);
-        runkit_method_remove($class_name, $executer_method);
         return $res;
     }
     /* ----------------------------------------- */

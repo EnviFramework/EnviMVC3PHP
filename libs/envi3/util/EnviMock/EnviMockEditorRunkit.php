@@ -22,6 +22,7 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      Class available since Release 3.3.3.2
+ * @doc_ignore
  */
 
 /**
@@ -45,7 +46,7 @@
  * @see        http://www.enviphp.net/
  * @since      Class available since Release 3.3.3.2
  */
-class EnviTestMockEditorRunkit implements EnviTestMockEditor
+class EnviMockEditorRunkit implements EnviMockEditor
 {
     private $class_name;
     private $method_name;
@@ -70,9 +71,10 @@ class EnviTestMockEditorRunkit implements EnviTestMockEditor
     public function __construct($class_name)
     {
         $this->class_name = $class_name;
-        $this->default_methods = array_flip(get_class_methods($class_name));
+        $methods = get_class_methods($class_name);
+        $this->default_methods = count($methods) ? array_flip($methods) : array();
         $default_extends = class_parents($class_name, false);
-        if (count($default_extends)) {
+        if (is_array($default_extends) && count($default_extends) >= 1) {
             $this->default_extends = array_shift($default_extends);
         }
         $this->mock_hash = mt_rand().sha1(microtime());
@@ -107,7 +109,7 @@ class EnviTestMockEditorRunkit implements EnviTestMockEditor
     public function emancipate()
     {
         runkit_class_emancipate($this->class_name);
-        runkit_class_adopt($this->class_name , 'EnviTestBlankMockBase');
+        runkit_class_adopt($this->class_name , 'EnviMockBlankBase');
         return $this;
     }
     /* ----------------------------------------- */

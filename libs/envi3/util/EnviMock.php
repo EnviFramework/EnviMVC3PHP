@@ -1,25 +1,60 @@
 <?php
 /**
- * 簡易的なモックテストを提供します。
+ * テストスタブ
  *
- * EnviMockは、簡易的にモックテストを提供します。
+ * EnviMock の `getMock($class_name)` メソッドを使うと、指定したクラスのモッククラスを作成したり、特定のメソッドだけモックに置き換える、スタブが出来きるようになります。
+ *
+ * `getMock($className)`がコールされたときの状況に応じて、EnviMockは挙動を変えます。
+ * 具体的には、
+ *
+ * $class_nameと言うクラスが存在する
+ * : 該当クラスを部分的に書き換える方法を提供する
+ *
+ * $class_nameと言うクラスが存在しない
+ * : 空の$class_nameを定義し、モッククラスとして動作させる
+ *
+ * と言った形です。
+ *
+ * 動作環境
+ * -----------------------------------------------
+ *
+ * 現在のバージョンでは、[runkit](http://pecl.php.net/package-changelog.php?package=runkit)拡張モジュールが必要です。
+ *
+ * 今後のバージョンで、PHP5.3以降において、runkitを使用しない実装が検討されています。
  *
  *
- * EnviMockは、それ自身でオブジェクトを生成しません。
+ * モッククラス
+ * -----------------------------------------------
+ * デフォルトでは、すべてのメソッドが 単に NULL を返すだけのダミー実装になります。
+ * たとえば andReturn($this->returnValue()) メソッドを使うと、 ダミー実装がコールされたときに値を返すよう設定することができます。
  *
- * たとえば、下記のようなコードはエラーとなります。
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.php_code .code}
- * <?php
- * $mok = new EnviMock;
- * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.alert .alert-info}
+ * __※__ final, private および static メソッドのスタブやモックは作れないことに注意しましょう。
+ * EnviMock のテストダブル機能ではこれらを無視し、元のメソッドの振る舞いをそのまま維持します。
+ * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *
- * EnviMock::mock('クラス名');
  *
- * による、EnviTestMockEditorの生成のみをサポートします。
  *
- * テストモックに対する実際の処理は、EnviTestMockEditorによって行われます。
+ * テストスタブ
+ * -----------------------------------------------
  *
- * 内部では、runkitを使用しているため、必要に応じてエクステンションをインストールする必要性があります。
+ * 実際のオブジェクトを置き換えて、 設定した何らかの値を (オプションで) 返すようなテストダブルのことを スタブ といいます。
+ * スタブ を使うと、依存している実際のクラスを書き換え、依存先の入力を間接的に管理できます。
+ *
+ *
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~ {.alert .alert-danger}
+ *   __注意：__
+ * テストスタブを使うと、実際のクラスが書き換えられて動作します。
+ *
+ * `EnviMockEditor::restoreAll()`や`EnviMockEditor::restoreAll($method_name)`等のメソッドによって戻されるまで、書き換えられ続けます。
+ *
+ * また、レストアできるのは、書き換えたEnviMockEditor*クラスのみであることに注意して下さい。
+ *
+ * `EnviMock::getMock($className)`で同じクラス名を指定したとしても、restoreすることが出来無いと言うことです。
+ *
+ * ~~~~~~~~~~~~~~~~~~~~~
+ *
  *
  *
  * PHP versions 5
@@ -39,7 +74,7 @@
  */
 
 
-require dirname(__FILE__).DIRECTORY_SEPARATOR.'EnviMock'.DIRECTORY_SEPARATOR.'EnviTestMockEditor.php';
+require dirname(__FILE__).DIRECTORY_SEPARATOR.'EnviMock'.DIRECTORY_SEPARATOR.'EnviMockEditor.php';
 require dirname(__FILE__).DIRECTORY_SEPARATOR.'EnviMock'.DIRECTORY_SEPARATOR.'EnviMockEditorRunkit.php';
 
 /**
@@ -58,9 +93,9 @@ require dirname(__FILE__).DIRECTORY_SEPARATOR.'EnviMock'.DIRECTORY_SEPARATOR.'En
  *
  * EnviMock::mock('クラス名');
  *
- * による、EnviTestMockEditorの生成のみをサポートします。
+ * による、EnviMockEditorの生成のみをサポートします。
  *
- * テストモックに対する実際の処理は、EnviTestMockEditorによって行われます。
+ * テストモックに対する実際の処理は、EnviMockEditorによって行われます。
  *
  * 内部では、runkitを使用しているため、必要に応じてエクステンションをインストールする必要性があります。
  *
@@ -96,7 +131,7 @@ class EnviMock
     /**
      * +-- モックの取得
      *
-     * EnviTestMockEditorによる、モックテストを開始します。
+     * EnviMockEditorによる、モックテストを開始します。
      *
      * 定義済みのクラスを指定した場合は、スタブ可能なモックテストに、
      *
@@ -105,7 +140,7 @@ class EnviMock
      * @access      public
      * @static
      * @param       string $class_name モックを作成するクラス名
-     * @return      EnviTestMockEditor モック操作オブジェクト
+     * @return      EnviMockEditor モック操作オブジェクト
      */
     public static function mock($class_name)
     {
@@ -120,10 +155,10 @@ class EnviMock
             }
         }
 
-        $mock_editor = new EnviMockEditorRunkit($class_name);
         if (!class_exists($class_name, false)) {
             self::addMockClass($class_name);
         }
+        $mock_editor = new EnviMockEditorRunkit($class_name);
         return $mock_editor;
     }
     /* ----------------------------------------- */
@@ -143,7 +178,7 @@ class EnviMock
         $file_path = stream_get_meta_data($cf);
         $file_path = $file_path['uri'];
         fwrite($cf, '<?php
-        class '.$class_name.' extends EnviTestBlankMockBase
+        class '.$class_name.' extends EnviMockBlankBase
         {
         }'
         );
@@ -170,7 +205,7 @@ class EnviMock
  * @since      Class available since Release 1.0.0
  * @doc_ignore
  */
-abstract class EnviTestBlankMockBase
+abstract class EnviMockBlankBase
 {
     public function __get($key)
     {

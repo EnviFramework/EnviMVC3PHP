@@ -20,7 +20,7 @@
  * @doc_ignore
  */
 
-require_once ENVI_BASE_DIR.'/test/EnviTest.php';
+require_once ENVI_BASE_DIR.'/util/EnviTest.php';
 require_once dirname(__FILE__).'/testCaseBase.php';
 
 $scenario_dir = dirname(__FILE__).DIRECTORY_SEPARATOR;

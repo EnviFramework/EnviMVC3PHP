@@ -45,7 +45,7 @@
  * @see        http://www.enviphp.net/
  * @since      Class available since Release 3.3.3.2
  */
-interface EnviTestMockEditor
+interface EnviMockEditor
 {
 
 

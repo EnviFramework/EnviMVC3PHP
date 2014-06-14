@@ -125,6 +125,7 @@ if (!isset($envi_cmd)) {
 }
 
 require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'util'.DIRECTORY_SEPARATOR.'EnviUnitTest.php';
+
 // 実行
 $EnviTest = EnviUnitTest::singleton($test_key);
 
