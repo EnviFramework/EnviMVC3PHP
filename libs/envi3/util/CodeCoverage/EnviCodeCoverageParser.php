@@ -49,9 +49,6 @@ class EnviCodeCoverageParser
     {
         $obj = new EnviCodeCoverageParser;
         $obj->code_coverage = $code_coverage;
-        if (!class_exists('EnviCodeParser', false)) {
-            include dirname(dirname(__FILE__)).'/EnviCodeParser.php';
-        }
         $obj->parser = new EnviCodeParser;
         return $obj;
     }
@@ -95,33 +92,45 @@ class EnviCodeCoverageParser
         if (!$use_cover) {
             return $ignored_lines;
         }
-        $class_name = '';
-
+        $class_name         = '';
+        $namespace_name     = '';
+        $namespace_end_line = false;
         $token_result = $this->parseFile($file_name);
         $token_list  = $token_result->getTokenList();
         foreach ($token_list as $token) {
+            if ($namespace_end_line !== false && $namespace_end_line <= $token->getLine()) {
+                $namespace_name = '';
+                $namespace_end_line = false;
+            }
             switch ($token->getTokenName()) {
+            case 'NAMESPACE':
+                $namespace_end_line = false;
+                if ($token->getEndLine() !== $token->getLine()) {
+                    $namespace_end_line = $token->getEndLine();
+                }
+                $namespace_name        = $token->getName()."\\";
+                break;
+            case 'FUNCTION':
+                if (!isset($cover_method[$class_name][$token->getName()])) {
+                    $end_line = $token->getEndLine();
+                    for ($i = $token->getLine(); $i <= $end_line; $i++) {
+                        $ignored_lines[] = $i;
+                    }
+                }
+
+            break;
             case 'INTERFACE':
             case 'TRAIT':
             case 'CLASS':
-            case 'FUNCTION':
-                if ($token->getTokenName() === 'FUNCTION' && !isset($cover_method[$class_name][$token->getName()])) {
+                $class_name = $namespace_name.$token->getName();
+                if (!isset($cover_class[$class_name]) && !isset($cover_method[$class_name])) {
                     $end_line = $token->getEndLine();
                     for ($i = $token->getLine(); $i <= $end_line; $i++) {
                         $ignored_lines[] = $i;
                     }
-                    break;
                 }
-                $class_name = $token->getName();
 
-                if (!isset($cover_class[$class_name])) {
-                    $end_line = $token->getEndLine();
-                    for ($i = $token->getLine(); $i <= $end_line; $i++) {
-                        $ignored_lines[] = $i;
-                    }
-                    break;
-                }
-                break;
+            break;
             }
         }
         $ignored_lines = array_unique($ignored_lines);
@@ -161,7 +170,13 @@ class EnviCodeCoverageParser
         $classes = array_merge($token_result->getClassList(), $token_result->getTraitList());
         $token_list  = $token_result->getTokenList();
 
+        $namespace_name        = '';
+        $namespace_end_line    = false;
         foreach ($token_list as $token) {
+            if ($namespace_end_line !== false && $namespace_end_line <= $token->getLine()) {
+                $namespace_name = '';
+                $namespace_end_line = false;
+            }
             switch ($token->getTokenName()) {
             case 'COMMENT':
             case 'DOC_COMMENT':
@@ -198,58 +213,66 @@ class EnviCodeCoverageParser
             case 'CLASS':
             case 'FUNCTION':
                 $doc_block = $token->getDocBlock();
-
                 $this->ignored_lines[$file_name][] = $token->getLine();
-
+                // アノテーション処理
                 if (strpos($doc_block, '@codeCoverageIgnore')) {
                     $end_line = $token->getEndLine();
 
                     for ($i = $token->getLine(); $i <= $end_line; $i++) {
                         $this->ignored_lines[$file_name][] = $i;
                     }
-                } elseif ($token instanceof EnviParserToken_INTERFACE ||
-                    $token instanceof EnviParserToken_TRAIT ||
-                    $token instanceof EnviParserToken_CLASS) {
-                    if (empty($classes[$token->getName()]['methods'])) {
-                        for ($i = $token->getLine();
-                             $i <= $token->getEndLine();
-                             $i++) {
-                            $this->ignored_lines[$file_name][] = $i;
-                        }
-                    } else {
-                        $firstMethod = array_shift(
-                            $classes[$token->getName()]['methods']
-                        );
-
-                        do {
-                            $lastMethod = array_pop(
-                                $classes[$token->getName()]['methods']
-                            );
-                        } while ($lastMethod !== null &&
-                            substr($lastMethod->getSignature(), 0, 18) === 'anonymous function');
-
-                        if ($lastMethod === null) {
-                            $lastMethod = $firstMethod;
-                        }
-
-                        for ($i = $token->getLine();
-                             $i < $firstMethod->getLine();
-                             $i++) {
-                            $this->ignored_lines[$file_name][] = $i;
-                        }
-
-                        for ($i = $token->getEndLine();
-                             $i > $lastMethod->getEndLine();
-                             $i--) {
-                            $this->ignored_lines[$file_name][] = $i;
-                        }
-                    }
+                } elseif ($token instanceof EnviParserToken_FUNCTION) {
+                    break;
                 }
+
+                // Methodが無いならすべてスキップ
+                if (empty($classes[$namespace_name.$token->getName()]['methods'])) {
+                    for ($i = $token->getLine();
+                         $i <= $token->getEndLine();
+                         $i++) {
+                        $this->ignored_lines[$file_name][] = $i;
+                    }
+                    break;
+                }
+                // 空白の消去
+                $firstMethod = array_shift(
+                    $classes[$namespace_name.$token->getName()]['methods']
+                );
+
+                do {
+                    $lastMethod = array_pop(
+                        $classes[$namespace_name.$token->getName()]['methods']
+                    );
+                } while ($lastMethod !== null &&
+                    substr($lastMethod->getSignature(), 0, 18) === 'anonymous function');
+
+                if ($lastMethod === null) {
+                    $lastMethod = $firstMethod;
+                }
+
+                for ($i = $token->getLine();
+                     $i < $firstMethod->getLine();
+                     $i++) {
+                    $this->ignored_lines[$file_name][] = $i;
+                }
+                for ($i = $token->getEndLine();
+                     $i > $lastMethod->getEndLine();
+                     $i--) {
+                    $this->ignored_lines[$file_name][] = $i;
+                }
+
+
                 break;
 
             case 'NAMESPACE':
                 $this->ignored_lines[$file_name][] = $token->getEndLine();
                 $this->ignored_lines[$file_name][] = $token->getLine();
+
+                $namespace_end_line = false;
+                if ($token->getEndLine() !== $token->getLine()) {
+                    $namespace_end_line = $token->getEndLine();
+                }
+                $namespace_name        = $token->getName()."\\";
                 break;
             case 'OPEN_TAG':
             case 'CLOSE_TAG':

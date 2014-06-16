@@ -49,13 +49,14 @@
 class EnviMockEditorRunkit implements EnviMockEditor
 {
     private $class_name;
+    private $copy_method_class_name = 'EnviMockMethodContainer';
     private $method_name;
-    private $with;
-    private $times;
     private $copy_method_list = array();
     private $default_extends;
     private $default_methods;
-    private $mock_hash;
+    private $self_default_methods;
+    private $is_adapt = false;
+    private $by_default = false;
 
 
     /**
@@ -71,16 +72,53 @@ class EnviMockEditorRunkit implements EnviMockEditor
     public function __construct($class_name)
     {
         $this->class_name = $class_name;
+
+        // 継承も含めたメソッドのリスト
         $methods = get_class_methods($class_name);
-        $this->default_methods = count($methods) ? array_flip($methods) : array();
+        foreach ($methods as $method_name) {
+            $this->default_methods[strtolower($method_name)] = $method_name;
+        }
+
         $default_extends = class_parents($class_name, false);
         if (is_array($default_extends) && count($default_extends) >= 1) {
+            $this->is_adapt = true;
             $this->default_extends = array_shift($default_extends);
+            // クラス単体で作られているメソッド一覧を取得する
+            $this->emancipate();
+            $methods = get_class_methods($class_name);
+            foreach ($methods as $method_name) {
+                $this->self_default_methods[strtolower($method_name)] = $method_name;
+            }
+        } else {
+            $this->self_default_methods = $this->default_methods;
         }
-        $this->mock_hash = mt_rand().sha1(microtime());
+        $this->restoreExtends();
     }
     /* ----------------------------------------- */
 
+    /**
+     * +-- 継承されているかどうか
+     *
+     * @access      public
+     * @return      boolean
+     */
+    public function isAdapt()
+    {
+        return $this->is_adapt;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- クラス名を取得する
+     *
+     * @access      public
+     * @return      string
+     */
+    public function getClassName()
+    {
+        return $this->class_name;
+    }
+    /* ----------------------------------------- */
 
     /**
      * +-- 定義されているメソッドの一覧を返します。
@@ -104,12 +142,14 @@ class EnviMockEditorRunkit implements EnviMockEditor
      *
      * 他のクラスを継承している場合継承関係を解消し、 親クラスから継承しているメソッドを取り除く
      * @access      public
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditorRunkit
      */
     public function emancipate()
     {
-        runkit_class_emancipate($this->class_name);
-        runkit_class_adopt($this->class_name , 'EnviMockBlankBase');
+        if ($this->is_adapt) {
+            runkit_class_emancipate($this->class_name);
+        }
+        $this->is_adapt = false;
         return $this;
     }
     /* ----------------------------------------- */
@@ -122,13 +162,16 @@ class EnviMockEditorRunkit implements EnviMockEditor
      *
      * @access      public
      * @param       string $class_name 継承させるクラス名
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditorRunkit
      * @since       3.3.3.5
      */
     public function adopt($class_name)
     {
-        runkit_class_emancipate($this->class_name);
-        runkit_class_adopt($this->class_name , $class_name);
+        $this->emancipate();
+        if (runkit_class_adopt($this->class_name, $class_name)) {
+            $this->is_adapt = true;
+        }
+
         return $this;
     }
     /* ----------------------------------------- */
@@ -144,15 +187,16 @@ class EnviMockEditorRunkit implements EnviMockEditor
      * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      *
      * @access      public
-     * @param       string $method 削除するメソッド
-     * @return      EnviTestMockEditor
+     * @param       string $method_name 削除するメソッド
+     * @return      EnviTestMockEditorRunkit
      */
-    public function removeMethod($method)
+    public function removeMethod($method_name)
     {
+        $method = strtolower($method_name);
         if (method_exists($this->class_name, $method)) {
             if (!isset($this->copy_method_list[$method]) && isset($this->default_methods[$method])) {
-                $this->copy_method_list[$method] = $this->class_name.'_'.$method.sha1(microtime());
-                runkit_method_copy ('EnviTestMockTemporary', $this->copy_method_list[$method], $this->class_name, $method);
+                $this->copy_method_list[$method] = $this->class_name.'_'.$method.'_'.sha1(microtime());
+                runkit_method_copy($this->copy_method_class_name, $this->copy_method_list[$method], $this->class_name, $method);
             }
             runkit_method_remove($this->class_name, $method);
         }
@@ -161,25 +205,69 @@ class EnviMockEditorRunkit implements EnviMockEditor
     /* ----------------------------------------- */
 
     /**
-     * +-- removeMethodしたMethodを元に戻す
+     * +-- スタブしたMethodを元に戻す
      *
      * 削除、および変更されたメソッドを元に戻す。
      *
      * @access      public
-     * @param       string $method 戻すメソッド
-     * @return      EnviTestMockEditor
+     * @param       string $method_name 戻すメソッド
+     * @return      EnviTestMockEditorRunkit
      * @since       3.3.3.5
      */
-    public function restoreMethod($method)
+    public function restoreMethod($method_name)
     {
+        $method = strtolower($method_name);
         if (!isset($this->copy_method_list[$method])) {
             return $this;
         }
         if (method_exists($this->class_name, $method)) {
             runkit_method_remove($this->class_name, $method);
         }
-        runkit_method_copy ($this->class_name, $method, 'EnviTestMockTemporary', $this->copy_method_list[$method]);
+        runkit_method_copy($this->class_name, $this->default_methods[$method], $this->copy_method_class_name, $this->copy_method_list[$method]);
         return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- デフォルトのメソッドを実行する
+     *
+     * @access      public
+     * @param       string $method_name 実行するメソッド
+     * @param       object|string $obj OPTIONAL:NULL
+     * @param       array $arguments OPTIONAL:array() 引数
+     * @return      mixed
+     */
+    public function executeDefaultMethod($method_name, $obj = NULL, array $arguments = array())
+    {
+        if ($obj === NULL) {
+            $obj = $this->class_name;
+        }
+        $method = strtolower($method_name);
+        if (!isset($this->copy_method_list[$method])) {
+            return call_user_func_array(array($obj, $method_name), $arguments);
+        }
+        runkit_method_copy($this->class_name, $this->copy_method_list[$method], $this->copy_method_class_name, $this->copy_method_list[$method]);
+        $res = call_user_func_array(array($obj, $this->copy_method_list[$method]), $arguments);
+        runkit_method_remove($this->class_name, $this->copy_method_list[$method]);
+        return $res;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- スタブされたメソッドかどうか
+     *
+     * @access      public
+     * @param       any $method_name
+     * @return      boolean
+     */
+    public function isStab($method_name)
+    {
+        $method = strtolower($method_name);
+        if (isset($this->copy_method_list[$method])) {
+            return true;
+        }
+        return isset($this->default_methods[$method]);
     }
     /* ----------------------------------------- */
 
@@ -189,23 +277,26 @@ class EnviMockEditorRunkit implements EnviMockEditor
      * モックエディタで変更した、クラス定義をすべて元に戻します。
      *
      * @access      public
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditorRunkit
      * @since       3.3.3.5
      */
     public function restoreAll()
     {
+        // 追加メソッドの削除
+        foreach ($this->getMethods() as $method_name) {
+            $method = strtolower($method_name);
+            if (!isset($this->self_default_methods[$method])) {
+                $this->removeMethod($method_name);
+            }
+        }
+
         // 継承を戻す
         $this->restoreExtends();
 
         // メソッドを戻す
         foreach ($this->copy_method_list as $method_name => $tmp) {
-            $this->restoreMethod($method_name);
-        }
-
-        // 追加メソッドの削除
-        foreach ($this->getMethods() as $method_name) {
-            if (!isset($this->default_methods[$method_name])) {
-                $this->removeMethod($method_name);
+            if (isset($this->self_default_methods[$method_name])) {
+                $this->restoreMethod($method_name);
             }
         }
         return $this;
@@ -218,12 +309,16 @@ class EnviMockEditorRunkit implements EnviMockEditor
      * モックエディタで変更した継承状態を元に戻します。
      *
      * @access      public
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditorRunkit
      * @since       3.3.3.5
      */
     public function restoreExtends()
     {
-        $this->adopt($this->default_extends);
+        if ($this->default_extends) {
+            $this->adopt($this->default_extends);
+        } else {
+            $this->emancipate();
+        }
         return $this;
     }
     /* ----------------------------------------- */
@@ -236,7 +331,7 @@ class EnviMockEditorRunkit implements EnviMockEditor
      *
      * @access      public
      * @param       string $method 定義したいメソッド名
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditorRunkit
      */
     public function blankMethod($method)
     {
@@ -255,7 +350,7 @@ class EnviMockEditorRunkit implements EnviMockEditor
      *
      * @access      public
      * @param       array $methods 定義するメソッド名の配列
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditorRunkit
      */
     public function blankMethodByArray(array $methods)
     {
@@ -272,7 +367,7 @@ class EnviMockEditorRunkit implements EnviMockEditor
      * 定義されているメソッドを空メソッドに置き換えます
      *
      * @access      public
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditorRunkit
      */
     public function blankMethodAll()
     {
@@ -289,7 +384,7 @@ class EnviMockEditorRunkit implements EnviMockEditor
      * メソッドに制約を追加できます。
      * 制約を追加したいメソッド名をshouldReceive()で指定し、メソッドチェーンで、制約を追加します。
      *
-     * 追加した制約から外れた場合、該当のメソッドは、例外、EnviTestMockExceptionがthrowされます。
+     * 追加した制約から外れた場合、該当のメソッドは、例外、EnviMockExceptionがthrowされます。
      *
      * 返り値を設定するまで、制約は追加されません。
      * 逆に、返り値を設定してしまうと、制約が追加され、メソッドは書き換えられてしまいます。
@@ -302,12 +397,56 @@ class EnviMockEditorRunkit implements EnviMockEditor
      * {/@example}
      * @access      public
      * @param       string $method_name
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditorRunkit
      */
     public function shouldReceive($method_name)
     {
         $this->free();
         $this->method_name = $method_name;
+        $this->resetContainer();
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 定義済みの制限を再利用する
+     *
+     * 一度テストされた定義や、byDefault()された定義を再利用して、制限を加えます。
+     *
+     * @access      public
+     * @param       string $method_name
+     * @return      EnviTestMockEditorRunkit
+     */
+    public function recycle($method_name)
+    {
+        $this->free();
+        $this->method_name = $method_name;
+        $this->setContainer('is_should_receive', true);
+        $this->replaceEnviMockFlame();
+        $this->saveEditor();
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 制限をテンプレートとして登録する
+     *
+     * 現在指定している制限や返り値を、デフォルトとして指定します。
+     * デフォルト期待値はデフォルトではない制限や返り値が使われるまで、適用されます。
+     * あとで定義されたデフォルト期待値は、先に宣言されたものを即座に置き換えます。
+     *
+     * initialize()や、データプロバイダーで制限だけ先に加えて、各テストで再利用する等という方法に利用できます。
+     *
+     * スタブ化前であれば、スタブする処理をスキップしますが、
+     * スタブ化済のメソッドを、restore()することはしないので、定義順序に注意してください。
+     *
+     * @access      public
+     * @return      EnviTestMockEditorRunkit
+     */
+    public function byDefault()
+    {
+        $this->by_default = true;
+        $this->setContainer('is_should_receive', false);
         return $this;
     }
     /* ----------------------------------------- */
@@ -318,59 +457,172 @@ class EnviMockEditorRunkit implements EnviMockEditor
      * EnviTestMockEditor::shouldReceive()から、メソッドチェーンで呼び出されます。
      *
      * 指定のメソッドに渡される引数のリストを追加します。
-     * 指定された引数以外が渡された場合は、例外、EnviTestMockExceptionがthrowされます。
+     * 指定された引数以外が渡された場合は、例外、EnviMockExceptionがthrowされます。
      *
      * @access      public
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditorRunkit
      * @see         EnviTestMockEditor::shouldReceive()
      */
     public function with()
     {
-        $this->with = func_get_args();
+        $this->setContainer('with', func_get_args());
         return $this;
     }
     /* ----------------------------------------- */
 
+    public function withNoArgs()
+    {
+        $this->setContainer('with', array());
+    }
+
+    public function withNoArgsByTimes($times)
+    {
+        $args = func_get_args();
+        $times = array_shift($args);
+        $res = $this->getContainer('with_by_times', array());
+        $res[(integer)$times] = array();
+        $this->setContainer('with_by_times', $res);
+        return $this;
+    }
+
+
+    public function withAnyArgs()
+    {
+        $this->setContainer('with', false);
+    }
+
+    public function withAnyArgsByTimes($times)
+    {
+        $args = func_get_args();
+        $times = array_shift($args);
+        $res = $this->getContainer('with_by_times', array());
+        $res[(integer)$times] = false;
+        $this->setContainer('with_by_times', $res);
+        return $this;
+    }
+
+
     /**
-     * +-- メソッドが二回以上呼び出されないことを定義します
+     * +-- このメソッドにのみ期待される引数のリストの制約を追加します。
      *
      * EnviTestMockEditor::shouldReceive()から、メソッドチェーンで呼び出されます。
      *
-     * メソッドが二回以上呼び出されないことを定義します。
-     * 制約から外れた場合は、例外、EnviTestMockExceptionがthrowされます。
-     *
+     * 指定のメソッドに渡される引数のリストを追加します。
+     * 指定された引数以外が渡された場合は、例外、EnviMockExceptionがthrowされます。
      *
      * @access      public
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditorRunkit
+     * @see         EnviTestMockEditor::shouldReceive()
+     */
+    public function withByTimes($times)
+    {
+        $args = func_get_args();
+        $times = array_shift($args);
+        $res = $this->getContainer('with_by_times', array());
+        $res[(integer)$times] = $args;
+        $this->setContainer('with_by_times', $res);
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- メソッドが1回だけ呼び出されることを定義します
+     *
+     * EnviTestMockEditor::shouldReceive()から、メソッドチェーンで呼び出されます。
+     *
+     * メソッドが1回だけ呼び出されることを定義します
+     * 制約から外れた場合は、例外、EnviMockExceptionがthrowされます。
+     *
+     * このメソッドはv3.4から、下限の制限がつきました。
+     *
+     * @access      public
+     * @return      EnviTestMockEditorRunkit
      * @see         EnviTestMockEditor::shouldReceive()
      */
     public function once()
     {
-        $this->times = 1;
+        $this->times(1);
         return $this;
     }
     /* ----------------------------------------- */
 
 
     /**
-     * +-- メソッドが三回以上呼び出されないことを定義します
+     * +-- メソッドが2回だけ呼び出されることを定義します
      *
      * EnviTestMockEditor::shouldReceive()から、メソッドチェーンで呼び出されます。
      *
-     * メソッドが三回以上呼び出されないことを定義します。
-     * 制約から外れた場合は、例外、EnviTestMockExceptionがthrowされます。
+     * メソッドが2回だけ呼び出されることを定義します。
+     * 制約から外れた場合は、例外、EnviMockExceptionがthrowされます。
+     *
+     * このメソッドはv3.4から、下限の制限がつきました。
      *
      * @access      public
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditorRunkit
      * @see         EnviTestMockEditor::shouldReceive()
+     * @see         EnviTestMockEditor::time()
      */
     public function twice()
     {
-        $this->times = 2;
+        $this->times(2);
         return $this;
     }
     /* ----------------------------------------- */
 
+
+    /**
+     * +-- 呼び出し回数の上限と下限を定義します
+     *
+     * @access      public
+     * @param       any $min
+     * @param       any $max
+     * @return      EnviTestMockEditorRunkit
+     */
+    public function between($min, $max)
+    {
+        $this->setContainer('max_limit_times', (integer)$max);
+        $this->setContainer('min_limit_times', (integer)$min);
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 最小実行回数を定義し、最大実行回数は削除します
+     *
+     * @access      public
+     * @param       any $n
+     * @return      EnviTestMockEditorRunkit
+     * @see         EnviTestMockEditor::shouldReceive()
+     */
+    public function atLeast($n)
+    {
+        $this->unsetContainer('max_limit_times');
+        $this->setContainer('min_limit_times', (integer)$n);
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 最大実行回数を定義し、最小実行回数は削除します
+     *
+     *
+     *
+     * @access      public
+     * @param       any $n
+     * @return      EnviTestMockEditorRunkit
+     * @see         EnviTestMockEditor::shouldReceive()
+     * @see         EnviTestMockEditor::once()
+     * @see         EnviTestMockEditor::twice()
+     * @see         EnviTestMockEditor::time()
+     */
+    public function atMost($n)
+    {
+        $this->setContainer('max_limit_times', (integer)$n);
+        $this->unsetContainer('min_limit_times');
+        return $this;
+    }
+    /* ----------------------------------------- */
 
     /**
      * +-- メソッドが呼び出されないことを定義します
@@ -378,35 +630,38 @@ class EnviMockEditorRunkit implements EnviMockEditor
      * EnviTestMockEditor::shouldReceive()から、メソッドチェーンで呼び出されます。
      *
      * メソッドが呼び出されないことを定義します。
-     * 制約から外れた場合は、例外、EnviTestMockExceptionがthrowされます。
+     * 制約から外れた場合は、例外、EnviMockExceptionがthrowされます。
      *
      * @access      public
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditorRunkit
      * @see         EnviTestMockEditor::shouldReceive()
      */
     public function never()
     {
-        $this->times = -1;
+        $this->times(-1);
         return $this;
     }
     /* ----------------------------------------- */
 
     /**
-     * +-- メソッドが$n回以上呼び出されないことを定義します。
+     * +-- メソッドが$n回だけ呼び出されることを定義します
      *
      * EnviTestMockEditor::shouldReceive()から、メソッドチェーンで呼び出されます。
      *
-     * メソッドが$n回以上呼び出されないことを定義します。
-     * 制約から外れた場合は、例外、EnviTestMockExceptionがthrowされます。
+     * メソッドが$n回だけ呼び出されることを定義します。
+     * 制約から外れた場合は、例外、EnviMockExceptionがthrowされます。
+     *
+     * このメソッドはv3.4から、下限の制限がつきました。
      *
      * @access      public
      * @param       integer $n 制限回数
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditorRunkit
      * @see         EnviTestMockEditor::shouldReceive()
      */
     public function times($n)
     {
-        $this->times = $n;
+        $this->setContainer('max_limit_times', (integer)$n);
+        $this->setContainer('min_limit_times', (integer)$n);
         return $this;
     }
     /* ----------------------------------------- */
@@ -422,17 +677,70 @@ class EnviMockEditorRunkit implements EnviMockEditor
      * 設定変更しない限り、これは、すべてのメソッドのデフォルトです。
      *
      * @access      public
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditorRunkit
      * @see         EnviTestMockEditor::shouldReceive()
      */
     public function zeroOrMoreTimes()
     {
-        $this->times = false;
+        $this->unsetContainer('max_limit_times');
+        $this->unsetContainer('min_limit_times');
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- メソッド実行回数をリセットするかどうか
+     *
+     * Defaultでは、assert時にリセットされます。
+     *
+     * @access      public
+     * @param       boolean $is_pool OPTIONAL:true
+     * @return      EnviTestMockEditorRunkit
+     */
+    public function executionCountPooling($is_pool = true)
+    {
+        $this->setContainer('execution_count_pooling', false);
         return $this;
     }
     /* ----------------------------------------- */
 
 
+
+    /**
+     * +-- Assert後も同じ制限を継続して利用するかどうかを指定する
+     *
+     * デフォルトでは、Assert後は制限が解除されます。
+     *
+     * @access      public
+     * @param       boolean $val OPTIONAL:true
+     * @return      void
+     */
+    public function autoRecycle($val = true)
+    {
+        $this->setContainer('is_auto_recycle', $val);
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 自動的にrestoreを行うかどうかを定義する
+     *
+     * 自動的にrestoreを行うかどうかを定義します。
+     *
+     * trueを指定すると、スタブされたメソッドについてはAssert後に自動的にrestoreを行います。
+     *
+     * デフォルトでは、Assert後もrestoreを行わず、andXXXで指定した処理を行います。
+     *
+     * @access      public
+     * @param       boolean $val OPTIONAL:true
+     * @return      void
+     */
+    public function autoRestore($val = true)
+    {
+        $this->setContainer('is_auto_restore', $val);
+        return $this;
+    }
+    /* ----------------------------------------- */
 
     /**
      * +-- 戻り値を設定します。
@@ -447,17 +755,13 @@ class EnviMockEditorRunkit implements EnviMockEditor
      *
      * @access      public
      * @param       any $res
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditorRunkit
      * @see         EnviTestMockEditor::shouldReceive()
      */
     public function andReturn($res)
     {
-        $this->removeMethod($this->method_name);
-        $method_script = $this->createMethodScript();
-        EnviTestMockAndReturn::$return_values[$this->mock_hash] = $res;
-        $method_script .= 'return EnviTestMockAndReturn::$return_values['.$this->mock_hash.'];';
-        runkit_method_add($this->class_name, $this->method_name, '', $method_script);
-        $this->free();
+        $this->mockCommit();
+        $this->setContainer('return_values', $res);
         return $this;
     }
     /* ----------------------------------------- */
@@ -472,22 +776,107 @@ class EnviMockEditorRunkit implements EnviMockEditor
      * EnviTestMockEditor::shouldReceive()から、メソッドチェーンで呼び出され、制限が確定されます。
      *
      * @access      public
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditorRunkit
      * @see         EnviTestMockEditor::shouldReceive()
      */
     public function andReturnNull()
     {
-        $this->removeMethod($this->method_name);
-        $method_script = $this->createMethodScript();
-        $method_script .= 'return NULL;';
-        runkit_method_add($this->class_name, $this->method_name, '', $method_script);
-
-        $this->free();
+        $this->mockCommit();
+        $this->setContainer('return_values', NULL);
         return $this;
     }
     /* ----------------------------------------- */
 
 
+    /**
+     * +-- 指定した場所の引数をそのまま返すメソッドであると定義します
+     *
+     * @access      public
+     * @param       integer $val 返す引数の場所 OPTIONAL:0
+     * @return      EnviTestMockEditorRunkit
+     * @see         EnviTestMockEditor::shouldReceive()
+     */
+    public function andReturnAugment($val = 0)
+    {
+        $this->mockCommit();
+        $this->setContainer('return_is_augment', true);
+        $this->setContainer('return_values', $val);
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- 引数をそのまま返すメソッドであると定義します
+     *
+     * @access      public
+     * @param       integer $val 返す引数の場所 OPTIONAL:0
+     * @return      EnviTestMockEditorRunkit
+     * @see         EnviTestMockEditor::shouldReceive()
+     */
+    public function andReturnAugmentAll()
+    {
+        $this->mockCommit();
+        $this->setContainer('return_is_augment_all', true);
+        $this->setContainer('return_values', true);
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- コールバックの結果を返すメソッドであると定義します
+     *
+     * @access      public
+     * @param       callback $val
+     * @return      EnviTestMockEditorRunkit
+     */
+    public function andReturnCallBack($val)
+    {
+        $this->mockCommit();
+        $this->setContainer('return_is_callback', true);
+        $this->setContainer('return_values', $val);
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 実行回数毎にバラバラの値を返すためのマップを登録します、マップに沿った値を返すメソッドであると定義します
+     *
+     * @access      public
+     * @param       array $val
+     * @return      EnviTestMockEditorRunkit
+     */
+    public function andReturnConsecutive(array $val)
+    {
+        $this->mockCommit();
+        $this->setContainer('return_is_consecutive ', true);
+        $this->setContainer('return_values', array_values($val));
+        return $this;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 引数によって返す値を変える為のマップを登録し、マップに沿った値を返すメソッドであると定義します
+     *
+     * @access      public
+     * @param       array $map
+     * @param       array $val
+     * @return      EnviTestMockEditorRunkit
+     */
+    public function andReturnMap(array $map, array $val)
+    {
+        $this->mockCommit();
+        $this->setContainer('return_is_map ', true);
+        $return_values = array();
+        foreach ($map as $arguments) {
+            $return_value = each($val);
+            $return_values[] = array('arguments' => $arguments, 'return_values' => $return_value ? $return_value[1] : NULL);
+        }
+        $this->setContainer('return_values', array_values($return_values));
+
+        return $this;
+    }
+    /* ----------------------------------------- */
 
     /**
      * +-- 呼び出された場合、このメソッドは、指定された例外オブジェクトをスローすることを宣言します。
@@ -497,131 +886,97 @@ class EnviMockEditorRunkit implements EnviMockEditor
      * EnviTestMockEditor::shouldReceive()から、メソッドチェーンで呼び出され、制限が確定されます。
      *
      * @access      public
-     * @param       any $exception_class_name
+     * @param       string|exception $exception_class throwされるexceptionオブジェクトかexceptionクラス名
      * @param       any $message OPTIONAL:''
-     * @return      EnviTestMockEditor
+     * @return      EnviTestMockEditorRunkit
      * @see         EnviTestMockEditor::shouldReceive()
      */
-    public function andThrow($exception_class_name, $message = '')
+    public function andThrow($exception_class, $message = '')
     {
-        if (is_object($exception_class_name)) {
-            $message = $exception_class_name->getMessage();
-            $exception_class_name = get_class($exception_class_name);
-        }
-        $this->removeMethod($this->method_name);
-        $method_script = $this->createMethodScript();
-        $method_script .= ' throw new '.$exception_class_name.'('.var_export($message, true).');';
-        runkit_method_add($this->class_name, $this->method_name, '', $method_script);
-
-        $this->free();
+        $this->mockCommit();
+        $this->setContainer('return_is_throw', true);
+        $this->setContainer('return_values', $exception_class);
         return $this;
     }
     /* ----------------------------------------- */
 
-
-    private function createMethodScript()
+    /**
+     * +-- 処理を迂回せず実行するメソッドであると定義します。
+     *
+     * @access      public
+     * @return      void
+     */
+    public function andNoBypass()
     {
-        $method_script = "\n";
+        $this->mockCommit();
+        $this->setContainer('no_bypass', true);
+        return $this;
+    }
+    /* ----------------------------------------- */
 
-        if (is_integer($this->times)) {
-            $method_script .= 'static $times = 0;
-                if ($times < '.$this->times.') {
-                    ++$times;
-                } else {
-                    $e = new EnviTestMockException("duplicate call method");
-                    $e->setArgument('.$this->method_name.');
-                    $e->setArgument(func_get_args());
-                    $e->setArgument('.var_export($this->with, true).');
-                    throw $e;
-                }
-                ';
+    private function mockCommit()
+    {
+        if ($this->by_default) {
+            return;
         }
+        $this->setContainer('is_should_receive', true);
 
-        if (is_array($this->with)) {
-            $method_script .= 'if (func_get_args() !== '.var_export($this->with, true).') {
-                $e = new EnviTestMockException("arguments Error");
-                $e->setArgument('.$this->method_name.');
-                $e->setArgument(func_get_args());
-                $e->setArgument('.var_export($this->with, true).');
-                throw $e;
-            }
-            ';
-        }
-        return $method_script;
+        $this->saveEditor();
+        $this->replaceEnviMockFlame();
+    }
+
+    private function replaceEnviMockFlame()
+    {
+        $this->removeMethod($this->method_name);
+        $code = '        $executer = new EnviMockExecuter;
+        return $executer->execute(\''.$this->class_name.'\', "'.$this->method_name.'", func_get_args(), $this);';
+        runkit_method_add(
+            $this->class_name,
+            $this->method_name,
+            '',
+            $code,
+            RUNKIT_ACC_PUBLIC
+        );
     }
 
 
 
+    private function setContainer($setter_key, $setter_value)
+    {
+        EnviMockContainer::singleton()->setAttribute($this->class_name, $this->method_name, $setter_key, $setter_value);
+    }
+
+    private function getContainer($setter_key, $default_value)
+    {
+        return EnviMockContainer::singleton()->getAttribute($this->class_name, $this->method_name, $setter_key, $default_value);
+    }
+
+
+    private function unsetContainer($setter_key)
+    {
+        EnviMockContainer::singleton()->unsetAttribute($this->class_name, $this->method_name, $setter_key);
+    }
+
+    private function resetContainer()
+    {
+        EnviMockContainer::singleton()->unsetAttributeMethodAll($this->class_name, $this->method_name);
+    }
+
+    private function saveEditor()
+    {
+        EnviMockContainer::singleton()->setEditor($this->class_name, $this->method_name, $this);
+    }
+
     private function free()
     {
         $this->method_name = '';
-        $this->with = false;
-        $this->once = false;
+        $this->by_default = false;
         return $this;
     }
 
 }
 /* ----------------------------------------- */
 
-/**
-
- * @category   自動テスト
- * @package    UnitTest
- * @subpackage UnitTest
- * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
- * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
- * @version    Release: @package_version@
- * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        http://www.enviphp.net/
- * @since      Class available since Release 1.0.0
- * @doc_ignore
- * @codeCoverageIgnore
- */
-class EnviTestMockTemporary
+class EnviMockMethodContainer
 {
 }
-/**
-
- * @category   自動テスト
- * @package    UnitTest
- * @subpackage UnitTest
- * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
- * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
- * @version    Release: @package_version@
- * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        http://www.enviphp.net/
- * @since      Class available since Release 1.0.0
- * @doc_ignore
- * @codeCoverageIgnore
- */
-class EnviTestMockAndReturn
-{
-    public static $return_values = array();
-}
-
-/**
- * @category   自動テスト
- * @package    UnitTest
- * @subpackage UnitTest
- * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
- * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
- * @version    Release: @package_version@
- * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        http://www.enviphp.net/
- * @since      Class available since Release 1.0.0
- * @doc_ignore
- * @codeCoverageIgnore
- */
-class EnviTestMockException extends exception
-{
-   public $argument;
-   public function setArgument($setter)
-   {
-       $this->argument[] = $setter;
-   }
-}
-/* ----------------------------------------- */
-

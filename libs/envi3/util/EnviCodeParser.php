@@ -45,7 +45,7 @@ class EnviCodeParser
      * +-- ファイルを指定してパースする
      *
      * @access      public
-     * @param       var_text $file_name
+     * @param       string $file_name ファイルパス
      * @return      void
      */
     public function parseFile($file_name)
@@ -58,6 +58,21 @@ class EnviCodeParser
             return self::$token_cache_list[$file_name];
         }
         return EnviParserResult::parseFile($file_name);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- Instanceキャッシュを削除する
+     *
+     * @access      public
+     * @param       string $file_name ファイルパス
+     * @return      void
+     */
+    public function cacheClean($file_name)
+    {
+        if (isset(self::$token_cache_list[$file_name])) {
+            unset(self::$token_cache_list[$file_name]);
+        }
     }
     /* ----------------------------------------- */
 

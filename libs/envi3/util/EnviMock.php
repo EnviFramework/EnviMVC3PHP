@@ -74,6 +74,9 @@
  */
 
 
+require dirname(__FILE__).DIRECTORY_SEPARATOR.'EnviMock'.DIRECTORY_SEPARATOR.'EnviMockExceptions.php';
+require dirname(__FILE__).DIRECTORY_SEPARATOR.'EnviMock'.DIRECTORY_SEPARATOR.'EnviMockContainer.php';
+require dirname(__FILE__).DIRECTORY_SEPARATOR.'EnviMock'.DIRECTORY_SEPARATOR.'EnviMockExecuter.php';
 require dirname(__FILE__).DIRECTORY_SEPARATOR.'EnviMock'.DIRECTORY_SEPARATOR.'EnviMockEditor.php';
 require dirname(__FILE__).DIRECTORY_SEPARATOR.'EnviMock'.DIRECTORY_SEPARATOR.'EnviMockEditorRunkit.php';
 
@@ -112,6 +115,7 @@ require dirname(__FILE__).DIRECTORY_SEPARATOR.'EnviMock'.DIRECTORY_SEPARATOR.'En
  */
 class EnviMock
 {
+    private static $mock_editor_cache = array();
 
     /**
      * +-- コンストラクタ
@@ -124,7 +128,6 @@ class EnviMock
      */
     private function __construct()
     {
-
     }
     /* ----------------------------------------- */
 
@@ -140,10 +143,13 @@ class EnviMock
      * @access      public
      * @static
      * @param       string $class_name モックを作成するクラス名
+     * @param       boolean $auto_loading  モックを作るときにオートロードするか OPTIONAL:false
+     * @param       boolean $is_cache  キャッシュするかどうか OPTIONAL:true
      * @return      EnviMockEditor モック操作オブジェクト
      */
-    public static function mock($class_name)
+    public static function mock($class_name, $auto_loading = false, $is_cache = true)
     {
+        // @codeCoverageIgnoreStart
         if (!extension_loaded('runkit')) {
             if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
                 $res = dl('runkit.dll');
@@ -154,20 +160,97 @@ class EnviMock
                 throw new Exception('please install runkit.http://pecl.php.net/package-changelog.php?package=runkit');
             }
         }
+        $class_name = strtolower($class_name);
+        // @codeCoverageIgnoreEnd
+        if ($is_cache && isset(self::$mock_editor_cache[$class_name])) {
+            return self::$mock_editor_cache[$class_name];
+        }
 
-        if (!class_exists($class_name, false)) {
+        if (!class_exists($class_name, $auto_loading)) {
             self::addMockClass($class_name);
         }
         $mock_editor = new EnviMockEditorRunkit($class_name);
+        if ($is_cache) {
+            self::$mock_editor_cache[$class_name] = $mock_editor;
+        }
         return $mock_editor;
     }
     /* ----------------------------------------- */
 
+    public static function deleteCache($class_name)
+    {
+        $class_name = strtolower($class_name);
+        if (isset(self::$mock_editor_cache[$class_name])) {
+            self::$mock_editor_cache[$class_name]->restoreAll();
+            unset(self::$mock_editor_cache[$class_name]);
+        }
+    }
+
+    public static function free()
+    {
+        $keys = array_keys(self::$mock_editor_cache);
+        foreach ($keys as $class_name) {
+            $class_name = strtolower($class_name);
+            if (self::$mock_editor_cache[$class_name] instanceof EnviMockEditorRunkit) {
+                self::$mock_editor_cache[$class_name]->restoreAll();
+            }
+            unset(self::$mock_editor_cache[$class_name]);
+        }
+    }
+
+
+    /**
+     * +-- モックメソッドの実行トレースを取得する
+     *
+     * @access      public
+     * @static
+     * @return      array
+     */
+    public static function getMockTraceList()
+    {
+        return EnviMockContainer::singleton()->getProcessAll();
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- モックメソッドの実行トレースを削除する
+     *
+     * @access      public
+     * @static
+     * @return      void
+     */
+    public static function resetMockTraceList()
+    {
+        return EnviMockContainer::singleton()->unsetProcessAll();
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- Assertionの最後に毎回実行される
+     *
+     * @access      public
+     * @static
+     * @return      void
+     */
+    public static function assertionExecuteAfter()
+    {
+        $container = EnviMockContainer::singleton();
+        $mock_execute = new EnviMockExecuter;
+        foreach ($container->getAttributeAll() as $class_name => $method_list) {
+            foreach ($method_list as $method_name => $values) {
+                if (isset($values['is_should_receive']) && $values['is_should_receive']) {
+                    $mock_execute->assertionExecuteAfter($class_name, $method_name);
+                }
+            }
+        }
+        self::resetMockTraceList();
+    }
+    /* ----------------------------------------- */
 
     /**
      * +-- モッククラスの作成
      *
-     * @access      public
+     * @access      private
      * @static
      * @param       string $class_name
      * @return      void

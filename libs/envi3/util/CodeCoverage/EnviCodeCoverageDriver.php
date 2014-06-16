@@ -120,7 +120,6 @@ class EnviCodeCoverageDriver
                 unset($data[$file_name]);
                 continue;
             }
-
             foreach ($this->code_coverage->parser()->getSkipLine($file_name, $this->cover['class'], $this->cover['method']) as $line) {
                 unset($data[$file_name][$line]);
             }
@@ -133,7 +132,6 @@ class EnviCodeCoverageDriver
                 unset($data[$file_name]);
             }
         }
-        // var_dump($data);
         return $data;
     }
 }

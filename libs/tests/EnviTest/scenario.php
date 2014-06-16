@@ -20,31 +20,36 @@
  * @doc_ignore
  */
 
-require_once ENVI_BASE_DIR.'/util/EnviTest.php';
 require_once dirname(__FILE__).'/testCaseBase.php';
 
 $scenario_dir = dirname(__FILE__).DIRECTORY_SEPARATOR;
 define('ENVI_TEST_YML', basename(dirname(__FILE__)).'.yml');
-$cmd = 'cp -rf '.ENVI_BASE_DIR.'/test/* '.dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/test/';
-`$cmd`;
+
+is_dir(dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/util') OR mkdir(dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/util', 0777, true);
+is_dir(dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/test') OR mkdir(dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/test', 0777, true);
 $cmd = 'cp -rf '.ENVI_BASE_DIR.'/util/* '.dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/util/';
 `$cmd`;
 
-$test = array(dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/test/EnviTest.php', dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/test/EnviDummy.php');
+$cmd = 'cp -rf '.ENVI_BASE_DIR.'/test/* '.dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/test/';
+`$cmd`;
 
+$test = array();
+$test = array_merge($test, glob(dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/test/*.php'));
+$test = array_merge($test, glob(dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/util/*.php'));
 $test = array_merge($test, glob(dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/util/EnviCode*.php'));
 $test = array_merge($test, glob(dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/util/CodeCoverage/*.php'));
 $test = array_merge($test, glob(dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/util/CodeParser/*.php'));
+$test = array_merge($test, glob(dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/util/EnviUnitTest/*.php'));
+$test = array_merge($test, glob(dirname(__FILE__).DIRECTORY_SEPARATOR.'copy/util/EnviMock/*.php'));
 foreach ($test as $k => $file_path) {
     $file = file($file_path);
     $rep_file = array();
     $name_space = 'namespace envitest\unit;'."\n";
-    if ($k === 0) {
-        $name_space .= 'class exception extends \exception{}'."\n";
-        $name_space .= 'interface ArrayAccess{}'."\n";
-        $name_space .= 'interface Countable{}'."\n";
-        $name_space .= 'interface SeekableIterator{}'."\n";
-    }
+    $name_space .= 'use \exception;'."\n";
+    $name_space .= 'use \ArrayAccess;'."\n";
+    $name_space .= 'use \Countable;'."\n";
+    $name_space .= 'use \SeekableIterator;'."\n";
+
     foreach ($file as $line) {
         $rep_file[] = $line;
         if ($name_space) {
@@ -56,6 +61,9 @@ foreach ($test as $k => $file_path) {
 
 }
 foreach ($test as $k => $file_path) {
+    if (strpos($file_path, 'EnviTestCmd.php')) {
+        continue;
+    }
     require_once $file_path;
 }
 

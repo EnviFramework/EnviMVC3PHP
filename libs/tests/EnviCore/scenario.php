@@ -23,7 +23,6 @@
 $scenario_dir = dirname(__FILE__).DIRECTORY_SEPARATOR;
 define('ENVI_TEST_YML', basename(dirname(__FILE__)).'.yml');
 
-require_once ENVI_BASE_DIR.'/util/EnviTest.php';
 require_once dirname(__FILE__).'/testCaseBase.php';
 
 /**

@@ -19,7 +19,6 @@
  * @since      File available since Release 1.0.0
  */
 
-require dirname(__FILE__).DIRECTORY_SEPARATOR.'EnviMock.php';
 
 /**
  * +-- テストの共通基底クラス
@@ -39,6 +38,38 @@ require dirname(__FILE__).DIRECTORY_SEPARATOR.'EnviMock.php';
 abstract class EnviTestBase
 {
     public $code_coverage = false;
+    protected $assertion_count = 0;
+
+
+    public function free()
+    {
+    }
+
+    /**
+     * +-- 配列を文字列にする
+     *
+     * @access public
+     * @param array $arr
+     * @return string
+     */
+    public function toString($arr){
+        $str = '';
+        foreach ($arr as $val) {
+            if (is_array($val)) {
+                $str .= "{".$this->toString($val).'}';
+                continue;
+            } elseif (is_object($val)) {
+                $str .= "{".get_class($val)."}";
+                continue;
+            }
+
+            $val = (string)$val;
+            $str .= ",{$val}";
+        }
+        return $str;
+    }
+    /* ----------------------------------------- */
+
     protected function codeCoverageRestart()
     {
         if ($this->code_coverage === false) {
@@ -48,7 +79,21 @@ abstract class EnviTestBase
         $this->code_coverage->start();
     }
 
+    protected function assertionExecuteBefore()
+    {
+        $this->codeCoverageRestart();
+        ++$this->assertion_count;
+    }
 
+    protected function assertionExecuteAfter()
+    {
+        EnviMock::assertionExecuteAfter();
+    }
+
+    public function getAssertionCount()
+    {
+        return $this->assertion_count;
+    }
 
     /**
      * +-- $objの$methodを、アクセス権に関係なく実行する
@@ -137,13 +182,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertArrayHasKey($key, $array, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!(!is_array($key) && is_array($array))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(array_key_exists($key, $array) !== false)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -161,13 +208,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertArrayNotHasKey($key, $array, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!(!is_array($key) && is_array($array))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((array_key_exists($key, $array) !== false)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -185,13 +234,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertArrayHasValue($value, $array, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_array($array)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(array_search($value, $array) !== false)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -210,13 +261,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertArrayNotHasValue($value, $array, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_array($array)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((array_search($value, $array) !== false)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -233,10 +286,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertArray($a, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!(is_array($a))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -255,7 +310,7 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertClassHasAttribute($attribute_name, $class_name, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         $array = get_class_methods($class_name);
         if (!is_array($array)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
@@ -263,6 +318,8 @@ abstract class EnviTestAssert extends EnviTestBase
         if (!(array_search($attribute_name, $array) !== false)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
 
@@ -279,7 +336,7 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertClassNotHasAttribute($attribute_name, $class_name, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         $array = get_class_methods($class_name);
         if (!is_array($array)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
@@ -287,6 +344,8 @@ abstract class EnviTestAssert extends EnviTestBase
         if ((array_search($attribute_name, $array) !== false)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
 
@@ -304,13 +363,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertContains($value, $array, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_array($array)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(!is_array($value) && array_search($value, $array) !== false)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
 
@@ -329,13 +390,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertNotContains($value, $array, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_array($array)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((!is_array($value) && array_search($value, $array) !== false)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /**
@@ -351,7 +414,7 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertContainsOnly($type, $array, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!(is_array($array) && !is_array($value))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
@@ -360,6 +423,8 @@ abstract class EnviTestAssert extends EnviTestBase
                 throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
             }
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -377,7 +442,7 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertNotContainsOnly($type, $array, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!(is_array($array) && !is_array($value))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
@@ -386,6 +451,8 @@ abstract class EnviTestAssert extends EnviTestBase
                 throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
             }
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -403,13 +470,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertCount($count, $array, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_array($array)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(count($array) === $count)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -427,13 +496,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertNotCount($count, $array, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_array($array)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((count($array) === $count)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -459,10 +530,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertEmpty($a, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!empty($a)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -488,10 +561,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertNotEmpty($a, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (empty($a)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -511,10 +586,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertEquals($a, $b, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!($a == $b)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -532,10 +609,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertNotEquals($a, $b, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (($a == $b)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -552,10 +631,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertFalse($a, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!($a === false)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -573,10 +654,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertFileEquals($a, $b, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!(file_get_contents($a) === file_get_contents($b))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -594,10 +677,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertFileNotEquals($a, $b, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if ((file_get_contents($a) === file_get_contents($b))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -614,10 +699,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertFileExists($a, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!(file_exists($a))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -634,10 +721,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertNotFileExists($a, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if ((file_exists($a))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -655,10 +744,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertGreaterThan($a, $b, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!($a > $b)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -676,10 +767,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertGreaterThanOrEqual($a, $b, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!($a >= $b)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -697,13 +790,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertInstanceOf($expected, $actual, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_object($actual) || !is_string($expected)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!($actual instanceof $expected)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -722,13 +817,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertNotInstanceOf($expected, $actual, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_object($actual) || !is_string($expected)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (($actual instanceof $expected)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -746,13 +843,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertInternalType($expected, $actual, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($expected)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(gettype($actual) === $expected)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -769,13 +868,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertNotInternalType($expected, $actual, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($expected)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((gettype($actual) === $expected)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -793,10 +894,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertLessThan($a, $b, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!($a < $b)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -814,10 +917,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertLessThanOrEqual($a, $b, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!($a <= $b)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -834,10 +939,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertNull($a, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!($a === NULL)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -855,13 +962,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertObjectHasAttribute($attribute_name, $object, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($attribute_name)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(method_exists($object, $attribute_name) === true)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -879,13 +988,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertObjectNotHasAttribute($attribute_name, $object, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($attribute_name)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((method_exists($object, $attribute_name) === true)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -903,13 +1014,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertRegExp($pattern, $string, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($pattern) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(mb_ereg($pattern, $string))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -927,13 +1040,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertNotRegExp($pattern, $string, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($pattern) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((mb_ereg($pattern, $string))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -953,13 +1068,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertPregMatch($pattern, $string, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($pattern) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(preg_match($pattern, $string) === true)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -977,13 +1094,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertNotPregMatch($pattern, $string, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($pattern) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((preg_match($pattern, $string) === true)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -1003,13 +1122,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertStringMatchesFormat($pattern, $string, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($pattern) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(sprintf($pattern, $string) === true)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -1027,13 +1148,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertStringNotMatchesFormat($pattern, $string, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($pattern) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((sprintf($pattern, $string) === true)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -1051,13 +1174,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertStringMatchesFormatFile($format_file, $string, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($format_file) || !is_string($string) || is_file($format_file)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(file_get_contents($format_file) === $string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -1076,13 +1201,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertStringNotMatchesFormatFile($format_file, $string, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($format_file) || !is_string($string) || is_file($format_file)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((file_get_contents($format_file) === $string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -1100,10 +1227,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertSame($a, $b, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!($a === $b)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -1121,10 +1250,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertNotSame($a, $b, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (($a === $b)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -1142,13 +1273,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertStringEndsWith($suffix, $string, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($suffix) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(mb_strpos($string, $suffix) === mb_strlen($string))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
 
@@ -1165,13 +1298,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertStringNotEndsWith($suffix, $string, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($suffix) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((mb_strpos($string, $suffix) === mb_strlen($string))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
 
@@ -1188,13 +1323,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertStringEqualsFile($expected_file, $string, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($expected_file) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(mb_strpos($string, file_get_contents($expected_file)) !== false)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -1213,13 +1350,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertStringNotEqualsFile($expected_file, $string, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($expected_file) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if ((mb_strpos($string, file_get_contents($expected_file)) !== false)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
 
@@ -1236,13 +1375,15 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertStringStartsWith($prefix, $string, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($prefix) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(mb_strpos($string, $prefix) === 0)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -1260,21 +1401,24 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertStringNotStartsWith($prefix, $string, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!is_string($prefix) || !is_string($string)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         if (!(mb_strpos($string, $prefix) === 0)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
 
     public function assertTag()
     {
-        $this->codeCoverageRestart();
-
+        $this->assertionExecuteBefore();
+            $this->assertionExecuteAfter();
+        return true;
     }
 
     /**
@@ -1288,10 +1432,12 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertThat($value, EnviTestContain $contain, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!($contain->execute($value))) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
@@ -1308,38 +1454,16 @@ abstract class EnviTestAssert extends EnviTestBase
      */
     public function assertTrue($a, $message = '')
     {
-        $this->codeCoverageRestart();
+        $this->assertionExecuteBefore();
         if (!($a === true)) {
             throw new EnviTestException(__METHOD__.' '.$this->toString(func_get_args()));
         }
+        $this->assertionExecuteAfter();
+
         return true;
     }
     /* ----------------------------------------- */
 
-    public function free()
-    {
-    }
-
-    /**
-     * +-- 配列を文字列にする
-     *
-     * @access public
-     * @param array $arr
-     * @return string
-     */
-    public function toString($arr){
-        $str = '';
-        foreach ($arr as $val) {
-            if (is_array($val)) {
-                $str .= "{".$this->toString($val).'}';
-                continue;
-            }
-            $val = (string)$val;
-            $str .= ",{$val}";
-        }
-        return $str;
-    }
-    /* ----------------------------------------- */
 
 }
 
@@ -1638,9 +1762,6 @@ abstract class EnviTestCase extends EnviTestAssert
         $request_method    = is_string($_request_method) ? $_request_method : $request_method;
         $context = $this->getContext($request_method, $post, $headers, $cookie);
         $query_string = count($get) ? '?'.http_build_query($get) : '';
-        // echo $this->request_url.$query_string."\n";
-        // $aa = debug_backtrace();
-        // var_dump($aa[0]['file'].$aa[0]['line']);
         $contents = file_get_contents($this->request_url.$query_string, false, $context);
         return array($http_response_header, $contents);
     }

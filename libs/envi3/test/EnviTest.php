@@ -22,4 +22,4 @@
  * @doc_ignore
  */
 
-require_once ENVI_BASE_DIR.'/util/EnviTest.php';
+require_once ENVI_BASE_DIR.'/util/EnviUnitTest/EnviUnitTestBase.php';

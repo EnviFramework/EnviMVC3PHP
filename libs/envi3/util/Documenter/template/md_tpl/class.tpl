@@ -9,7 +9,10 @@
 
 クラス概要
 --------------------------------------------------------------
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ .classsynopsis
+<span class="ooclass"><strong class="classname"><?=$class_name?></strong></span>
+{
+
 <?php foreach ($methods as $method_name => $method) { ?>
 <?php
 $doc_array = $method['token']->getDocBlockToken()->getDocBlockArray();
@@ -54,14 +57,15 @@ if (is_array($arguments)) {
     $argument = join(', ', $arguments);
 }
 ?>
-<?=$keywords?> <?=$return_text?> <?=$method['token']->getName()?> (<?=$argument?>)
+<?=$keywords?> <span class="type"><?=$return_text?></span> <a href="<?=$driver->writePathToManPath($method['man_path'])?>"><?=$method['token']->getMethodName()?></a> (<span class="parameter"><?=$argument?></span>)
 <?php } ?>
 
+}
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 目次
 ---------------------------------------------------------------
 <?php foreach ($methods as $method_name => $method) { ?>
-  * [<?=$method['token']->getMethodName()?>](<?=$driver->writePathToManPath($method['man_path'])?>) — <?=$method['token']->getDocBlockToken()->getDocBlockSubject()?>
+  * [<?=$class_name?>::<?=$method['token']->getMethodName()?>](<?=$driver->writePathToManPath($method['man_path'])?>) — <?=$method['token']->getDocBlockToken()->getDocBlockSubject()?>
 
 <?php } ?>

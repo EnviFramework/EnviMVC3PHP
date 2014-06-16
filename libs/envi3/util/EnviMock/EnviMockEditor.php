@@ -62,6 +62,24 @@ interface EnviMockEditor
     public function __construct($class_name);
     /* ----------------------------------------- */
 
+    /**
+     * +-- 継承されているかどうか
+     *
+     * @access      public
+     * @return      boolean
+     */
+    public function isAdapt();
+    /* ----------------------------------------- */
+
+    /**
+     * +-- クラス名を取得する
+     *
+     * @access      public
+     * @return      string
+     */
+    public function getClassName();
+    /* ----------------------------------------- */
+
 
     /**
      * +-- 定義されているメソッドの一覧を返します。
@@ -360,12 +378,12 @@ interface EnviMockEditor
      * EnviTestMockEditor::shouldReceive()から、メソッドチェーンで呼び出され、制限が確定されます。
      *
      * @access      public
-     * @param       any $exception_class_name
+     * @param       string|exception $exception_class throwされるexceptionオブジェクトかexceptionクラス名
      * @param       any $message OPTIONAL:''
      * @return      EnviTestMockEditor
      * @see         EnviTestMockEditor::shouldReceive()
      */
-    public function andThrow($exception_class_name, $message = '');
+    public function andThrow($exception_class, $message = '');
     /* ----------------------------------------- */
 
 }
