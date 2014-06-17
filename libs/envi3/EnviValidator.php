@@ -373,6 +373,13 @@ class EnviValidator
         //'' => '',
     );
 
+    /**
+     * ユーザー定義バリデータのリスト
+     *
+     * @var array
+     */
+    private $_register_validators = array();
+
     public function &error()
     {
         if(!is_object(self::$_error_object)) {
@@ -380,12 +387,6 @@ class EnviValidator
         }
         return self::$_error_object;
     }
-    /**
-     * ユーザー定義バリデータのリスト
-     *
-     * @var array
-     */
-    private $_register_validators = array();
 
     /**#@-*/
 

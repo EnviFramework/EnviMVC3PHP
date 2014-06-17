@@ -615,9 +615,8 @@ class EnviUnitTest
         if(isset($fargv[$name])){
             $x = $fargv[$name]+1;
             return isset($argv[$x]) ? $argv[$x] : false;
-        } else {
-            return $default_param;
         }
+        return $default_param;
     }
     /* ----------------------------------------- */
 

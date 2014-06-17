@@ -195,7 +195,7 @@ class EnviCodeCoverageParser
                 if (strpos($_token, $_line) === 0) {
                     $count = substr_count($token, "\n");
                     $line  = $token->getLine();
-
+                    $this->ignored_lines[$file_name][] = $line;
                     for ($i = $line; $i < $line + $count; $i++) {
                         $this->ignored_lines[$file_name][] = $i;
                     }
