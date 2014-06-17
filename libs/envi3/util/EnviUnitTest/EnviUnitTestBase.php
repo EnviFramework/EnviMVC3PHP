@@ -127,39 +127,46 @@ abstract class EnviTestBase
     {
         $reflection = false;
         if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
-            $reflection = new ReflectionMethod($obj, $method);
+            $reflection = new ReflectionMethod(get_class($obj), $method);
             $default_accessible = $reflection->isPublic();
-            $reflection->setAccessible(true);
         } else {
-             if (!extension_loaded('runkit')) {
-                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                    $res = dl('runkit.dll');
-                } else {
-                    $res = dl('runkit.so');
-                }
-                if ($res) {
-                    throw new Exception('please install runkit.http://pecl.php.net/package-changelog.php?package=runkit');
-                }
-            }
-            $class_name = get_class($obj);
-            $executer_method = $method.time().sha1(microtime());
-            $code = 'return call_user_func_array(array($this, "'.$method.'"), func_get_args());';
-            runkit_method_add($class_name, $executer_method, '', $code, RUNKIT_ACC_PUBLIC);
+            return $this->callByRunkit($obj, $method, $args);
         }
         try{
-            $res = call_user_func_array(array($obj, $executer_method), $args);
+            $reflection->setAccessible(true);
+            $res = $reflection->invokeArgs($obj, $args);
+        } catch (ReflectionException $e) {
+            $reflection->setAccessible($default_accessible);
+            return $this->callByRunkit($obj, $method, $args);
         } catch (exception $e) {
-            if ($reflection instanceof ReflectionMethod) {
-                $reflection->setAccessible($default_accessible);
-            } else {
-                runkit_method_remove($class_name, $executer_method);
-            }
+            $reflection->setAccessible($default_accessible);
             throw $e;
         }
-
+        $reflection->setAccessible($default_accessible);
         return $res;
     }
     /* ----------------------------------------- */
+
+    private function callByRunkit($obj, $method, array $args = array())
+    {
+         if (!extension_loaded('runkit')) {
+            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                $res = dl('runkit.dll');
+            } else {
+                $res = dl('runkit.so');
+            }
+            if ($res) {
+                throw new Exception('please install runkit.http://pecl.php.net/package-changelog.php?package=runkit');
+            }
+        }
+        $class_name = get_class($obj);
+        $executer_method = $method.time().sha1(microtime());
+        $code = 'return call_user_func_array(array($this, "'.$method.'"), func_get_args());';
+        runkit_method_add($class_name, $executer_method, '', $code, RUNKIT_ACC_PUBLIC);
+        $res = call_user_func_array(array($obj, $executer_method), $args);
+        runkit_method_remove($class_name, $executer_method);
+        return $res;
+    }
 
 
     /**
@@ -629,7 +636,7 @@ abstract class EnviTestScenario
                 continue;
             }
             // 必ずデフォルトグループには入れる
-            if (!isset($group[$method]) && count($class_docs) === 0) {
+            if (!isset($group[$method]) && count($class_group) === 0) {
                 $group[$method][$default_group] = $default_group;
             } elseif (count($class_group) > 0) {
                 foreach ($class_group as $val) {

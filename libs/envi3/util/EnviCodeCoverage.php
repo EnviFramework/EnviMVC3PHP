@@ -217,13 +217,10 @@ class EnviCodeCoverage
                 continue;
             }
             foreach ($coverage_data as $line => $flag) {
-                if ($flag <= 0) {
-                    continue;
-                }
                 if (!isset($this->coverage_data[$file_name][$line]) || $this->coverage_data[$file_name][$line] <= 0) {
-                    $this->coverage_data[$file_name][$line] = $flag;
+                    $this->coverage_data[$file_name][$line] = 1;
                 } elseif ($this->coverage_data[$file_name][$line] > 0) {
-                    $this->coverage_data[$file_name][$line] += $flag;
+                    $this->coverage_data[$file_name][$line] += 1;
                 }
             }
         }

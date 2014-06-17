@@ -66,15 +66,16 @@ class EnviUnitTest
     private static $instance;
 
     protected $parser;
+    private $no_color;
 
     /**
      * +-- コンストラクタ
      *
-     * @access public
+     * @access protected
      * @param  $file
      * @return void
      */
-    public function __construct($file)
+    protected function __construct($file)
     {
         $this->system_conf = $this->parseYml(basename($file), dirname($file).DIRECTORY_SEPARATOR);
     }
@@ -103,6 +104,14 @@ class EnviUnitTest
 
         // 実行グループの指定
         $execute_group = $this->getOption('--group', $this->getOption('--exclude-group'));
+
+        // 色無し
+        if (isset($this->system_conf['no_color'])) {
+            $this->no_color = $this->system_conf['no_color'];
+        }
+        if ($this->hasOption('--no_color')) {
+            $this->no_color = true;
+        }
 
         // カバレッジ
         $code_coverage = false;
@@ -435,12 +444,11 @@ class EnviUnitTest
         system($cmd);
     }
 
-    public function parseYml($file, $dir = ENVI_MVC_APPKEY_PATH)
+    public function parseYml($file, $dir)
     {
         if (!is_file($dir.$file)) {
             throw new exception('not such file '.$dir.$file);
         }
-        include_once dirname(__FILE__).'/../spyc.php';
         ob_start();
         include $dir.$file;
         $buff      = ob_get_contents();
@@ -475,23 +483,39 @@ class EnviUnitTest
     }
     /* ----------------------------------------- */
 
+    /**
+     * +-- メソッドのアノテーション配列を取得する
+     *
+     * @access      public
+     * @param       string $file_name ファイルパス
+     * @return      array
+     */
     public function getMethodAnnotation($file_name)
     {
         $res = $this->getAnnotation($file_name);
         return $res['FUNCTION'];
     }
+    /* ----------------------------------------- */
 
+    /**
+     * +-- クラスのアノテーション配列を取得する
+     *
+     * @access      public
+     * @param       string $file_name ファイルパス
+     * @return      array
+     */
     public function getClassAnnotation($file_name)
     {
         $res = $this->getAnnotation($file_name);
         return $res['CLASS'];
     }
+    /* ----------------------------------------- */
 
     /**
      * +-- 指定したファイルのAnnotationを取得する
      *
      * @access      protected
-     * @param       any $file_name
+     * @param       string $file_name ファイルパス
      * @return      array
      */
     protected function getAnnotation($file_name)
@@ -559,18 +583,32 @@ class EnviUnitTest
      *
      * @access public
      * @static
-     * @param boolean $app OPTIONAL:false
-     * @return Envi
+     * @param boolean $yml_path OPTIONAL:false
+     * @return EnviUnitTest
      */
-    public static function singleton($app = false)
+    public static function singleton($yml_path = false, $spyc_path = NULL)
     {
-        if (!isset(self::$instance)) {
-            $className = __CLASS__;
-            self::$instance = new $className($app);
+        if (!is_object(self::$instance)) {
+            if ($spyc_path) {
+                include_once $spyc_path;
+            }
+            $class_name = 'EnviUnitTest';
+            if ($yml_path === false || !is_file($yml_path)) {
+                throw EnviTestException('YML file can not be found.');
+            }
+            self::$instance = new $class_name($yml_path);
         }
         return self::$instance;
     }
     /* ----------------------------------------- */
+    /**
+     * +-- 実行オプションの取得
+     *
+     * @access      public
+     * @param       string $name 取得するオプション
+     * @param       mixed $default_param  オプションのデフォルト OPTIONAL:false
+     * @return      mixed
+     */
     public function getOption($name, $default_param = false) {
         GLOBAL $argv;
         $fargv = array_flip($argv);
@@ -581,11 +619,22 @@ class EnviUnitTest
             return $default_param;
         }
     }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 実行オプションの有無の確認
+     *
+     * @access      public
+     * @param       string $name 確認するオプション
+     * @return      boolean
+     */
     public function hasOption($name) {
         GLOBAL $argv;
         $fargv = array_flip($argv);
         return isset($fargv[$name]);
     }
+    /* ----------------------------------------- */
+
     private function sendOKMessage($msg)
     {
         $this->cecho("[OK]", "36", $msg);
@@ -603,7 +652,13 @@ class EnviUnitTest
     }
 
     private function cecho($m, $c = 30, $oth = '') {
-         system("echo -e '\e[{$c}m {$m} \e[m{$oth}'");
+
+        if ($this->no_color) {
+            echo $m,$oth;
+            return;
+        }
+        $oth = strtr($oth, array("'" => '', "\\" => ''));
+        system("echo -e '\e[{$c}m {$m} \e[m{$oth}'");
     }
 
     private function replaceGlobals($backup_global_data)

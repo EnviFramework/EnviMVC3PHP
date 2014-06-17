@@ -499,12 +499,12 @@ class EnviValidator
         }
 
         if ($is_error) {
-        //エラーが一つでも含まれている場合
+            //エラーが一つでも含まれている場合
             return self::$_error_object;
-        } else {
-        //正常終了
-            return $res;
         }
+        //正常終了
+        return $res;
+
     }
     /* ----------------------------------------- */
 
@@ -560,8 +560,7 @@ class EnviValidator
         $this->prepare($validation_name,
             $validator,
             $this->_getValidationData(is_array($validation_name) ? key($validation_name) : $validation_name, $trim, $post_only),
-            $validator_chain,
-            $validate_mode
+            $validator_chain,$validate_mode
         );
     }
     /* ----------------------------------------- */
@@ -663,8 +662,7 @@ class EnviValidator
         if (isset($this->_validation_list[$validation_name])) {
             $this->_validation_list[$validation_name][self::VALIDATOR][][strtolower($validator)] = array(
                                                                 self::VALIDATE_MODE   => $validate_mode,
-                                                                self::VALIDATOR_CHAIN => $validator_chain,
-                                                                );
+                                                                self::VALIDATOR_CHAIN => $validator_chain,);
         } else {
             $this->autoPrepare($validation_name, $validator, $validator_chain, $validate_mode);
         }
@@ -689,15 +687,13 @@ class EnviValidator
         if (is_numeric($order)) {
             $this->chain_format[$group][(int)$order][strtolower($validator)] = array(
                                                                 self::VALIDATE_MODE   => $validate_mode,
-                                                                self::VALIDATOR_CHAIN => $validator_chain,
-                                                                );
+                                                                self::VALIDATOR_CHAIN => $validator_chain,);
             ksort($this->chain_format[$group]);
             return $this->chain_format[$group];
         }
         $this->chain_format[$group][][strtolower($validator)] = array(
                                                             self::VALIDATE_MODE   => $validate_mode,
-                                                            self::VALIDATOR_CHAIN => $validator_chain,
-                                                            );
+                                                            self::VALIDATOR_CHAIN => $validator_chain,);
         return $this->chain_format[$group];
     }
     /* ----------------------------------------- */
@@ -903,7 +899,7 @@ class EnviValidator
         }
 
         if ($trim == true) {
-            $this->_trimmer($res);
+            $res = $this->_trimmer($res);
         }
         return $res;
     }
@@ -914,11 +910,11 @@ class EnviValidator
      * @param string|array $validation_data trimするデータ
      *
      */
-    protected function _trimmer(&$validation_data)
+    protected function _trimmer($validation_data)
     {
         if (is_array($validation_data)) {
             foreach ($validation_data as $key => $value) {
-                $this->_trimmer($validation_data[$key]);
+                $validation_data[$key] = $this->_trimmer($validation_data[$key]);
             }
         } elseif (is_string($validation_data)) {
             $validation_data = trim($validation_data);
@@ -1533,14 +1529,14 @@ class EnviValidator
     {
         if (!is_array($ValidationData)) {
             return strlen($ValidationData) === 0;
-        } else {
-            foreach ($ValidationData as $value) {
-                $res = $this->_typeNoBlank($value, $dummy);
-                if ($res) {
-                    return false;
-                }
+        }
+        foreach ($ValidationData as $value) {
+            $res = $this->_typeNoBlank($value, $dummy);
+            if ($res) {
+                return false;
             }
         }
+
         return true;
     }
 
@@ -1555,14 +1551,14 @@ class EnviValidator
     {
         if (!is_array($ValidationData)) {
             return strlen($ValidationData) > 0;
-        } else {
-            foreach ($ValidationData as $value) {
-                $res = $this->_typeNoBlank($value, $dummy);
-                if (!$res) {
-                    return false;
-                }
+        }
+        foreach ($ValidationData as $value) {
+            $res = $this->_typeNoBlank($value, $dummy);
+            if (!$res) {
+                return false;
             }
         }
+
         return true;
     }
 
@@ -1587,10 +1583,10 @@ class EnviValidator
     {
         if (!is_array($ValidationData)) {
             return mb_detect_encoding($ValidationData) == $encoding;
-        } else {
-            $ck = each($ValidationData);
-            return mb_detect_encoding($ck[1]) == $encoding;
         }
+        $ck = each($ValidationData);
+        return mb_detect_encoding($ck[1]) == $encoding;
+
     }
 
     /**
