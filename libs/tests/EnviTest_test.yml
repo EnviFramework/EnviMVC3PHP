@@ -23,8 +23,9 @@ all:
 
     dirs:
       # テストファイルのディレクトリ
-      assertion: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.'EnviUnitTestTest'.DIRECTORY_SEPARATOR; ?>"
-      assertion: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.'EnviMockTest'.DIRECTORY_SEPARATOR; ?>"
+      
+      - "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.'EnviUnitTestTest'.DIRECTORY_SEPARATOR; ?>"
+      - "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.'EnviMockTest'.DIRECTORY_SEPARATOR; ?>"
 
 
   app:

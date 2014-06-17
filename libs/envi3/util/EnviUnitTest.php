@@ -86,18 +86,30 @@ class EnviUnitTest
         if (!$start_time) {
             $start_time = microtime(true);
         }
+
+        // テストシナリオオブジェクトの作成
         include_once $this->system_conf['scenario']['path'];
         $scenario              = new $this->system_conf['scenario']['class_name'];
         $scenario->system_conf = $this->system_conf;
+        $scenario->unit_test   = $this;
+        $test_sweet_list = $scenario->execute();
 
-
-        $arr = $scenario->execute();
+        // 変数初期化
         $is_ng = false;
         $assertion_count = 0;
+        // 時間記録の初期化
+        $testing_execution_time_all = 0;
+        $testing_time_all           = 0;
+
+        // 実行グループの指定
+        $execute_group = $this->getOption('--group', $this->getOption('--exclude-group'));
 
         // カバレッジ
         $code_coverage = false;
-        if (isset($this->system_conf['code_coverage']) && $this->system_conf['code_coverage']['use']) {
+        if (isset($this->system_conf['code_coverage']) &&
+            $this->system_conf['code_coverage']['use'] &&
+            !$this->hasOption('--code_coverage-off')
+            ) {
             if (!class_exists('EnviCodeCoverage', false)) {
                 include_once dirname(__FILE__).DIRECTORY_SEPARATOR.'EnviCodeCoverage.php';
             }
@@ -124,129 +136,58 @@ class EnviUnitTest
             }
             $code_coverage->start();
         }
-        foreach ($arr as $test_val) {
+        foreach ($test_sweet_list as $sweet) {
             if (is_object($code_coverage)) {
-                $code_coverage->filter()->addBlackList($test_val['class_path']);
+                $code_coverage->filter()->addBlackList($sweet['class_path']);
             }
 
 
-            $docs_methods = $this->getMethodAnnotation($test_val['class_path']);
-            $before = array();
-            $after = array();
-            $beforeClass = array();
-            $afterClass = array();
-            $default_time_out = 1;
-            $default_group = 'small';
-            $group = array();
-
-            foreach ($docs_methods as $method => $docs) {
-                // @testアノテーションの処理
-                if (isset($docs['test'])) {
-                    $methods[$method] = true;
-                }
-                // @beforeアノテーションの処理
-                if (isset($docs['after'])) {
-                    $before[$method] = $method;
-                }
-                // @afterアノテーションの処理
-                if (isset($docs['after'])) {
-                    $after[$method] = $method;
-                }
-                // @beforeClassアノテーションの処理
-                if (isset($docs['beforeClass'])) {
-                    $beforeClass[$method] = $method;
-                }
-                // @afterClassアノテーションの処理
-                if (isset($docs['afterClass'])) {
-                    $afterClass[$method] = $method;
-                }
-
-                // グループ
-                if (isset($docs['group'][0])) {
-                    foreach ($docs['group'] as $g) {
-                        if (isset($g[0])) {
-                            $group[$method][$g[0]] = $g[0];
-                        }
-                    }
-                }
+            $test_plan = $scenario->sweetToPlan($sweet, $execute_group);
+            // 実行シナリオが0の場合は終了する
+            if (count($test_plan['test_method_list']) === 0) {
+                continue;
             }
+            $afterClass  = $test_plan['afterClass'];
+            $after       = $test_plan['after'];
+            $beforeClass = $test_plan['beforeClass'];
+            $before      = $test_plan['before'];
 
 
-
-            $docs_classes = $this->getClassAnnotation($test_val['class_path']);
-            $class_docs = $docs_classes[$test_val['class_name']];
-
-            include_once $test_val['class_path'];
+            // オブジェクト生成処理
+            include_once $sweet['class_path'];
             foreach ($beforeClass as $method) {
-                $test_val['class_name']::$method();
+                $sweet['class_name']::$method();
             }
-            $test_obj = new $test_val['class_name'];
+            $test_obj = new $sweet['class_name'];
             if (is_object($code_coverage)) {
                 $test_obj->code_coverage = $code_coverage;
             }
             $test_obj->system_conf = $this->system_conf;
-            $methods = array();
-            if (isset($test_val['methods']) && count($test_val['methods'])) {
-                $methods = array_fill($test_val['methods']);
-            }
+            // オブジェクト生成処理ここまで
 
-            $class_group = array();
-            if (isset($class_docs['group'][0][0])) {
-                foreach ($class_docs['group'] as $g) {
-                    if (isset($g[0])) {
-                        $class_group[$g[0]] = $g[0];
-                    }
-                }
-            }
-
+            // データプロバイダ&依存データの初期化
             $results = array();
-            $class_backupGlobals = true;
+            foreach ($test_plan['test_method_list'] as $method => $plan) {
+                $time_out       = $plan['time_out'];
+                $backup_globals = $plan['backup_globals'];
+                $group          = $plan['group'];
+                $docs_method    = $plan['docs_method'];
+                $covers_nothing = $plan['covers_nothing'];
 
-            if (isset($class_docs['backupGlobals'][0][0])  && $class_docs['backupGlobals'][0][0] === 'disabled') {
-                $class_backupGlobals = false;
-            }
-            $backupGlobals = $class_backupGlobals;
-            $execute_group = $this->getOption('--group', $this->getOption('--exclude-group'));
-            $testing_execution_time_all = 0;
-            foreach (get_class_methods($test_val['class_name']) as $method) {
-                if (!isset($methods[$method]) && !mb_ereg('Test$', $method)) {
-                    continue;
-                }
-
-                // 必ずデフォルトグループには入れる
-                if (!isset($group[$method]) && count($class_docs) === 0) {
-                    $group[$method][$default_group] = $default_group;
-                } elseif (count($class_group) > 0) {
-                    foreach ($class_group as $val) {
-                        $group[$method][$val] = $val;
-                    }
-                }
-
-                // グループ指定実行の場合の処理
-                if ($execute_group && !isset($group[$method][$execute_group])) {
-                    continue;
-                }
-
-                // タイムアウト時間確認
-                $time_out = $default_time_out;
-                if (isset($this->system_conf['time_out'][$execute_group])) {
-                    $time_out = $this->system_conf['time_out'][$execute_group];
-                } else {
-                    foreach ($group[$method] as $self_group) {
-                        if (isset($this->system_conf['time_out'][$self_group])) {
-                            $time_out = max($this->system_conf['time_out'][$self_group], $time_out);
-                        }
-                    }
-                }
-
-                // グローバルデータバックアップ
-                $backupGlobals = $class_backupGlobals;
+                // グローバルデータバックアップの設定と初期化
                 $backup_global_data = array();
-                if (isset($docs_methods[$method]['backupGlobals'][0][0])) {
-                    $backupGlobals = $docs_methods[$method]['backupGlobals'][0][0] !== 'disabled';
-                }
-                if ($backupGlobals) {
-                    $backup_global_data = $GLOBALS;
+                if ($backup_globals) {
+                    $backup_global_data['GLOBALS']  = $GLOBALS;
+                    $backup_global_data['_POST']    = $_POST;
+                    $backup_global_data['_GET']     = $_GET;
+                    $backup_global_data['_SERVER']  = $_SERVER;
+                    $backup_global_data['_ENV']     = $_ENV;
+                    $backup_global_data['_COOKIE']  = $_COOKIE;
+                    if (isset($_SESSION)) {
+                        $backup_global_data['_SESSION'] = $_SESSION;
+                    }
+                    $backup_global_data['_REQUEST'] = $_REQUEST;
+                    $backup_global_data['_FILES']   = $_FILES;
                 }
 
                 // テスト開始
@@ -258,45 +199,55 @@ class EnviUnitTest
                     }
                     $provider = array();
                     $cover = array();
-                    if (isset($docs_methods[$method]['dataProvider'])) {
-                        $provider_method = $docs_methods[$method]['dataProvider'][0][0];
+                    // データプロバイダー
+                    if (isset($docs_method['dataProvider'])) {
+                        $provider_method = $docs_method['dataProvider'][0][0];
                         $provider = array_values($test_obj->$provider_method());
                     }
-                    if (isset($docs_methods[$method]['depends'])) {
-                        foreach ($docs_methods[$method]['depends'] as $val) {
+                    // 依存
+                    if (isset($docs_method['depends'])) {
+                        foreach ($docs_method['depends'] as $val) {
                             if (!isset($results[$val[0]])) {
                                 throw new EnviTestDependsException;
                             }
                             $provider[] = $results[$val[0]];
                         }
                     }
-                    if (isset($docs_methods[$method]['cover'])) {
-                        foreach ($docs_methods[$method]['cover'] as $val) {
+                    if (isset($docs_method['cover'])) {
+                        foreach ($docs_method['cover'] as $val) {
                             $cover[] = $val[0];
                         }
                         if ($code_coverage !== false) {
                             $code_coverage->setCover($cover);
                         }
                     }
-                    if (isset($docs_methods[$method]['coversNothing']) || isset($class_docs['coversNothing'])) {
+                    if ($covers_nothing) {
                         $code_coverage->startNothing();
                     }
                     $method_start_time = microtime(true);
                     $results[$method] = call_user_func_array(array($test_obj, $method), $provider);
-
-                    // 最大実行時間
                     $execute_time = (microtime(true) - $method_start_time);
+
+                    // トータル実行時間の制御
                     $testing_execution_time_all += $execute_time;
-                    if ($execute_time > $time_out) {
+                    $testing_time = $execute_time - $test_obj->getTestFlameWorkExecutionTime();
+                    $testing_time_all += $testing_time;
+                    $test_obj->resetTestFlameWorkExecutionTime();
+                    // 最大実行時間制限
+                    if ($testing_time > $time_out) {
                         throw new EnviTestTimeOutException('max execution time :'.$execute_time.'sec more than '.$time_out.' sec');
                     }
-                    $this->sendOKMessage($test_val['class_name'].'::'.$method);
+
+                    // OKメッセージ
+                    $this->sendOKMessage($sweet['class_name'].'::'.$method.' : testing_time :'.($testing_time*1000).'ms');
+
+                    // コードカバレッジ計測
                     if ($code_coverage !== false) {
                         $code_coverage->finish();
                         $code_coverage->unSetCover();
                         $code_coverage->start();
                     }
-                    if (isset($docs_methods[$method]['coversNothing']) || isset($class_docs['coversNothing'])) {
+                    if ($covers_nothing) {
                         $code_coverage->endNothing();
                     }
 
@@ -306,19 +257,33 @@ class EnviUnitTest
                         $test_obj->$method();
                     }
 
-
+                    // グローバルデータバックアップを戻す
+                    if ($backup_globals) {
+                        $this->replaceGlobals($backup_global_data);
+                    }
                 } catch (EnviTestDependsException $e) {
+                    // 依存元がエラーの場合はテスト自体を省略する
                     $execute_time = (microtime(true) - $method_start_time);
                     $testing_execution_time_all += $execute_time;
                 } catch (EnviTestTimeOutException $e) {
-                    $this->sendNGMessage($test_val['class_name'].'::'.$method.'  '.$e->getMessage());
-                } catch (EnviTestException $e) {
+                    // タイムアウト
+                    $this->sendNGMessage($sweet['class_name'].'::'.$method.'  '.$e->getMessage());
+                } catch (EnviTestAssertionFailException $e) {
+                    // アサーションフェイル
                     $execute_time = (microtime(true) - $method_start_time);
                     $testing_execution_time_all += $execute_time;
                     $is_ng = true;
                     $trace = $e->getTrace();
-                    $this->sendNGMessage($test_val['class_name'].'::'.$method." line on {$trace[0]['line']}".'  '.$e->getMessage());
+                    $this->sendNGMessage($sweet['class_name'].'::'.$method." line on {$trace[0]['line']}".'  '.$e->getMessage());
+                } catch (EnviTestException $e) {
+                    // その他ユニットテストのエラー
+                    $execute_time = (microtime(true) - $method_start_time);
+                    $testing_execution_time_all += $execute_time;
+                    $is_ng = true;
+                    $trace = $e->getTrace();
+                    $this->sendNGMessage($sweet['class_name'].'::'.$method." line on {$trace[0]['line']}".'  '.$e->getMessage());
                 } catch (EnviMockException $e) {
+                    // モックのエラー
                     $execute_time = (microtime(true) - $method_start_time);
                     $testing_execution_time_all += $execute_time;
                     $is_ng = true;
@@ -326,38 +291,37 @@ class EnviUnitTest
                     $test_trace_before = array();
                     foreach ($trace as $test_trace) {
                         if (isset($test_trace['class'], $test_trace['function'])){
-                            if (strtolower($test_trace['class']) === strtolower($test_val['class_name']) && strtolower($test_trace['function']) === strtolower($method)) {
+                            if (strtolower($test_trace['class']) === strtolower($sweet['class_name']) && strtolower($test_trace['function']) === strtolower($method)) {
                                 break;
                             }
                         }
                         $test_trace_before = $test_trace;
                     }
-                    $this->sendErrorMessage($test_val['class_name'].'::'.$method." line on {$test_trace_before['line']}".'  '.$e->getMessage());
-
-
+                    $this->sendErrorMessage($sweet['class_name'].'::'.$method." line on {$test_trace_before['line']}".'  '.$e->getMessage());
+                    EnviMock::free();
                 } catch (exception $e) {
                     $execute_time = (microtime(true) - $method_start_time);
                     $testing_execution_time_all += $execute_time;
                     $is_ng = true;
                     $trace = $e->getTrace();
-                    $this->sendErrorMessage($test_val['class_name'].'::'.$method." line on {$trace[0]['line']}".'  '.$e);
+                    $this->sendErrorMessage($sweet['class_name'].'::'.$method." line on {$trace[0]['line']}".'  '.$e);
                 }
                 // テスト終了
                 $test_obj->free();
 
                 // グローバルデータバックアップを戻す
-                if ($backupGlobals) {
-                    $GLOBALS = $backup_global_data;
+                if ($backup_globals) {
+                    $this->replaceGlobals($backup_global_data);
                 }
             }
             $assertion_count += $test_obj->getAssertionCount();
             unset($test_obj);
             foreach ($afterClass as $method) {
-                $test_val['class_name']::$method();
+                $sweet['class_name']::$method();
             }
         }
-        echo round(microtime(true) - $start_time, 5),"sec \r\n(testing only : ",
-            round($testing_execution_time_all, 5),"sec) \r\n{$assertion_count} assertions test end \r\n",
+        echo 'TotalExecutionTime:'.round(microtime(true) - $start_time, 5),"sec \r\n(testing only : ",
+            round($testing_time_all, 5),"sec) \r\n{$assertion_count} assertions test end \r\n",
             number_format(memory_get_peak_usage(true))," memory usage\r\n";
         if ($code_coverage !== false && !$is_ng) {
             $code_coverage_data = $code_coverage->getCodeCoverage();
@@ -511,13 +475,13 @@ class EnviUnitTest
     }
     /* ----------------------------------------- */
 
-    protected function getMethodAnnotation($file_name)
+    public function getMethodAnnotation($file_name)
     {
         $res = $this->getAnnotation($file_name);
         return $res['FUNCTION'];
     }
 
-    protected function getClassAnnotation($file_name)
+    public function getClassAnnotation($file_name)
     {
         $res = $this->getAnnotation($file_name);
         return $res['CLASS'];
@@ -607,8 +571,9 @@ class EnviUnitTest
         return self::$instance;
     }
     /* ----------------------------------------- */
-    private function getOption($name, $default_param = false) {
-        GLOBAL $argv,$fargv;
+    public function getOption($name, $default_param = false) {
+        GLOBAL $argv;
+        $fargv = array_flip($argv);
         if(isset($fargv[$name])){
             $x = $fargv[$name]+1;
             return isset($argv[$x]) ? $argv[$x] : false;
@@ -616,7 +581,11 @@ class EnviUnitTest
             return $default_param;
         }
     }
-
+    public function hasOption($name) {
+        GLOBAL $argv;
+        $fargv = array_flip($argv);
+        return isset($fargv[$name]);
+    }
     private function sendOKMessage($msg)
     {
         $this->cecho("[OK]", "36", $msg);
@@ -637,15 +606,18 @@ class EnviUnitTest
          system("echo -e '\e[{$c}m {$m} \e[m{$oth}'");
     }
 
-
-}
-
-class EnviTestDependsException extends Exception
-{
-
-}
-
-class EnviTestTimeOutException extends Exception
-{
-
+    private function replaceGlobals($backup_global_data)
+    {
+        $GLOBALS    = $backup_global_data['GLOBALS'];
+        $_POST      = $backup_global_data['_POST'];
+        $_GET       = $backup_global_data['_GET'];
+        $_SERVER    = $backup_global_data['_SERVER'];
+        $_ENV       = $backup_global_data['_ENV'];
+        $_COOKIE    = $backup_global_data['_COOKIE'];
+        if (isset($_SESSION)) {
+            $_SESSION   = $backup_global_data['_SESSION'];
+        }
+        $_REQUEST   = $backup_global_data['_REQUEST'];
+        $_FILES     = $backup_global_data['_FILES'];
+    }
 }
