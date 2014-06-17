@@ -1,15 +1,15 @@
 <?php
 
 /**
- * ƒeƒXƒgAssert
+ * ãƒ†ã‚¹ãƒˆAssert
  *
- * EnviTestCase‚ÅŒp³‚³‚ê‚é‚½‚ß’¼ÚQÆ‚·‚é‚±‚Æ‚Í‚ ‚è‚Ü‚¹‚ñ‚ªA
- * EnviTestCase‚Í‚·‚×‚Ä‚ÌAƒeƒXƒg‚ÅŒp³‚³‚ê‚é‚½‚ßA
- * ‚·‚×‚Ä‚ÌƒeƒXƒg‚Ì’†‚Å‚±‚ÌƒNƒ‰ƒX‚É’è‹`‚³‚ê‚Ä‚¢‚éƒeƒXƒgƒAƒT[ƒVƒ‡ƒ“‚ğg—p‚·‚é‚±‚Æ‚ªo—ˆ‚Ü‚·B
+ * EnviTestCaseã§ç¶™æ‰¿ã•ã‚Œã‚‹ãŸã‚ç›´æ¥å‚ç…§ã™ã‚‹ã“ã¨ã¯ã‚ã‚Šã¾ã›ã‚“ãŒã€
+ * EnviTestCaseã¯ã™ã¹ã¦ã®ã€ãƒ†ã‚¹ãƒˆã§ç¶™æ‰¿ã•ã‚Œã‚‹ãŸã‚ã€
+ * ã™ã¹ã¦ã®ãƒ†ã‚¹ãƒˆã®ä¸­ã§ã“ã®ã‚¯ãƒ©ã‚¹ã«å®šç¾©ã•ã‚Œã¦ã„ã‚‹ãƒ†ã‚¹ãƒˆã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã‚’ä½¿ç”¨ã™ã‚‹ã“ã¨ãŒå‡ºæ¥ã¾ã™ã€‚
  *
  *
  *
- * @category   ©“®ƒeƒXƒg
+ * @category   è‡ªå‹•ãƒ†ã‚¹ãƒˆ
  * @package    UnitTest
  * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
@@ -23,15 +23,15 @@
 abstract class EnviTestAssert extends EnviTestBase
 {
     /**
-     * +-- ”z—ñ‚ÉƒL[‚ª‚ ‚é‚©‚Ç‚¤‚©‚ğŠm”F‚µA‚È‚¢ê‡‚ÍƒGƒ‰[$message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- é…åˆ—ã«ã‚­ãƒ¼ãŒã‚ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼$message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$array‚ÉƒL[$key‚ª‘¶İ‚·‚é‚©‚Ç‚¤‚©‚ğŠm”F‚µA‘¶İ‚µ‚È‚¢ê‡‚ÍƒGƒ‰[$message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$arrayã«ã‚­ãƒ¼$keyãŒå­˜åœ¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€å­˜åœ¨ã—ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼$message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param string $key Šm”F‚·‚éƒL[
-     * @param array $array Šm”F‚·‚é”z—ñ
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param string $key ç¢ºèªã™ã‚‹ã‚­ãƒ¼
+     * @param array $array ç¢ºèªã™ã‚‹é…åˆ—
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertArrayHasKey($key, $array, $message = '')
     {
@@ -49,15 +49,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- ”z—ñ‚ÉƒL[‚ª‚È‚¢‚©‚Ç‚¤‚©‚ğŠm”F‚µA‚ ‚éê‡‚ÍƒGƒ‰[$message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- é…åˆ—ã«ã‚­ãƒ¼ãŒãªã„ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€ã‚ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼$message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$array‚ÉƒL[$key‚ª‘¶İ‚µ‚È‚¢‚©‚Ç‚¤‚©‚ğŠm”F‚µA‘¶İ‚·‚éê‡‚ÍƒGƒ‰[$message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$arrayã«ã‚­ãƒ¼$keyãŒå­˜åœ¨ã—ãªã„ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€å­˜åœ¨ã™ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼$message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param string $key Šm”F‚·‚éƒL[
-     * @param array $array Šm”F‚·‚é”z—ñ
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param string $key ç¢ºèªã™ã‚‹ã‚­ãƒ¼
+     * @param array $array ç¢ºèªã™ã‚‹é…åˆ—
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertArrayNotHasKey($key, $array, $message = '')
     {
@@ -75,15 +75,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- $array‚É’l$value‚ª‘¶İ‚·‚é‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‘¶İ‚µ‚È‚¢ê‡‚ÍƒGƒ‰[$message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $arrayã«å€¤$valueãŒå­˜åœ¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ å­˜åœ¨ã—ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼$message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$array‚É’l$value‚ª‘¶İ‚·‚é‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‘¶İ‚µ‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$arrayã«å€¤$valueãŒå­˜åœ¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ å­˜åœ¨ã—ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $value ‘¶İŠm”F‚·‚é’l
-     * @param array $array Šm”F‚·‚é”z—ñ
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $value å­˜åœ¨ç¢ºèªã™ã‚‹å€¤
+     * @param array $array ç¢ºèªã™ã‚‹é…åˆ—
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertArrayHasValue($value, $array, $message = '')
     {
@@ -102,15 +102,15 @@ abstract class EnviTestAssert extends EnviTestBase
 
 
     /**
-     * +-- $array‚É’l$value‚ª‘¶İ‚µ‚È‚¢‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‘¶İ‚·‚éê‡‚ÍƒGƒ‰[$message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $arrayã«å€¤$valueãŒå­˜åœ¨ã—ãªã„ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ å­˜åœ¨ã™ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼$message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$array‚É’l$value‚ª‘¶İ‚·‚é‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‘¶İ‚µ‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$arrayã«å€¤$valueãŒå­˜åœ¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ å­˜åœ¨ã—ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $value ‘¶İŠm”F‚·‚é’l
-     * @param mixed $array Šm”F‚·‚é”z—ñ
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $value å­˜åœ¨ç¢ºèªã™ã‚‹å€¤
+     * @param mixed $array ç¢ºèªã™ã‚‹é…åˆ—
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertArrayNotHasValue($value, $array, $message = '')
     {
@@ -128,14 +128,14 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- ”z—ñ‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B”z—ñ‚Å‚È‚¢ê‡‚ÍƒGƒ‰[$message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- é…åˆ—ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚é…åˆ—ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼$message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA”z—ñ‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B”z—ñ‚Å‚È‚¢ê‡‚ÍƒGƒ‰[$message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€é…åˆ—ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚é…åˆ—ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼$message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $a Šm”F‚·‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $a ç¢ºèªã™ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertArray($a, $message = '')
     {
@@ -151,15 +151,15 @@ abstract class EnviTestAssert extends EnviTestBase
 
 
     /**
-     * +-- $class_name::$attribute_name() ‚ª‘¶İ‚µ‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $class_name::$attribute_name() ãŒå­˜åœ¨ã—ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$class_nameƒNƒ‰ƒX‚ÉA$attribute_nameƒƒ\ƒbƒh‚ª‘¶İ‚·‚é‚©‚ğŠm”F‚µ‚Ü‚·B‘¶İ‚µ‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$class_nameã‚¯ãƒ©ã‚¹ã«ã€$attribute_nameãƒ¡ã‚½ãƒƒãƒ‰ãŒå­˜åœ¨ã™ã‚‹ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚å­˜åœ¨ã—ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $attribute_name ƒƒ\ƒbƒh–¼
-     * @param mixed $class_name ƒNƒ‰ƒX–¼
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $attribute_name ãƒ¡ã‚½ãƒƒãƒ‰å
+     * @param mixed $class_name ã‚¯ãƒ©ã‚¹å
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertClassHasAttribute($attribute_name, $class_name, $message = '')
     {
@@ -177,15 +177,15 @@ abstract class EnviTestAssert extends EnviTestBase
     }
 
     /**
-     * +-- $class_name::attribute_name() ‚ª‘¶İ‚·‚éê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $class_name::attribute_name() ãŒå­˜åœ¨ã™ã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$class_nameƒNƒ‰ƒX‚ÉA$attribute_nameƒƒ\ƒbƒh‚ª‘¶İ‚·‚é‚©‚ğŠm”F‚µ‚Ü‚·B‘¶İ‚µ‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$class_nameã‚¯ãƒ©ã‚¹ã«ã€$attribute_nameãƒ¡ã‚½ãƒƒãƒ‰ãŒå­˜åœ¨ã™ã‚‹ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚å­˜åœ¨ã—ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $attribute_name ƒƒ\ƒbƒh–¼
-     * @param mixed $class_name ƒNƒ‰ƒX–¼
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $attribute_name ãƒ¡ã‚½ãƒƒãƒ‰å
+     * @param mixed $class_name ã‚¯ãƒ©ã‚¹å
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertClassNotHasAttribute($attribute_name, $class_name, $message = '')
     {
@@ -203,16 +203,16 @@ abstract class EnviTestAssert extends EnviTestBase
     }
 
     /**
-     * +-- $array‚É’l$value‚ª‘¶İ‚·‚é‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‘¶İ‚µ‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $arrayã«å€¤$valueãŒå­˜åœ¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ å­˜åœ¨ã—ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$array‚É’l$value‚ª‘¶İ‚·‚é‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‘¶İ‚µ‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
-     * assertArrayHasValue‚Æ‚Ìˆá‚¢‚ÍA$value‚ÉstringˆÈŠOg—p‚Å‚«–³‚¢“_‚Å‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$arrayã«å€¤$valueãŒå­˜åœ¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ å­˜åœ¨ã—ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
+     * assertArrayHasValueã¨ã®é•ã„ã¯ã€$valueã«stringä»¥å¤–ä½¿ç”¨ã§ãç„¡ã„ç‚¹ã§ã™ã€‚
      *
      * @access public
-     * @param mixed $value ‘¶İŠm”F‚·‚é’l
-     * @param mixed $array Šm”F‚·‚é”z—ñ
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $value å­˜åœ¨ç¢ºèªã™ã‚‹å€¤
+     * @param mixed $array ç¢ºèªã™ã‚‹é…åˆ—
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertContains($value, $array, $message = '')
     {
@@ -230,14 +230,14 @@ abstract class EnviTestAssert extends EnviTestBase
 
 
     /**
-     * +-- $array‚É’l$value‚ª‘¶İ‚µ‚È‚¢‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‘¶İ‚·‚éê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $arrayã«å€¤$valueãŒå­˜åœ¨ã—ãªã„ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ å­˜åœ¨ã™ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$array‚É’l$value‚ª‘¶İ‚µ‚È‚¢‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‘¶İ‚·‚éê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
-     * assertArrayNotHasValue‚Æ‚Ìˆá‚¢‚ÍA$value‚ÉstringˆÈŠOg—p‚Å‚«–³‚¢“_‚Å‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$arrayã«å€¤$valueãŒå­˜åœ¨ã—ãªã„ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ å­˜åœ¨ã™ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
+     * assertArrayNotHasValueã¨ã®é•ã„ã¯ã€$valueã«stringä»¥å¤–ä½¿ç”¨ã§ãç„¡ã„ç‚¹ã§ã™ã€‚
      *
      * @access public
-     * @param mixed $value ‘¶İŠm”F‚·‚é’l
-     * @param mixed $array Šm”F‚·‚é”z—ñ
+     * @param mixed $value å­˜åœ¨ç¢ºèªã™ã‚‹å€¤
+     * @param mixed $array ç¢ºèªã™ã‚‹é…åˆ—
      * @param string $message OPTIONAL:''
      * @return boolean
      */
@@ -255,15 +255,15 @@ abstract class EnviTestAssert extends EnviTestBase
         return true;
     }
     /**
-     * +-- $array‚Ì’†g‚ÌŒ^‚ª $type ‚¾‚¯‚Å‚Í‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $arrayã®ä¸­èº«ã®å‹ãŒ $type ã ã‘ã§ã¯ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA”z—ñ$array‚Ì’†g‚ÌŒ^‚ª$type‚Æ‚È‚Á‚Ä‚¢‚é‚©‚ğŠm”F‚µ‚Ü‚·B$typeˆÈŠO‚ª‘¶İ‚·ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€é…åˆ—$arrayã®ä¸­èº«ã®å‹ãŒ$typeã¨ãªã£ã¦ã„ã‚‹ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚$typeä»¥å¤–ãŒå­˜åœ¨ã™å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $type Œ^‚Ì–¼‘O
-     * @param mixed $array Šm”F‚·‚é”z—ñ
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $type å‹ã®åå‰
+     * @param mixed $array ç¢ºèªã™ã‚‹é…åˆ—
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertContainsOnly($type, $array, $message = '')
     {
@@ -283,15 +283,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- $array‚Ì’†g‚ÌŒ^‚ª $type ‚¾‚¯‚Ìê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $arrayã®ä¸­èº«ã®å‹ãŒ $type ã ã‘ã®å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA”z—ñ$array‚Ì’†g‚ÌŒ^‚ª$typeˆÈŠO‚Æ‚È‚Á‚Ä‚¢‚é‚©‚ğŠm”F‚µ‚Ü‚·B$type‚ª‘¶İ‚·ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€é…åˆ—$arrayã®ä¸­èº«ã®å‹ãŒ$typeä»¥å¤–ã¨ãªã£ã¦ã„ã‚‹ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚$typeãŒå­˜åœ¨ã™å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $type Œ^‚Ì–¼‘O
-     * @param mixed $array Šm”F‚·‚é”z—ñ
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $type å‹ã®åå‰
+     * @param mixed $array ç¢ºèªã™ã‚‹é…åˆ—
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertNotContainsOnly($type, $array, $message = '')
     {
@@ -310,15 +310,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- $array ‚Ì—v‘f”‚ª $count ‚Å‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $array ã®è¦ç´ æ•°ãŒ $count ã§ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA”z—ñ$array‚Ì—v‘f”‚ªA$count‚Å‚ ‚é‚±‚Æ‚ğŠm”F‚µ‚Ü‚·Bˆá‚¤ê‡‚ÍA$message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€é…åˆ—$arrayã®è¦ç´ æ•°ãŒã€$countã§ã‚ã‚‹ã“ã¨ã‚’ç¢ºèªã—ã¾ã™ã€‚é•ã†å ´åˆã¯ã€$message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $count ”z—ñ‚Ì—v‘f”
-     * @param mixed $array Šm”F‚·‚é”z—ñ
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $count é…åˆ—ã®è¦ç´ æ•°
+     * @param mixed $array ç¢ºèªã™ã‚‹é…åˆ—
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertCount($count, $array, $message = '')
     {
@@ -336,15 +336,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- $array ‚Ì—v‘f”‚ª $count ‚Ìê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $array ã®è¦ç´ æ•°ãŒ $count ã®å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA”z—ñ$array‚Ì—v‘f”‚ªA$count‚Å‚Å‚È‚¢‚±‚Æ‚ğŠm”F‚µ‚Ü‚·Bˆá‚¤ê‡‚ÍA$message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€é…åˆ—$arrayã®è¦ç´ æ•°ãŒã€$countã§ã§ãªã„ã“ã¨ã‚’ç¢ºèªã—ã¾ã™ã€‚é•ã†å ´åˆã¯ã€$message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $count ”z—ñ‚Ì—v‘f”
-     * @param mixed $array Šm”F‚·‚é”z—ñ
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $count é…åˆ—ã®è¦ç´ æ•°
+     * @param mixed $array ç¢ºèªã™ã‚‹é…åˆ—
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertNotCount($count, $array, $message = '')
     {
@@ -362,23 +362,23 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- ‹ó‚Å‚ ‚é‚©‚ğŠm”F‚µA‹ó‚Ìê‡‚ÍAƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- ç©ºã§ã‚ã‚‹ã‹ã‚’ç¢ºèªã—ã€ç©ºã®å ´åˆã¯ã€ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚Í‹ó‚Å‚ ‚é‚©‚ğŠm”F‚µA‹ó‚Ìê‡‚ÍAƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
-     * ‰º‹L‚Ì‚æ‚¤‚È’l‚ªA‹ó‚Å‚ ‚é‚Æ”»’f‚³‚ê‚Ü‚·B
-     * + "" (‹ó•¶š—ñ)
-     * + 0 (®” ‚Ì 0)
-     * + 0.0 (•‚“®¬”“_”‚Ì 0)
-     * + "0" (•¶š—ñ ‚Ì 0)
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ç©ºã§ã‚ã‚‹ã‹ã‚’ç¢ºèªã—ã€ç©ºã®å ´åˆã¯ã€ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
+     * ä¸‹è¨˜ã®ã‚ˆã†ãªå€¤ãŒã€ç©ºã§ã‚ã‚‹ã¨åˆ¤æ–­ã•ã‚Œã¾ã™ã€‚
+     * + "" (ç©ºæ–‡å­—åˆ—)
+     * + 0 (æ•´æ•° ã® 0)
+     * + 0.0 (æµ®å‹•å°æ•°ç‚¹æ•°ã® 0)
+     * + "0" (æ–‡å­—åˆ— ã® 0)
      * + NULL
      * + FALSE
-     * + array() (‹ó‚Ì”z—ñ)
-     * + $var; (•Ï”‚ªéŒ¾‚³‚ê‚Ä‚¢‚é‚ªA’l‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¢)
+     * + array() (ç©ºã®é…åˆ—)
+     * + $var; (å¤‰æ•°ãŒå®£è¨€ã•ã‚Œã¦ã„ã‚‹ãŒã€å€¤ãŒè¨­å®šã•ã‚Œã¦ã„ãªã„)
      *
      * @access public
-     * @param mixed $a Šm”F‚·‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $a ç¢ºèªã™ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertEmpty($a, $message = '')
     {
@@ -393,23 +393,23 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- ‹ó‚Å‚È‚¢‚©‚ğŠm”F‚µA‹ó‚Ìê‡‚ÍAƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- ç©ºã§ãªã„ã‹ã‚’ç¢ºèªã—ã€ç©ºã®å ´åˆã¯ã€ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚Í‹ó‚Å‚È‚¢‚©‚ğŠm”F‚µA‹ó‚Ìê‡‚ÍAƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
-     * ‰º‹L‚Ì‚æ‚¤‚È’l‚ªA‹ó‚Å‚ ‚é‚Æ”»’f‚³‚ê‚Ü‚·B
-     * + "" (‹ó•¶š—ñ)
-     * + 0 (®” ‚Ì 0)
-     * + 0.0 (•‚“®¬”“_”‚Ì 0)
-     * + "0" (•¶š—ñ ‚Ì 0)
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ç©ºã§ãªã„ã‹ã‚’ç¢ºèªã—ã€ç©ºã®å ´åˆã¯ã€ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
+     * ä¸‹è¨˜ã®ã‚ˆã†ãªå€¤ãŒã€ç©ºã§ã‚ã‚‹ã¨åˆ¤æ–­ã•ã‚Œã¾ã™ã€‚
+     * + "" (ç©ºæ–‡å­—åˆ—)
+     * + 0 (æ•´æ•° ã® 0)
+     * + 0.0 (æµ®å‹•å°æ•°ç‚¹æ•°ã® 0)
+     * + "0" (æ–‡å­—åˆ— ã® 0)
      * + NULL
      * + FALSE
-     * + array() (‹ó‚Ì”z—ñ)
-     * + $var; (•Ï”‚ªéŒ¾‚³‚ê‚Ä‚¢‚é‚ªA’l‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¢)
+     * + array() (ç©ºã®é…åˆ—)
+     * + $var; (å¤‰æ•°ãŒå®£è¨€ã•ã‚Œã¦ã„ã‚‹ãŒã€å€¤ãŒè¨­å®šã•ã‚Œã¦ã„ãªã„)
      *
      * @access public
-     * @param mixed $a Šm”F‚·‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $a ç¢ºèªã™ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertNotEmpty($a, $message = '')
     {
@@ -426,15 +426,15 @@ abstract class EnviTestAssert extends EnviTestBase
 
 
     /**
-     * +-- 2 ‚Â‚Ì•Ï” $a ‚Æ $b ‚ª“™‚µ‚¢‚©‚Ç‚¤‚©‚ğŠm”F‚µA“™‚µ‚­‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- 2 ã¤ã®å¤‰æ•° $a ã¨ $b ãŒç­‰ã—ã„ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€ç­‰ã—ããªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚Í2 ‚Â‚Ì•Ï” $a ‚Æ $b ‚ª“™‚µ‚¢‚©‚Ç‚¤‚©‚ğŠm”F‚µA“™‚µ‚­‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯2 ã¤ã®å¤‰æ•° $a ã¨ $b ãŒç­‰ã—ã„ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€ç­‰ã—ããªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $a Šm”F‚·‚é’l
-     * @param mixed $b Šm”F‚·‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $a ç¢ºèªã™ã‚‹å€¤
+     * @param mixed $b ç¢ºèªã™ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertEquals($a, $b, $message = '')
     {
@@ -449,15 +449,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- 2 ‚Â‚Ì•Ï” $a ‚Æ $b ‚ª“™‚µ‚­‚È‚¢‚©‚Ç‚¤‚©‚ğŠm”F‚µA“™‚µ‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- 2 ã¤ã®å¤‰æ•° $a ã¨ $b ãŒç­‰ã—ããªã„ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€ç­‰ã—ã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚Í2‚Â‚Ì•Ï” $a ‚Æ $b ‚ª“™‚µ‚­‚È‚¢‚©‚Ç‚¤‚©‚ğŠm”F‚µA“™‚µ‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯2ã¤ã®å¤‰æ•° $a ã¨ $b ãŒç­‰ã—ããªã„ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€ç­‰ã—ã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $a Šm”F‚·‚é’l
-     * @param mixed $b Šm”F‚·‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $a ç¢ºèªã™ã‚‹å€¤
+     * @param mixed $b ç¢ºèªã™ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertNotEquals($a, $b, $message = '')
     {
@@ -472,14 +472,14 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- false‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‚»‚¤‚Å‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- falseã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ ãã†ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍAfalse‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‚»‚¤‚Å‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€falseã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ ãã†ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $a Šm”F‚·‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $a ç¢ºèªã™ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertFalse($a, $message = '')
     {
@@ -494,20 +494,20 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- w’è‚³‚ê‚½ƒtƒ@ƒCƒ‹‚ª“¯‚¶ƒtƒ@ƒCƒ‹‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‚»‚¤‚Å‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- æŒ‡å®šã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒåŒã˜ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ ãã†ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍAw’è‚³‚ê‚½ƒtƒ@ƒCƒ‹‚ª“¯‚¶ƒtƒ@ƒCƒ‹‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‚»‚¤‚Å‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€æŒ‡å®šã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒåŒã˜ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ ãã†ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param string $a Šm”F‚·‚éƒtƒ@ƒCƒ‹–¼
-     * @param string $b Šm”F‚·‚éƒtƒ@ƒCƒ‹–¼
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param string $a ç¢ºèªã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«å
+     * @param string $b ç¢ºèªã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«å
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertFileEquals($a, $b, $message = '')
     {
         $this->assertionExecuteBefore();
-        if (!(is_file($a) === is_file($b)) || !(file_get_contents($a) === file_get_contents($b))) {
+        if (!(is_file($a) === is_file($b)) || !($this->fileGetContents($a) === $this->fileGetContents($b))) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         $this->assertionExecuteAfter();
@@ -517,20 +517,20 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- w’è‚³‚ê‚½ƒtƒ@ƒCƒ‹‚ª“¯‚¶ƒtƒ@ƒCƒ‹‚Å‚È‚¢‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‚»‚¤‚Å‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- æŒ‡å®šã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒåŒã˜ãƒ•ã‚¡ã‚¤ãƒ«ã§ãªã„ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ ãã†ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍAw’è‚³‚ê‚½ƒtƒ@ƒCƒ‹‚ª“¯‚¶ƒtƒ@ƒCƒ‹‚Å‚È‚¢‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‚»‚¤‚Å‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€æŒ‡å®šã•ã‚ŒãŸãƒ•ã‚¡ã‚¤ãƒ«ãŒåŒã˜ãƒ•ã‚¡ã‚¤ãƒ«ã§ãªã„ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ ãã†ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param string $a Šm”F‚·‚éƒtƒ@ƒCƒ‹–¼
-     * @param string $b Šm”F‚·‚éƒtƒ@ƒCƒ‹–¼
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param string $a ç¢ºèªã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«å
+     * @param string $b ç¢ºèªã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«å
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertFileNotEquals($a, $b, $message = '')
     {
         $this->assertionExecuteBefore();
-        if (!(is_file($a) === is_file($b)) || !(file_get_contents($a) === file_get_contents($b))) {
+        if (!(is_file($a) === is_file($b)) || !($this->fileGetContents($a) === $this->fileGetContents($b))) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         $this->assertionExecuteAfter();
@@ -540,14 +540,14 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- ƒtƒ@ƒCƒ‹‚ª‘¶İ‚·‚é‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‚»‚¤‚Å‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ ãã†ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍAƒtƒ@ƒCƒ‹‚ª‘¶İ‚·‚é‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‚»‚¤‚Å‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã™ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ ãã†ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $a Šm”F‚·‚éƒtƒ@ƒCƒ‹ƒpƒX
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $a ç¢ºèªã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertFileExists($a, $message = '')
     {
@@ -562,14 +562,14 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‚»‚¤‚Å‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ ãã†ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍAƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚È‚¢‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‚»‚¤‚Å‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ãªã„ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ ãã†ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $a Šm”F‚·‚éƒtƒ@ƒCƒ‹ƒpƒX
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $a ç¢ºèªã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertNotFileExists($a, $message = '')
     {
@@ -584,15 +584,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- $a > $b ‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‚»‚¤‚Å‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $a > $b ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ ãã†ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$a > $b ‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‚»‚¤‚Å‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$a > $b ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ ãã†ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $a Šm”F‚·‚é’l
-     * @param mixed $b Šm”F‚·‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $a ç¢ºèªã™ã‚‹å€¤
+     * @param mixed $b ç¢ºèªã™ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertGreaterThan($a, $b, $message = '')
     {
@@ -607,15 +607,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- $a>=$b‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‚»‚¤‚Å‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $a>=$bã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ ãã†ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$a>=$b‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‚»‚¤‚Å‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$a>=$bã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ ãã†ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $a Šm”F‚·‚é’l
-     * @param mixed $b Šm”F‚·‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $a ç¢ºèªã™ã‚‹å€¤
+     * @param mixed $b ç¢ºèªã™ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertGreaterThanOrEqual($a, $b, $message = '')
     {
@@ -630,15 +630,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- $actual ‚ª $expected ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Å‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $actual ãŒ $expected ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã§ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$actual ‚ª $expected ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Å‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$actual ãŒ $expected ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã§ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param string $expected ƒNƒ‰ƒX–¼
-     * @param mixed $actual ƒIƒuƒWƒFƒNƒg
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param string $expected ã‚¯ãƒ©ã‚¹å
+     * @param mixed $actual ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertInstanceOf($expected, $actual, $message = '')
     {
@@ -657,15 +657,15 @@ abstract class EnviTestAssert extends EnviTestBase
 
 
     /**
-     * +-- $actual ‚ª $expected ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Ìê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $actual ãŒ $expected ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$actual ‚ª $expected ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Ìê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$actual ãŒ $expected ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param string $expected ƒNƒ‰ƒX–¼
-     * @param mixed $actual ƒIƒuƒWƒFƒNƒg
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param string $expected ã‚¯ãƒ©ã‚¹å
+     * @param mixed $actual ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertNotInstanceOf($expected, $actual, $message = '')
     {
@@ -683,15 +683,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- $actual ‚ÌŒ^‚ª $expected ‚Å‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $actual ã®å‹ãŒ $expected ã§ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$actual ‚ÌŒ^‚ª $expected ‚Å‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$actual ã®å‹ãŒ $expected ã§ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param string $expected Œ^–¼
-     * @param mixed $actual ’²‚×‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param string $expected å‹å
+     * @param mixed $actual èª¿ã¹ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertInternalType($expected, $actual, $message = '')
     {
@@ -708,15 +708,15 @@ abstract class EnviTestAssert extends EnviTestBase
     }
     /* ----------------------------------------- */
     /**
-     * +-- $actual ‚ÌŒ^‚ª $expected ‚Ìê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $actual ã®å‹ãŒ $expected ã®å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$actual ‚ÌŒ^‚ª $expected ‚Ìê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$actual ã®å‹ãŒ $expected ã®å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param string $expected Œ^–¼
-     * @param mixed $actual ’²‚×‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param string $expected å‹å
+     * @param mixed $actual èª¿ã¹ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertNotInternalType($expected, $actual, $message = '')
     {
@@ -734,15 +734,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- $a<$b‚©‚Ç‚¤‚©‚ğŠm”F‚µA‚»‚¤‚Å‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $a<$bã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€ãã†ã§ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$a<$b‚©‚Ç‚¤‚©‚ğŠm”F‚µA‚»‚¤‚Å‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$a<$bã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€ãã†ã§ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $a ’²‚×‚é’l
-     * @param mixed $b ’²‚×‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $a èª¿ã¹ã‚‹å€¤
+     * @param mixed $b èª¿ã¹ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertLessThan($a, $b, $message = '')
     {
@@ -757,15 +757,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- $a<=$b‚©‚Ç‚¤‚©‚ğŠm”F‚µA‚»‚¤‚Å‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $a<=$bã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€ãã†ã§ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$a<=$b‚©‚Ç‚¤‚©‚ğŠm”F‚µA‚»‚¤‚Å‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$a<=$bã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€ãã†ã§ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $a ’²‚×‚é’l
-     * @param mixed $b ’²‚×‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $a èª¿ã¹ã‚‹å€¤
+     * @param mixed $b èª¿ã¹ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertLessThanOrEqual($a, $b, $message = '')
     {
@@ -780,14 +780,14 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- Null‚©‚Ç‚¤‚©‚ğŠm”F‚µA‚»‚¤‚Å‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- Nullã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€ãã†ã§ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍANull‚©‚Ç‚¤‚©‚ğŠm”F‚µA‚»‚¤‚Å‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€Nullã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€ãã†ã§ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $a ’²‚×‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $a èª¿ã¹ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertNull($a, $message = '')
     {
@@ -802,15 +802,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- ƒIƒuƒWƒFƒNƒg$object‚Éƒƒ\ƒbƒh$attribute_name ‚ª‚ ‚é‚©‚ğŠm”F‚µA‘¶İ‚µ‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $object->attributeName ãŒå­˜åœ¨ã—ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍAƒIƒuƒWƒFƒNƒg$object‚Éƒƒ\ƒbƒh$attribute_name ‚ª‚ ‚é‚©‚ğŠm”F‚µA‘¶İ‚µ‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$object->attributeName ãŒå­˜åœ¨ã—ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param string $attribute_name ƒƒ\ƒbƒh–¼
-     * @param mixed $object ’²‚×‚éƒIƒuƒWƒFƒNƒg
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param string $attribute_name ãƒ¡ã‚½ãƒƒãƒ‰å
+     * @param mixed $object èª¿ã¹ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertObjectHasAttribute($attribute_name, $object, $message = '')
     {
@@ -818,7 +818,8 @@ abstract class EnviTestAssert extends EnviTestBase
         if (!is_string($attribute_name)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        if (!(method_exists($object, $attribute_name) === true)) {
+        $ReflectionClass = new ReflectionClass($object);
+        if (!($ReflectionClass->hasProperty($attribute_name))) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         $this->assertionExecuteAfter();
@@ -828,15 +829,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- ƒIƒuƒWƒFƒNƒg$object‚Éƒƒ\ƒbƒh$attribute_name ‚ª‚È‚¢‚©‚ğŠm”F‚µA‘¶İ‚·‚éê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $object->attributeName ãŒå­˜åœ¨ã™ã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍAƒIƒuƒWƒFƒNƒg$object‚Éƒƒ\ƒbƒh$attribute_name ‚ª‚È‚¢‚©‚ğŠm”F‚µA‘¶İ‚·‚éê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$object->attributeName ãŒå­˜åœ¨ã™ã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param string $attribute_name ƒƒ\ƒbƒh–¼
-     * @param mixed $object ’²‚×‚éƒIƒuƒWƒFƒNƒg
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param string $attribute_name ãƒ¡ã‚½ãƒƒãƒ‰å
+     * @param mixed $object èª¿ã¹ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertObjectNotHasAttribute($attribute_name, $object, $message = '')
     {
@@ -844,7 +845,36 @@ abstract class EnviTestAssert extends EnviTestBase
         if (!is_string($attribute_name)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        if ((method_exists($object, $attribute_name) === true)) {
+        $ReflectionClass = new ReflectionClass($object);
+        if (($ReflectionClass->hasProperty($attribute_name))) {
+            throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        $this->assertionExecuteAfter();
+
+        return true;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ$objectã«ãƒ¡ã‚½ãƒƒãƒ‰$attribute_name ãŒã‚ã‚‹ã‹ã‚’ç¢ºèªã—ã€å­˜åœ¨ã—ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
+     *
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ$objectã«ãƒ¡ã‚½ãƒƒãƒ‰$attribute_name ãŒã‚ã‚‹ã‹ã‚’ç¢ºèªã—ã€å­˜åœ¨ã—ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
+     *
+     * @access public
+     * @param string $attribute_name ãƒ¡ã‚½ãƒƒãƒ‰å
+     * @param mixed $object èª¿ã¹ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
+     */
+    public function assertObjectHasMethod($attribute_name, $object, $message = '')
+    {
+        $this->assertionExecuteBefore();
+        if (!is_string($attribute_name)) {
+            throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        $ReflectionClass = new ReflectionClass($object);
+        if (!($ReflectionClass->hasMethod($attribute_name))) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         $this->assertionExecuteAfter();
@@ -854,15 +884,43 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- $string ‚ª³‹K•\Œ» $pattern ‚Éƒ}ƒbƒ`‚µ‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ$objectã«ãƒ¡ã‚½ãƒƒãƒ‰$attribute_name ãŒãªã„ã‹ã‚’ç¢ºèªã—ã€å­˜åœ¨ã™ã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$string ‚ª³‹K•\Œ» $pattern ‚Éƒ}ƒbƒ`‚µ‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ$objectã«ãƒ¡ã‚½ãƒƒãƒ‰$attribute_name ãŒãªã„ã‹ã‚’ç¢ºèªã—ã€å­˜åœ¨ã™ã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param string $pattern ³‹K•\Œ»
-     * @param mixed $string ’²‚×‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param string $attribute_name ãƒ¡ã‚½ãƒƒãƒ‰å
+     * @param mixed $object èª¿ã¹ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
+     */
+    public function assertObjectNotHasMethod($attribute_name, $object, $message = '')
+    {
+        $this->assertionExecuteBefore();
+        if (!is_string($attribute_name)) {
+            throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        $ReflectionClass = new ReflectionClass($object);
+        if (($ReflectionClass->hasMethod($attribute_name))) {
+            throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        $this->assertionExecuteAfter();
+
+        return true;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- $string ãŒæ­£è¦è¡¨ç¾ $pattern ã«ãƒãƒƒãƒã—ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
+     *
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$string ãŒæ­£è¦è¡¨ç¾ $pattern ã«ãƒãƒƒãƒã—ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
+     *
+     * @access public
+     * @param string $pattern æ­£è¦è¡¨ç¾
+     * @param mixed $string èª¿ã¹ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertRegExp($pattern, $string, $message = '')
     {
@@ -880,15 +938,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- $string ‚ª³‹K•\Œ» $pattern ‚Éƒ}ƒbƒ`‚·‚éê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $string ãŒæ­£è¦è¡¨ç¾ $pattern ã«ãƒãƒƒãƒã™ã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$string ‚ª³‹K•\Œ» $pattern ‚Éƒ}ƒbƒ`‚·‚éê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$string ãŒæ­£è¦è¡¨ç¾ $pattern ã«ãƒãƒƒãƒã™ã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param string $pattern ³‹K•\Œ»
-     * @param mixed $string ’²‚×‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param string $pattern æ­£è¦è¡¨ç¾
+     * @param mixed $string èª¿ã¹ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertNotRegExp($pattern, $string, $message = '')
     {
@@ -908,15 +966,15 @@ abstract class EnviTestAssert extends EnviTestBase
 
 
     /**
-     * +-- $string ‚ª(Preg)³‹K•\Œ» $pattern ‚Éƒ}ƒbƒ`‚µ‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $string ãŒ(Preg)æ­£è¦è¡¨ç¾ $pattern ã«ãƒãƒƒãƒã—ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$string ‚ª(Preg)³‹K•\Œ» $pattern ‚Éƒ}ƒbƒ`‚µ‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$string ãŒ(Preg)æ­£è¦è¡¨ç¾ $pattern ã«ãƒãƒƒãƒã—ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param string $pattern ³‹K•\Œ»
-     * @param mixed $string ’²‚×‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param string $pattern æ­£è¦è¡¨ç¾
+     * @param mixed $string èª¿ã¹ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertPregMatch($pattern, $string, $message = '')
     {
@@ -924,7 +982,7 @@ abstract class EnviTestAssert extends EnviTestBase
         if (!is_string($pattern) || !is_string($string)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        if (!(preg_match($pattern, $string) === true)) {
+        if (!(preg_match($pattern, $string) === 1)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         $this->assertionExecuteAfter();
@@ -934,15 +992,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- $string ‚ª(Preg)³‹K•\Œ» $pattern ‚Éƒ}ƒbƒ`‚·‚éê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $string ãŒ(Preg)æ­£è¦è¡¨ç¾ $pattern ã«ãƒãƒƒãƒã™ã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$string ‚ª(Preg)³‹K•\Œ» $pattern ‚Éƒ}ƒbƒ`‚·‚éê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$string ãŒ(Preg)æ­£è¦è¡¨ç¾ $pattern ã«ãƒãƒƒãƒã™ã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param string $pattern ³‹K•\Œ»
-     * @param mixed $string ’²‚×‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param string $pattern æ­£è¦è¡¨ç¾
+     * @param mixed $string èª¿ã¹ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertNotPregMatch($pattern, $string, $message = '')
     {
@@ -950,7 +1008,7 @@ abstract class EnviTestAssert extends EnviTestBase
         if (!is_string($pattern) || !is_string($string)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        if ((preg_match($pattern, $string) === true)) {
+        if ((preg_match($pattern, $string) === 1)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         $this->assertionExecuteAfter();
@@ -962,15 +1020,15 @@ abstract class EnviTestAssert extends EnviTestBase
 
 
     /**
-     * +-- $string ‚ª‘®•¶š—ñ $pattern ‚Éƒ}ƒbƒ`‚µ‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $string ãŒæ›¸å¼æ–‡å­—åˆ— $pattern ã«ãƒãƒƒãƒã—ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$string ‚ª‘®•¶š—ñ $pattern ‚Éƒ}ƒbƒ`‚µ‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$string ãŒæ›¸å¼æ–‡å­—åˆ— $pattern ã«ãƒãƒƒãƒã—ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param string $pattern ‘®•¶š—ñ
-     * @param mixed $string ’²‚×‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param string $pattern æ›¸å¼æ–‡å­—åˆ—
+     * @param mixed $string èª¿ã¹ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertStringMatchesFormat($pattern, $string, $message = '')
     {
@@ -978,7 +1036,13 @@ abstract class EnviTestAssert extends EnviTestBase
         if (!is_string($pattern) || !is_string($string)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        if (!(sprintf($pattern, $string) === true)) {
+        $scan = sscanf($string, $pattern);
+        if (!count($scan)) {
+            throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        array_unshift($scan, $pattern);
+        $diff_string = call_user_func_array('sprintf', $scan);
+        if ($diff_string !== $string) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         $this->assertionExecuteAfter();
@@ -988,15 +1052,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- $string ‚ª‘®•¶š—ñ $pattern ‚Éƒ}ƒbƒ`‚·‚éê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $string ãŒæ›¸å¼æ–‡å­—åˆ— $pattern ã«ãƒãƒƒãƒã™ã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$string ‚ª‘®•¶š—ñ $pattern ‚Éƒ}ƒbƒ`‚·‚éê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$string ãŒæ›¸å¼æ–‡å­—åˆ— $pattern ã«ãƒãƒƒãƒã™ã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param string $pattern ‘®•¶š—ñ
+     * @param string $pattern æ›¸å¼æ–‡å­—åˆ—
      * @param mixed $string
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertStringNotMatchesFormat($pattern, $string, $message = '')
     {
@@ -1004,7 +1068,10 @@ abstract class EnviTestAssert extends EnviTestBase
         if (!is_string($pattern) || !is_string($string)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        if ((sprintf($pattern, $string) === true)) {
+        $scan = sscanf($string, $pattern);
+        array_unshift($scan, $pattern);
+        $diff_string = call_user_func_array('sprintf', $scan);
+        if ($diff_string === $string) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         $this->assertionExecuteAfter();
@@ -1014,68 +1081,67 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- $string ‚ª $format_file ‚Ì“à—e‚Éƒ}ƒbƒ`‚µ‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $string ãŒ $format_file ã®å†…å®¹ã«ãƒãƒƒãƒã—ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$string ‚ª $format_file ‚Ì“à—e‚Éƒ}ƒbƒ`‚µ‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$string ãŒ $format_file ã®å†…å®¹ã«ãƒãƒƒãƒã—ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $format_file ƒtƒ@ƒCƒ‹ƒpƒX
-     * @param mixed $string •¶š—ñ
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $format_file ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+     * @param mixed $string æ–‡å­—åˆ—
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertStringMatchesFormatFile($format_file, $string, $message = '')
     {
-        $this->assertionExecuteBefore();
-        if (!is_string($format_file) || !is_string($string) || is_file($format_file)) {
+        if (!is_string($format_file) || !is_file($format_file)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        if (!(file_get_contents($format_file) === $string)) {
+        try {
+            $res = $this->assertStringMatchesFormat($this->fileGetContents($format_file), $string, $message = '');
+        } catch (EnviTestAssertionFailException $e) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        $this->assertionExecuteAfter();
-
-        return true;
+        return $res;
     }
     /* ----------------------------------------- */
 
 
     /**
-     * +-- $string ‚ª $format_file ‚Ì“à—e‚Éƒ}ƒbƒ`‚·‚éê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $string ãŒ $format_file ã®å†…å®¹ã«ãƒãƒƒãƒã™ã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$string ‚ª $format_file ‚Ì“à—e‚Éƒ}ƒbƒ`‚·‚éê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$string ãŒ $format_file ã®å†…å®¹ã«ãƒãƒƒãƒã™ã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $format_file ƒtƒ@ƒCƒ‹ƒpƒX
-     * @param mixed $string •¶š—ñ
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $format_file ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+     * @param mixed $string æ–‡å­—åˆ—
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertStringNotMatchesFormatFile($format_file, $string, $message = '')
     {
-        $this->assertionExecuteBefore();
-        if (!is_string($format_file) || !is_string($string) || is_file($format_file)) {
+        if (!is_string($format_file) || !is_file($format_file)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        if ((file_get_contents($format_file) === $string)) {
-            throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
-        }
-        $this->assertionExecuteAfter();
 
-        return true;
+        try {
+            $res = $this->assertStringNotMatchesFormat($this->fileGetContents($format_file), $string, $message = '');
+        } catch (EnviTestAssertionFailException $e) {
+            throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
+        }
+        return $res;
     }
     /* ----------------------------------------- */
 
     /**
-     * +-- Œ^‚ÆA’l‚ª“¯‚¶‚©‚Ç‚¤‚©‚ğŠm”F‚µA‚»‚¤‚Å‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- å‹ã¨ã€å€¤ãŒåŒã˜ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€ãã†ã§ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍAŒ^‚ÆA’l‚ª“¯‚¶‚©‚Ç‚¤‚©‚ğŠm”F‚µA‚»‚¤‚Å‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€å‹ã¨ã€å€¤ãŒåŒã˜ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€ãã†ã§ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $a Šm”F‚·‚é’l
-     * @param mixed $b Šm”F‚·‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $a ç¢ºèªã™ã‚‹å€¤
+     * @param mixed $b ç¢ºèªã™ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertSame($a, $b, $message = '')
     {
@@ -1090,15 +1156,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- Œ^‚ÆA’l‚ªˆá‚¤‚©‚Ç‚¤‚©‚ğŠm”F‚µA‚»‚¤‚Å‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- å‹ã¨ã€å€¤ãŒé•ã†ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€ãã†ã§ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍAŒ^‚ÆA’l‚ªˆá‚¤‚©‚Ç‚¤‚©‚ğŠm”F‚µA‚»‚¤‚Å‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€å‹ã¨ã€å€¤ãŒé•ã†ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€ãã†ã§ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $a Šm”F‚·‚é’l
-     * @param mixed $b Šm”F‚·‚é’l
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $a ç¢ºèªã™ã‚‹å€¤
+     * @param mixed $b ç¢ºèªã™ã‚‹å€¤
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertNotSame($a, $b, $message = '')
     {
@@ -1113,15 +1179,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- $string ‚ª $suffix ‚ÅI‚í‚Á‚Ä‚¢‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $string ãŒ $suffix ã§çµ‚ã‚ã£ã¦ã„ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$string ‚ª $suffix ‚ÅI‚í‚Á‚Ä‚¢‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$string ãŒ $suffix ã§çµ‚ã‚ã£ã¦ã„ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $suffix I’[•¶š—ñ
-     * @param mixed $string Šm”F‚·‚é•¶š—ñ
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $suffix çµ‚ç«¯æ–‡å­—åˆ—
+     * @param mixed $string ç¢ºèªã™ã‚‹æ–‡å­—åˆ—
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertStringEndsWith($suffix, $string, $message = '')
     {
@@ -1129,7 +1195,7 @@ abstract class EnviTestAssert extends EnviTestBase
         if (!is_string($suffix) || !is_string($string)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        if (!(mb_strpos($string, $suffix) === mb_strlen($string))) {
+        if (!(mb_strrpos($string, $suffix) === (mb_strlen($string)-mb_strlen($suffix)))) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         $this->assertionExecuteAfter();
@@ -1138,15 +1204,15 @@ abstract class EnviTestAssert extends EnviTestBase
     }
 
     /**
-     * +-- $string ‚ª $suffix ‚ÅI‚í‚Á‚Ä‚¢‚éê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $string ãŒ $suffix ã§çµ‚ã‚ã£ã¦ã„ã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$string ‚ª $suffix ‚ÅI‚í‚Á‚Ä‚¢‚éê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$string ãŒ $suffix ã§çµ‚ã‚ã£ã¦ã„ã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $suffix I’[•¶š—ñ
-     * @param mixed $string Šm”F‚·‚é•¶š—ñ
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $suffix çµ‚ç«¯æ–‡å­—åˆ—
+     * @param mixed $string ç¢ºèªã™ã‚‹æ–‡å­—åˆ—
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertStringNotEndsWith($suffix, $string, $message = '')
     {
@@ -1154,7 +1220,7 @@ abstract class EnviTestAssert extends EnviTestBase
         if (!is_string($suffix) || !is_string($string)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        if ((mb_strpos($string, $suffix) === mb_strlen($string))) {
+        if ((mb_strrpos($string, $suffix) === (mb_strlen($string)-mb_strlen($suffix)))) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         $this->assertionExecuteAfter();
@@ -1163,23 +1229,23 @@ abstract class EnviTestAssert extends EnviTestBase
     }
 
     /**
-     * +-- expected_file ‚Åw’è‚µ‚½ƒtƒ@ƒCƒ‹‚Ì“à—e‚É $string ‚ªŠÜ‚Ü‚ê‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- expected_file ã§æŒ‡å®šã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã®å†…å®¹ã« $string ãŒå«ã¾ã‚Œãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍAexpected_file ‚Åw’è‚µ‚½ƒtƒ@ƒCƒ‹‚Ì“à—e‚É $string ‚ªŠÜ‚Ü‚ê‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€expected_file ã§æŒ‡å®šã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã®å†…å®¹ã« $string ãŒå«ã¾ã‚Œãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $expected_file ƒtƒ@ƒCƒ‹ƒpƒX
-     * @param mixed $string ’²‚×‚é•¶š—ñ
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $expected_file ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+     * @param mixed $string èª¿ã¹ã‚‹æ–‡å­—åˆ—
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertStringEqualsFile($expected_file, $string, $message = '')
     {
         $this->assertionExecuteBefore();
-        if (!is_string($expected_file) || !is_string($string)) {
+        if (!is_string($expected_file) || !is_string($string) || !is_file($expected_file)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        if (!(mb_strpos($string, file_get_contents($expected_file)) !== false)) {
+        if (!(mb_strpos($string, $this->fileGetContents($expected_file)) !== false)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         $this->assertionExecuteAfter();
@@ -1190,23 +1256,23 @@ abstract class EnviTestAssert extends EnviTestBase
 
 
     /**
-     * +-- expected_file ‚Åw’è‚µ‚½ƒtƒ@ƒCƒ‹‚Ì“à—e‚É $string ‚ªŠÜ‚Ü‚ê‚éê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- expected_file ã§æŒ‡å®šã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã®å†…å®¹ã« $string ãŒå«ã¾ã‚Œã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍAexpected_file ‚Åw’è‚µ‚½ƒtƒ@ƒCƒ‹‚Ì“à—e‚É $string ‚ªŠÜ‚Ü‚ê‚éê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€expected_file ã§æŒ‡å®šã—ãŸãƒ•ã‚¡ã‚¤ãƒ«ã®å†…å®¹ã« $string ãŒå«ã¾ã‚Œã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $expected_file ƒtƒ@ƒCƒ‹ƒpƒX
-     * @param mixed $string ’²‚×‚é•¶š—ñ
-     * @param string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $expected_file ãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹
+     * @param mixed $string èª¿ã¹ã‚‹æ–‡å­—åˆ—
+     * @param string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertStringNotEqualsFile($expected_file, $string, $message = '')
     {
         $this->assertionExecuteBefore();
-        if (!is_string($expected_file) || !is_string($string)) {
+        if (!is_string($expected_file) || !is_string($string) || !is_file($expected_file)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        if ((mb_strpos($string, file_get_contents($expected_file)) !== false)) {
+        if ((mb_strpos($string, $this->fileGetContents($expected_file)) !== false)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         $this->assertionExecuteAfter();
@@ -1215,15 +1281,15 @@ abstract class EnviTestAssert extends EnviTestBase
     }
 
     /**
-     * +-- $string ‚ª $prefix ‚Ån‚Ü‚Á‚Ä‚¢‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $string ãŒ $prefix ã§å§‹ã¾ã£ã¦ã„ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$string ‚ª $prefix ‚Ån‚Ü‚Á‚Ä‚¢‚È‚¢ê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$string ãŒ $prefix ã§å§‹ã¾ã£ã¦ã„ãªã„å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access      public
-     * @param       mixed $prefix æ“ª•¶š—ñ
-     * @param       mixed $string ’²‚×‚é•¶š—ñ
-     * @param       string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return      boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param       mixed $prefix å…ˆé ­æ–‡å­—åˆ—
+     * @param       mixed $string èª¿ã¹ã‚‹æ–‡å­—åˆ—
+     * @param       string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return      boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertStringStartsWith($prefix, $string, $message = '')
     {
@@ -1241,15 +1307,15 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- $string ‚ª $prefix ‚Ån‚Ü‚Á‚Ä‚¢‚éê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- $string ãŒ $prefix ã§å§‹ã¾ã£ã¦ã„ã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍA$string ‚ª $prefix ‚Ån‚Ü‚Á‚Ä‚¢‚éê‡‚ÉƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€$string ãŒ $prefix ã§å§‹ã¾ã£ã¦ã„ã‚‹å ´åˆã«ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access      public
-     * @param       mixed $prefix æ“ª•¶š—ñ
-     * @param       mixed $string ’²‚×‚é•¶š—ñ
-     * @param       string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return      boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param       mixed $prefix å…ˆé ­æ–‡å­—åˆ—
+     * @param       mixed $string èª¿ã¹ã‚‹æ–‡å­—åˆ—
+     * @param       string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return      boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertStringNotStartsWith($prefix, $string, $message = '')
     {
@@ -1257,7 +1323,7 @@ abstract class EnviTestAssert extends EnviTestBase
         if (!is_string($prefix) || !is_string($string)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
-        if (!(mb_strpos($string, $prefix) === 0)) {
+        if ((mb_strpos($string, $prefix) === 0)) {
             throw new EnviTestAssertionFailException(__METHOD__.' '.$this->toString(func_get_args()));
         }
         $this->assertionExecuteAfter();
@@ -1269,18 +1335,18 @@ abstract class EnviTestAssert extends EnviTestBase
     public function assertTag()
     {
         $this->assertionExecuteBefore();
-            $this->assertionExecuteAfter();
+        $this->assertionExecuteAfter();
         return true;
     }
 
     /**
-     * +-- ƒAƒT[ƒVƒ‡ƒ“‚Ì’Ç‰Á
+     * +-- ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã®è¿½åŠ 
      *
      * @access public
      * @param mixed $value
      * @param EnviTestContain $contain
-     * @param       string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return      boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param       string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return      boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertThat($value, EnviTestContain $contain, $message = '')
     {
@@ -1295,14 +1361,14 @@ abstract class EnviTestAssert extends EnviTestBase
     /* ----------------------------------------- */
 
     /**
-     * +-- true‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‚»‚¤‚Å‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * +-- trueã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ ãã†ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
-     * ‚±‚ÌƒAƒT[ƒVƒ‡ƒ“‚ÍAtrue‚©‚Ç‚¤‚©‚ğŠm”F‚µ‚Ü‚·B ‚»‚¤‚Å‚È‚¢ê‡‚ÍƒGƒ‰[ $message ‚ğ•ñ‚µ‚Ü‚·B
+     * ã“ã®ã‚¢ã‚µãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€trueã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã¾ã™ã€‚ ãã†ã§ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ $message ã‚’å ±å‘Šã—ã¾ã™ã€‚
      *
      * @access public
-     * @param mixed $a Šm”F‚·‚é’l
-     * @param       string $message OPTIONAL:'' •\¦‚·‚éƒGƒ‰[ƒƒbƒZ[ƒW
-     * @return      boolean OK‚Ìê‡true‚ğ•Ô‚µ‚Ü‚·B ƒeƒXƒg‚ªNG‚Ìê‡‚ÍA‰½‚à•Ô‚µ‚Ü‚¹‚ñB
+     * @param mixed $a ç¢ºèªã™ã‚‹å€¤
+     * @param       string $message OPTIONAL:'' è¡¨ç¤ºã™ã‚‹ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+     * @return      boolean OKã®å ´åˆtrueã‚’è¿”ã—ã¾ã™ã€‚ ãƒ†ã‚¹ãƒˆãŒNGã®å ´åˆã¯ã€ä½•ã‚‚è¿”ã—ã¾ã›ã‚“ã€‚
      */
     public function assertTrue($a, $message = '')
     {
@@ -1315,5 +1381,15 @@ abstract class EnviTestAssert extends EnviTestBase
         return true;
     }
     /* ----------------------------------------- */
+
+
+    protected function fileGetContents($file)
+    {
+        return file_get_contents($file);
+    }
 }
 
+abstract class EnviTestContain
+{
+    abstract public function execute($val);
+}

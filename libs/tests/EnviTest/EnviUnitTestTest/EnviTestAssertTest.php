@@ -44,6 +44,34 @@ class UTEnviTestAssert extends envitest\unit\EnviTestAssert
 
 class BlankClassByTestAssert{}
 
+class HasAttributeAssert
+{
+    public $public_var;
+    protected $protected_var;
+    private $private_var;
+}
+
+
+class HasMethodAssert
+{
+    public function publicMethod()
+    {
+    }
+    protected function protectedMethod()
+    {
+    }
+    private function privateMethod()
+    {
+    }
+}
+
+class ThatAssert extends envitest\unit\EnviTestContain
+{
+    public function execute($val)
+    {
+        return $val;
+    }
+}
 
 /**
  *
@@ -542,6 +570,12 @@ class EnviTestAssertTest extends testCaseBase
      */
     public function assertInstanceOfTest()
     {
+        list($e, $res) = $this->callAssert('assertInstanceOf', __CLASS__, $this);
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertInstanceOf', __CLASS__.'asdf', $this);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
@@ -549,6 +583,12 @@ class EnviTestAssertTest extends testCaseBase
      */
     public function assertNotInstanceOfTest()
     {
+        list($e, $res) = $this->callAssert('assertNotInstanceOf', __CLASS__, $this);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertNotInstanceOf', __CLASS__.'asdf', $this);
+        $this->assertNull($e);
+        $this->assertTrue($res);
     }
 
     /**
@@ -556,6 +596,15 @@ class EnviTestAssertTest extends testCaseBase
      */
     public function assertInternalTypeTest()
     {
+        list($e, $res) = $this->callAssert('assertInternalType', 'integer', 13456);
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertInternalType', 'integer', '123456');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertInternalType', 'integer', 'adf146');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
@@ -563,6 +612,17 @@ class EnviTestAssertTest extends testCaseBase
      */
     public function assertNotInternalTypeTest()
     {
+        list($e, $res) = $this->callAssert('assertNotInternalType', 'integer', 13456);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+        list($e, $res) = $this->callAssert('assertNotInternalType', 'integer', '123456');
+        $this->assertNull($e);
+        $this->assertTrue($res);
+
+        list($e, $res) = $this->callAssert('assertNotInternalType', 'integer', 'adf146');
+        $this->assertNull($e);
+        $this->assertTrue($res);
     }
 
     /**
@@ -570,6 +630,15 @@ class EnviTestAssertTest extends testCaseBase
      */
     public function assertLessThanTest()
     {
+        list($e, $res) = $this->callAssert('assertLessThan', 1, 2);
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertLessThan', 1, 1);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertLessThan', 2, 1);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
@@ -577,139 +646,555 @@ class EnviTestAssertTest extends testCaseBase
      */
     public function assertLessThanOrEqualTest()
     {
+        list($e, $res) = $this->callAssert('assertLessThanOrEqual', 1, 2);
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertLessThanOrEqual', 1, 1);
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertLessThanOrEqual', 2, 1);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertNull
+     * @group EnviUnitTestLast
      */
     public function assertNullTest()
     {
+        list($e, $res) = $this->callAssert('assertNull', NULL);
+        $this->assertNull($e);
+        $this->assertTrue($res);
+
+        list($e, $res) = $this->callAssert('assertNull', '');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertObjectHasAttribute
+     * @group EnviUnitTestLast
      */
     public function assertObjectHasAttributeTest()
     {
+        $HasAttributeAssert = new HasAttributeAssert;
+        list($e, $res) = $this->callAssert('assertObjectHasAttribute', 'public_var', $HasAttributeAssert);
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertObjectHasAttribute', 'protected_var', $HasAttributeAssert);
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertObjectHasAttribute', 'private_var', $HasAttributeAssert);
+        $this->assertNull($e);
+        $this->assertTrue($res);
+
+        list($e, $res) = $this->callAssert('assertObjectHasAttribute', __CLASS__.'asdf', $HasAttributeAssert);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertObjectHasAttribute', array('private_var'), $HasAttributeAssert);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertObjectNotHasAttribute
+     * @group EnviUnitTestLast
      */
     public function assertObjectNotHasAttributeTest()
     {
+        $HasAttributeAssert = new HasAttributeAssert;
+        list($e, $res) = $this->callAssert('assertObjectNotHasAttribute', 'public_var', $HasAttributeAssert);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertObjectNotHasAttribute', 'protected_var', $HasAttributeAssert);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertObjectNotHasAttribute', 'private_var', $HasAttributeAssert);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+        list($e, $res) = $this->callAssert('assertObjectNotHasAttribute', __CLASS__.'asdf', $HasAttributeAssert);
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertObjectNotHasAttribute', array('private_var'), $HasAttributeAssert);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+    }
+
+
+
+    /**
+     * @cover envitest\unit\EnviTestAssert::assertObjectHasMethod
+     * @group EnviUnitTestLast
+     */
+    public function assertObjectHasMethodTest()
+    {
+        $HasMethodAssert = new HasMethodAssert;
+        list($e, $res) = $this->callAssert('assertObjectHasMethod', 'publicMethod', $HasMethodAssert);
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertObjectHasMethod', 'protectedMethod', $HasMethodAssert);
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertObjectHasMethod', 'privateMethod', $HasMethodAssert);
+        $this->assertNull($e);
+        $this->assertTrue($res);
+
+        list($e, $res) = $this->callAssert('assertObjectHasMethod', __CLASS__.'asdf', $HasMethodAssert);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertObjectHasMethod', array('privateMethod'), $HasMethodAssert);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
+     * @cover envitest\unit\EnviTestAssert::assertObjectNotHasMethod
+     * @group EnviUnitTestLast
+     */
+    public function assertObjectNotHasMethodTest()
+    {
+        $HasMethodAssert = new HasMethodAssert;
+        list($e, $res) = $this->callAssert('assertObjectNotHasMethod', 'publicMethod', $HasMethodAssert);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertObjectNotHasMethod', 'protectedMethod', $HasMethodAssert);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertObjectNotHasMethod', 'privateMethod', $HasMethodAssert);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+        list($e, $res) = $this->callAssert('assertObjectNotHasMethod', __CLASS__.'asdf', $HasMethodAssert);
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertObjectNotHasMethod', array('privateMethod'), $HasMethodAssert);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+    }
+
+
+    /**
      * @cover envitest\unit\EnviTestAssert::assertRegExp
+     * @group EnviUnitTestLast
      */
     public function assertRegExpTest()
     {
+        list($e, $res) = $this->callAssert('assertRegExp', '^.*$', '123456');
+        $this->assertNull($e);
+        $this->assertTrue($res);
+
+        list($e, $res) = $this->callAssert('assertRegExp', '^[0-9]+$', 'adf146');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+        list($e, $res) = $this->callAssert('assertRegExp', array('^[0-9]+$'), 'adf146');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertRegExp', array('^[0-9]+$'), 'adf146');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertNotRegExp
+     * @group EnviUnitTestLast
      */
     public function assertNotRegExpTest()
     {
+        list($e, $res) = $this->callAssert('assertNotRegExp', '^.*$', '123456');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+        list($e, $res) = $this->callAssert('assertNotRegExp', '^[0-9]+$', 'adf146');
+        $this->assertNull($e);
+        $this->assertTrue($res);
+
+        list($e, $res) = $this->callAssert('assertNotRegExp', array('^[0-9]+$'), 'adf146');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertNotRegExp', array('^[0-9]+$'), 'adf146');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertPregMatch
+     * @group EnviUnitTestLast
      */
     public function assertPregMatchTest()
     {
+        list($e, $res) = $this->callAssert('assertPregMatch', '/^.*$/', '123456');
+        $this->assertNull($e);
+        $this->assertTrue($res);
+
+        list($e, $res) = $this->callAssert('assertPregMatch', '/^[0-9]+$/', 'adf146');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+        list($e, $res) = $this->callAssert('assertPregMatch', array('^[0-9]+$'), 'adf146');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertPregMatch', array('^[0-9]+$'), 'adf146');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertNotPregMatch
+     * @group EnviUnitTestLast
      */
     public function assertNotPregMatchTest()
     {
+        list($e, $res) = $this->callAssert('assertNotPregMatch', '/^.*$/', '123456');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+        list($e, $res) = $this->callAssert('assertNotPregMatch', '/^[0-9]+$/', 'adf146');
+        $this->assertNull($e);
+        $this->assertTrue($res);
+
+        list($e, $res) = $this->callAssert('assertNotPregMatch', array('^[0-9]+$'), 'adf146');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertNotPregMatch', array('^[0-9]+$'), 'adf146');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertStringMatchesFormat
+     * @group EnviUnitTestLast
      */
     public function assertStringMatchesFormatTest()
     {
+        list($e, $res) = $this->callAssert('assertStringMatchesFormat', '%f', '1.456878');
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertStringMatchesFormat', '%dab', '14568789ab');
+        $this->assertNull($e);
+        $this->assertTrue($res);
+
+        list($e, $res) = $this->callAssert('assertStringMatchesFormat', '%d', '14568789ab');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+        list($e, $res) = $this->callAssert('assertStringMatchesFormat', '', 'あいうえおかきくけ');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+        list($e, $res) = $this->callAssert('assertStringMatchesFormat', array('^[0-9]+$'), 'adf146');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertStringMatchesFormat', array('^[0-9]+$'), 'adf146');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertStringNotMatchesFormat
+     * @group EnviUnitTestLast
      */
     public function assertStringNotMatchesFormatTest()
     {
+        list($e, $res) = $this->callAssert('assertStringNotMatchesFormat', '%f', '1.456878');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertStringNotMatchesFormat', '%dab', '14568789ab');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+        list($e, $res) = $this->callAssert('assertStringNotMatchesFormat', '%d', '14568789ab');
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertStringNotMatchesFormat', array('^[0-9]+$'), 'adf146');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertStringNotMatchesFormat', array('^[0-9]+$'), 'adf146');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertStringMatchesFormatFile
+     * @group EnviUnitTestTestByMock
      */
     public function assertStringMatchesFormatFileTest()
     {
+        $mock = EnviMock::mock('envitest\unit\EnviTestAssert');
+        $mock->shouldReceive('fileGetContents')
+            ->with(__FILE__)
+            ->once()
+            ->andReturn('%f');
+        list($e, $res) = $this->callAssert('assertStringMatchesFormatFile', __FILE__, '1.456878');
+        $this->assertNull($e);
+        $this->assertTrue($res);
+
+        $mock->recycle('fileGetContents')
+            ->andReturn('%dab');
+        list($e, $res) = $this->callAssert('assertStringMatchesFormatFile', __FILE__, '14568789ab');
+        $this->assertNull($e);
+        $this->assertTrue($res);
+
+        $mock->recycle('fileGetContents')
+            ->andReturn('%d');
+        list($e, $res) = $this->callAssert('assertStringMatchesFormatFile', __FILE__, '14568789ab');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+
+        $mock->recycle('fileGetContents')
+            ->never()
+            ->andReturn('%d');
+        list($e, $res) = $this->callAssert('assertStringMatchesFormatFile', '%d', '14568789ab');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertStringNotMatchesFormatFile
+     * @group EnviUnitTestTestByMock
      */
     public function assertStringNotMatchesFormatFileTest()
     {
+        $mock = EnviMock::mock('envitest\unit\EnviTestAssert');
+        $mock->shouldReceive('fileGetContents')
+            ->with(__FILE__)
+            ->once()
+            ->andReturn('%f');
+        list($e, $res) = $this->callAssert('assertStringNotMatchesFormatFile', __FILE__, '1.456878');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+        $mock->recycle('fileGetContents')
+            ->andReturn('%dab');
+        list($e, $res) = $this->callAssert('assertStringNotMatchesFormatFile', __FILE__, '14568789ab');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+        $mock->recycle('fileGetContents')
+            ->andReturn('%d');
+        list($e, $res) = $this->callAssert('assertStringNotMatchesFormatFile', __FILE__, '14568789ab');
+        $this->assertNull($e);
+        $this->assertTrue($res);
+
+        $mock->recycle('fileGetContents')
+            ->never()
+            ->andReturn('%d');
+        list($e, $res) = $this->callAssert('assertStringNotMatchesFormatFile', '%d', '14568789ab');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertSame
+     * @group EnviUnitTestLast
      */
     public function assertSameTest()
     {
+        list($e, $res) = $this->callAssert('assertSame', array('aaa' => 'aaa'), array('aaa' => 'aaa'));
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertSame', 'bbb', array('aaa' => 'aaa'));
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertSame', '1', 1);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertSame', 1, 1);
+        $this->assertNull($e);
+        $this->assertTrue($res);
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertNotSame
+     * @group EnviUnitTestLast
      */
     public function assertNotSameTest()
     {
+        list($e, $res) = $this->callAssert('assertNotSame', array('aaa' => 'aaa'), array('aaa' => 'aaa'));
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertNotSame', 'bbb', array('aaa' => 'aaa'));
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertNotSame', '1', 1);
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertNotSame', 1, 1);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertStringEndsWith
+     * @group EnviUnitTestLast
      */
     public function assertStringEndsWithTest()
     {
+        list($e, $res) = $this->callAssert('assertStringEndsWith', '1', 'asdfasdfasdfa1');
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertStringEndsWith', 'a', 'asdfasdfasdfa1');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertStringEndsWith', array('a'), 'asdfasdfasdfa1');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertStringEndsWith', 'a', array('asdfasdfasdfa1'));
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertStringNotEndsWith
+     * @group EnviUnitTestLast
      */
     public function assertStringNotEndsWithTest()
     {
+        list($e, $res) = $this->callAssert('assertStringNotEndsWith', '1', 'asdfasdfasdfa1');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertStringNotEndsWith', 'a', 'asdfasdfasdfa1');
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertStringNotEndsWith', array('a'), 'asdfasdfasdfa1');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertStringNotEndsWith', 'a', array('asdfasdfasdfa1'));
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertStringEqualsFile
+     * @group EnviUnitTestTestByMock
      */
     public function assertStringEqualsFileTest()
     {
+        $mock = EnviMock::mock('envitest\unit\EnviTestAssert');
+        $mock->shouldReceive('fileGetContents')
+            ->with(__FILE__)
+            ->once()
+            ->andReturn('1.456878');
+        list($e, $res) = $this->callAssert('assertStringEqualsFile', __FILE__, '1.456878');
+        $this->assertNull($e);
+        $this->assertTrue($res);
+
+        $mock->recycle('fileGetContents')
+            ->andReturn('%d');
+        list($e, $res) = $this->callAssert('assertStringEqualsFile', __FILE__, '14568789ab');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+        $mock->recycle('fileGetContents')
+            ->never()
+            ->andReturn('%d');
+        list($e, $res) = $this->callAssert('assertStringEqualsFile', '%d', '14568789ab');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+
+        $mock->recycle('fileGetContents')
+            ->never()
+            ->andReturn('%d');
+        list($e, $res) = $this->callAssert('assertStringEqualsFile', array('%d'), '14568789ab');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+
+        $mock->recycle('fileGetContents')
+            ->never()
+            ->andReturn('%d');
+        list($e, $res) = $this->callAssert('assertStringEqualsFile', '%d', array('14568789ab'));
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertStringNotEqualsFile
+     * @group EnviUnitTestTestByMock
      */
     public function assertStringNotEqualsFileTest()
     {
+        $mock = EnviMock::mock('envitest\unit\EnviTestAssert');
+        $mock->shouldReceive('fileGetContents')
+            ->with(__FILE__)
+            ->once()
+            ->andReturn('1.456878');
+        list($e, $res) = $this->callAssert('assertStringNotEqualsFile', __FILE__, '1.456878');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+        $mock->recycle('fileGetContents')
+            ->andReturn('%d');
+        list($e, $res) = $this->callAssert('assertStringNotEqualsFile', __FILE__, '14568789ab');
+        $this->assertNull($e);
+        $this->assertTrue($res);
+
+        $mock->recycle('fileGetContents')
+            ->never()
+            ->andReturn('%d');
+        list($e, $res) = $this->callAssert('assertStringNotEqualsFile', '%d', '14568789ab');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        $mock->recycle('fileGetContents')
+            ->never()
+            ->andReturn('%d');
+        list($e, $res) = $this->callAssert('assertStringNotEqualsFile', array('%d'), '14568789ab');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
+
+        $mock->recycle('fileGetContents')
+            ->never()
+            ->andReturn('%d');
+        list($e, $res) = $this->callAssert('assertStringNotEqualsFile', '%d', array('14568789ab'));
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertStringStartsWith
+     * @group EnviUnitTestLast
      */
     public function assertStringStartsWithTest()
     {
+        list($e, $res) = $this->callAssert('assertStringStartsWith', 'a', 'asdfasdfasdfa1');
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertStringStartsWith', 'd', 'asdfasdfasdfa1');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertStringStartsWith', array('a'), 'asdfasdfasdfa1');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertStringStartsWith', 'a', array('asdfasdfasdfa1'));
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertStringNotStartsWith
+     * @group EnviUnitTestLast
      */
     public function assertStringNotStartsWithTest()
     {
+        list($e, $res) = $this->callAssert('assertStringNotStartsWith', 'a', 'asdfasdfasdfa1');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertStringNotStartsWith', 'd', 'asdfasdfasdfa1');
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertStringNotStartsWith', array('a'), 'asdfasdfasdfa1');
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertStringNotStartsWith', 'a', array('asdfasdfasdfa1'));
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
@@ -721,16 +1206,31 @@ class EnviTestAssertTest extends testCaseBase
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertThat
+     * @group EnviUnitTestLast
      */
     public function assertThatTest()
     {
+        $ThatAssert = new ThatAssert;
+        list($e, $res) = $this->callAssert('assertThat', true, $ThatAssert);
+        $this->assertNull($e);
+        $this->assertTrue($res);
+        list($e, $res) = $this->callAssert('assertThat', false, $ThatAssert);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
     }
 
     /**
      * @cover envitest\unit\EnviTestAssert::assertTrue
+     * @group EnviUnitTestLast
      */
     public function assertTrueTest()
     {
+        list($e, $res) = $this->callAssert('assertTrue', false);
+        $this->assertInstanceOf('envitest\unit\EnviTestException', $e);
+        $this->assertFalse($res);
+        list($e, $res) = $this->callAssert('assertTrue', true);
+        $this->assertNull($e);
+        $this->assertTrue($res);
     }
 
 

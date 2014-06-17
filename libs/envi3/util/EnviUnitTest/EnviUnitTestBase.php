@@ -631,9 +631,15 @@ abstract class EnviTestScenario
             $class_backup_globals = false;
         }
         $backup_globals = $class_backup_globals;
+        $single_mode = $this->unit_test->getOption('--single_mode');
         foreach (array_keys($docs_methods) as $method) {
             if (!isset($methods[$method]) && !mb_ereg('Test$', $method)) {
                 continue;
+            }
+            if ($single_mode) {
+                if ($single_mode !== $method) {
+                    continue;
+                }
             }
             // 必ずデフォルトグループには入れる
             if (!isset($group[$method]) && count($class_group) === 0) {

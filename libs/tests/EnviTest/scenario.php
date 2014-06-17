@@ -49,6 +49,7 @@ foreach ($test as $k => $file_path) {
     $name_space .= 'use \ArrayAccess;'."\n";
     $name_space .= 'use \Countable;'."\n";
     $name_space .= 'use \SeekableIterator;'."\n";
+    $name_space .= 'use \ReflectionClass;'."\n";
 
     foreach ($file as $line) {
         $rep_file[] = $line;

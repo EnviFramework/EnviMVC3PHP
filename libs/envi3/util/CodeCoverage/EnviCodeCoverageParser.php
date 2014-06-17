@@ -277,6 +277,7 @@ class EnviCodeCoverageParser
             case 'OPEN_TAG':
             case 'CLOSE_TAG':
             case 'USE':
+            case 'TRY':
                 $this->ignored_lines[$file_name][] = $token->getLine();
                 break;
             }
