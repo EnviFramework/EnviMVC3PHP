@@ -15,7 +15,7 @@
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @see        http://www.enviphp.net/c/man/v3/reference
  * @since      File available since Release 1.0.0
  * @doc_ignore
  */
@@ -23,7 +23,6 @@
 $scenario_dir = dirname(__FILE__).DIRECTORY_SEPARATOR;
 define('ENVI_TEST_YML', basename(dirname(__FILE__)).'.yml');
 
-require_once ENVI_BASE_DIR.'/test/EnviTest.php';
 require_once dirname(__FILE__).'/testCaseBase.php';
 
 /**
@@ -39,7 +38,7 @@ require_once dirname(__FILE__).'/testCaseBase.php';
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @see        http://www.enviphp.net/c/man/v3/reference
  * @since      File available since Release 1.0.0
  */
 class Scenario extends EnviTestScenario

@@ -1,7 +1,16 @@
 all:
   ## <?php $test_dir = dirname(__FILE__); ?>
   ## <?php $app_name = substr(basename(__FILE__), 0, strlen(basename(__FILE__))-9); ?>
-  
+
+
+  default_time_out: 1
+  no_color: false
+
+  time_out:
+    small: 1
+    medium: 5
+    large:  10
+    
   # テストカバレッジ
   code_coverage:
     use: true

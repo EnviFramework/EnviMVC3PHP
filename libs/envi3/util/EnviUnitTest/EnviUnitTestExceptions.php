@@ -1,53 +1,50 @@
 <?php
 /**
- * インプットFilterサンプル
+ * 例外
  *
- * 入力時のフィルタのサンプル
  *
  * PHP versions 5
  *
  *
- * @category   EnviMVC拡張
- * @package    フィルタ
- * @subpackage InputFilter
+ * @category   自動テスト
+ * @package    UnitTest
+ * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        http://www.enviphp.net/c/man/v3/reference
+ * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
+ * @subpackage_main
  */
 
-
 /**
- * インプットFilterサンプル
+ * 例外
  *
- * 入力時のフィルタのサンプル
  *
- * @category   EnviMVC拡張
- * @package    フィルタ
- * @subpackage InputFilter
+ * @category   自動テスト
+ * @package    UnitTest
+ * @subpackage UnitTest
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        http://www.enviphp.net/c/man/v3/reference
+ * @see        http://www.enviphp.net/
  * @since      Class available since Release 1.0.0
  */
-class EnviInputFilter extends EnviInputFilterBase
+class EnviTestDependsException extends EnviTestException
 {
+}
 
-    /**
-     * +-- フィルタの実行
-     *
-     * @access public
-     * @return void
-     */
-    public function execute()
-    {
-    }
-    /* ----------------------------------------- */
+class EnviTestTimeOutException extends EnviTestException
+{
+}
+class EnviTestAssertionFailException extends EnviTestException
+{
+}
 
+class EnviTestException extends Exception
+{
 }

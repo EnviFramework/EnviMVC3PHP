@@ -38,10 +38,20 @@ if (!class_exists('%%module_name%%Views', false)) {
 class %%action_name%%View extends %%module_name%%Views
 {
 
+    public function initialize()
+    {
+        return parent::initialize();
+    }
+
     public function execute()
     {
         $parameter = EnviRequest::getAttributeAll();
         $this->display($parameter);
+    }
+
+    public function shutdown()
+    {
+        return parent::shutdown();
     }
 
 }

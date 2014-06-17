@@ -222,7 +222,17 @@ class EnviParserResult implements ArrayAccess, Countable, SeekableIterator
         foreach ($this->token_list as $token) {
             if (!isset($this->code_route_coverage[$token->getLine()])) {
                 $this->code_route_coverage[$token->getLine()] = 1;
+                switch ($token->getTokenName()) {
+                case 'OPEN_CURLY':
+                case 'CLOSE_CURLY':
+                case 'WHITESPACE':
+                    if ($this->code_route_coverage[$token->getLine()] <= 1) {
+                        unset($this->code_route_coverage[$token->getLine()]);
+                    }
+                break;
+                }
             }
+
             switch ($token->getTokenName()) {
             case 'IF':
             case 'ELSEIF':
@@ -236,7 +246,7 @@ class EnviParserResult implements ArrayAccess, Countable, SeekableIterator
             case 'BOOLEAN_OR':
             case 'LOGICAL_OR':
             case 'QUESTION_MARK':
-                $this->code_route_coverage[$token->getLine()]++;
+                $this->code_route_coverage[$token->getLine()] += 1;
             break;
             }
         }
@@ -496,15 +506,23 @@ class EnviParserResult implements ArrayAccess, Countable, SeekableIterator
         $trait_end_line        = false;
         $interface_name        = false;
         $interface_end_line    = false;
+        $namespace_name        = '';
+        $namespace_end_line    = false;
 
         foreach ($this->token_list as $token) {
             switch ($token->getTokenName()) {
             case 'HALT_COMPILER':
                 return;
             break;
-
+            case 'NAMESPACE':
+                $namespace_end_line = false;
+                if ($token->getEndLine() !== $token->getLine()) {
+                    $namespace_end_line = $token->getEndLine();
+                }
+                $namespace_name        = $token->getName()."\\";
+            break;
             case 'INTERFACE':
-                $interface_name        = $token->getName();
+                $interface_name        = $namespace_name.$token->getName();
                 $interface_end_line    = $token->getEndLine();
 
                 $this->interfaces[$interface_name] = array(
@@ -522,11 +540,11 @@ class EnviParserResult implements ArrayAccess, Countable, SeekableIterator
                 );
 
                 if ($token->getTokenName() === 'CLASS') {
-                    $class_name                 = $token->getName();
+                    $class_name                 = $namespace_name.$token->getName();
                     $class_end_line             = $token->getEndLine();
                     $this->classes[$class_name] = $tmp;
                 } else {
-                    $trait_name                = $token->getName();
+                    $trait_name                = $namespace_name.$token->getName();
                     $trait_end_line            = $token->getEndLine();
                     $this->traits[$trait_name] = $tmp;
                 }
@@ -539,7 +557,7 @@ class EnviParserResult implements ArrayAccess, Countable, SeekableIterator
                 if ($class_name === false &&
                     $trait_name === false &&
                     $interface_name === false) {
-                    $this->functions[$name] = $token;
+                    $this->functions[$namespace_name.$name] = $token;
                     $this->addFunctionToMap(
                         $name,
                         $token->getLine(), $token->getEndLine()
@@ -576,6 +594,10 @@ class EnviParserResult implements ArrayAccess, Countable, SeekableIterator
                     $interface_end_line == $token->getLine()) {
                     $interface_name     = false;
                     $interface_end_line = false;
+                } elseif ($namespace_end_line !== false &&
+                    $namespace_end_line == $token->getLine()) {
+                    $namespace_name     = '';
+                    $namespace_end_line = false;
                 }
 
             break;

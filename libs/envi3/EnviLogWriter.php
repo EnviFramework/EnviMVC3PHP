@@ -1039,10 +1039,13 @@ class EnviLogWriter
 }
 
 /**
+ * +-- 内部ダミークラス
+ *
+ * コンソールログがoffの場合はこのダミークラスが使用されます。
+ *
  * @category   フレームワーク基礎処理
  * @package    Envi3
  * @subpackage Logger
- * @doc_ignore
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -1050,40 +1053,17 @@ class EnviLogWriter
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      Class available since Release 3.3.2.1
- * @doc_ignore
  */
 class EnviLogWriterConsoleEmpty extends EnviLogWriterConsole
 {
     private static $instance     = NULL;
 
     /**
-     * +-- デバッグトレースも記録するかどうかを設定して、元の値を返す
-     *
-     * @access      public
-     * @return      void
-     */
-    public function setUseDebugBackTrace()
-    {
-    }
-    /* ----------------------------------------- */
-
-    /**
-     * +-- Consoleにのみログを排出します
-     *
-     * @access      public
-     * @return      void
-     */
-    public function log()
-    {
-    }
-    /* ----------------------------------------- */
-
-    /**
      * +-- シングルトン
      *
      * @access      public
      * @static
-     * @return      self
+     * @return      EnviLogWriterConsoleEmpty
      */
     public static function singleton()
     {
@@ -1105,27 +1085,17 @@ class EnviLogWriterConsoleEmpty extends EnviLogWriterConsole
     }
     /* ----------------------------------------- */
 
-    public function _systemLog()
-    {
-    }
 
-    public function stopwatch()
-    {
-    }
-
-
-    public function _queryLog()
-    {
-    }
-
-
-    public function _setConsoleLogDir()
-    {
-    }
-    public function _setConsoleLogGetKey()
-    {
-    }
-
+    public function setUseDebugBackTrace($setter){}
+    public function info($log_text){}
+    public function log($log_text){}
+    public function error($log_text){}
+    public function warn($log_text){}
+    public function _systemLog($log_text, $log_type){}
+    public function stopwatch(){}
+    public function _queryLog(&$dbi){}
+    public function _setConsoleLogDir($setter){}
+    public function _setConsoleLogGetKey($setter){}
 }
 
 /**
@@ -1142,7 +1112,7 @@ class EnviLogWriterConsoleEmpty extends EnviLogWriterConsole
  * @since      Class available since Release 3.3.2.1
  * @doc_ignore
  */
-class EnviLogWriterConsole
+abstract class EnviLogWriterConsole
 {
     protected $use_debug_back_trace = false;
     protected $use_console_log     = false;
@@ -1152,10 +1122,23 @@ class EnviLogWriterConsole
     protected $console_log_get_hash = NULL;
     protected $console_log_write_dir     = NULL;
     protected $_performance           = NULL;
+
     public function getLogHash()
     {
         return $this->console_log_get_hash;
     }
+
+    abstract public function setUseDebugBackTrace($setter);
+    abstract public function info($log_text);
+    abstract public function log($log_text);
+    abstract public function error($log_text);
+    abstract public function warn($log_text);
+    abstract public function _systemLog($log_text, $log_type);
+    abstract public function stopwatch();
+    abstract public function _queryLog(&$dbi);
+    abstract public function _setConsoleLogDir($setter);
+    abstract public function _setConsoleLogGetKey($setter);
+
 }
 
 
@@ -1321,7 +1304,7 @@ class EnviLogWriterConsoleLog extends EnviLogWriterConsole
      *
      * @access      public
      * @static
-     * @return      self
+     * @return      EnviLogWriterConsoleLog
      */
     public static function singleton()
     {
@@ -1407,7 +1390,7 @@ class EnviLogWriterConsoleLog extends EnviLogWriterConsole
      * +-- ストップウオッチの使用
      *
      * @access      public
-     * @return      差分
+     * @return      float 差分
      */
     public function stopwatch()
     {

@@ -88,7 +88,8 @@ class EnviCodeCoverageDriver
         if (self::$driver_start) {
             return;
         }
-        xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
+        //xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
+        xdebug_start_code_coverage();
         self::$driver_start = true;
     }
     /* ----------------------------------------- */
@@ -120,20 +121,14 @@ class EnviCodeCoverageDriver
                 unset($data[$file_name]);
                 continue;
             }
-
             foreach ($this->code_coverage->parser()->getSkipLine($file_name, $this->cover['class'], $this->cover['method']) as $line) {
                 unset($data[$file_name][$line]);
             }
-            foreach ($data[$file_name] as $line => $v) {
-                if ($v === EnviCodeCoverage::UN_USE_FLAG) {
-                    unset($data[$file_name][$line]);
-                }
-            }
+
             if (empty($data[$file_name])) {
                 unset($data[$file_name]);
             }
         }
-        // var_dump($data);
         return $data;
     }
 }

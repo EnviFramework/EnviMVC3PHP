@@ -17,7 +17,7 @@
  * @since      Class available since Release v3.3.3.5
  * @subpackage_main
  */
-
+require_once dirname(__FILE__).'/EnviCodeParser.php';
 /**
  * コードカバレッジ計測
  *
@@ -105,6 +105,7 @@ class EnviCodeCoverage
      */
     private function initialize()
     {
+        // @codeCoverageIgnoreStart
         if (!extension_loaded('xdebug')) {
             if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
                 $res = dl('xdebug.dll');
@@ -115,6 +116,7 @@ class EnviCodeCoverage
                 throw new Exception('please install xdebug.http://pecl.php.net/package-changelog.php?package=xdebug');
             }
         }
+        // @codeCoverageIgnoreEnd
 
         $this->driver = $this->subClassFactory('Driver');
         $this->filter = $this->subClassFactory('Filter');
@@ -215,13 +217,10 @@ class EnviCodeCoverage
                 continue;
             }
             foreach ($coverage_data as $line => $flag) {
-                if ($flag <= 0) {
-                    continue;
-                }
-                if ($this->coverage_data[$file_name][$line] <= 0) {
-                    $this->coverage_data[$file_name][$line] = $flag;
+                if (!isset($this->coverage_data[$file_name][$line]) || $this->coverage_data[$file_name][$line] <= 0) {
+                    $this->coverage_data[$file_name][$line] = 1;
                 } elseif ($this->coverage_data[$file_name][$line] > 0) {
-                    $this->coverage_data[$file_name][$line] += $flag;
+                    $this->coverage_data[$file_name][$line] += 1;
                 }
             }
         }
@@ -259,19 +258,26 @@ class EnviCodeCoverage
         foreach ($clone_coverage_data as $file_name => &$coverage_data) {
             $epr = $this->parser->parseFile($file_name);
             $file_code_root_coverage = $epr->getCodeRouteCoverage();
-            foreach ($coverage_data as $line => &$val) {
-                if ($val < 0) {
-                    $val = 0;
+            // フィルタ
+            $skip_line = $this->parser->getSkipLine($file_name, array(), array());
+            foreach ($skip_line as $line) {
+                unset($file_code_root_coverage[$line]);
+            }
+            // トータルカバレッジ
+            foreach ($file_code_root_coverage as $line => $total_cover) {
+                $covered = isset($coverage_data[$line]) ? $coverage_data[$line] : 0;
+                if ($covered < 0) {
+                    $covered = 0;
                 }
-                $is_cover = $val >= $file_code_root_coverage[$line];
-                if ($is_cover) {
-                    $cover_count[self::COVERD] += $file_code_root_coverage[$line];
-                    $cover_count[self::TOTAL_COVER] += $file_code_root_coverage[$line];
-                } else {
-                    $cover_count[self::TOTAL_COVER]  += (int)$val;
-                    $cover_count[self::TOTAL_COVER]  += $file_code_root_coverage[$line];
+                $is_cover = $covered >= $total_cover;
+                $cover_count[self::COVERD]       += min($covered, $total_cover);
+                $cover_count[self::TOTAL_COVER]  += $total_cover;
+                $coverage_data[$line] = array($covered, $total_cover, $is_cover);
+            }
+            foreach ($coverage_data as $line => $val) {
+                if (!is_array($val)) {
+                    unset($coverage_data[$line]);
                 }
-                $coverage_data[$line] = array($val, $file_code_root_coverage[$line], $is_cover);
             }
 
             $class_list = $epr->getClassList();
@@ -280,7 +286,7 @@ class EnviCodeCoverage
                 $end_line = $class_item['token']->getEndLine();
                 $class_cover = array(
                     'class' => array(
-                        'detail' => array(),
+                        'detail'      => array(),
                         'cover_count' => array(0, 0)
                         ),
                     'method' => array(),
@@ -288,11 +294,9 @@ class EnviCodeCoverage
                 );
                 while ($line <= $end_line) {
                     if (isset($coverage_data[$line])) {
-                        $class_cover['class']['detail'][$line] = $coverage_data[$line];
-                        $class_cover['class']['cover_count'][self::TOTAL_COVER]++;
-                        if ($coverage_data[$line][2]) {
-                            $class_cover['class']['cover_count'][self::COVERD]++;
-                        }
+                        $class_cover['class']['detail'][$line]                   = $coverage_data[$line];
+                        $class_cover['class']['cover_count'][self::TOTAL_COVER] += $coverage_data[$line][self::TOTAL_COVER];
+                        $class_cover['class']['cover_count'][self::COVERD]      += min($coverage_data[$line][self::TOTAL_COVER], $coverage_data[$line][self::COVERD]);
                     }
                     $line++;
                 }
@@ -312,16 +316,16 @@ class EnviCodeCoverage
                     );
                     while ($line <= $end_line) {
                         if (isset($coverage_data[$line])) {
-                            $method['detail'][$line] = $coverage_data[$line];
-                            $method['cover_count'][self::TOTAL_COVER]++;
-                            if ($coverage_data[$line][2]) {
-                                $method['cover_count'][self::COVERD]++;
-                            }
+                            $method['detail'][$line]                   = $coverage_data[$line];
+                            $method['cover_count'][self::TOTAL_COVER] += $coverage_data[$line][self::TOTAL_COVER];
+                            $method['cover_count'][self::COVERD]      += min($coverage_data[$line][self::TOTAL_COVER], $coverage_data[$line][self::COVERD]);
                         }
                         $line++;
                     }
                     $method['cover_rate'] = $method['cover_count'][self::TOTAL_COVER] === 0 ? 0 : ($method['cover_count'][self::COVERD]/$method['cover_count'][self::TOTAL_COVER]*100);
-                    $class_coverage_data[$class_name]['methods'][$token->getName()] = $method;
+                    if ($method['cover_count'][self::TOTAL_COVER] > 0) {
+                        $class_coverage_data[$class_name]['methods'][$token->getName()] = $method;
+                    }
 
                 }
             }

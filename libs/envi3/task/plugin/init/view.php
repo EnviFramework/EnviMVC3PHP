@@ -54,19 +54,17 @@ $module_dir = $project_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SE
 $module_test_dir = $project_dir."tests".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modulesTest".DIRECTORY_SEPARATOR;
 
 
-$text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'View.class.php.snp');
-$text = str_replace(array('%%module_name%%', '%%action_name%%'), array($module_name, $action_name), $text);
-
-$list = array('default', 'success', 'error', 'confirm', 'commit');
 
 if (!isset($argv[5])) {
-    foreach ($list as $view_suffix) {
-        if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR.$action_name."View_{$view_suffix}.class.php")) {
-            file_put_contents($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR.$action_name."View_{$view_suffix}.class.php", $text);
-        }
+    $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'GroupViews.class.php.snp');
+    $text = str_replace(array('%%module_name%%', '%%action_name%%'), array($module_name, $action_name), $text);
+    if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR.$action_name."Views.class.php")) {
+        file_put_contents($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR.$action_name."Views.class.php", $text);
     }
 
 } else {
+    $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'View.class.php.snp');
+    $text = str_replace(array('%%module_name%%', '%%action_name%%'), array($module_name, $action_name), $text);
     $view_suffix = strtolower($argv[5]);
     if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR.$action_name."View_{$view_suffix}.class.php")) {
         file_put_contents($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR.$action_name."View_{$view_suffix}.class.php", $text);

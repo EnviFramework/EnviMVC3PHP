@@ -129,26 +129,6 @@ function Envi()
  * @see        http://www.enviphp.net/
  * @since      Class available since Release 1.0.0
  */
-class EnviTestException extends exception
-{
-
-}
-
-/**
- * テスト用例外
- *
- *
- * @category   自動テスト
- * @package    EnviTest
- * @subpackage UnitTestDummy
- * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
- * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
- * @version    Release: @package_version@
- * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        http://www.enviphp.net/
- * @since      Class available since Release 1.0.0
- */
 class EnviException extends exception
 {
 
