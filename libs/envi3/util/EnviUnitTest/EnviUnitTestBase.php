@@ -364,7 +364,6 @@ abstract class EnviTestBase
 
     private function getContext($request_method, $post, $headers_arr, $cookie)
     {
-
         $headers_arr_sub = array();
         foreach ($headers_arr as $k => $value) {
             $headers_arr_sub[strtolower($k)] = trim($value);
@@ -627,7 +626,9 @@ abstract class EnviTestScenario
         }
 
         // グローバル変数バックアップ
-        if (isset($class_docs['backup_globals'][0][0])  && $class_docs['backup_globals'][0][0] === 'disabled') {
+        if ((isset($class_docs['backup_globals'][0][0])  && $class_docs['backup_globals'][0][0] === 'disabled') ||
+            (isset($class_docs['backupGlobals'][0][0])  && $class_docs['backupGlobals'][0][0] === 'disabled')
+        ) {
             $class_backup_globals = false;
         }
         $backup_globals = $class_backup_globals;
@@ -656,6 +657,8 @@ abstract class EnviTestScenario
             $backup_globals = $class_backup_globals;
             if (isset($docs_methods[$method]['backup_globals'][0][0])) {
                 $backup_globals = $docs_methods[$method]['backup_globals'][0][0] !== 'disabled';
+            } elseif (isset($docs_methods[$method]['backupGlobals'][0][0])) {
+                $backup_globals = $docs_methods[$method]['backupGlobals'][0][0] !== 'disabled';
             }
 
             // タイムアウト時間確認

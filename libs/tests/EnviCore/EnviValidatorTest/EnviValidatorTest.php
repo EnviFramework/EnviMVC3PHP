@@ -1777,8 +1777,6 @@ class EnviValidatorTest extends testCaseBase
      */
     public function shutdown()
     {
-        $_POST = array();
-        $_GET  = array();
     }
 }
 
