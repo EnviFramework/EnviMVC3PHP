@@ -15,7 +15,7 @@
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @see        http://www.enviphp.net/c/man/v3/reference
  * @since      File available since Release 1.0.0
  * @doc_ignore
  */
@@ -82,7 +82,7 @@ foreach ($test as $k => $file_path) {
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
+ * @see        http://www.enviphp.net/c/man/v3/reference
  * @since      File available since Release 1.0.0
  */
 class Scenario extends EnviTestScenario
