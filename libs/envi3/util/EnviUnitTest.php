@@ -150,9 +150,9 @@ class EnviUnitTest
                 $code_coverage->filter()->addBlackList($sweet['class_path']);
             }
 
-
+            // テストプラン作成
             $test_plan = $scenario->sweetToPlan($sweet, $execute_group);
-            // 実行シナリオが0の場合は終了する
+            // 実行プランが0の場合は終了する
             if (count($test_plan['test_method_list']) === 0) {
                 continue;
             }
@@ -333,36 +333,49 @@ class EnviUnitTest
             round($testing_time_all, 5),"sec) \r\n{$assertion_count} assertions test end \r\n",
             number_format(memory_get_peak_usage(true))," memory usage\r\n";
         if ($code_coverage !== false && !$is_ng) {
-            $code_coverage_data = $code_coverage->getCodeCoverage();
-            echo 'total : '.$code_coverage_data['cover_rate']."% : test coverage \r\n";
-            foreach ($code_coverage_data['class_coverage_data'] as $class_name => $class_item) {
-                $file_contents_arr = NULL;
-                echo $class_name." total: ".$class_item['class']['cover_rate']."% covered. \r\n";
-                foreach ($class_item['methods'] as $method_name => $method_item) {
-                    if (isset($this->system_conf['code_coverage']['use_all_covered_filter']) && $this->system_conf['code_coverage']['use_all_covered_filter']) {
-                        if ($method_item['cover_rate'] == 100) {
-                            continue;
-                        }
-                    }
-                    echo $class_name.'::'.$method_name." ".$method_item['cover_rate']."% covered. \r\n";
-                    if ($method_item['cover_count'][EnviCodeCoverage::COVERD] === $method_item['cover_count'][EnviCodeCoverage::TOTAL_COVER] ||
-                        $method_item['cover_count'][EnviCodeCoverage::COVERD] === 0) {
-                        continue;
-                    }
-                    if ($file_contents_arr === NULL) {
-                        $file_contents_arr = file($class_item['file_name']);
-                    }
-                    if (isset($this->system_conf['code_coverage']['use_coverage_detail']) && $this->system_conf['code_coverage']['use_coverage_detail']) {
-                        $this->showCoverError($method_item['detail'], $file_contents_arr);
-                    }
-                }
-            }
-
-            if ($this->system_conf['code_coverage']['save_path']) {
-                file_put_contents($this->system_conf['code_coverage']['save_path'], json_encode($code_coverage_data, true));
-            }
+            $this->showCodeCoverage($code_coverage);
         }
     }
+
+    /**
+     * +-- コードCoverage情報を出力する
+     *
+     * @access      private
+     * @param       var_text $code_coverage
+     * @return      void
+     */
+    private function showCodeCoverage($code_coverage)
+    {
+        $code_coverage_data = $code_coverage->getCodeCoverage();
+        echo 'total : '.$code_coverage_data['cover_rate']."% : test coverage \r\n";
+        foreach ($code_coverage_data['class_coverage_data'] as $class_name => $class_item) {
+            $file_contents_arr = NULL;
+            echo $class_name." total: ".$class_item['class']['cover_rate']."% covered. \r\n";
+            foreach ($class_item['methods'] as $method_name => $method_item) {
+                if (isset($this->system_conf['code_coverage']['use_all_covered_filter']) && $this->system_conf['code_coverage']['use_all_covered_filter']) {
+                    if ($method_item['cover_rate'] == 100) {
+                        continue;
+                    }
+                }
+                echo $class_name.'::'.$method_name." ".$method_item['cover_rate']."% covered. \r\n";
+                if ($method_item['cover_count'][EnviCodeCoverage::COVERD] === $method_item['cover_count'][EnviCodeCoverage::TOTAL_COVER] ||
+                    $method_item['cover_count'][EnviCodeCoverage::COVERD] === 0) {
+                    continue;
+                }
+                if ($file_contents_arr === NULL) {
+                    $file_contents_arr = file($class_item['file_name']);
+                }
+                if (isset($this->system_conf['code_coverage']['use_coverage_detail']) && $this->system_conf['code_coverage']['use_coverage_detail']) {
+                    $this->showCoverError($method_item['detail'], $file_contents_arr);
+                }
+            }
+        }
+
+        if ($this->system_conf['code_coverage']['save_path']) {
+            file_put_contents($this->system_conf['code_coverage']['save_path'], json_encode($code_coverage_data, true));
+        }
+    }
+    /* ----------------------------------------- */
 
     /**
      * +-- Coverageのエラー出力を出すかどうか
@@ -395,6 +408,16 @@ class EnviUnitTest
     }
     /* ----------------------------------------- */
 
+    /**
+     * +-- Coverageデータを元にソースコードを描画する
+     *
+     * @access      private
+     * @param       & $detail
+     * @param       & $file_contents_arr
+     * @param       var_text $start_line
+     * @param       var_text $end_line
+     * @return      void
+     */
     private function showSauce(&$detail, &$file_contents_arr, $start_line, $end_line)
     {
         $start_line = max(0, $start_line-1);
@@ -418,6 +441,7 @@ class EnviUnitTest
 
         }
     }
+    /* ----------------------------------------- */
 
     private function errorLine($line, $line_string)
     {
