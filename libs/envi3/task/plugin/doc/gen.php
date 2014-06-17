@@ -20,7 +20,7 @@
 umask(0);
 
 
-include_once ENVI_BASE_DIR.'util'.DIRECTORY_SEPARATOR.'EnviDocumenter.php';
+include_once ENVI_BASE_DIR.'util'.DIRECTORY_SEPARATOR.'Documenter/EnviDocumenter.php';
 
 $EnviDocumenter = new EnviDocumenter();
 $EnviDocumenter->parse(ENVI_BASE_DIR.','.realpath(ENVI_BASE_DIR.'../extensions').DIRECTORY_SEPARATOR);

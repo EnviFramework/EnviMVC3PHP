@@ -22,7 +22,7 @@
  * @doc_ignore
  */
 
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'util'.DIRECTORY_SEPARATOR.'EnviUnitTest.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'util'.DIRECTORY_SEPARATOR.'EnviUnitTest'.DIRECTORY_SEPARATOR.'EnviUnitTest.php';
 
 
 /**

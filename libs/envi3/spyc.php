@@ -8,7 +8,6 @@
    * @copyright Copyright 2005-2006 Chris Wanstrath, 2006-2011 Vlad Andersen
    * @license http://www.opensource.org/licenses/mit-license.php MIT License
    * @package Spyc
-   * @doc_ignore
    */
 
 if (!function_exists('spyc_load')) {
@@ -660,6 +659,11 @@ class Spyc {
       return $value;
     }
 
+    if (is_numeric($value) && preg_match('/^0[xX][0-9a-fA-F]+$/', $value)) {
+      // Hexadecimal value.
+      return hexdec($value);
+    }
+
     $this->coerceValue($value);
 
     if (is_numeric($value)) {
@@ -951,7 +955,7 @@ class Spyc {
       if (is_array($_))
         $lineArray[$k] = $this->revertLiteralPlaceHolder ($_, $literalBlock);
       else if (substr($_, -1 * strlen ($this->LiteralPlaceHolder)) == $this->LiteralPlaceHolder)
-           $lineArray[$k] = rtrim ($literalBlock, " \r\n");
+	       $lineArray[$k] = rtrim ($literalBlock, " \r\n");
      }
      return $lineArray;
    }
@@ -1131,3 +1135,13 @@ class Spyc {
   }
 }
 
+// Enable use of Spyc from command line
+// The syntax is the following: php Spyc.php spyc.yaml
+
+do {
+  if (PHP_SAPI != 'cli') break;
+  if (empty ($_SERVER['argc']) || $_SERVER['argc'] < 2) break;
+  if (empty ($_SERVER['PHP_SELF']) || FALSE === strpos ($_SERVER['PHP_SELF'], 'Spyc.php') ) break;
+  $file = $argv[1];
+  echo json_encode (spyc_load_file ($file));
+} while (0);
