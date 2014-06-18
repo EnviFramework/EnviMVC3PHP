@@ -24,7 +24,7 @@
  * @see        http://www.enviphp.net/
  * @since      File available since Release 3.3.3.5
  */
-require_once 'EnviCodeParser.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'../EnviUnitTest/EnviCodeParser.php';
 require dirname(__FILE__).DIRECTORY_SEPARATOR.'Documenter/EnviDocumenterDriver.php';
 
 /**
