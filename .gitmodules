@@ -1,6 +1,3 @@
 [submodule "libs/envi3/util/EnviUnitTest"]
 	path = libs/envi3/util/EnviUnitTest
-	url = git@github.com:EnviMVC/EnviUnitTest.git
-[submodule "EnviUnitTest"]
-	path = EnviUnitTest
 	url = https://github.com/EnviMVC/EnviUnitTest.git
