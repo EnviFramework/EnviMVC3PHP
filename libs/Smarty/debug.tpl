@@ -12,9 +12,9 @@
 //
  *
  * ARTISAN PROJECT
- * 
- * ¥Ş¥ë¥Á¥Ğ¥¤¥ÈÂĞ±şSmarty
- * + ÉÕ²Ã¥·¥¹¥Æ¥à
+ *
+ * ãƒãƒ«ãƒãƒã‚¤ãƒˆå¯¾å¿œSmarty
+ * + ä»˜åŠ ã‚·ã‚¹ãƒ†ãƒ 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
@@ -39,29 +39,30 @@
  * @package ArtisanSmarty
  * @version 1.0.9
  *%>
- 
+
 <%assign_debug_info%>
-<%if isset($_smarty_debug_output) and $_smarty_debug_output == "html"%>
+
+<%if $_smarty_debug_output && $_smarty_debug_output == "html"%>
 	<table border=0 width=100%>
-	<tr bgcolor=#cccccc><th colspan=2>ArtisanSmarty ¥Ç¥Ğ¥Ã¥°¥³¥ó¥½¡¼¥ë</th></tr>
-	<tr bgcolor=#cccccc><td colspan=2><b>include ¤µ¤ì¤Æ¤¤¤ë¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë ¤È config¥Õ¥¡¥¤¥ë (load time in seconds):</b></td></tr>
+	<tr bgcolor=#cccccc><th colspan=2>ArtisanSmarty ãƒ‡ãƒãƒƒã‚°ã‚³ãƒ³ã‚½ãƒ¼ãƒ«</th></tr>
+	<tr bgcolor=#cccccc><td colspan=2><b>include ã•ã‚Œã¦ã„ã‚‹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ« ã¨ configãƒ•ã‚¡ã‚¤ãƒ« (load time in seconds):</b></td></tr>
 	<%section name=templates loop=$_debug_tpls%>
 		<tr bgcolor=<%if %templates.index% is even%>#eeeeee<%else%>#fafafa<%/if%>>
-			<td colspan=2><tt><%section name=indent loop=$_debug_tpls[templates].depth%>&nbsp;&nbsp;&nbsp;<%/section%><font color=<%if $_debug_tpls[templates].type eq "template"%>brown<%elseif $_debug_tpls[templates].type eq "insert"%>black<%else%>green<%/if%>><%$_debug_tpls[templates].filename|escape:html%></font><%if isset($_debug_tpls[templates].exec_time)%> <font size=-1><i>(<%$_debug_tpls[templates].exec_time|string_format:"%.5f"%>)<%if %templates.index% eq 0%> (total)<%/if%></i></font><%/if%></tt></td></tr>
+			<td colspan=2><tt><%section name=indent loop=$_debug_tpls[templates].depth%>&nbsp;&nbsp;&nbsp;<%/section%><font color=<%if $_debug_tpls[templates].type eq "template"%>brown<%elseif $_debug_tpls[templates].type eq "insert"%>black<%else%>green<%/if%>><%$_debug_tpls[templates].filename|escape:html%></font><%if $_debug_tpls[templates].exec_time%> <font size=-1><i>(<%$_debug_tpls[templates].exec_time|string_format:"%.5f"%>)<%if %templates.index% eq 0%> (total)<%/if%></i></font><%/if%></tt></td></tr>
 	<%sectionelse%>
-		<tr bgcolor=#eeeeee><td colspan=2><tt><i>¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë¤ÏÆÉ¤ß¹ş¤Ş¤ì¤Æ¤¤¤Ş¤»¤ó¡£</i></tt></td></tr>	
+		<tr bgcolor=#eeeeee><td colspan=2><tt><i>ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã¯èª­ã¿è¾¼ã¾ã‚Œã¦ã„ã¾ã›ã‚“ã€‚</i></tt></td></tr>
 	<%/section%>
-	<tr bgcolor=#cccccc><td colspan=2><b>¥×¥í¥°¥é¥à¤«¤éassign¤µ¤ì¤Æ¤¤¤ë¥Æ¥ó¥×¥ì¡¼¥ÈÊÑ¿ô:</b></td></tr>
+	<tr bgcolor=#cccccc><td colspan=2><b>ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‹ã‚‰assignã•ã‚Œã¦ã„ã‚‹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå¤‰æ•°:</b></td></tr>
 	<%section name=vars loop=$_debug_keys%>
 		<tr bgcolor=<%if %vars.index% is even%>#eeeeee<%else%>#fafafa<%/if%>><td valign=top><tt><font color=blue>{$<%$_debug_keys[vars]%>}</font></tt></td><td nowrap><tt><font color=green><%$_debug_vals[vars]|@debug_print_var%></font></tt></td></tr>
 	<%sectionelse%>
-		<tr bgcolor=#eeeeee><td colspan=2><tt><i>²¿¤âassign¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£</i></tt></td></tr>	
+		<tr bgcolor=#eeeeee><td colspan=2><tt><i>ä½•ã‚‚assignã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚</i></tt></td></tr>
 	<%/section%>
-	<tr bgcolor=#cccccc><td colspan=2><b>¥³¥ó¥Õ¥£¥°¥Õ¥¡¥¤¥ë¤«¤é¤Î¥Æ¥ó¥×¥ì¡¼¥ÈÊÑ¿ô:</b></td></tr>
+	<tr bgcolor=#cccccc><td colspan=2><b>ã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå¤‰æ•°:</b></td></tr>
 	<%section name=config_vars loop=$_debug_config_keys%>
 		<tr bgcolor=<%if %config_vars.index% is even%>#eeeeee<%else%>#fafafa<%/if%>><td valign=top><tt><font color=maroon>{#<%$_debug_config_keys[config_vars]%>#}</font></tt></td><td><tt><font color=green><%$_debug_config_vals[config_vars]|@debug_print_var%></font></tt></td></tr>
 	<%sectionelse%>
-		<tr bgcolor=#eeeeee><td colspan=2><tt><i>¥³¥ó¥Õ¥£¥°¥Õ¥¡¥¤¥ë¤«¤é¤Î¥Æ¥ó¥×¥ì¡¼¥ÈÊÑ¿ô¤Ï¤¢¤ê¤Ş¤»¤ó¡£</i></tt></td></tr>	
+		<tr bgcolor=#eeeeee><td colspan=2><tt><i>ã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå¤‰æ•°ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚</i></tt></td></tr>
 	<%/section%>
 	</table>
 </BODY></HTML>
@@ -74,26 +75,26 @@
 	   var title = 'Console_' + self.name;
 	}
 	_smarty_console = window.open("",title.value,"width=680,height=600,resizable,scrollbars=yes");
-	_smarty_console.document.write("<HTML><HEAD><TITLE>ArtisanSmarty ¥Ç¥Ğ¥Ã¥°¥³¥ó¥½¡¼¥ë&nbsp;&nbsp;["+self.name+"]&nbsp;&nbsp;</TITLE></HEAD><BODY bgcolor=#ffffff>");
+	_smarty_console.document.write("<HTML><HEAD><TITLE>ArtisanSmarty ãƒ‡ãƒãƒƒã‚°ã‚³ãƒ³ã‚½ãƒ¼ãƒ«&nbsp;&nbsp;["+self.name+"]&nbsp;&nbsp;</TITLE></HEAD><BODY bgcolor=#ffffff>");
 	_smarty_console.document.write("<table border=0 width=100%>");
-	_smarty_console.document.write("<tr bgcolor=#cccccc><th colspan=2>ArtisanSmarty ¥Ç¥Ğ¥Ã¥°¥³¥ó¥½¡¼¥ë</th></tr>");
-	_smarty_console.document.write("<tr bgcolor=#cccccc><td colspan=2><b>include ¤µ¤ì¤Æ¤¤¤ë¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë ¤È config ¥Õ¥¡¥¤¥ë (load time in seconds):</b></td></tr>");
+	_smarty_console.document.write("<tr bgcolor=#cccccc><th colspan=2>ArtisanSmarty ãƒ‡ãƒãƒƒã‚°ã‚³ãƒ³ã‚½ãƒ¼ãƒ«</th></tr>");
+	_smarty_console.document.write("<tr bgcolor=#cccccc><td colspan=2><b>include ã•ã‚Œã¦ã„ã‚‹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ« ã¨ config ãƒ•ã‚¡ã‚¤ãƒ« (load time in seconds):</b></td></tr>");
 	<%section name=templates loop=$_debug_tpls%>
-		_smarty_console.document.write("<tr bgcolor=<%if %templates.index% is even%>#eeeeee<%else%>#fafafa<%/if%>><td colspan=2><tt><%section name=indent loop=$_debug_tpls[templates].depth%>&nbsp;&nbsp;&nbsp;<%/section%><font color=<%if $_debug_tpls[templates].type eq "template"%>brown<%elseif $_debug_tpls[templates].type eq "insert"%>black<%else%>green<%/if%>><%$_debug_tpls[templates].filename|escape:html|escape:javascript%></font><%if isset($_debug_tpls[templates].exec_time)%> <font size=-1><i>(<%$_debug_tpls[templates].exec_time|string_format:"%.5f"%>)<%if %templates.index% eq 0%> (total)<%/if%></i></font><%/if%></tt></td></tr>");
+		_smarty_console.document.write("<tr bgcolor=<%if %templates.index% is even%>#eeeeee<%else%>#fafafa<%/if%>><td colspan=2><tt><%section name=indent loop=$_debug_tpls[templates].depth%>&nbsp;&nbsp;&nbsp;<%/section%><font color=<%if $_debug_tpls[templates].type eq "template"%>brown<%elseif $_debug_tpls[templates].type eq "insert"%>black<%else%>green<%/if%>><%$_debug_tpls[templates].filename|escape:html|escape:javascript%></font><%if $_debug_tpls[templates].exec_time%> <font size=-1><i>(<%$_debug_tpls[templates].exec_time|string_format:"%.5f"%>)<%if %templates.index% eq 0%> (total)<%/if%></i></font><%/if%></tt></td></tr>");
 	<%sectionelse%>
-		_smarty_console.document.write("<tr bgcolor=#eeeeee><td colspan=2><tt><i>¥Æ¥ó¥×¥ì¡¼¥È¥Õ¥¡¥¤¥ë¤ÏÆÉ¤ß¹ş¤Ş¤ì¤Æ¤¤¤Ş¤»¤ó¡£</i></tt></td></tr>");	
+		_smarty_console.document.write("<tr bgcolor=#eeeeee><td colspan=2><tt><i>ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ•ã‚¡ã‚¤ãƒ«ã¯èª­ã¿è¾¼ã¾ã‚Œã¦ã„ã¾ã›ã‚“ã€‚</i></tt></td></tr>");
 	<%/section%>
-	_smarty_console.document.write("<tr bgcolor=#cccccc><td colspan=2><b>¥×¥í¥°¥é¥à¤«¤éassign¤µ¤ì¤Æ¤¤¤ë¥Æ¥ó¥×¥ì¡¼¥ÈÊÑ¿ô:</b></td></tr>");
+	_smarty_console.document.write("<tr bgcolor=#cccccc><td colspan=2><b>ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‹ã‚‰assignã•ã‚Œã¦ã„ã‚‹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå¤‰æ•°:</b></td></tr>");
 	<%section name=vars loop=$_debug_keys%>
 		_smarty_console.document.write("<tr bgcolor=<%if %vars.index% is even%>#eeeeee<%else%>#fafafa<%/if%>><td valign=top><tt><font color=blue>{$<%$_debug_keys[vars]%>}</font></tt></td><td nowrap><tt><font color=green><%$_debug_vals[vars]|@debug_print_var|escape:javascript%></font></tt></td></tr>");
 	<%sectionelse%>
-		_smarty_console.document.write("<tr bgcolor=#eeeeee><td colspan=2><tt><i>²¿¤âassign¤µ¤ì¤Æ¤¤¤Ş¤»¤ó¡£</i></tt></td></tr>");	
+		_smarty_console.document.write("<tr bgcolor=#eeeeee><td colspan=2><tt><i>ä½•ã‚‚assignã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚</i></tt></td></tr>");
 	<%/section%>
-	_smarty_console.document.write("<tr bgcolor=#cccccc><td colspan=2><b>¥³¥ó¥Õ¥£¥°¥Õ¥¡¥¤¥ë¤«¤é¤Î¥Æ¥ó¥×¥ì¡¼¥ÈÊÑ¿ô:</b></td></tr>");
+	_smarty_console.document.write("<tr bgcolor=#cccccc><td colspan=2><b>ã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå¤‰æ•°:</b></td></tr>");
 	<%section name=config_vars loop=$_debug_config_keys%>
 		_smarty_console.document.write("<tr bgcolor=<%if %config_vars.index% is even%>#eeeeee<%else%>#fafafa<%/if%>><td valign=top><tt><font color=maroon>{#<%$_debug_config_keys[config_vars]%>#}</font></tt></td><td><tt><font color=green><%$_debug_config_vals[config_vars]|@debug_print_var|escape:javascript%></font></tt></td></tr>");
 	<%sectionelse%>
-		_smarty_console.document.write("<tr bgcolor=#eeeeee><td colspan=2><tt><i>¥³¥ó¥Õ¥£¥°¥Õ¥¡¥¤¥ë¤«¤é¤Î¥Æ¥ó¥×¥ì¡¼¥ÈÊÑ¿ô¤Ï¤¢¤ê¤Ş¤»¤ó¡£</i></tt></td></tr>");	
+		_smarty_console.document.write("<tr bgcolor=#eeeeee><td colspan=2><tt><i>ã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ã®ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå¤‰æ•°ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚</i></tt></td></tr>");
 	<%/section%>
 	_smarty_console.document.write("</table>");
 	_smarty_console.document.write("</BODY></HTML>");
