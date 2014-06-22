@@ -70,7 +70,7 @@ class EnviMemcacheSession extends EnviSessionBase implements EnviSessionInterfac
         //セッション開始
         self::$_session_id = $key;
         EnviMemcache::set($key, serialize(array()), $this->_system_conf['SESSION']['cookie_lifetime'], 'session', self::$_is_gzip);
-        setcookie (session_name(), $key, $_SERVER['REQUEST_TIME']+$this->_system_conf['SESSION']['cookie_lifetime']);
+        setcookie(session_name(), $key, $_SERVER['REQUEST_TIME']+$this->_system_conf['SESSION']['cookie_lifetime'], '/');
     }
 
     public function open($save_path, $session_name)
