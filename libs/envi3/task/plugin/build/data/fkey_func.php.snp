@@ -1,0 +1,16 @@
+
+    /**
+     * +-- 
+     *
+     * @access      public
+     * @return      void
+     */
+    public function %%fk_name%%()
+    {
+        if ($this->%%fk_name%%) {
+            return $this->%%fk_name%%;
+        }
+        $this->%%fk_name%% = %%fk_class_name%%Peer::retrieveByPK(%%get_pks%%);
+        return $this->%%fk_name%%;
+    }
+    /* ----------------------------------------- */

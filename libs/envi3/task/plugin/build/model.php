@@ -75,6 +75,9 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
     $default_array = array();
     $instance_name = isset($schema['instance_name']) ? $schema['instance_name'] : $config['SETTING']['default_instance_name'];
     $auto_schema   = isset($schema['auto_schema']) ? $schema['auto_schema'] : $config['SETTING']['default_auto_schema'];
+    $use_cache     = isset($schema['use_cache']) ? $schema['use_cache'] == true : false;
+    $use_apc_cache = $use_cache ? $schema['use_cache'] == 'apc' : false;
+    $foreign_key = isset($schema['foreign_key']) ? $schema['foreign_key']: array();
 
     // DBに接続して、自動的にスキーマ情報を取得する
     if ($auto_schema) {
@@ -117,6 +120,12 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
 
         }
     }
+    $cache_hydrate = '';
+    if ($use_apc_cache) {
+        $cache_hydrate = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'UseApcCache.php.snp');
+    } elseif ($use_cache) {
+        $cache_hydrate = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'UseCache.php.snp');
+    }
 
 
     $magic_method = isset($schema['magic_method']) ? $schema['magic_method'] : $config['SETTING']['default_magic_method'];
@@ -131,8 +140,6 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
     $pkeys = array();
     $comma = '';
     $and = 'WHERE ';
-
-
 
     foreach ($schema['schema'] as $column => $status) {
         if (isset($status['primary'])) {
@@ -151,12 +158,46 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
 
     $default_array = var_export($default_array, true);
 
+    $fk_getter = '';
+    $fk_cache_item = '';
 
+    $fk_getter_txt     = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'fkey_func.php.snp');
+    $fk_cache_item_txt = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'fkey_cache_param.php.snp');
+    foreach ($foreign_key as $fk_name => $foreign_key_items) {
+        $fkeys = $foreign_key_items['columns'];
+        $fk_class_name = isset($foreign_key_items['class_name']) ? $foreign_key_items['class_name'] : $fk_name;
+        foreach ($fkeys as $k => $fkey) {
+            $fkeys[$k]= '$this->_from_hydrate['."'".$fkey."'".']';
+        }
+        $get_pks = join(', ', $fkeys);
+        $fk_cache_item .= str_replace(
+            array('%%get_pks%%', '%%fk_class_name%%', '%%fk_name%%'),
+            array($get_pks, $fk_class_name, $fk_name),
+            $fk_cache_item_txt
+        );
+        $fk_getter .= str_replace(
+            array('%%get_pks%%', '%%fk_class_name%%', '%%fk_name%%'),
+            array($get_pks, $fk_class_name, $fk_name),
+            $fk_getter_txt
+        );
+    }
+
+    $cache_load = '';
+    if ($use_cache) {
+        $cache_load = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'cache_load.php.snp');
+        $cache_load = str_replace(
+            array('%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%',
+                '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%', '%%cache_hydrate%%', '%%fk_getter%%', '%%fk_cache_item%%'),
+            array($class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array, $cache_hydrate, $fk_getter, $fk_cache_item),
+            $cache_load
+        );
+    }
 
     $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'BasePeer.class.php.snp');
     $text = str_replace(
-        array('%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%', '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%'),
-        array($class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array),
+        array('%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%',
+            '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%', '%%cache_load%%'),
+        array($class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array, $cache_load),
         $text
     );
     echo $om_dir.'Base'.$class_name.'Peer.class.php'."\n";
@@ -165,8 +206,8 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
 
     $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'Base.class.php.snp');
     $text = str_replace(
-        array('%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%', '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%'),
-        array($class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array),
+        array('%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%', '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%', '%%cache_hydrate%%', '%%fk_getter%%', '%%fk_cache_item%%', '%%cache_load%%'),
+        array($class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array, $cache_hydrate, $fk_getter, $fk_cache_item, $cache_load),
         $text
     );
 

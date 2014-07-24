@@ -206,9 +206,58 @@ class Base%%class_name%%Peer
      */
     public static function retrieveByPK(%%args%%, EnviDBIBase $con = NULL)
     {
+        %%cache_load%%
+        
         $dbi = $con ? $con : extension()->DBI()->getInstance('%%instance_name%%');
 
         $res = $dbi->getRow('%%sql%%', array(%%args%%));
+        if (!$res) {
+            return false;
+        }
+        $ormap = new %%class_name%%;
+        $ormap->hydrate($res);
+        return $ormap;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- キャッシュを無視してPKで抽出
+     *
+     * @access public
+     * @static
+     * @param %%args%%
+     * @param EnviDBIBase $con OPTIONAL:NULL
+     * @return void
+     */
+    public static function retrieveByPKNoCache(%%args%%, EnviDBIBase $con = NULL)
+    {
+        $dbi = $con ? $con : extension()->DBI()->getInstance('%%instance_name%%');
+
+        $res = $dbi->getRow('%%sql%%', array(%%args%%));
+        if (!$res) {
+            return false;
+        }
+        $ormap = new %%class_name%%;
+        $ormap->hydrate($res);
+        return $ormap;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- For UpdateをつけてPKで抽出
+     *
+     * @access public
+     * @static
+     * @param %%args%%
+     * @param EnviDBIBase $con OPTIONAL:NULL
+     * @return void
+     */
+    public static function retrieveByPKForUpdate(%%args%%, EnviDBIBase $con = NULL)
+    {
+        $dbi = $con ? $con : extension()->DBI()->getInstance('%%instance_name%%');
+
+        $res = $dbi->getRow('%%sql%% FOR UPDATE', array(%%args%%));
         if (!$res) {
             return false;
         }

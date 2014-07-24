@@ -750,9 +750,9 @@ class EnviLogWriter
             if (count($message) === 0) {
                 return;
             }
-            $res = join('\n', $message).'\n';
+            $res = join("\n", $message)."\n";
         } else {
-            $res = $message.'\n';
+            $res = $message."\n";
         }
 
         if ($this->_system_conf['system']['value_'.$mode.'_logging_type'][0] === 1) {

@@ -584,7 +584,7 @@ class EnviValidator
      * @param string|array $validator バリデータ名,$this->getChainFormat()の結果
      * @param mixed $validation_data バリデートするデータ
      * @param bool $validator_chain エラーがあった場合に確認処理を継続するか
-     * @param mixed バリデータオプション
+     * @param mixed $validate_mode バリデータオプション
      * @see EnviValidator::autoPrepare()
      * @return void
      */

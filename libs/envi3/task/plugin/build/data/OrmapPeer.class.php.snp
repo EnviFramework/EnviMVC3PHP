@@ -33,6 +33,12 @@
  */
 class %%class_name%%Peer extends Base%%class_name%%Peer
 {
-
+    /**
+     * クエリリスト
+     *
+     * @access      protected
+     * @var         array
+     */
+    protected static $queries = array();
 
 }
