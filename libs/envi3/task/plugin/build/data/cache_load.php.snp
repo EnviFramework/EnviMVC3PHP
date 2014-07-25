@@ -1,0 +1,8 @@
+
+        $pkeys = func_get_args();
+        array_pop($pkeys);
+        
+        $res = EnviDataCache::fetchByPk(json_encode($pkeys), %%class_name%%Peer::$table_name);
+        if ($res) {
+            return $res;
+        }

@@ -1,0 +1,19 @@
+    /**
+     * +-- DBからセレクトしたデータをオブジェクトにセットする
+     *
+     * このMethodを使用してセットすると、saveがInsertではなくUpdateになります。
+     *
+     * @access public
+     * @param array $arr
+     * @return void
+     */
+    public function hydrate(array $arr)
+    {
+        parent::hydrate($arr);
+        $pk_data = array();
+        foreach ($this->pkeys as $key) {
+            $pk_data[] = $arr[$key];
+        }
+        EnviDataCache::storeByPk(json_encode($pk_data), $this->table_name, $this, true);
+    }
+    /* ----------------------------------------- */

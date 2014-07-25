@@ -77,6 +77,9 @@ class EnviConsoleExtension
      */
     public function makeJson($clean_log = false)
     {
+        if (!$this->is_use) {
+            return;
+        }
         header('Content-Type: text/javascript');
         if (is_file($this->user_log_dir.'console.log')) {
             echo 'var console= ['.join(',', file($this->user_log_dir.'console.log')).'];';
@@ -119,6 +122,9 @@ class EnviConsoleExtension
      */
     public function makeConsoleLogJs($clean_log = false)
     {
+        if (!$this->is_use) {
+            return;
+        }
         header('Content-Type: text/javascript');
         if (is_file($this->user_log_dir.'console.log')) {
             echo 'console.log("================ console.log ================");'."\n";

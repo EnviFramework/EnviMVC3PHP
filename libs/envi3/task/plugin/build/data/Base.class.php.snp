@@ -38,6 +38,8 @@ class Base%%class_name%% extends EnviOrMapBase
 
     protected $default_instance_name = '%%instance_name%%';
 
+%%fk_cache_item%%
+
     /**
      * +-- コンストラクタ
      *
@@ -54,9 +56,12 @@ class Base%%class_name%% extends EnviOrMapBase
     }
     /* ----------------------------------------- */
 
+%%fk_getter%%
 
 %%getter_setter%%
 
 %%enable_magic%%
+
+%%cache_hydrate%%
 
 }

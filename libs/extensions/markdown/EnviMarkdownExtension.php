@@ -198,7 +198,7 @@ class EnviMarkdownExtension
         $parser->fn_link_class = $system_conf['fn_link_class'];
         $parser->fn_backlink_class = $system_conf['fn_backlink_class'];
         $parser->code_class_prefix = $system_conf['code_class_prefix'];
-        $parser->code_attr_on_pre = $system_conf['code_attr_on_pre'];
+        $parser->code_attr_on_pre   = $system_conf['code_attr_on_pre'];
         $parser->predef_abbr = $system_conf['predef_abbr'];
     }
 
