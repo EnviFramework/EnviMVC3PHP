@@ -1,6 +1,10 @@
 <?php
 /**
- * PropelPDO風のオブジェクトを作成するベースクラス
+ * データアクセサベースクラス
+ *
+ * 定義されたクエリを実行して、データオブジェクトを取得します。
+ * pkey での抽出のみ、デフォルトでサポートします、
+ *
  *
  * PHP versions 5
  *
@@ -19,7 +23,10 @@
 
 
 /**
- * PropelPDO風のオブジェクトを作成するベースクラス
+ * データアクセサベースクラス
+ *
+ * 定義されたクエリを実行して、データオブジェクトを取得します。
+ * pkey での抽出のみ、デフォルトでサポートします、
  *
  * @abstract
  * @category   MVC
@@ -57,11 +64,11 @@ class Base%%class_name%%Peer
      *
      * @access      public
      * @static
-     * @param       string $query_key
-     * @param       array $bind_array
-     * @param       string $suffix OPTIONAL:NULL
-     * @param       EnviDBIBase $con OPTIONAL:NULL
-     * @return      %%class_name%%|boolean
+     * @param       string $query_key  クエリリストで設定したクエリのkey
+     * @param       array $bind_array  バインドする値
+     * @param       string $suffix     テーブルのサフィックス OPTIONAL:NULL
+     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
+     * @return      PDOStatement|boolean
      */
     public static function queryWithSuffix($query_key, array $bind_array = array(), $suffix = NULL, EnviDBIBase $con = NULL)
     {
@@ -82,10 +89,10 @@ class Base%%class_name%%Peer
      *
      * @access      public
      * @static
-     * @param       string $query_key
-     * @param       array $bind_array
-     * @param       string $suffix OPTIONAL:NULL
-     * @param       EnviDBIBase $con OPTIONAL:NULL
+     * @param       string $query_key  クエリリストで設定したクエリのkey
+     * @param       array $bind_array  バインドする値
+     * @param       string $suffix     テーブルのサフィックス OPTIONAL:NULL
+     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
      * @return      %%class_name%%|boolean
      */
     public static function retrieveWithSuffix($query_key, array $bind_array = array(), $suffix = NULL, EnviDBIBase $con = NULL)
@@ -116,10 +123,10 @@ class Base%%class_name%%Peer
      *
      * @access      public
      * @static
-     * @param       string $query_key
-     * @param       array $bind_array
-     * @param       string $suffix OPTIONAL:NULL
-     * @param       EnviDBIBase $con OPTIONAL:NULL
+     * @param       string $query_key  クエリリストで設定したクエリのkey
+     * @param       array $bind_array  バインドする値
+     * @param       string $suffix     テーブルのサフィックス OPTIONAL:NULL
+     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
      * @return      array
      */
     public static function retrieveAllWithSuffix($query_key, array $bind_array = array(), $suffix = NULL, EnviDBIBase $con = NULL)
@@ -151,9 +158,9 @@ class Base%%class_name%%Peer
      *
      * @access      public
      * @static
-     * @param       string $query_key
-     * @param       array $bind_array
-     * @param       EnviDBIBase $con OPTIONAL:NULL
+     * @param       string $query_key  クエリリストで設定したクエリのkey
+     * @param       array $bind_array  バインドする値
+     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
      * @return      array
      */
     public static function retrieveAll($query_key, array $bind_array = array(), EnviDBIBase $con = NULL)
@@ -167,9 +174,9 @@ class Base%%class_name%%Peer
      *
      * @access      public
      * @static
-     * @param       string $query_key
-     * @param       array $bind_array
-     * @param       EnviDBIBase $con OPTIONAL:NULL
+     * @param       string $query_key  クエリリストで設定したクエリのkey
+     * @param       array $bind_array  バインドする値
+     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
      * @return      %%class_name%%|boolean
      */
     public static function retrieve($query_key, array $bind_array = array(), EnviDBIBase $con = NULL)
@@ -183,10 +190,10 @@ class Base%%class_name%%Peer
      *
      * @access      public
      * @static
-     * @param       string $query_key
-     * @param       array $bind_array
-     * @param       EnviDBIBase $con OPTIONAL:NULL
-     * @return      %%class_name%%|boolean
+     * @param       string $query_key  クエリリストで設定したクエリのkey
+     * @param       array $bind_array  バインドする値
+     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
+     * @return      PDOStatement|boolean
      */
     public static function query($query_key, array $bind_array = array(), EnviDBIBase $con = NULL)
     {
@@ -200,9 +207,9 @@ class Base%%class_name%%Peer
      *
      * @access public
      * @static
-     * @param %%args%%
-     * @param EnviDBIBase $con OPTIONAL:NULL
-     * @return void
+     * @param mixed %%args%%
+     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
+     * @return      %%class_name%%|boolean
      */
     public static function retrieveByPK(%%args%%, EnviDBIBase $con = NULL)
     {
@@ -226,9 +233,9 @@ class Base%%class_name%%Peer
      *
      * @access public
      * @static
-     * @param %%args%%
-     * @param EnviDBIBase $con OPTIONAL:NULL
-     * @return void
+     * @param mixed %%args%%
+     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
+     * @return      %%class_name%%|boolean
      */
     public static function retrieveByPKNoCache(%%args%%, EnviDBIBase $con = NULL)
     {
@@ -249,9 +256,9 @@ class Base%%class_name%%Peer
      *
      * @access public
      * @static
-     * @param %%args%%
-     * @param EnviDBIBase $con OPTIONAL:NULL
-     * @return void
+     * @param mixed %%args%%
+     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
+     * @return      %%class_name%%|boolean
      */
     public static function retrieveByPKForUpdate(%%args%%, EnviDBIBase $con = NULL)
     {
@@ -274,7 +281,7 @@ class Base%%class_name%%Peer
      * @static
      * @param string $sql 置き換え元のSQL分
      * @param string $suffix テーブル名+_の後ろにつける文字列。NULLの場合は_も省略されテーブル名のみとなる。 OPTIONAL:NULL
-     * @return void
+     * @return string
      */
     final protected static function getReplacedSQL($sql, &$bind_array, $suffix = NULL)
     {
