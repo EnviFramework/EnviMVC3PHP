@@ -919,14 +919,20 @@ class EnviDBIBase
         if (is_array($dsn)) {
             $username = $dsn['username'];
             $password = $dsn['password'];
-            $dsn_key = $dsn['phptype'].':dbname='.$dsn['database'].';host='.$dsn['hostspec'];
-            if (isset($dsn['charset']) && strlen($dsn['charset'])) {
-                $dsn_key .= ';charset='.$dsn['charset'];
+            if (isset($dsn['dsn'])) {
+                $dsn = $dsn['dsn'];
+            } elseif ($dsn['phptype'] === 'mysql') {
+                $dsn_key = $dsn['phptype'].':dbname='.$dsn['database'].';host='.$dsn['hostspec'];
+                if (isset($dsn['charset']) && strlen($dsn['charset'])) {
+                    $dsn_key .= ';charset='.$dsn['charset'];
+                }
+                if (isset($dsn['port']) && strlen($dsn['port'])) {
+                    $dsn_key .= ';port='.$dsn['port'];
+                }
+                $dsn = $dsn_key;
+            } else {
+                throw new EnviException('phptype が mysql以外は、dsn={dsn format}&username={username}&password={password}形式で登録してください。');
             }
-            if (isset($dsn['port']) && strlen($dsn['port'])) {
-                $dsn_key .= ';port='.$dsn['port'];
-            }
-            $dsn = $dsn_key;
         }
         $this->PDO = new PDO($dsn, $username, $password, $driver_options);
         // エラーモードを修正する
