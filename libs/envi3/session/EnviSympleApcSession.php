@@ -38,7 +38,7 @@ class EnviSympleApcSession extends EnviSessionBase implements EnviSessionInterfa
     protected static  $_attribute = array();
     protected static  $_is_login = '_is_login';
 
-    private static  $_session_id = null;
+    protected static  $_session_id = null;
 
     public $_system_conf;
     public $sess_base_save_path;
@@ -102,7 +102,7 @@ class EnviSympleApcSession extends EnviSessionBase implements EnviSessionInterfa
             }
             $session_key = 'sess_'.$this->_system_conf['SESSION']['cookie_name'].$id;
         }
-        self::$_session_id = session_key;
+        self::$_session_id = $session_key;
         apc_store($session_key, $session_key, $this->_system_conf['SESSION']['cookie_lifetime']);
     }
 
