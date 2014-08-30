@@ -70,6 +70,8 @@ function pascalize($string)
 
 $getter_setter_text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'getSet.class.php.snp');
 
+
+$default_name_space = isset($config['SETTING']['default_name_space']) ? $config['SETTING']['default_name_space'] : '';
 foreach ($config['SCHEMA'] as $table_name => &$schema) {
     $enable_magic = '';
     $default_array = array();
@@ -78,6 +80,14 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
     $use_cache     = isset($schema['use_cache']) ? $schema['use_cache'] == true : false;
     $use_apc_cache = $use_cache ? $schema['use_cache'] == 'apc' : false;
     $foreign_key = isset($schema['foreign_key']) ? $schema['foreign_key']: array();
+    $name_space  = '';
+    if (PHP_MINOR_VERSION >= 3) {
+        $name_space = isset($schema['name_space']) ? $schema['name_space']: $default_name_space;
+    }
+    if (strlen($name_space)) {
+        $name_space = 'namespace ' . $name_space .';';
+        $name_space .= "\nuse \\EnviOrMapBase;\n use \\EnviDBInstance;\nuse \\EnviDB;\nuse \\EnviException;\nuse EnviDBIBase;\n";
+    }
 
     $php_type = 'mysql';
     if (!isset($schema['php_type'])) {
@@ -157,18 +167,18 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
     if ($use_cache) {
         $cache_load = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'cache_load.php.snp');
         $cache_load = str_replace(
-            array('%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%',
+            array('%%name_space%%', '%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%',
                 '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%', '%%cache_hydrate%%', '%%fk_getter%%', '%%fk_cache_item%%'),
-            array($class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array, $cache_hydrate, $fk_getter, $fk_cache_item),
+            array($name_space, $class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array, $cache_hydrate, $fk_getter, $fk_cache_item),
             $cache_load
         );
     }
 
     $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'BasePeer.class.php.snp');
     $text = str_replace(
-        array('%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%',
+        array('%%name_space%%', '%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%',
             '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%', '%%cache_load%%'),
-        array($class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array, $cache_load),
+        array($name_space, $class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array, $cache_load),
         $text
     );
     echo $om_dir.'Base'.$class_name.'Peer.class.php'."\n";
@@ -177,9 +187,9 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
 
     $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'Base.class.php.snp');
     $text = str_replace(
-        array('%%insert_date%%', '%%update_date%%', '%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%',
+        array('%%name_space%%', '%%insert_date%%', '%%update_date%%', '%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%',
             '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%', '%%cache_hydrate%%', '%%fk_getter%%', '%%fk_cache_item%%', '%%cache_load%%'),
-        array($insert_date, $update_date, $class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name,
+        array($name_space, $insert_date, $update_date, $class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name,
             $getter_setter, $enable_magic, $default_array, $cache_hydrate, $fk_getter, $fk_cache_item, $cache_load),
         $text
     );
@@ -189,8 +199,8 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
 
     $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'OrmapPeer.class.php.snp');
     $text = str_replace(
-        array('%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%', '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%'),
-        array($class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array),
+        array('%%name_space%%', '%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%', '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%'),
+        array($name_space, $class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array),
         $text
     );
     if (!is_file($model_dir.$class_name.'Peer.class.php')) {
@@ -201,8 +211,8 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
 
     $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'Ormap.class.php.snp');
     $text = str_replace(
-        array('%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%', '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%'),
-        array($class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array),
+        array('%%name_space%%', '%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%', '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%'),
+        array($name_space, $class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array),
         $text
     );
     if (!is_file($model_dir.$class_name.'.class.php')) {
