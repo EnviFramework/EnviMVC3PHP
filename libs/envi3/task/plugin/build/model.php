@@ -102,6 +102,10 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
     $getter_setter = '';
     // var_dump($schema);
     $class_name = isset($schema['class_name']) ? $schema['class_name'] : pascalize($table_name);
+
+    $insert_date = isset($schema['insert_date']) ? $schema['insert_date'] : '';
+    $update_date = isset($schema['update_date']) ? $schema['update_date'] : '';
+
     $sql = "SELECT * FROM {$table_name} ";
     $func_args = array();
     $pkeys = array();
@@ -173,8 +177,10 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
 
     $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'Base.class.php.snp');
     $text = str_replace(
-        array('%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%', '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%', '%%cache_hydrate%%', '%%fk_getter%%', '%%fk_cache_item%%', '%%cache_load%%'),
-        array($class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array, $cache_hydrate, $fk_getter, $fk_cache_item, $cache_load),
+        array('%%insert_date%%', '%%update_date%%', '%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%',
+            '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%', '%%cache_hydrate%%', '%%fk_getter%%', '%%fk_cache_item%%', '%%cache_load%%'),
+        array($insert_date, $update_date, $class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name,
+            $getter_setter, $enable_magic, $default_array, $cache_hydrate, $fk_getter, $fk_cache_item, $cache_load),
         $text
     );
 

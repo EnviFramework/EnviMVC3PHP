@@ -1,9 +1,10 @@
 <?php
+namespace EnviCoreTest;
 /**
  * EnviMVCのメイン処理
  *
  * フロントのPHP内で、
- * require
+//  * require
  * してください。
  * オートローダーの設定を含む、必要なコードのロードなどのFW動作に必要なことを適宜行います。
  *
@@ -49,17 +50,17 @@ if (!defined('ENVI_SERVER_STATUS_CONF')) {
     define('ENVI_SERVER_STATUS_CONF', realpath(ENVI_ROOT_DIR.'env/ServerStatus.conf'));
 }
 
-require ENVI_BASE_DIR.'EnviServerStatus.php';
-require ENVI_BASE_DIR.'EnviActionBase.php';
-require ENVI_BASE_DIR.'EnviViewBase.php';
+// require ENVI_BASE_DIR.'EnviServerStatus.php';
+// require ENVI_BASE_DIR.'EnviActionBase.php';
+// require ENVI_BASE_DIR.'EnviViewBase.php';
 
-require ENVI_BASE_DIR.'EnviController.php';
-require ENVI_BASE_DIR.'EnviRequest.php';
-require ENVI_BASE_DIR.'EnviUser.php';
+// require ENVI_BASE_DIR.'EnviController.php';
+// require ENVI_BASE_DIR.'EnviRequest.php';
+// require ENVI_BASE_DIR.'EnviUser.php';
 
-require ENVI_BASE_DIR.'EnviValidator.php';
-require ENVI_BASE_DIR.'EnviLogWriter.php';
-require ENVI_BASE_DIR.'EnviExtension.php';
+// require ENVI_BASE_DIR.'EnviValidator.php';
+// require ENVI_BASE_DIR.'EnviLogWriter.php';
+// require ENVI_BASE_DIR.'EnviExtension.php';
 
 
 if (!defined('ENVI_ENV')) {

@@ -79,15 +79,21 @@ all:
 
 ## 常にオートロードされるディレクトリ
   AUTOLOAD_CONSTANT:
-
     - "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>"
     - "<?php echo "{$base}libs{$ds}controller{$ds}";?>"
     - "<?php echo "{$base}libs{$ds}constant{$ds}";?>"
-## コールされた時にオートロードされるディレクトリ
+
+## コールされた時にオートロードされるディレクトリ(キャッシュあり)
   AUTOLOAD:
     - "<?php echo "{$base}libs{$ds}common{$ds}";?>"
     - "<?php echo "{$base}libs{$ds}models{$ds}";?>"
     - "<?php echo "{$base}libs{$ds}models{$ds}om{$ds}";?>"
+
+## コールされた時にオートロードされるディレクトリ(キャッシュなし。PSR-0準拠)
+  AUTOLOAD_PSR:
+  
+
+
 
   MEMCACHE:
   ################################
