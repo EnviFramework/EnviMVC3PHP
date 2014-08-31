@@ -81,12 +81,14 @@ class _____action_name_____Action extends _____module_name_____Actions
 /*%%validate_text%%*/
 
 
-        $res = $validator->executeAll();
-        if ($validator->isError($res)) {
+        $input_data = $validator->executeAll();
+        if ($validator->isError($input_data)) {
             return Envi::ERROR;
         }
+        EnviRequest::setAttribute('input_data', $input_data);
 
-        EnviRequest::setAttribute('input_data', $res);
+
+/*%%validate_unique_check_text%%*/
 
         if (EnviRequest::hasParameter('confirm')) {
             return Envi::DEFAULT_ACCESS;

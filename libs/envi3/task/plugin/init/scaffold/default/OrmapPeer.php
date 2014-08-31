@@ -35,6 +35,7 @@ class _____modle_pascal_case_name_____Peer extends Base_____modle_pascal_case_na
 {
     protected static $queries = array(
         'get_all'    => 'SELECT * FROM __TABLE__',
+/*%%unique_check_query%%*/
     );
 
     /**
@@ -58,5 +59,5 @@ class _____modle_pascal_case_name_____Peer extends Base_____modle_pascal_case_na
     }
     /* ----------------------------------------- */
 
-
+/*%%unique_check_method%%*/
 }

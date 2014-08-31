@@ -218,6 +218,10 @@ $validate_text = '';
 $form_text = '';
 $confirm_text = '';
 $show_text = '';
+$validate_unique_check_text = '';
+$validate_unique_check_update_text = '';
+$unique_check_query = '';
+$unique_check_method = '';
 while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
     // scafold 引数を展開
     $scaffold_data   = explode(',', $scaffold_data);
@@ -399,6 +403,11 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
         $db_data_type[$scaffold_name]['not_null'] = true;
     }
 
+    // ユニーク対応
+    if (isset($scaffold_data_f['unique'])) {
+        $db_data_type[$scaffold_name]['unique'] = array('uq_'.$scaffold_name);
+    }
+
     // デフォルト値対応
     $db_data_type[$scaffold_name]['default'] = isset($scaffold_data_f['default']) ? (int)$scaffold_data_f['default'] : NULL;
 
@@ -413,7 +422,7 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
                 '_____scaffold_validate_value_____',
             ),
             array($scaffold_name, $scaffold_form_name, $validator, $val),
-            file_get_contents(dirname(__FILE__).'/scaffold/default/validate_chain.php')
+            file_get_contents(dirname(__FILE__).'/scaffold/default/___validate_chain.php')
         );
     }
 
@@ -427,7 +436,7 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
             '_____scaffold_form_default_____',
         ),
         array($scaffold_name, $scaffold_form_name, $scaffold_form_type, $validator, $val, $db_data_type[$scaffold_name]['default']),
-        file_get_contents(dirname(__FILE__).'/scaffold/default/__form_column.tpl')
+        file_get_contents(dirname(__FILE__).'/scaffold/default/___form_column.tpl')
     );
 
     $confirm_text .= str_replace(
@@ -440,7 +449,7 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
             '_____scaffold_form_default_____',
         ),
         array($scaffold_name, $scaffold_form_name, $scaffold_form_type, $validator, $val, $db_data_type[$scaffold_name]['default']),
-        file_get_contents(dirname(__FILE__).'/scaffold/default/__confirm_column.tpl')
+        file_get_contents(dirname(__FILE__).'/scaffold/default/___confirm_column.tpl')
     );
     $show_text .= str_replace(
         array(
@@ -452,7 +461,7 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
             '_____scaffold_form_default_____',
         ),
         array($scaffold_name, $scaffold_form_name, $scaffold_form_type, $validator, $val, $db_data_type[$scaffold_name]['default']),
-        file_get_contents(dirname(__FILE__).'/scaffold/default/__show_column.tpl')
+        file_get_contents(dirname(__FILE__).'/scaffold/default/___show_column.tpl')
     );
 
     $setter_text .= str_replace(
@@ -465,8 +474,60 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
             '_____scaffold_validate_value_____',
         ),
         array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), $scaffold_form_name, $validator, $val),
-        file_get_contents(dirname(__FILE__).'/scaffold/default/setter.php')
+        file_get_contents(dirname(__FILE__).'/scaffold/default/___setter.php')
     );
+
+    // uniqueCheck処理の追加
+    if (isset($scaffold_data_f['unique'])) {
+        $validate_unique_check_text .= str_replace(
+            array(
+                '_____scaffold_name_____',
+                '_____scaffold_pascal_case_name_____',
+                '_____modle_pascal_case_name_____',
+                '_____scaffold_form_name_____',
+                '_____scaffold_validate_type_____',
+                '_____scaffold_validate_value_____',
+            ),
+            array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), $scaffold_form_name, $validator, $val),
+            file_get_contents(dirname(__FILE__).'/scaffold/default/___validate_unique_check.php')
+        );
+        $validate_unique_check_update_text .= str_replace(
+            array(
+                '_____scaffold_name_____',
+                '_____scaffold_pascal_case_name_____',
+                '_____modle_pascal_case_name_____',
+                '_____scaffold_form_name_____',
+                '_____scaffold_validate_type_____',
+                '_____scaffold_validate_value_____',
+            ),
+            array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), $scaffold_form_name, $validator, $val),
+            file_get_contents(dirname(__FILE__).'/scaffold/default/___validate_unique_check_update.php')
+        );
+        $unique_check_query .= str_replace(
+            array(
+                '_____scaffold_name_____',
+                '_____scaffold_pascal_case_name_____',
+                '_____modle_pascal_case_name_____',
+                '_____scaffold_form_name_____',
+                '_____scaffold_validate_type_____',
+                '_____scaffold_validate_value_____',
+            ),
+            array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), $scaffold_form_name, $validator, $val),
+            file_get_contents(dirname(__FILE__).'/scaffold/default/___unique_check_query.php')
+        );
+        $unique_check_method .= str_replace(
+            array(
+                '_____scaffold_name_____',
+                '_____scaffold_pascal_case_name_____',
+                '_____modle_pascal_case_name_____',
+                '_____scaffold_form_name_____',
+                '_____scaffold_validate_type_____',
+                '_____scaffold_validate_value_____',
+            ),
+            array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), $scaffold_form_name, $validator, $val),
+            file_get_contents(dirname(__FILE__).'/scaffold/default/___unique_check_method.php')
+        );
+    }
     $i++;
 }
 $db_data_type['insert_date'] = array(
@@ -506,6 +567,10 @@ $replace_from = array(
         '/*%%form_text%%*/',
         '/*%%confirm_text%%*/',
         '/*%%show_text%%*/',
+        '/*%%validate_unique_check_text%%*/',
+        '/*%%validate_unique_check_update_text%%*/',
+        '/*%%unique_check_query%%*/',
+        '/*%%unique_check_method%%*/',
         '_____module_name_____',
         '_____modle_pascal_case_name_____',
     );
@@ -516,6 +581,10 @@ $replace_to = array(
         $form_text,
         $confirm_text,
         $show_text,
+        $validate_unique_check_text,
+        $validate_unique_check_update_text,
+        $unique_check_query,
+        $unique_check_method,
         $module_name,
         pascalize($module_name),
     );
@@ -567,6 +636,30 @@ $contents = str_replace(
     file_get_contents(dirname(__FILE__).'/scaffold/default/_confirm_helper.tpl')
 );
 writeAction($contents, '_confirm_helper', $template_dir, '.tpl');
+
+
+$contents = str_replace(
+    $replace_from,
+    $replace_to,
+    file_get_contents(dirname(__FILE__).'/scaffold/default/_header.tpl')
+);
+writeAction($contents, '_header', $template_dir, '.tpl');
+
+$contents = str_replace(
+    $replace_from,
+    $replace_to,
+    file_get_contents(dirname(__FILE__).'/scaffold/default/_header.tpl')
+);
+writeAction($contents, '_header', $template_dir, '.tpl');
+
+$contents = str_replace(
+    $replace_from,
+    $replace_to,
+    file_get_contents(dirname(__FILE__).'/scaffold/default/_error.tpl')
+);
+writeAction($contents, '_error', $template_dir, '.tpl');
+
+
 
 
 $contents = str_replace(

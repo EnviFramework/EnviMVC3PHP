@@ -84,7 +84,7 @@ class _____action_name_____Action extends _____module_name_____Actions
      */
     public function execute()
     {
-        $this->Renderer()->setAttribute('errors', EnviRequest::getErrors());
+        $this->Renderer()->setAttribute('error', EnviRequest::getErrors());
         $this->Renderer()->getAttribute('lists', _____modle_pascal_case_name_____Peer::getAllByArray());
 
         $this->Renderer()->display('index.tpl');

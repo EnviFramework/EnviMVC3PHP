@@ -113,7 +113,7 @@ class _____action_name_____Action extends _____module_name_____Actions
     public function execute()
     {
         $this->Renderer()->setAttribute('_____module_name_____', EnviRequest::getAttribute('_____modle_pascal_case_name_____'));
-        $this->Renderer()->setAttribute('errors', EnviRequest::getErrors());
+        $this->Renderer()->setAttribute('error', EnviRequest::getErrors());
         $this->Renderer()->display('edit.tpl');
     }
     /* ----------------------------------------- */
@@ -128,7 +128,7 @@ class _____action_name_____Action extends _____module_name_____Actions
      */
     public function defaultAccess()
     {
-        $this->Renderer()->setAttribute('errors', EnviRequest::getErrors());
+        $this->Renderer()->setAttribute('error', EnviRequest::getErrors());
         $this->Renderer()->display('edit.tpl');
     }
     /* ----------------------------------------- */
@@ -142,7 +142,7 @@ class _____action_name_____Action extends _____module_name_____Actions
      */
     public function handleError()
     {
-        $this->Renderer()->setAttribute('errors', EnviRequest::getErrors());
+        $this->Renderer()->setAttribute('error', EnviRequest::getErrors());
         $this->Renderer()->display('common_error.tpl');
     }
     /* ----------------------------------------- */

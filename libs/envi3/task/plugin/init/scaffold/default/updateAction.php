@@ -87,16 +87,21 @@ class _____action_name_____Action extends _____module_name_____Actions
             EnviRequest::setAttribute('id_error', true);
             return Envi::ERROR;
         }
-        EnviRequest::setAttribute('id', $res['id']);
+        $id = $res['id'];
+        EnviRequest::setAttribute('id', $id);
         $validator->free();
 
 /*%%validate_text%%*/
 
 
-        $res = $validator->executeAll();
-        if ($validator->isError($res)) {
+        $input_data = $validator->executeAll();
+        if ($validator->isError($input_data)) {
             return Envi::ERROR;
         }
+
+
+/*%%validate_unique_check_update_text%%*/
+
 
         EnviRequest::setAttribute('input_data', $res);
         if (EnviRequest::hasParameter('confirm')) {
