@@ -104,14 +104,14 @@ class _____action_name_____Action extends _____module_name_____Actions
      */
     public function execute()
     {
-        $_____modle_pascal_case_name_____  = _____modle_pascal_case_name_____Peer::retrieveByPK(EnviRequest::getAttribute('id'));
-        if (!$_____modle_pascal_case_name_____ instanceof $_____modle_pascal_case_name_____) {
+        $_____model_pascal_case_name_____  = _____model_pascal_case_name_____Peer::retrieveByPK(EnviRequest::getAttribute('id'));
+        if (!$_____model_pascal_case_name_____ instanceof $_____model_pascal_case_name_____) {
             EnviController::killBy404Error();
         }
 
-        $_____modle_pascal_case_name_____->delete();
+        $_____model_pascal_case_name_____->delete();
 
-        EnviController::redirect('./destroy.php?commit=t&id='.$_____modle_pascal_case_name_____->getId());
+        EnviController::redirect('./destroy.php?commit=t&id='.$_____model_pascal_case_name_____->getId());
     }
     /* ----------------------------------------- */
 

@@ -31,7 +31,7 @@
  * @see        %%your_see%%
  * @since      Class available since Release 1.0.0
  */
-class _____modle_pascal_case_name_____ extends Base_____modle_pascal_case_name_____
+class _____model_pascal_case_name_____ extends Base_____model_pascal_case_name_____
 {
 
 }

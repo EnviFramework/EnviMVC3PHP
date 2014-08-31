@@ -31,7 +31,7 @@
  * @see        %%your_see%%
  * @since      Class available since Release 1.0.0
  */
-class _____modle_pascal_case_name_____Peer extends Base_____modle_pascal_case_name_____Peer
+class _____model_pascal_case_name_____Peer extends Base_____model_pascal_case_name_____Peer
 {
     protected static $queries = array(
         'get_all'    => 'SELECT * FROM __TABLE__',

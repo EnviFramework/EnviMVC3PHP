@@ -4,7 +4,7 @@
      * @access      public
      * @static
      * @param       mixed $_____scaffold_name_____
-     * @return      _____modle_pascal_case_name_____|boolean
+     * @return      _____model_pascal_case_name_____|boolean
      */
     public static function _____scaffold_pascal_case_name_____Check($_____scaffold_name_____)
     {

@@ -90,15 +90,15 @@ class _____action_name_____Action extends _____module_name_____Actions
         }
 
         EnviRequest::setAttribute('id', $res['id']);
-        $_____modle_pascal_case_name_____ = _____modle_pascal_case_name_____Peer::retrieveByPK($res['id']);
+        $_____model_pascal_case_name_____ = _____model_pascal_case_name_____Peer::retrieveByPK($res['id']);
 
 
-        if (!$_____modle_pascal_case_name_____ instanceof _____modle_pascal_case_name_____) {
+        if (!$_____model_pascal_case_name_____ instanceof _____model_pascal_case_name_____) {
             EnviRequest::setError('is_sign_on', 'id', 0, _('URLを正しく入力して下さい。'));
             return Envi::ERROR;
         }
 
-        EnviRequest::setAttribute('_____modle_pascal_case_name_____', $_____modle_pascal_case_name_____->toArray());
+        EnviRequest::setAttribute('_____model_pascal_case_name_____', $_____model_pascal_case_name_____->toArray());
         return Envi::SUCCESS;
     }
     /* ----------------------------------------- */
@@ -112,7 +112,7 @@ class _____action_name_____Action extends _____module_name_____Actions
      */
     public function execute()
     {
-        $this->Renderer()->setAttribute('_____module_name_____', EnviRequest::getAttribute('_____modle_pascal_case_name_____'));
+        $this->Renderer()->setAttribute('_____module_name_____', EnviRequest::getAttribute('_____model_pascal_case_name_____'));
         $this->Renderer()->setAttribute('error', EnviRequest::getErrors());
         $this->Renderer()->display('show.tpl');
     }

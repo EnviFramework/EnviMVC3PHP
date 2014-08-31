@@ -37,7 +37,14 @@ $project_name = $argv[$i];
 $i++;
 
 // モジュール名
-$module_name  = $argv[$i];
+if (!strpos($argv[$i], ':')) {
+    $module_name  = ($argv[$i]);
+    $model_name  = ($argv[$i]);
+} else {
+    list($module_name, $model_name) = explode(':', $argv[$i], 2);
+}
+$module_name = camelize($module_name);
+$model_name  = pascalize($model_name);
 $i++;
 
 
@@ -248,6 +255,7 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
     $scaffold_form_name = isset($scaffold_form[2]) ? $scaffold_form[2] : $scaffold_type;
 
     // スキーマの初期化
+
     $db_data_type[$scaffold_name] = array();
 
     // ファイルパス
@@ -468,12 +476,12 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
         array(
             '_____scaffold_name_____',
             '_____scaffold_pascal_case_name_____',
-            '_____modle_pascal_case_name_____',
+            '_____module_pascal_case_name_____', '_____model_pascal_case_name_____',
             '_____scaffold_form_name_____',
             '_____scaffold_validate_type_____',
             '_____scaffold_validate_value_____',
         ),
-        array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), $scaffold_form_name, $validator, $val),
+        array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), pascalize($model_name), $scaffold_form_name, $validator, $val),
         file_get_contents(dirname(__FILE__).'/scaffold/default/___setter.php')
     );
 
@@ -483,48 +491,48 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
             array(
                 '_____scaffold_name_____',
                 '_____scaffold_pascal_case_name_____',
-                '_____modle_pascal_case_name_____',
+                '_____module_pascal_case_name_____', '_____model_pascal_case_name_____',
                 '_____scaffold_form_name_____',
                 '_____scaffold_validate_type_____',
                 '_____scaffold_validate_value_____',
             ),
-            array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), $scaffold_form_name, $validator, $val),
+            array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), pascalize($model_name), $scaffold_form_name, $validator, $val),
             file_get_contents(dirname(__FILE__).'/scaffold/default/___validate_unique_check.php')
         );
         $validate_unique_check_update_text .= str_replace(
             array(
                 '_____scaffold_name_____',
                 '_____scaffold_pascal_case_name_____',
-                '_____modle_pascal_case_name_____',
+                '_____module_pascal_case_name_____', '_____model_pascal_case_name_____',
                 '_____scaffold_form_name_____',
                 '_____scaffold_validate_type_____',
                 '_____scaffold_validate_value_____',
             ),
-            array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), $scaffold_form_name, $validator, $val),
+            array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), pascalize($model_name), $scaffold_form_name, $validator, $val),
             file_get_contents(dirname(__FILE__).'/scaffold/default/___validate_unique_check_update.php')
         );
         $unique_check_query .= str_replace(
             array(
                 '_____scaffold_name_____',
                 '_____scaffold_pascal_case_name_____',
-                '_____modle_pascal_case_name_____',
+                '_____module_pascal_case_name_____', '_____model_pascal_case_name_____',
                 '_____scaffold_form_name_____',
                 '_____scaffold_validate_type_____',
                 '_____scaffold_validate_value_____',
             ),
-            array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), $scaffold_form_name, $validator, $val),
+            array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), pascalize($model_name), $scaffold_form_name, $validator, $val),
             file_get_contents(dirname(__FILE__).'/scaffold/default/___unique_check_query.php')
         );
         $unique_check_method .= str_replace(
             array(
                 '_____scaffold_name_____',
                 '_____scaffold_pascal_case_name_____',
-                '_____modle_pascal_case_name_____',
+                '_____module_pascal_case_name_____', '_____model_pascal_case_name_____',
                 '_____scaffold_form_name_____',
                 '_____scaffold_validate_type_____',
                 '_____scaffold_validate_value_____',
             ),
-            array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), $scaffold_form_name, $validator, $val),
+            array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), pascalize($model_name), $scaffold_form_name, $validator, $val),
             file_get_contents(dirname(__FILE__).'/scaffold/default/___unique_check_method.php')
         );
     }
@@ -557,8 +565,8 @@ $db_data_type['time_stamp'] = array(
 
 
 
-$yaml = Spyc::YAMLDump(array('SCHEMA' => array(pascalize($module_name) => $db_data_type)), 2, 60);
-writeAction($yaml, $project_name.'_'.$module_name, $project_dir.'config'.DIRECTORY_SEPARATOR, '.yml');
+$yaml = Spyc::YAMLDump(array('SCHEMA' => array(snake_case($model_name) => $db_data_type)), 2, 60);
+writeAction($yaml, $project_name.'_'.snake_case($model_name) , $project_dir.'config'.DIRECTORY_SEPARATOR, '.yml');
 
 $replace_from = array(
         '_____action_name_____',
@@ -572,7 +580,8 @@ $replace_from = array(
         '/*%%unique_check_query%%*/',
         '/*%%unique_check_method%%*/',
         '_____module_name_____',
-        '_____modle_pascal_case_name_____',
+        '_____module_pascal_case_name_____',
+        '_____model_pascal_case_name_____',
     );
 $replace_to = array(
         'new',
@@ -587,6 +596,7 @@ $replace_to = array(
         $unique_check_method,
         $module_name,
         pascalize($module_name),
+        pascalize($model_name),
     );
 
 $contents = str_replace(
@@ -754,20 +764,21 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/OrmapPeer.php')
 );
-writeAction($contents, pascalize($module_name).'Peer', $model_dir);
+writeAction($contents, pascalize($model_name).'Peer', $model_dir);
 
 $contents = str_replace(
     $replace_from,
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/Ormap.php')
 );
-writeAction($contents, pascalize($module_name), $model_dir);
+writeAction($contents, pascalize($model_name), $model_dir);
 
 
 
 
 function pascalize($string)
 {
+    $string = preg_replace('/([A-Z])/', '_$1', $string);
     $string = strtolower($string);
     $string = str_replace('_', ' ', $string);
     $string = ucwords($string);
@@ -775,6 +786,21 @@ function pascalize($string)
     return $string;
 }
 
+
+function snake_case($string)
+{
+    $string[0] = strtolower($string[0]);
+    $string = preg_replace('/([A-Z])/', '_$1', $string);
+    $string = strtolower($string);
+    return ltrim($string, '_');
+}
+
+function camelize($string)
+{
+    $string = pascalize($string);
+    $string[0] = strtolower($string[0]);
+    return $string;
+}
 
 function writeAction($contents, $file_name, $dir, $ext = '.class.php')
 {

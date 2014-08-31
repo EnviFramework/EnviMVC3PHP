@@ -108,11 +108,11 @@ class _____action_name_____Action extends _____module_name_____Actions
     public function execute()
     {
         $input_data = EnviRequest::getAttribute('input_data');
-        $_____modle_pascal_case_name_____  = new _____modle_pascal_case_name_____;
+        $_____model_pascal_case_name_____  = new _____model_pascal_case_name_____;
 /*%%setter_text%%*/
-        $_____modle_pascal_case_name_____->save();
+        $_____model_pascal_case_name_____->save();
 
-        EnviController::redirect('./create.php?commit=t&id='.$_____modle_pascal_case_name_____->getId());
+        EnviController::redirect('./create.php?commit=t&id='.$_____model_pascal_case_name_____->getId());
     }
     /* ----------------------------------------- */
 
