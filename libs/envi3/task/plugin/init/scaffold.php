@@ -36,7 +36,7 @@ list(, $type) = explode(':', $type, 2);
 $project_name = $argv[$i];
 $i++;
 
-// モジュール名
+// モジュール名＆モデル名
 if (!strpos($argv[$i], ':')) {
     $module_name  = ($argv[$i]);
     $model_name  = ($argv[$i]);
@@ -48,16 +48,20 @@ $model_name  = pascalize($model_name);
 $i++;
 
 
-
+// SpyCの読み込み
 include_once ENVI_BASE_DIR.'spyc.php';
 
 
-
+// 入力チェック
 if (!preg_match('/^[a-zA-Z0-9.\-_]+$/', $project_name)) {
     eecho('英数と._-以外の文字は使えません。');
     die;
 }
 if (!preg_match('/^[a-zA-Z0-9.\-_]+$/', $module_name)) {
+    eecho('英数と._-以外の文字は使えません。');
+    die;
+}
+if (!preg_match('/^[a-zA-Z0-9.\-_]+$/', $model_name)) {
     eecho('英数と._-以外の文字は使えません。');
     die;
 }
@@ -82,7 +86,8 @@ if (!isset($argv[$i])) {
 }
 
 
-
+// ./module.php からのコピペ
+// includeではうまく動かない
 $module_dir = $project_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR;
 $action_dir = $module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'actions'.DIRECTORY_SEPARATOR;
 $template_dir = $module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR;
@@ -134,11 +139,12 @@ if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'c
     file_put_contents($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'config.php', $text);
 }
 
+// ./module.php からのコピペここまで
 
 // アクションの作成
 
+// 定義済みバリデータ
 $validators = array(
-
     'equal'             => '_typeEqual',
     'notequal'          => '_typeNotEqual',
     'xdigit'            => '_typeXdigit',
@@ -210,25 +216,42 @@ $validators = array(
     'preg'             => '_typePreg',
 );
 
-$db_data_type = array(
+// テーブルschema設定初期化
+$table_schema_setting = array(
+    // Pkeyは標準でつける
     'id' => array(
-    'type' => 'int(11)',
-    'primary' => 'PRIMARY',
-    'auto_increment' => true,
-    'not_null' => true,
-    'default' => NULL,
+        'type'           => 'int(11)',
+        'primary'        => 'PRIMARY',
+        'auto_increment' => true,
+        'not_null'       => true,
+        'default'        => NULL,
     )
 );
 
+// Insert時のSetter
 $setter_text = '';
+
+// バリデーター
 $validate_text = '';
-$form_text = '';
-$confirm_text = '';
-$show_text = '';
+
+// ユニークキーチェック(insert用)
 $validate_unique_check_text = '';
+// ユニークキーチェック(update用)
 $validate_unique_check_update_text = '';
+// Ormap用ユニークキーチェッククエリ
 $unique_check_query = '';
+// Ormap用ユニークキーチェックメソッド
 $unique_check_method = '';
+
+
+// フォームテンプレート
+$form_text = '';
+// Confirmテンプレート
+$confirm_text = '';
+// 表示用テンプレート
+$show_text = '';
+
+// 残りの引数を使って、コードをジェネレートする
 while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
     // scafold 引数を展開
     $scaffold_data   = explode(',', $scaffold_data);
@@ -254,11 +277,10 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
     $scaffold_type      = isset($scaffold_form[1]) ? $scaffold_form[1] : 'string';
     $scaffold_form_name = isset($scaffold_form[2]) ? $scaffold_form[2] : $scaffold_type;
 
-    // スキーマの初期化
+    // スキーマ(column情報)の初期化
+    $table_schema_setting[$scaffold_name] = array();
 
-    $db_data_type[$scaffold_name] = array();
-
-    // ファイルパス
+    // バリデーション初期設定ファイルのファイルパス生成
     $file_poth = dirname(__FILE__).'/scaffold/default/validate_start';
     // notnullならかえる
     if (isset($scaffold_data_f['notnull'])) {
@@ -277,6 +299,7 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
         }
     }
 
+    // バリデーション初期設定(validate()->autoPrepare(...))
     $validate_text .= str_replace(
         array(
             '_____scaffold_name_____',
@@ -286,18 +309,21 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
         file_get_contents($file_poth)
     );
 
+    // フォームタイプの初期化
     $scaffold_form_type = 'text';
+
+    // $scaffold_typeに合わせて、固定のバリデーションとスキーマを定義する
     switch ($scaffold_type) {
     case 'integer':
     case 'int':
         $scaffold_form_type = 'number';
-        $db_data_type[$scaffold_name]['type'] = 'int(11)';
+        $table_schema_setting[$scaffold_name]['type'] = 'int(11)';
         $validate['integer'] = true;
         if ($scaffold_data_f['unsigned']) {
             $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 2147483647;
             $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -2147483648;
         } else {
-            $db_data_type[$scaffold_name]['unsigned'] = true;
+            $table_schema_setting[$scaffold_name]['unsigned'] = true;
             $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 4294967295;
             $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : 0;
         }
@@ -309,18 +335,18 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
         $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 4294967295;
         $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : 0;
         $validate['maxwidth'] = isset($validate['maxwidth']) ? $validate['maxwidth'] : max(strlen($validate['numbermax']), strlen($validate['numbermin']));
-        $db_data_type[$scaffold_name]['type'] = 'int(11)';
-        $db_data_type[$scaffold_name]['unsigned'] = true;
+        $table_schema_setting[$scaffold_name]['type'] = 'int(11)';
+        $table_schema_setting[$scaffold_name]['unsigned'] = true;
     break;
     case 'bigint':
         $scaffold_form_type = 'number';
         $validate['integer'] = true;
-        $db_data_type[$scaffold_name]['type'] = 'bigint(20)';
+        $table_schema_setting[$scaffold_name]['type'] = 'bigint(20)';
         if ($scaffold_data_f['unsigned']) {
             $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 9223372036854775807;
             $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -9223372036854775808;
         } else {
-            $db_data_type[$scaffold_name]['unsigned'] = true;
+            $table_schema_setting[$scaffold_name]['unsigned'] = true;
             $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : '18446744073709551615';
             $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : 0;
         }
@@ -328,13 +354,13 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
     break;
     case 'tinyint':
         $scaffold_form_type = 'number';
-        $db_data_type[$scaffold_name]['type'] = 'tinyint(4)';
+        $table_schema_setting[$scaffold_name]['type'] = 'tinyint(4)';
         $validate['integer'] = true;
         if ($scaffold_data_f['unsigned']) {
             $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 127;
             $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -128;
         } else {
-            $db_data_type[$scaffold_name]['unsigned'] = true;
+            $table_schema_setting[$scaffold_name]['unsigned'] = true;
             $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 255;
             $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : 0;
         }
@@ -342,13 +368,13 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
     break;
     case 'smallint':
         $scaffold_form_type = 'number';
-        $db_data_type[$scaffold_name]['type'] = 'smallint(6)';
+        $table_schema_setting[$scaffold_name]['type'] = 'smallint(6)';
         $validate['integer'] = true;
         if ($scaffold_data_f['unsigned']) {
             $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 32767;
             $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -32768;
         } else {
-            $db_data_type[$scaffold_name]['unsigned'] = true;
+            $table_schema_setting[$scaffold_name]['unsigned'] = true;
             $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 65535;
             $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : 0;
         }
@@ -356,13 +382,13 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
     break;
     case 'mediumint':
         $scaffold_form_type = 'number';
-        $db_data_type[$scaffold_name]['type'] = 'mediumint(7)';
+        $table_schema_setting[$scaffold_name]['type'] = 'mediumint(7)';
         $validate['integer'] = true;
         if ($scaffold_data_f['unsigned']) {
             $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 8388607;
             $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -8388608;
         } else {
-            $db_data_type[$scaffold_name]['unsigned'] = true;
+            $table_schema_setting[$scaffold_name]['unsigned'] = true;
             $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 16777215;
             $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : 0;
         }
@@ -374,14 +400,14 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
         if (!isset($validate['maxwidth'])) {
             $validate['maxwidth'] = 255;
         }
-        $db_data_type[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
+        $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
     break;
     case 'email':
         $scaffold_form_type = 'email';
         if (!isset($validate['maxwidth'])) {
             $validate['maxwidth'] = 255;
         }
-        $db_data_type[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
+        $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
         $validate['mailsimple'] = true;
     break;
     case 'password':
@@ -389,7 +415,7 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
         if (!isset($validate['maxwidth'])) {
             $validate['maxwidth'] = 255;
         }
-        $db_data_type[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
+        $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
         $validate['rome'] = true;
     break;
     case 'textarea':
@@ -398,7 +424,7 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
         if (!isset($validate['maxwidth'])) {
             $validate['maxwidth'] = 1000;
         }
-        $db_data_type[$scaffold_name]['type'] = 'text';
+        $table_schema_setting[$scaffold_name]['type'] = 'text';
     break;
     default:
         throw new exception($scaffold_type . 'は存在しないデータ型です。');
@@ -406,19 +432,20 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
     }
 
     // Not Null対応
-    $db_data_type[$scaffold_name]['not_null'] = false;
+    $table_schema_setting[$scaffold_name]['not_null'] = false;
     if (isset($scaffold_data_f['notnull'])) {
-        $db_data_type[$scaffold_name]['not_null'] = true;
+        $table_schema_setting[$scaffold_name]['not_null'] = true;
     }
 
     // ユニーク対応
     if (isset($scaffold_data_f['unique'])) {
-        $db_data_type[$scaffold_name]['unique'] = array('uq_'.$scaffold_name);
+        $table_schema_setting[$scaffold_name]['unique'] = array('uq_'.$scaffold_name);
     }
 
     // デフォルト値対応
-    $db_data_type[$scaffold_name]['default'] = isset($scaffold_data_f['default']) ? (int)$scaffold_data_f['default'] : NULL;
+    $table_schema_setting[$scaffold_name]['default'] = isset($scaffold_data_f['default']) ? (int)$scaffold_data_f['default'] : NULL;
 
+    // 定義されたバリデータから、バリデータ用のコードをジェネレーとする
     foreach ($validate as $validator => &$val) {
         $val = var_export($val, true);
 
@@ -434,6 +461,8 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
         );
     }
 
+
+    // フォーム定義
     $form_text .= str_replace(
         array(
             '_____scaffold_name_____',
@@ -443,10 +472,11 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
             '_____scaffold_validate_value_____',
             '_____scaffold_form_default_____',
         ),
-        array($scaffold_name, $scaffold_form_name, $scaffold_form_type, $validator, $val, $db_data_type[$scaffold_name]['default']),
+        array($scaffold_name, $scaffold_form_name, $scaffold_form_type, $validator, $val, $table_schema_setting[$scaffold_name]['default']),
         file_get_contents(dirname(__FILE__).'/scaffold/default/___form_column.tpl')
     );
 
+    // conform定義
     $confirm_text .= str_replace(
         array(
             '_____scaffold_name_____',
@@ -456,9 +486,11 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
             '_____scaffold_validate_value_____',
             '_____scaffold_form_default_____',
         ),
-        array($scaffold_name, $scaffold_form_name, $scaffold_form_type, $validator, $val, $db_data_type[$scaffold_name]['default']),
+        array($scaffold_name, $scaffold_form_name, $scaffold_form_type, $validator, $val, $table_schema_setting[$scaffold_name]['default']),
         file_get_contents(dirname(__FILE__).'/scaffold/default/___confirm_column.tpl')
     );
+
+    // 表示定義
     $show_text .= str_replace(
         array(
             '_____scaffold_name_____',
@@ -468,15 +500,17 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
             '_____scaffold_validate_value_____',
             '_____scaffold_form_default_____',
         ),
-        array($scaffold_name, $scaffold_form_name, $scaffold_form_type, $validator, $val, $db_data_type[$scaffold_name]['default']),
+        array($scaffold_name, $scaffold_form_name, $scaffold_form_type, $validator, $val, $table_schema_setting[$scaffold_name]['default']),
         file_get_contents(dirname(__FILE__).'/scaffold/default/___show_column.tpl')
     );
 
+    // セッター定義
     $setter_text .= str_replace(
         array(
             '_____scaffold_name_____',
             '_____scaffold_pascal_case_name_____',
-            '_____module_pascal_case_name_____', '_____model_pascal_case_name_____',
+            '_____module_pascal_case_name_____',
+            '_____model_pascal_case_name_____',
             '_____scaffold_form_name_____',
             '_____scaffold_validate_type_____',
             '_____scaffold_validate_value_____',
@@ -538,67 +572,69 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
     }
     $i++;
 }
-$db_data_type['insert_date'] = array(
+
+// テーブルスキーマ定義の追加
+$table_schema_setting['insert_date'] = array(
     'type' => 'datetime',
     'insert_date' => true,
     'not_null' => true,
     'default' => NULL,
 );
-$db_data_type['update_date'] = array(
+$table_schema_setting['update_date'] = array(
     'type' => 'datetime',
     'update_date' => true,
     'not_null' => true,
     'default' => NULL,
 );
-$db_data_type['owner'] = array(
+$table_schema_setting['owner'] = array(
     'type' => 'varchar(128)',
     'not_null' => true,
     'default' => 'system_insert',
 );
-$db_data_type['time_stamp'] = array(
+$table_schema_setting['time_stamp'] = array(
     'type' => 'timestamp',
     'not_null' => true,
     'default' => NULL,
 );
 
 
-
-
-
-$yaml = Spyc::YAMLDump(array('SCHEMA' => array(snake_case($model_name) => $db_data_type)), 2, 60);
+// テーブル定義のYamlを生成する
+$yaml = Spyc::YAMLDump(array('SCHEMA' => array(snake_case($model_name) => $table_schema_setting)), 2, 60);
 writeAction($yaml, $project_name.'_'.snake_case($model_name) , $project_dir.'config'.DIRECTORY_SEPARATOR, '.yml');
 
+// 各テンプレートの置き換え変数を定義する
 $replace_from = array(
-        '_____action_name_____',
-        '/*%%validate_text%%*/',
-        '/*%%setter_text%%*/',
-        '/*%%form_text%%*/',
-        '/*%%confirm_text%%*/',
-        '/*%%show_text%%*/',
-        '/*%%validate_unique_check_text%%*/',
-        '/*%%validate_unique_check_update_text%%*/',
-        '/*%%unique_check_query%%*/',
-        '/*%%unique_check_method%%*/',
-        '_____module_name_____',
-        '_____module_pascal_case_name_____',
-        '_____model_pascal_case_name_____',
-    );
+    '_____action_name_____',
+    '/*%%validate_text%%*/',
+    '/*%%setter_text%%*/',
+    '/*%%form_text%%*/',
+    '/*%%confirm_text%%*/',
+    '/*%%show_text%%*/',
+    '/*%%validate_unique_check_text%%*/',
+    '/*%%validate_unique_check_update_text%%*/',
+    '/*%%unique_check_query%%*/',
+    '/*%%unique_check_method%%*/',
+    '_____module_name_____',
+    '_____module_pascal_case_name_____',
+    '_____model_pascal_case_name_____',
+);
 $replace_to = array(
-        'new',
-        $validate_text,
-        $setter_text,
-        $form_text,
-        $confirm_text,
-        $show_text,
-        $validate_unique_check_text,
-        $validate_unique_check_update_text,
-        $unique_check_query,
-        $unique_check_method,
-        $module_name,
-        pascalize($module_name),
-        pascalize($model_name),
-    );
+    'new',
+    $validate_text,
+    $setter_text,
+    $form_text,
+    $confirm_text,
+    $show_text,
+    $validate_unique_check_text,
+    $validate_unique_check_update_text,
+    $unique_check_query,
+    $unique_check_method,
+    $module_name,
+    pascalize($module_name),
+    pascalize($model_name),
+);
 
+// 新規作成フォームテンプレート
 $contents = str_replace(
     $replace_from,
     $replace_to,
@@ -607,6 +643,7 @@ $contents = str_replace(
 writeAction($contents, 'new', $template_dir, '.tpl');
 
 
+// 編集フォームテンプレート
 $contents = str_replace(
     $replace_from,
     $replace_to,
@@ -615,7 +652,7 @@ $contents = str_replace(
 writeAction($contents, 'edit', $template_dir, '.tpl');
 
 
-
+// 新規作成確認画面テンプレート
 $contents = str_replace(
     $replace_from,
     $replace_to,
@@ -623,7 +660,7 @@ $contents = str_replace(
 );
 writeAction($contents, 'new_confirm', $template_dir, '.tpl');
 
-
+// 編集確認画面テンプレート
 $contents = str_replace(
     $replace_from,
     $replace_to,
@@ -632,7 +669,7 @@ $contents = str_replace(
 writeAction($contents, 'edit_confirm', $template_dir, '.tpl');
 
 
-
+// フォームヘルパー(includeファイル)
 $contents = str_replace(
     $replace_from,
     $replace_to,
@@ -640,6 +677,7 @@ $contents = str_replace(
 );
 writeAction($contents, '_form_helper', $template_dir, '.tpl');
 
+// 入力確認ヘルパー(includeファイル)
 $contents = str_replace(
     $replace_from,
     $replace_to,
@@ -647,7 +685,7 @@ $contents = str_replace(
 );
 writeAction($contents, '_confirm_helper', $template_dir, '.tpl');
 
-
+// ヘッダ(includeファイル)
 $contents = str_replace(
     $replace_from,
     $replace_to,
@@ -655,13 +693,15 @@ $contents = str_replace(
 );
 writeAction($contents, '_header', $template_dir, '.tpl');
 
+// フッタ(includeファイル)
 $contents = str_replace(
     $replace_from,
     $replace_to,
-    file_get_contents(dirname(__FILE__).'/scaffold/default/_header.tpl')
+    file_get_contents(dirname(__FILE__).'/scaffold/default/_footer.tpl')
 );
-writeAction($contents, '_header', $template_dir, '.tpl');
+writeAction($contents, '_footer', $template_dir, '.tpl');
 
+// エラー(includeファイル)
 $contents = str_replace(
     $replace_from,
     $replace_to,
@@ -671,7 +711,7 @@ writeAction($contents, '_error', $template_dir, '.tpl');
 
 
 
-
+// 共通エラー画面
 $contents = str_replace(
     $replace_from,
     $replace_to,
@@ -679,6 +719,7 @@ $contents = str_replace(
 );
 writeAction($contents, 'common_error', $template_dir, '.tpl');
 
+// 詳細表示
 $contents = str_replace(
     $replace_from,
     $replace_to,
@@ -686,6 +727,7 @@ $contents = str_replace(
 );
 writeAction($contents, 'show', $template_dir, '.tpl');
 
+// 一覧表示
 $contents = str_replace(
     $replace_from,
     $replace_to,
@@ -693,6 +735,7 @@ $contents = str_replace(
 );
 writeAction($contents, 'index', $template_dir, '.tpl');
 
+// 削除
 $contents = str_replace(
     $replace_from,
     $replace_to,
@@ -700,6 +743,11 @@ $contents = str_replace(
 );
 writeAction($contents, 'destroy', $template_dir, '.tpl');
 
+
+// アクション定義
+
+// 新規作成フォーム
+$replace_to[0] = 'new';
 $contents = str_replace(
     $replace_from,
     $replace_to,
@@ -708,7 +756,7 @@ $contents = str_replace(
 writeAction($contents, $replace_to[0].'Action', $action_dir);
 
 
-
+// 新規作成
 $replace_to[0] = 'create';
 $contents = str_replace(
     $replace_from,
@@ -717,6 +765,7 @@ $contents = str_replace(
 );
 writeAction($contents, $replace_to[0].'Action', $action_dir);
 
+// 詳細表示
 $replace_to[0] = 'show';
 $contents = str_replace(
     $replace_from,
@@ -725,6 +774,7 @@ $contents = str_replace(
 );
 writeAction($contents, $replace_to[0].'Action', $action_dir);
 
+// 編集フォーム
 $replace_to[0] = 'edit';
 $contents = str_replace(
     $replace_from,
@@ -733,7 +783,7 @@ $contents = str_replace(
 );
 writeAction($contents, $replace_to[0].'Action', $action_dir);
 
-
+// 更新
 $replace_to[0] = 'update';
 $contents = str_replace(
     $replace_from,
@@ -742,6 +792,7 @@ $contents = str_replace(
 );
 writeAction($contents, $replace_to[0].'Action', $action_dir);
 
+// 削除
 $replace_to[0] = 'destroy';
 $contents = str_replace(
     $replace_from,
@@ -750,6 +801,7 @@ $contents = str_replace(
 );
 writeAction($contents, $replace_to[0].'Action', $action_dir);
 
+// 一覧
 $replace_to[0] = 'index';
 $contents = str_replace(
     $replace_from,
@@ -758,7 +810,7 @@ $contents = str_replace(
 );
 writeAction($contents, $replace_to[0].'Action', $action_dir);
 
-
+// Ormap
 $contents = str_replace(
     $replace_from,
     $replace_to,
@@ -766,6 +818,7 @@ $contents = str_replace(
 );
 writeAction($contents, pascalize($model_name).'Peer', $model_dir);
 
+// データオブジェクト
 $contents = str_replace(
     $replace_from,
     $replace_to,
@@ -773,9 +826,14 @@ $contents = str_replace(
 );
 writeAction($contents, pascalize($model_name), $model_dir);
 
+// 関数定義
 
-
-
+/**
+ * +-- テキストをパスカルケースにする
+ *
+ * @param       string $string
+ * @return      string
+ */
 function pascalize($string)
 {
     $string = preg_replace('/([A-Z])/', '_$1', $string);
@@ -785,8 +843,14 @@ function pascalize($string)
     $string = str_replace(' ', '', $string);
     return $string;
 }
+/* ----------------------------------------- */
 
-
+/**
+ * +-- テキストをスネークケースにする
+ *
+ * @param       string $string
+ * @return      string
+ */
 function snake_case($string)
 {
     $string[0] = strtolower($string[0]);
@@ -794,15 +858,33 @@ function snake_case($string)
     $string = strtolower($string);
     return ltrim($string, '_');
 }
+/* ----------------------------------------- */
 
+/**
+ * +-- テキストをキャメルケースにする
+ *
+ * @param       string $string
+ * @return      string
+ */
 function camelize($string)
 {
     $string = pascalize($string);
     $string[0] = strtolower($string[0]);
     return $string;
 }
+/* ----------------------------------------- */
 
+/**
+ * +-- ファイルの書き込み
+ *
+ * @param       string $contents
+ * @param       string $file_name
+ * @param       string $dir
+ * @param       string $ext OPTIONAL:'..php'
+ * @return      void
+ */
 function writeAction($contents, $file_name, $dir, $ext = '.class.php')
 {
     file_put_contents($dir.$file_name.$ext, $contents);
 }
+/* ----------------------------------------- */
