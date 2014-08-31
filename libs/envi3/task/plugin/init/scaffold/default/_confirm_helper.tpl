@@ -28,7 +28,7 @@
 <%elseif $type == 'flag'%>
   <div class="form-group">
     <label for="form_<%$name%>"><%$form_name%></label>
-    <%if $default%>
+    <%if $default == 1%>
     <%$options.1|default:"はい"%>
     <input type="hidden" name="<%name%>" value="1">
     <%else%>

@@ -509,20 +509,32 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
     }
     unset($val);
 
+    $inner_replace_from =         array(
+        '_____scaffold_name_____',
+        '_____scaffold_pascal_case_name_____',
+        '_____module_pascal_case_name_____',
+        '_____model_pascal_case_name_____',
+        '_____scaffold_form_name_____',
+        '_____scaffold_form_type_____',
+        '_____scaffold_form_default_____',
+    );
+    $inner_replace_to =         array(
+        $scaffold_name,
+        pascalize($scaffold_name),
+        pascalize($module_name),
+        pascalize($model_name),
+        $scaffold_form_name,
+        $scaffold_form_type,
+        $table_schema_setting[$scaffold_name]['default'],
+    );
     switch ($scaffold_type) {
     case 'select':
     case 'radio':
     case 'checkbox':
+    case 'flag':
         $attribute_text.= str_replace(
-            array(
-                '_____scaffold_name_____',
-                '_____scaffold_form_name_____',
-                '_____scaffold_form_type_____',
-                '_____scaffold_validate_type_____',
-                '_____scaffold_validate_value_____',
-                '_____scaffold_form_default_____',
-            ),
-            array($scaffold_name, $scaffold_form_name, $scaffold_form_type, $validator, $val, $table_schema_setting[$scaffold_name]['default']),
+            $inner_replace_from,
+            $inner_replace_to,
             file_get_contents(dirname(__FILE__).'/scaffold/default/___attribute_text.php')
         );
     break;
@@ -533,109 +545,52 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
 
     // フォーム定義
     $form_text .= str_replace(
-        array(
-            '_____scaffold_name_____',
-            '_____scaffold_form_name_____',
-            '_____scaffold_form_type_____',
-            '_____scaffold_validate_type_____',
-            '_____scaffold_validate_value_____',
-            '_____scaffold_form_default_____',
-        ),
-        array($scaffold_name, $scaffold_form_name, $scaffold_form_type, $validator, $val, $table_schema_setting[$scaffold_name]['default']),
+            $inner_replace_from,
+            $inner_replace_to,
         file_get_contents(dirname(__FILE__).'/scaffold/default/___form_column.tpl')
     );
 
     // conform定義
     $confirm_text .= str_replace(
-        array(
-            '_____scaffold_name_____',
-            '_____scaffold_form_name_____',
-            '_____scaffold_form_type_____',
-            '_____scaffold_validate_type_____',
-            '_____scaffold_validate_value_____',
-            '_____scaffold_form_default_____',
-        ),
-        array($scaffold_name, $scaffold_form_name, $scaffold_form_type, $validator, $val, $table_schema_setting[$scaffold_name]['default']),
+            $inner_replace_from,
+            $inner_replace_to,
         file_get_contents(dirname(__FILE__).'/scaffold/default/___confirm_column.tpl')
     );
 
     // 表示定義
     $show_text .= str_replace(
-        array(
-            '_____scaffold_name_____',
-            '_____scaffold_form_name_____',
-            '_____scaffold_form_type_____',
-            '_____scaffold_validate_type_____',
-            '_____scaffold_validate_value_____',
-            '_____scaffold_form_default_____',
-        ),
-        array($scaffold_name, $scaffold_form_name, $scaffold_form_type, $validator, $val, $table_schema_setting[$scaffold_name]['default']),
+            $inner_replace_from,
+            $inner_replace_to,
         file_get_contents(dirname(__FILE__).'/scaffold/default/___show_column.tpl')
     );
 
     // セッター定義
     $setter_text .= str_replace(
-        array(
-            '_____scaffold_name_____',
-            '_____scaffold_pascal_case_name_____',
-            '_____module_pascal_case_name_____',
-            '_____model_pascal_case_name_____',
-            '_____scaffold_form_name_____',
-            '_____scaffold_validate_type_____',
-            '_____scaffold_validate_value_____',
-        ),
-        array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), pascalize($model_name), $scaffold_form_name, $validator, $val),
+            $inner_replace_from,
+            $inner_replace_to,
         file_get_contents(dirname(__FILE__).'/scaffold/default/___setter.php')
     );
 
     // uniqueCheck処理の追加
     if (isset($scaffold_data_f['unique'])) {
         $validate_unique_check_text .= str_replace(
-            array(
-                '_____scaffold_name_____',
-                '_____scaffold_pascal_case_name_____',
-                '_____module_pascal_case_name_____', '_____model_pascal_case_name_____',
-                '_____scaffold_form_name_____',
-                '_____scaffold_validate_type_____',
-                '_____scaffold_validate_value_____',
-            ),
-            array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), pascalize($model_name), $scaffold_form_name, $validator, $val),
+            $inner_replace_from,
+            $inner_replace_to,
             file_get_contents(dirname(__FILE__).'/scaffold/default/___validate_unique_check.php')
         );
         $validate_unique_check_update_text .= str_replace(
-            array(
-                '_____scaffold_name_____',
-                '_____scaffold_pascal_case_name_____',
-                '_____module_pascal_case_name_____', '_____model_pascal_case_name_____',
-                '_____scaffold_form_name_____',
-                '_____scaffold_validate_type_____',
-                '_____scaffold_validate_value_____',
-            ),
-            array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), pascalize($model_name), $scaffold_form_name, $validator, $val),
+            $inner_replace_from,
+            $inner_replace_to,
             file_get_contents(dirname(__FILE__).'/scaffold/default/___validate_unique_check_update.php')
         );
         $unique_check_query .= str_replace(
-            array(
-                '_____scaffold_name_____',
-                '_____scaffold_pascal_case_name_____',
-                '_____module_pascal_case_name_____', '_____model_pascal_case_name_____',
-                '_____scaffold_form_name_____',
-                '_____scaffold_validate_type_____',
-                '_____scaffold_validate_value_____',
-            ),
-            array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), pascalize($model_name), $scaffold_form_name, $validator, $val),
+            $inner_replace_from,
+            $inner_replace_to,
             file_get_contents(dirname(__FILE__).'/scaffold/default/___unique_check_query.php')
         );
         $unique_check_method .= str_replace(
-            array(
-                '_____scaffold_name_____',
-                '_____scaffold_pascal_case_name_____',
-                '_____module_pascal_case_name_____', '_____model_pascal_case_name_____',
-                '_____scaffold_form_name_____',
-                '_____scaffold_validate_type_____',
-                '_____scaffold_validate_value_____',
-            ),
-            array($scaffold_name, pascalize($scaffold_name), pascalize($module_name), pascalize($model_name), $scaffold_form_name, $validator, $val),
+            $inner_replace_from,
+            $inner_replace_to,
             file_get_contents(dirname(__FILE__).'/scaffold/default/___unique_check_method.php')
         );
     }
