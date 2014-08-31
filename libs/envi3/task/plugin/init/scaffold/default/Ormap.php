@@ -15,6 +15,7 @@
  * @link       %%your_link%%
  * @see        %%your_see%%
  * @since      File available since Release 1.0.0
+ * @doc_ignore
  */
 
 /**
@@ -30,6 +31,7 @@
  * @link       %%your_link%%
  * @see        %%your_see%%
  * @since      Class available since Release 1.0.0
+ * @doc_ignore
  */
 class _____model_pascal_case_name_____ extends Base_____model_pascal_case_name_____
 {

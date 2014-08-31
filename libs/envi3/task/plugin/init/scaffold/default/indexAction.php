@@ -15,6 +15,7 @@
  * @link       %%your_link%%
  * @see        %%your_see%%
  * @since      File available since Release 1.0.0
+ * @doc_ignore
  */
 
 
@@ -31,6 +32,7 @@
  * @link       %%your_link%%
  * @see        %%your_see%%
  * @since      Class available since Release 1.0.0
+ * @doc_ignore
  */
 class _____action_name_____Action extends _____module_name_____Actions
 {
