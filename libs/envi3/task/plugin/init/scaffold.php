@@ -335,146 +335,146 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
     $scaffold_form_type = 'text';
 
     // $scaffold_typeに合わせて、固定のバリデーションとスキーマを定義する
-    switch ($scaffold_type) {
-    case 'integer':
-    case 'int':
-        $scaffold_form_type = 'number';
-        $table_schema_setting[$scaffold_name]['type'] = 'int(11)';
-        $validate['integer'] = true;
-        if ($scaffold_data_f['unsigned']) {
-            $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 2147483647;
-            $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -2147483648;
-        } else {
-            $table_schema_setting[$scaffold_name]['unsigned'] = true;
+        switch ($scaffold_type) {
+        case 'integer':
+        case 'int':
+            $scaffold_form_type = 'number';
+            $table_schema_setting[$scaffold_name]['type'] = 'int(11)';
+            $validate['integer'] = true;
+            if ($scaffold_data_f['unsigned']) {
+                $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 2147483647;
+                $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -2147483648;
+            } else {
+                $table_schema_setting[$scaffold_name]['unsigned'] = true;
+                $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 4294967295;
+                $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : 0;
+            }
+            $validate['maxwidth'] = isset($validate['maxwidth']) ? $validate['maxwidth'] : max(strlen($validate['numbermax']), strlen($validate['numbermin']));
+            break;
+        case 'naturalnumber':
+            $scaffold_form_type = 'number';
+            $validate['naturalnumber'] = true;
             $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 4294967295;
             $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : 0;
-        }
-        $validate['maxwidth'] = isset($validate['maxwidth']) ? $validate['maxwidth'] : max(strlen($validate['numbermax']), strlen($validate['numbermin']));
-    break;
-    case 'naturalnumber':
-        $scaffold_form_type = 'number';
-        $validate['naturalnumber'] = true;
-        $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 4294967295;
-        $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : 0;
-        $validate['maxwidth'] = isset($validate['maxwidth']) ? $validate['maxwidth'] : max(strlen($validate['numbermax']), strlen($validate['numbermin']));
-        $table_schema_setting[$scaffold_name]['type'] = 'int(11)';
-        $table_schema_setting[$scaffold_name]['unsigned'] = true;
-    break;
-    case 'bigint':
-        $scaffold_form_type = 'number';
-        $validate['integer'] = true;
-        $table_schema_setting[$scaffold_name]['type'] = 'bigint(20)';
-        if ($scaffold_data_f['unsigned']) {
-            $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 9223372036854775807;
-            $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -9223372036854775808;
-        } else {
+            $validate['maxwidth'] = isset($validate['maxwidth']) ? $validate['maxwidth'] : max(strlen($validate['numbermax']), strlen($validate['numbermin']));
+            $table_schema_setting[$scaffold_name]['type'] = 'int(11)';
             $table_schema_setting[$scaffold_name]['unsigned'] = true;
-            $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : '18446744073709551615';
-            $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : 0;
-        }
-        $validate['maxwidth'] = isset($validate['maxwidth']) ? $validate['maxwidth'] : max(strlen($validate['numbermax']), strlen($validate['numbermin']));
-    break;
-    case 'tinyint':
-        $scaffold_form_type = 'number';
-        $table_schema_setting[$scaffold_name]['type'] = 'tinyint(4)';
-        $validate['integer'] = true;
-        if ($scaffold_data_f['unsigned']) {
-            $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 127;
-            $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -128;
-        } else {
-            $table_schema_setting[$scaffold_name]['unsigned'] = true;
-            $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 255;
-            $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : 0;
-        }
-        $validate['maxwidth'] = isset($validate['maxwidth']) ? $validate['maxwidth'] : max(strlen($validate['numbermax']), strlen($validate['numbermin']));
-    break;
-    case 'smallint':
-        $scaffold_form_type = 'number';
-        $table_schema_setting[$scaffold_name]['type'] = 'smallint(6)';
-        $validate['integer'] = true;
-        if ($scaffold_data_f['unsigned']) {
-            $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 32767;
-            $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -32768;
-        } else {
-            $table_schema_setting[$scaffold_name]['unsigned'] = true;
-            $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 65535;
-            $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : 0;
-        }
-        $validate['maxwidth'] = isset($validate['maxwidth']) ? $validate['maxwidth'] : max(strlen($validate['numbermax']), strlen($validate['numbermin']));
-    break;
-    case 'mediumint':
-        $scaffold_form_type = 'number';
-        $table_schema_setting[$scaffold_name]['type'] = 'mediumint(7)';
-        $validate['integer'] = true;
-        if ($scaffold_data_f['unsigned']) {
-            $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 8388607;
-            $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -8388608;
-        } else {
-            $table_schema_setting[$scaffold_name]['unsigned'] = true;
-            $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 16777215;
-            $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : 0;
-        }
-        $validate['maxwidth'] = isset($validate['maxwidth']) ? $validate['maxwidth'] : max(strlen($validate['numbermax']), strlen($validate['numbermin']));
-    break;
-    case 'string':
-    case 'varchar':
-        $scaffold_form_type = 'text';
-        if (!isset($validate['maxwidth'])) {
-            $validate['maxwidth'] = 255;
-        }
-        $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
-    break;
-    case 'email':
-        $scaffold_form_type = 'email';
-        if (!isset($validate['maxwidth'])) {
-            $validate['maxwidth'] = 255;
-        }
-        $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
-        $validate['mailsimple'] = true;
-    break;
-    case 'password':
-        $scaffold_form_type = 'password';
-        if (!isset($validate['maxwidth'])) {
-            $validate['maxwidth'] = 255;
-        }
-        $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
-        $validate['rome'] = true;
-    break;
-    case 'flag':
-        $scaffold_form_type = 'flag';
-        $table_schema_setting[$scaffold_name]['type'] = 'tinyint(4)';
-    break;
-    case 'radio':
-        $scaffold_form_type = 'radio';
-        if (!isset($validate['maxwidth'])) {
-            $validate['maxwidth'] = 10;
-        }
-        if (!isset($validate['whitelist'])) {
-            $validate['whitelist'] = array();
-        }
-        $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
-    break;
-    case 'select':
-        $scaffold_form_type = 'select';
-        if (!isset($validate['maxwidth'])) {
-            $validate['maxwidth'] = 10;
-        }
-        if (!isset($validate['whitelist'])) {
-            $validate['whitelist'] = array();
-        }
-        $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
-    break;
-    case 'textarea':
-    case 'text':
-        $scaffold_form_type = 'textarea';
-        if (!isset($validate['maxwidth'])) {
-            $validate['maxwidth'] = 1000;
-        }
-        $table_schema_setting[$scaffold_name]['type'] = 'text';
-    break;
-    default:
-        throw new exception($scaffold_type . 'は存在しないデータ型です。');
-        break;
+            break;
+        case 'bigint':
+            $scaffold_form_type = 'number';
+            $validate['integer'] = true;
+            $table_schema_setting[$scaffold_name]['type'] = 'bigint(20)';
+            if ($scaffold_data_f['unsigned']) {
+                $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 9223372036854775807;
+                $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -9223372036854775808;
+            } else {
+                $table_schema_setting[$scaffold_name]['unsigned'] = true;
+                $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : '18446744073709551615';
+                $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : 0;
+            }
+            $validate['maxwidth'] = isset($validate['maxwidth']) ? $validate['maxwidth'] : max(strlen($validate['numbermax']), strlen($validate['numbermin']));
+            break;
+        case 'tinyint':
+            $scaffold_form_type = 'number';
+            $table_schema_setting[$scaffold_name]['type'] = 'tinyint(4)';
+            $validate['integer'] = true;
+            if ($scaffold_data_f['unsigned']) {
+                $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 127;
+                $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -128;
+            } else {
+                $table_schema_setting[$scaffold_name]['unsigned'] = true;
+                $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 255;
+                $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : 0;
+            }
+            $validate['maxwidth'] = isset($validate['maxwidth']) ? $validate['maxwidth'] : max(strlen($validate['numbermax']), strlen($validate['numbermin']));
+            break;
+        case 'smallint':
+            $scaffold_form_type = 'number';
+            $table_schema_setting[$scaffold_name]['type'] = 'smallint(6)';
+            $validate['integer'] = true;
+            if ($scaffold_data_f['unsigned']) {
+                $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 32767;
+                $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -32768;
+            } else {
+                $table_schema_setting[$scaffold_name]['unsigned'] = true;
+                $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 65535;
+                $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : 0;
+            }
+            $validate['maxwidth'] = isset($validate['maxwidth']) ? $validate['maxwidth'] : max(strlen($validate['numbermax']), strlen($validate['numbermin']));
+            break;
+        case 'mediumint':
+            $scaffold_form_type = 'number';
+            $table_schema_setting[$scaffold_name]['type'] = 'mediumint(7)';
+            $validate['integer'] = true;
+            if ($scaffold_data_f['unsigned']) {
+                $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 8388607;
+                $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -8388608;
+            } else {
+                $table_schema_setting[$scaffold_name]['unsigned'] = true;
+                $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 16777215;
+                $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : 0;
+            }
+            $validate['maxwidth'] = isset($validate['maxwidth']) ? $validate['maxwidth'] : max(strlen($validate['numbermax']), strlen($validate['numbermin']));
+            break;
+        case 'string':
+        case 'varchar':
+            $scaffold_form_type = 'text';
+            if (!isset($validate['maxwidth'])) {
+                $validate['maxwidth'] = 255;
+            }
+            $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
+            break;
+        case 'email':
+            $scaffold_form_type = 'email';
+            if (!isset($validate['maxwidth'])) {
+                $validate['maxwidth'] = 255;
+            }
+            $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
+            $validate['mailsimple'] = true;
+            break;
+        case 'password':
+            $scaffold_form_type = 'password';
+            if (!isset($validate['maxwidth'])) {
+                $validate['maxwidth'] = 255;
+            }
+            $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
+            $validate['rome'] = true;
+            break;
+        case 'flag':
+            $scaffold_form_type = 'flag';
+            $table_schema_setting[$scaffold_name]['type'] = 'tinyint(4)';
+            break;
+        case 'radio':
+            $scaffold_form_type = 'radio';
+            if (!isset($validate['maxwidth'])) {
+                $validate['maxwidth'] = 10;
+            }
+            if (!isset($validate['whitelist'])) {
+                $validate['whitelist'] = array();
+            }
+            $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
+            break;
+        case 'select':
+            $scaffold_form_type = 'select';
+            if (!isset($validate['maxwidth'])) {
+                $validate['maxwidth'] = 10;
+            }
+            if (!isset($validate['whitelist'])) {
+                $validate['whitelist'] = array();
+            }
+            $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
+            break;
+        case 'textarea':
+        case 'text':
+            $scaffold_form_type = 'textarea';
+            if (!isset($validate['maxwidth'])) {
+                $validate['maxwidth'] = 1000;
+            }
+            $table_schema_setting[$scaffold_name]['type'] = 'text';
+            break;
+        default:
+            throw new exception($scaffold_type . 'は存在しないデータ型です。');
+            break;
     }
 
     // Not Null対応
@@ -528,19 +528,18 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
         $table_schema_setting[$scaffold_name]['default'],
     );
     switch ($scaffold_type) {
-    case 'select':
-    case 'radio':
-    case 'checkbox':
-    case 'flag':
-        $attribute_text.= str_replace(
-            $inner_replace_from,
-            $inner_replace_to,
-            file_get_contents(dirname(__FILE__).'/scaffold/default/___attribute_text.php')
-        );
-    break;
-    default:
-    break;
-
+        case 'select':
+        case 'radio':
+        case 'checkbox':
+        case 'flag':
+            $attribute_text.= str_replace(
+                $inner_replace_from,
+                $inner_replace_to,
+                file_get_contents(dirname(__FILE__).'/scaffold/default/___attribute_text.php')
+            );
+            break;
+        default:
+            break;
     }
 
     // フォーム定義
