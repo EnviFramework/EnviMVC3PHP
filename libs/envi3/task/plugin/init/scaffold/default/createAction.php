@@ -87,6 +87,7 @@ class _____action_name_____Action extends _____module_name_____Actions
         }
         EnviRequest::setAttribute('input_data', $input_data);
 
+/*%%add_input_data_text%%*/
 
 /*%%validate_unique_check_text%%*/
 

@@ -243,6 +243,8 @@ $unique_check_query = '';
 // Ormap用ユニークキーチェックメソッド
 $unique_check_method = '';
 
+// 追加変数
+$add_input_data_text = '';
 
 // フォームテンプレート
 $form_text = '';
@@ -250,6 +252,9 @@ $form_text = '';
 $confirm_text = '';
 // 表示用テンプレート
 $show_text = '';
+
+// アトリビュート用
+$attribute_text = '';
 
 // 残りの引数を使って、コードをジェネレートする
 while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
@@ -267,9 +272,12 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
         $val_p = explode(':', $val);
         if (count($val_p) === 1) {
             $scaffold_data_f[$val] = true;
-        } else {
+        } elseif (count($val_p) === 2) {
             $val_key = array_shift($val_p);
             $scaffold_data_f[$val_key] = $val_p[0];
+        } else {
+            $val_key = array_shift($val_p);
+            $scaffold_data_f[$val_key] = $val_p;
         }
     }
 
@@ -299,15 +307,29 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
         }
     }
 
-    // バリデーション初期設定(validate()->autoPrepare(...))
-    $validate_text .= str_replace(
-        array(
-            '_____scaffold_name_____',
-            '_____scaffold_form_name_____',
-        ),
-        array($scaffold_name, $scaffold_form_name),
-        file_get_contents($file_poth)
-    );
+    $use_validator = true;
+    if ($scaffold_type === 'flag') {
+        // flagはバリデータを使用せず、直接追加する
+        $use_validator = false;
+        $validate_text .= str_replace(
+            array(
+                '_____scaffold_name_____',
+                '_____scaffold_form_name_____',
+            ),
+            array($scaffold_name, $scaffold_form_name),
+            file_get_contents(dirname(__FILE__).'/scaffold/default/__flag_add_input.php')
+        );
+    } else {
+        // バリデーション初期設定(validate()->autoPrepare(...))
+        $validate_text .= str_replace(
+            array(
+                '_____scaffold_name_____',
+                '_____scaffold_form_name_____',
+            ),
+            array($scaffold_name, $scaffold_form_name),
+            file_get_contents($file_poth)
+        );
+    }
 
     // フォームタイプの初期化
     $scaffold_form_type = 'text';
@@ -418,6 +440,30 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
         $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
         $validate['rome'] = true;
     break;
+    case 'flag':
+        $scaffold_form_type = 'flag';
+        $table_schema_setting[$scaffold_name]['type'] = 'tinyint(4)';
+    break;
+    case 'radio':
+        $scaffold_form_type = 'radio';
+        if (!isset($validate['maxwidth'])) {
+            $validate['maxwidth'] = 10;
+        }
+        if (!isset($validate['whitelist'])) {
+            $validate['whitelist'] = array();
+        }
+        $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
+    break;
+    case 'select':
+        $scaffold_form_type = 'select';
+        if (!isset($validate['maxwidth'])) {
+            $validate['maxwidth'] = 10;
+        }
+        if (!isset($validate['whitelist'])) {
+            $validate['whitelist'] = array();
+        }
+        $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
+    break;
     case 'textarea':
     case 'text':
         $scaffold_form_type = 'textarea';
@@ -448,19 +494,42 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
     // 定義されたバリデータから、バリデータ用のコードをジェネレーとする
     foreach ($validate as $validator => &$val) {
         $val = var_export($val, true);
+        if ($use_validator) {
+            $validate_text .= str_replace(
+                array(
+                    '_____scaffold_name_____',
+                    '_____scaffold_form_name_____',
+                    '_____scaffold_validate_type_____',
+                    '_____scaffold_validate_value_____',
+                ),
+                array($scaffold_name, $scaffold_form_name, $validator, $val),
+                file_get_contents(dirname(__FILE__).'/scaffold/default/___validate_chain.php')
+            );
+        }
+    }
+    unset($val);
 
-        $validate_text .= str_replace(
+    switch ($scaffold_type) {
+    case 'select':
+    case 'radio':
+    case 'checkbox':
+        $attribute_text.= str_replace(
             array(
                 '_____scaffold_name_____',
                 '_____scaffold_form_name_____',
+                '_____scaffold_form_type_____',
                 '_____scaffold_validate_type_____',
                 '_____scaffold_validate_value_____',
+                '_____scaffold_form_default_____',
             ),
-            array($scaffold_name, $scaffold_form_name, $validator, $val),
-            file_get_contents(dirname(__FILE__).'/scaffold/default/___validate_chain.php')
+            array($scaffold_name, $scaffold_form_name, $scaffold_form_type, $validator, $val, $table_schema_setting[$scaffold_name]['default']),
+            file_get_contents(dirname(__FILE__).'/scaffold/default/___attribute_text.php')
         );
-    }
+    break;
+    default:
+    break;
 
+    }
 
     // フォーム定義
     $form_text .= str_replace(
@@ -614,6 +683,10 @@ $replace_from = array(
     '/*%%validate_unique_check_update_text%%*/',
     '/*%%unique_check_query%%*/',
     '/*%%unique_check_method%%*/',
+    '/*%%add_input_data_text%%*/',
+    '/*%%attribute_text%%*/',
+
+
     '_____module_name_____',
     '_____module_pascal_case_name_____',
     '_____model_pascal_case_name_____',
@@ -629,6 +702,8 @@ $replace_to = array(
     $validate_unique_check_update_text,
     $unique_check_query,
     $unique_check_method,
+    $add_input_data_text,
+    $attribute_text,
     $module_name,
     pascalize($module_name),
     pascalize($model_name),

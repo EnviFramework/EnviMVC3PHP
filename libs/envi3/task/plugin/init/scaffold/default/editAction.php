@@ -112,6 +112,7 @@ class _____action_name_____Action extends _____module_name_____Actions
      */
     public function execute()
     {
+/*%%attribute_text%%*/
         $this->Renderer()->setAttribute('_____module_name_____', EnviRequest::getAttribute('_____model_pascal_case_name_____'));
         $this->Renderer()->setAttribute('error', EnviRequest::getErrors());
         $this->Renderer()->display('edit.tpl');
@@ -128,8 +129,7 @@ class _____action_name_____Action extends _____module_name_____Actions
      */
     public function defaultAccess()
     {
-        $this->Renderer()->setAttribute('error', EnviRequest::getErrors());
-        $this->Renderer()->display('edit.tpl');
+        $this->execute();
     }
     /* ----------------------------------------- */
 
