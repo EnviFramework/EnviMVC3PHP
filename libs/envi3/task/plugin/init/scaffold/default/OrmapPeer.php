@@ -51,7 +51,7 @@ class _____model_pascal_case_name_____Peer extends Base_____model_pascal_case_na
     public static function getAllByArray($con = NULL)
     {
         $bind_array = array();
-        $suffix     = '';
+        $suffix     = NULL;
         $query_key = 'get_all';
 
         $dbi = $con ? $con : extension()->DBI()->getInstance('default_master');

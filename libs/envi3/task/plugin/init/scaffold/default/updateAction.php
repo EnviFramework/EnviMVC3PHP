@@ -73,10 +73,11 @@ class _____action_name_____Action extends _____module_name_____Actions
      */
     public function validate()
     {
+        $validator = validator();
         if($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return Envi::DEFAULT_ACCESS;
         }
-        if (!EnviRequest::hasParameter('commit') || !EnviRequest::hasParameter('confirm')) {
+        if (!EnviRequest::hasParameter('commit') && !EnviRequest::hasParameter('confirm')) {
             return Envi::DEFAULT_ACCESS;
         }
 
@@ -105,7 +106,7 @@ class _____action_name_____Action extends _____module_name_____Actions
 /*%%validate_unique_check_update_text%%*/
 
 
-        EnviRequest::setAttribute('input_data', $res);
+        EnviRequest::setAttribute('input_data', $input_data);
         if (EnviRequest::hasParameter('confirm')) {
             return Envi::DEFAULT_ACCESS;
         }
@@ -133,7 +134,7 @@ class _____action_name_____Action extends _____module_name_____Actions
 
         $_____model_pascal_case_name_____->save();
 
-        EnviController::redirect('./update.php?commit=t&id='.$_____model_pascal_case_name_____->getId());
+        EnviController::redirect('./show.php?commit=t&id='.$_____model_pascal_case_name_____->getId());
     }
     /* ----------------------------------------- */
 

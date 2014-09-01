@@ -320,7 +320,7 @@ class Envi
 
     protected $is_shutDown;
 
-    public $auto_load_classes;
+    public $auto_load_classes = array();
 
     public static $is_rested = false;
 
@@ -1286,13 +1286,16 @@ class Envi
         if (isset($auto_load_classes[$class_name])) {
             include $auto_load_classes[$class_name];
             return;
+        } elseif (isset($auto_load_classes["\\".$class_name])) {
+            include $auto_load_classes["\\".$class_name];
+            return;
         }
 
         // psr-0用のDIRECTORY
         if (!$autoload_psr_dir) {
-            $autoload_psr_dir = isset($this->_system_conf['AUTOLOAD_PSR']) ? $this->_system_conf['AUTOLOAD_PSR'] : array();
+            $autoload_psr_dir = self::singleton()->getConfiguration('AUTOLOAD_PSR');
         }
-        if (count($autoload_psr_dir) === 0) {
+        if (!is_array($autoload_psr_dir) || count($autoload_psr_dir) === 0) {
             return;
         }
 

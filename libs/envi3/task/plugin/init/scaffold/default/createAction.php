@@ -73,10 +73,11 @@ class _____action_name_____Action extends _____module_name_____Actions
      */
     public function validate()
     {
+        $validator = validator();
         if($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return Envi::DEFAULT_ACCESS;
         }
-        if (!EnviRequest::hasParameter('commit') || !EnviRequest::hasParameter('confirm')) {
+        if (!EnviRequest::hasParameter('commit') && !EnviRequest::hasParameter('confirm')) {
             return Envi::DEFAULT_ACCESS;
         }
 
@@ -115,7 +116,7 @@ class _____action_name_____Action extends _____module_name_____Actions
 /*%%setter_text%%*/
         $_____model_pascal_case_name_____->save();
 
-        EnviController::redirect('./create.php?commit=t&id='.$_____model_pascal_case_name_____->getId());
+        EnviController::redirect('./show.php?commit=t&id='.$_____model_pascal_case_name_____->getId());
     }
     /* ----------------------------------------- */
 
