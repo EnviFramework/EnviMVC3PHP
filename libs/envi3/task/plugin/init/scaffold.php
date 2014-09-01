@@ -341,7 +341,7 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
             $scaffold_form_type = 'number';
             $table_schema_setting[$scaffold_name]['type'] = 'int(11)';
             $validate['integer'] = true;
-            if ($scaffold_data_f['unsigned']) {
+            if (isset($scaffold_data_f['unsigned']) && $scaffold_data_f['unsigned']) {
                 $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 2147483647;
                 $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -2147483648;
             } else {
@@ -364,7 +364,7 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
             $scaffold_form_type = 'number';
             $validate['integer'] = true;
             $table_schema_setting[$scaffold_name]['type'] = 'bigint(20)';
-            if ($scaffold_data_f['unsigned']) {
+            if (isset($scaffold_data_f['unsigned']) && $scaffold_data_f['unsigned']) {
                 $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 9223372036854775807;
                 $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -9223372036854775808;
             } else {
@@ -378,7 +378,7 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
             $scaffold_form_type = 'number';
             $table_schema_setting[$scaffold_name]['type'] = 'tinyint(4)';
             $validate['integer'] = true;
-            if ($scaffold_data_f['unsigned']) {
+            if (isset($scaffold_data_f['unsigned']) && $scaffold_data_f['unsigned']) {
                 $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 127;
                 $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -128;
             } else {
@@ -392,7 +392,7 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
             $scaffold_form_type = 'number';
             $table_schema_setting[$scaffold_name]['type'] = 'smallint(6)';
             $validate['integer'] = true;
-            if ($scaffold_data_f['unsigned']) {
+            if (isset($scaffold_data_f['unsigned']) && $scaffold_data_f['unsigned']) {
                 $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 32767;
                 $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -32768;
             } else {
@@ -406,7 +406,7 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
             $scaffold_form_type = 'number';
             $table_schema_setting[$scaffold_name]['type'] = 'mediumint(7)';
             $validate['integer'] = true;
-            if ($scaffold_data_f['unsigned']) {
+            if (isset($scaffold_data_f['unsigned']) && $scaffold_data_f['unsigned']) {
                 $validate['numbermax'] = isset($validate['numbermax']) ? $validate['numbermax'] : 8388607;
                 $validate['numbermin'] = isset($validate['numbermin']) ? $validate['numbermin'] : -8388608;
             } else {
