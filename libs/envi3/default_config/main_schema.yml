@@ -61,9 +61,9 @@ SETTING:
   
   # OrMapperが所属するデフォルトのネームスペース
   # PHP 5.3以降ではネームスペースが使用できるようになりました。
-  # model_name_space: \model
+  # model_name_space: model
   model_name_space: ""
   
   # OrMapperのベースクラスがが所属するデフォルトのネームスペース
-  # model_base_name_space: \model\om
+  # model_base_name_space: model\om
   model_base_name_space: ""
