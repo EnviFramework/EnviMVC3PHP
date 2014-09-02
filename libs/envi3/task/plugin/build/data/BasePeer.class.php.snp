@@ -1,5 +1,6 @@
 <?php
-%%name_space%%
+%%model_base_name_space%%
+%%model_name_space_use%%
 /**
  * データアクセサベースクラス
  *

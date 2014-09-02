@@ -1,4 +1,6 @@
 <?php
+/*%%model_name_space_use%%*/
+
 /**
  *
  *
@@ -33,7 +35,7 @@
  * @since      Class available since Release 1.0.0
  * @doc_ignore
  */
-class _____model_pascal_case_name_____Peer extends Base_____model_pascal_case_name_____Peer
+class _____model_pascal_case_name_____Peer extends /*%%model_base_name_space%%*/Base_____model_pascal_case_name_____Peer
 {
     protected static $queries = array(
         'get_all'    => 'SELECT * FROM __TABLE__',

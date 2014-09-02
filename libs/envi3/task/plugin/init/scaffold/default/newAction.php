@@ -1,4 +1,5 @@
 <?php
+/*%%dao_use%%*/
 /**
  *
  *
@@ -87,6 +88,7 @@ class _____action_name_____Action extends _____module_name_____Actions
     public function execute()
     {
 /*%%attribute_text%%*/
+
         $this->Renderer()->setAttribute('error', EnviRequest::getErrors());
         $this->Renderer()->display('new.tpl');
     }

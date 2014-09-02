@@ -86,12 +86,13 @@ all:
 ## コールされた時にオートロードされるディレクトリ(キャッシュあり)
   AUTOLOAD:
     - "<?php echo "{$base}libs{$ds}common{$ds}";?>"
+    # build-modelの名前空間対応をした場合は下記二行を削除してください
     - "<?php echo "{$base}libs{$ds}models{$ds}";?>"
     - "<?php echo "{$base}libs{$ds}models{$ds}om{$ds}";?>"
 
 ## コールされた時にオートロードされるディレクトリ(キャッシュなし。PSR-0準拠)
   AUTOLOAD_PSR:
-  
+    - "<?php echo "{$base}libs{$ds}";?>"
 
 
 

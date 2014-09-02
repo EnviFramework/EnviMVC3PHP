@@ -26,6 +26,21 @@
   <label for="form_<%$name%>"><%$form_name%></label>
   <input type="checkbox" name="<%$name%>" value="1"<%if $default%> checked="checked"<%/if%>>
   </div>
+<%elseif $type == 'zip_code'%>
+  <div class="form-group">
+  <label for="form_<%$name%>"><%$form_name%></label>
+  <div class="row">
+  <div class="col-xs-3">
+  <input type="text" name="<%$name%>_f" class="form-control" id="form_<%$name%>" placeholder="<%$form_name_f%>" value="<%$default|substr:0:3%>" size="3">
+  </div>
+  <div class="col-xs-1">
+  -
+  </div>
+  <div class="col-xs-4">
+  <input type="text" name="<%$name%>_a" class="form-control" id="form_<%$name%>" placeholder="<%$form_name_a%>" value="<%$default|substr:-4:4%>" size="4">
+  </div>
+  </div>
+  </div>
 <%else%>
   <div class="form-group">
   <label for="form_<%$name%>"><%$form_name%></label>

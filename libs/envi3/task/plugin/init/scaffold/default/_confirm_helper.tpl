@@ -35,6 +35,13 @@
     <%$options.0|default:"いいえ"%>
     <%/if%>
   </div>
+<%elseif $type == 'zip_code'%>
+  <input type="hidden" name="<%$name%>_f" value="<%$default|substr:0:3%>">
+  <input type="hidden" name="<%$name%>_a" value="<%$default|substr:-4:4%>">
+  <div class="form-group">
+    <label for="form_<%$name%>"><%$form_name%></label>
+    <%$default%>
+  </div>
 <%else%>
   <input type="hidden" name="<%$name%>" value="<%$default%>">
   <div class="form-group">

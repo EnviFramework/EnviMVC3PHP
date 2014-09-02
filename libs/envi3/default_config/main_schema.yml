@@ -5,8 +5,6 @@ SCHEMA:
   sample_table_name:
     # クラス名(省略可能。省略した場合はテーブル名のパスカルケース)
     class_name: "SampleClassName"
-    # ネームスペース
-    namespace: "EnviOrmp"
     # スキーマ情報
     schema:
       # カラム名
@@ -62,4 +60,10 @@ SETTING:
   reverse_yaml: true
   
   # OrMapperが所属するデフォルトのネームスペース
-  default_namespace: ""
+  # PHP 5.3以降ではネームスペースが使用できるようになりました。
+  # model_name_space: \model
+  model_name_space: ""
+  
+  # OrMapperのベースクラスがが所属するデフォルトのネームスペース
+  # model_base_name_space: \model\om
+  model_base_name_space: ""

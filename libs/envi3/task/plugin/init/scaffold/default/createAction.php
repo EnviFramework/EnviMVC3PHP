@@ -1,4 +1,5 @@
 <?php
+/*%%dao_use%%*/
 /**
  *
  *
@@ -88,9 +89,10 @@ class _____action_name_____Action extends _____module_name_____Actions
         if ($validator->isError($input_data)) {
             return Envi::ERROR;
         }
-        EnviRequest::setAttribute('input_data', $input_data);
 
 /*%%add_input_data_text%%*/
+
+        EnviRequest::setAttribute('input_data', $input_data);
 
 /*%%validate_unique_check_text%%*/
 
@@ -130,6 +132,8 @@ class _____action_name_____Action extends _____module_name_____Actions
      */
     public function defaultAccess()
     {
+        $input_data = EnviRequest::getAttribute('input_data');
+        $this->Renderer()->setAttribute('input_data', $input_data);
         if (EnviRequest::hasParameter('confirm')) {
             $this->Renderer()->display('new_confirm.tpl');
             return Envi::NONE;

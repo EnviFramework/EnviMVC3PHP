@@ -141,6 +141,37 @@ if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'c
 
 // ./module.php からのコピペここまで
 
+// scheme yaml
+ob_start();
+include $project_dir.'config'.DIRECTORY_SEPARATOR.$project_name.'_schema.yml';
+$buff      = ob_get_contents();
+ob_end_clean();
+
+$schema_yaml = spyc_load($buff);
+
+// ネームスペース(build-modelからのコピペ)
+$model_name_space       = '';
+$model_base_name_space  = '';
+
+$model_name_space_use   = '';
+$base_model_name_space_use   = '';
+if (PHP_MINOR_VERSION >= 3) {
+    $model_name_space            = isset($schema_yaml['SETTING']['model_name_space']) ? $schema_yaml['SETTING']['model_name_space']: '';
+    $model_base_name_space       = isset($schema_yaml['SETTING']['model_base_name_space']) ? $schema_yaml['SETTING']['model_base_name_space']: '';
+}
+$dao_use = '';
+if (strlen($model_name_space)) {
+    $dao_use = 'use '.$model_name_space."\\".pascalize($model_name).'Peer;'."\n".'use '.$model_name_space."\\".pascalize($model_name).';'."\n";
+    $model_name_space_use = 'namespace ' . $model_name_space .';'."\nuse \\EnviOrMapBase;\nuse \\EnviDBInstance;\nuse \\EnviDB;\nuse \\EnviException;\nuse \\EnviDBIBase;\n";
+
+}
+if (strlen($model_base_name_space)) {
+    $model_base_name_space_use = 'namespace ' . $model_base_name_space .';'."\nuse \\EnviOrMapBase;\nuse \\EnviDBInstance;\nuse \\EnviDB;\nuse \\EnviException;\nuse \\EnviDBIBase;\n";
+}
+
+// ネームスペース(build-modelからのコピペここまで)
+
+
 // アクションの作成
 
 // 定義済みバリデータ
@@ -311,13 +342,39 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
     if ($scaffold_type === 'flag') {
         // flagはバリデータを使用せず、直接追加する
         $use_validator = false;
-        $validate_text .= str_replace(
+        $add_input_data_text .= str_replace(
             array(
                 '_____scaffold_name_____',
                 '_____scaffold_form_name_____',
             ),
             array($scaffold_name, $scaffold_form_name),
-            file_get_contents(dirname(__FILE__).'/scaffold/default/__flag_add_input.php')
+            file_get_contents(dirname(__FILE__).'/scaffold/default/___flag_add_input.php')
+        );
+    } elseif ($scaffold_type === 'zip_code') {
+        // zip_codeはバリデータをニコ登録する
+        $validate_text .= str_replace(
+            array(
+                '_____scaffold_name_____',
+                '_____scaffold_form_name_____',
+            ),
+            array($scaffold_name.'_f', $scaffold_form_name),
+            file_get_contents($file_poth)
+        );
+        $validate_text .= str_replace(
+            array(
+                '_____scaffold_name_____',
+                '_____scaffold_form_name_____',
+            ),
+            array($scaffold_name.'_a', $scaffold_form_name),
+            file_get_contents($file_poth)
+        );
+        $add_input_data_text .= str_replace(
+            array(
+                '_____scaffold_name_____',
+                '_____scaffold_form_name_____',
+            ),
+            array($scaffold_name, $scaffold_form_name),
+            file_get_contents(dirname(__FILE__).'/scaffold/default/___zip_code_add_input.php')
         );
     } else {
         // バリデーション初期設定(validate()->autoPrepare(...))
@@ -472,6 +529,73 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
             }
             $table_schema_setting[$scaffold_name]['type'] = 'text';
             break;
+        case 'zip_code':
+            $scaffold_form_type = 'zip_code';
+            // 手動で追加する
+            $use_validator = false;
+            $table_schema_setting[$scaffold_name]['type'] = 'varchar(10)';
+            $validate_text .= str_replace(
+                array(
+                    '_____scaffold_name_____',
+                    '_____scaffold_form_name_____',
+                    '_____scaffold_validate_type_____',
+                    '_____scaffold_validate_value_____',
+                ),
+                array($scaffold_name.'_f', $scaffold_form_name, 'maxwidth', '3'),
+                file_get_contents(dirname(__FILE__).'/scaffold/default/___validate_chain.php')
+            );
+            $validate_text .= str_replace(
+                array(
+                    '_____scaffold_name_____',
+                    '_____scaffold_form_name_____',
+                    '_____scaffold_validate_type_____',
+                    '_____scaffold_validate_value_____',
+                ),
+                array($scaffold_name.'_f', $scaffold_form_name, 'minwidth', '3'),
+                file_get_contents(dirname(__FILE__).'/scaffold/default/___validate_chain.php')
+            );
+            $validate_text .= str_replace(
+                array(
+                    '_____scaffold_name_____',
+                    '_____scaffold_form_name_____',
+                    '_____scaffold_validate_type_____',
+                    '_____scaffold_validate_value_____',
+                ),
+                array($scaffold_name.'_a', $scaffold_form_name, 'maxwidth', '4'),
+                file_get_contents(dirname(__FILE__).'/scaffold/default/___validate_chain.php')
+            );
+            $validate_text .= str_replace(
+                array(
+                    '_____scaffold_name_____',
+                    '_____scaffold_form_name_____',
+                    '_____scaffold_validate_type_____',
+                    '_____scaffold_validate_value_____',
+                ),
+                array($scaffold_name.'_a', $scaffold_form_name, 'minwidth', '4'),
+                file_get_contents(dirname(__FILE__).'/scaffold/default/___validate_chain.php')
+            );
+            $validate_text .= str_replace(
+                array(
+                    '_____scaffold_name_____',
+                    '_____scaffold_form_name_____',
+                    '_____scaffold_validate_type_____',
+                    '_____scaffold_validate_value_____',
+                ),
+                array($scaffold_name.'_f', $scaffold_form_name, 'number', 'true'),
+                file_get_contents(dirname(__FILE__).'/scaffold/default/___validate_chain.php')
+            );
+            $validate_text .= str_replace(
+                array(
+                    '_____scaffold_name_____',
+                    '_____scaffold_form_name_____',
+                    '_____scaffold_validate_type_____',
+                    '_____scaffold_validate_value_____',
+                ),
+                array($scaffold_name.'_a', $scaffold_form_name, 'number', 'true'),
+                file_get_contents(dirname(__FILE__).'/scaffold/default/___validate_chain.php')
+            );
+
+            break;
         default:
             throw new exception($scaffold_type . 'は存在しないデータ型です。');
             break;
@@ -491,7 +615,7 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
     // デフォルト値対応
     $table_schema_setting[$scaffold_name]['default'] = isset($scaffold_data_f['default']) ? (int)$scaffold_data_f['default'] : NULL;
 
-    // 定義されたバリデータから、バリデータ用のコードをジェネレーとする
+    // 定義されたバリデータから、バリデータ用のコードをジェネレートする
     foreach ($validate as $validator => &$val) {
         $val = var_export($val, true);
         if ($use_validator) {
@@ -639,7 +763,11 @@ $replace_from = array(
     '/*%%unique_check_method%%*/',
     '/*%%add_input_data_text%%*/',
     '/*%%attribute_text%%*/',
-
+    '/*%%model_name_space%%*/',
+    '/*%%model_base_name_space%%*/',
+    '/*%%model_name_space_use%%*/',
+    '/*%%model_base_name_space_use%%*/',
+    '/*%%dao_use%%*/',
 
     '_____module_name_____',
     '_____module_pascal_case_name_____',
@@ -658,6 +786,12 @@ $replace_to = array(
     $unique_check_method,
     $add_input_data_text,
     $attribute_text,
+    $model_name_space.';',
+    $model_base_name_space."\\",
+    $model_name_space_use,
+    $model_base_name_space_use,
+    $dao_use,
+
     $module_name,
     pascalize($module_name),
     pascalize($model_name),
@@ -845,7 +979,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/OrmapPeer.php')
 );
-writeAction($contents, pascalize($model_name).'Peer', $model_dir);
+writeAction($contents, pascalize($model_name).'Peer', $model_dir, '.class.php', false);
 
 // データオブジェクト
 $contents = str_replace(
@@ -853,7 +987,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/Ormap.php')
 );
-writeAction($contents, pascalize($model_name), $model_dir);
+writeAction($contents, pascalize($model_name), $model_dir, '.class.php', false);
 
 // 関数定義
 
@@ -909,11 +1043,25 @@ function camelize($string)
  * @param       string $contents
  * @param       string $file_name
  * @param       string $dir
- * @param       string $ext OPTIONAL:'..php'
+ * @param       string $ext OPTIONAL:'.class.php'
+ * @param       boolean $over_ride OPTIONAL:true
  * @return      void
  */
-function writeAction($contents, $file_name, $dir, $ext = '.class.php')
+function writeAction($contents, $file_name, $dir, $ext = '.class.php', $over_ride = true)
 {
+    // 強制上書きじゃなければ、バックアップを保存する
+    if (!$over_ride && is_file($dir.$file_name.$ext)) {
+        $rename = $dir.$file_name.$ext.'.'.time();
+        rename($dir.$file_name.$ext, $rename);
+        sysMessage('rename:', $dir.$file_name.$ext, $rename);
+    }
     file_put_contents($dir.$file_name.$ext, $contents);
 }
 /* ----------------------------------------- */
+
+
+function sysMessage()
+{
+    $message = join('', func_get_args());
+    echo $message,"\n";
+}
