@@ -153,8 +153,8 @@ $schema_yaml = spyc_load($buff);
 $model_name_space       = '';
 $model_base_name_space  = '';
 
-$model_name_space_use   = '';
-$base_model_name_space_use   = '';
+$model_name_space_use        = '';
+$model_base_name_space_use   = '';
 if (PHP_MINOR_VERSION >= 3) {
     $model_name_space            = isset($schema_yaml['SETTING']['model_name_space']) ? $schema_yaml['SETTING']['model_name_space']: '';
     $model_base_name_space       = isset($schema_yaml['SETTING']['model_base_name_space']) ? $schema_yaml['SETTING']['model_base_name_space']: '';
@@ -376,6 +376,32 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
             array($scaffold_name, $scaffold_form_name),
             file_get_contents(dirname(__FILE__).'/scaffold/default/___zip_code_add_input.php')
         );
+    } elseif ($scaffold_type === 'date_time' || $scaffold_type === 'datetime') {
+        // date_timeはバリデータをニコ登録する
+        $validate_text .= str_replace(
+            array(
+                '_____scaffold_name_____',
+                '_____scaffold_form_name_____',
+            ),
+            array($scaffold_name.'_date', $scaffold_form_name),
+            file_get_contents($file_poth)
+        );
+        $validate_text .= str_replace(
+            array(
+                '_____scaffold_name_____',
+                '_____scaffold_form_name_____',
+            ),
+            array($scaffold_name.'_time', $scaffold_form_name),
+            file_get_contents($file_poth)
+        );
+        $add_input_data_text .= str_replace(
+            array(
+                '_____scaffold_name_____',
+                '_____scaffold_form_name_____',
+            ),
+            array($scaffold_name, $scaffold_form_name),
+            file_get_contents(dirname(__FILE__).'/scaffold/default/___date_time_add_input.php')
+        );
     } else {
         // バリデーション初期設定(validate()->autoPrepare(...))
         $validate_text .= str_replace(
@@ -393,6 +419,42 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
 
     // $scaffold_typeに合わせて、固定のバリデーションとスキーマを定義する
         switch ($scaffold_type) {
+        case 'date':
+            $table_schema_setting[$scaffold_name]['type'] = 'date';
+            $validate['date'] = true;
+            break;
+        case 'time':
+            $table_schema_setting[$scaffold_name]['time'] = 'time';
+            $validate['date'] = true;
+            break;
+        case 'date_time':
+        case 'datetime':
+            $scaffold_form_type = 'datetime';
+            $table_schema_setting[$scaffold_name]['type'] = 'datetime';
+            // 手動で追加する
+            $use_validator = false;
+            $validate_text .= str_replace(
+                array(
+                    '_____scaffold_name_____',
+                    '_____scaffold_form_name_____',
+                    '_____scaffold_validate_type_____',
+                    '_____scaffold_validate_value_____',
+                ),
+                array($scaffold_name.'_date', $scaffold_form_name, 'date', true),
+                file_get_contents(dirname(__FILE__).'/scaffold/default/___validate_chain.php')
+            );
+            $validate_text .= str_replace(
+                array(
+                    '_____scaffold_name_____',
+                    '_____scaffold_form_name_____',
+                    '_____scaffold_validate_type_____',
+                    '_____scaffold_validate_value_____',
+                ),
+                array($scaffold_name.'_time', $scaffold_form_name, 'time', 4),
+                file_get_contents(dirname(__FILE__).'/scaffold/default/___validate_chain.php')
+            );
+
+            break;
         case 'integer':
         case 'int':
             $scaffold_form_type = 'number';
@@ -476,25 +538,39 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
         case 'string':
         case 'varchar':
             $scaffold_form_type = 'text';
-            if (!isset($validate['maxwidth'])) {
-                $validate['maxwidth'] = 255;
+            if (!isset($validate['maxwidth']) && !isset($validate['maxlen'])) {
+                $validate['maxlen'] = 255;
             }
-            $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
+            if (isset($validate['maxwidth'])) {
+                $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
+            } else {
+                $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxlen'].')';
+            }
+
             break;
         case 'email':
             $scaffold_form_type = 'email';
-            if (!isset($validate['maxwidth'])) {
-                $validate['maxwidth'] = 255;
+            if (!isset($validate['maxwidth']) && !isset($validate['maxlen'])) {
+                $validate['maxlen'] = 255;
             }
-            $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
+            if (isset($validate['maxwidth'])) {
+                $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
+            } else {
+                $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxlen'].')';
+            }
+
             $validate['mailsimple'] = true;
             break;
         case 'password':
             $scaffold_form_type = 'password';
-            if (!isset($validate['maxwidth'])) {
-                $validate['maxwidth'] = 255;
+            if (!isset($validate['maxwidth']) && !isset($validate['maxlen'])) {
+                $validate['maxlen'] = 255;
             }
-            $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
+            if (isset($validate['maxwidth'])) {
+                $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxwidth'].')';
+            } else {
+                $table_schema_setting[$scaffold_name]['type'] = 'varchar('.$validate['maxlen'].')';
+            }
             $validate['rome'] = true;
             break;
         case 'flag':
@@ -746,7 +822,7 @@ $table_schema_setting['time_stamp'] = array(
 
 
 // テーブル定義のYamlを生成する
-$yaml = Spyc::YAMLDump(array('SCHEMA' => array(snake_case($model_name) => $table_schema_setting)), 2, 60);
+$yaml = Spyc::YAMLDump(array('SCHEMA' => array(snake_case($model_name) => array('schema' => $table_schema_setting))), 2, 60);
 writeAction($yaml, $project_name.'_'.snake_case($model_name) , $project_dir.'config'.DIRECTORY_SEPARATOR, '.yml');
 
 // 各テンプレートの置き換え変数を定義する
@@ -786,8 +862,8 @@ $replace_to = array(
     $unique_check_method,
     $add_input_data_text,
     $attribute_text,
-    $model_name_space.';',
-    $model_base_name_space."\\",
+    $model_name_space ? $model_name_space.';' : '',
+    $model_base_name_space ? "\\".$model_base_name_space."\\" : '',
     $model_name_space_use,
     $model_base_name_space_use,
     $dao_use,

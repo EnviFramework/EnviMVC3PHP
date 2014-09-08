@@ -377,7 +377,7 @@ class Envi
         foreach ($this->autoload_dirs as $key => $dir) {
             $dir = realpath($dir);
             if (strlen($dir) === 0) {
-                EnviException($this->autoload_dirs[$key].' is non exists aut load dir.');
+                throw new EnviException($this->autoload_dirs[$key].' is non exists aut load dir.');
                 continue;
             }
             $this->autoload_dirs[$key] = $dir.DIRECTORY_SEPARATOR;
@@ -1308,10 +1308,17 @@ class Envi
             $class_name = substr($class_name, $last_ns_pos + 1);
             $file_name  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
         }
-        $file_name .= str_replace('_', DIRECTORY_SEPARATOR, $class_name) . '.php';
+        $file_name .= str_replace('_', DIRECTORY_SEPARATOR, $class_name);
         foreach ($autoload_psr_dir as $dir_name) {
-            if (is_file($dir_name.$file_name)) {
-                include $dir_name.$file_name;
+            if (is_file($dir_name.DIRECTORY_SEPARATOR.$file_name.'.php')) {
+                include $dir_name.DIRECTORY_SEPARATOR.$file_name.'.php';
+                return;
+            }
+        }
+
+        foreach ($autoload_psr_dir as $dir_name) {
+            if (is_file($dir_name.DIRECTORY_SEPARATOR.$file_name.'.class.php')) {
+                include $dir_name.DIRECTORY_SEPARATOR.$file_name.'.class.php';
                 return;
             }
         }

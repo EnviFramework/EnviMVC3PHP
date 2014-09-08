@@ -4,6 +4,22 @@
   <label for="form_<%$name%>"><%$form_name%></label>
   <textarea type="<%$type%>" name="<%$name%>" class="form-control" id="form_<%$name%>" placeholder="<%$form_name%>"><%$default%></textarea>
   </div>
+<%elseif $type == 'datetime'%>
+  <div class="form-group">
+  <label for="form_<%$name%>"><%$form_name%></label>
+  <input type="date" name="<%$name%>_date" id="form_<%$name%>_date" value="<%$default|substr:0:10%>">
+  <input type="time" name="<%$name%>_time" id="form_<%$name%>_time" value="<%$default|substr:-8:5%>">
+  </div>
+<%elseif $type == 'date'%>
+  <div class="form-group">
+  <label for="form_<%$name%>"><%$form_name%></label>
+  <input type="date" name="<%$name%>" id="form_<%$name%>" value="<%$default%>">
+  </div>
+<%elseif $type == 'time'%>
+  <div class="form-group">
+  <label for="form_<%$name%>"><%$form_name%></label>
+  <input type="time" name="<%$name%>" id="form_<%$name%>" value="<%$default%>">
+  </div>
 <%elseif $type == 'select'%>
   <div class="form-group">
   <label for="form_<%$name%>"><%$form_name%></label>

@@ -1,10 +1,32 @@
-
 <%if $type == 'textarea'%>
   <input type="hidden" name="<%$name%>" value="<%$default%>">
   <div class="form-group">
     <label for="form_<%$name%>"><%$form_name%></label>
     <%$default|nl2br%>
   </div>
+<%elseif $type == 'date'%>
+  <input type="hidden" name="<%$name%>" value="<%$default%>">
+  <div class="form-group">
+    <label for="form_<%$name%>"><%$form_name%></label>
+    <%$options[$default]%>
+  </div>
+
+<%elseif $type == 'time'%>
+  <input type="hidden" name="<%$name%>" value="<%$default%>">
+  <div class="form-group">
+    <label for="form_<%$name%>"><%$form_name%></label>
+    <%$options[$default]%>
+  </div>
+
+<%elseif $type == 'datetime'%>
+  <input type="hidden" name="<%$name%>_date" value="<%$default|substr:0:10%>">
+  <input type="hidden" name="<%$name%>_time" value="<%$default|substr:-8:5%>">
+  <div class="form-group">
+    <label for="form_<%$name%>"><%$form_name%></label>
+    <%$default|substr:0:16%>
+  </div>
+
+
 <%elseif $type == 'select'%>
   <input type="hidden" name="<%$name%>" value="<%$default%>">
   <div class="form-group">

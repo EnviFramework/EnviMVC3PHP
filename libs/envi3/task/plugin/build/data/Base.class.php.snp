@@ -43,6 +43,26 @@ class Base%%class_name%% extends EnviOrMapBase
 
 %%fk_cache_item%%
 
+
+    /**
+     * INSERT INTO時に自動更新される値
+     *
+     * @access      protected
+     * @var         var_type
+     */
+    protected $insert_date = '%%insert_date%%';
+    
+    /**
+     * INSERT INTOおよびUPDATE時に自動更新される値
+     *
+     * @access      protected
+     * @var         var_type
+     */
+    protected $update_date = '%%update_date%%';
+    
+
+
+
     /**
      * +-- コンストラクタ
      *
