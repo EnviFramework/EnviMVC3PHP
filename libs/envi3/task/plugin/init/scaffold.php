@@ -1055,7 +1055,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/OrmapPeer.php')
 );
-writeAction($contents, pascalize($model_name).'Peer', $model_dir, '.class.php', false);
+writeAction($contents, pascalize($model_name).'Peer', $schema_yaml['DIRECTORY']['model_dir'], '.class.php', false);
 
 // データオブジェクト
 $contents = str_replace(
@@ -1063,7 +1063,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/Ormap.php')
 );
-writeAction($contents, pascalize($model_name), $model_dir, '.class.php', false);
+writeAction($contents, pascalize($model_name), $schema_yaml['DIRECTORY']['model_dir'], '.class.php', false);
 
 // 関数定義
 
