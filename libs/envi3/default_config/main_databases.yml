@@ -20,7 +20,7 @@ all:
   default_stage:
     params:
       dsn:
-	  # 配列にしておくと、ランダムで接続先が変わるようになる
+    # 配列にしておくと、ランダムで接続先が変わるようになる
         - "phptype=mysql&username=exampleuser&password=example&hostspec=localhost&database=example_stage"
         - "phptype=mysql&username=exampleuser&password=example&hostspec=localhost&database=example_stage"
       instance_pool: true

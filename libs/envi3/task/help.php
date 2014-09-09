@@ -39,13 +39,15 @@ if (isOption('--help') || isOption('-h') || isOption('-?') || !isset($argv[1])) 
     cecho('clear:', 33);
     cecho('    -cache                               ', 32, '\n         キャッシュの削除(cc)');
     cecho('init:', 33);
-    cecho('    -project                             ', 32, '\n       プロジェクトの作成');
-    cecho('    -app                                 ', 32, '\n       アプリケーション(アプリキー)の作成(app)');
-    cecho('    -filesession                         ', 32, '\n       ファイルbaseのセッションディレクトリの作成');
-    cecho('    -module                              ', 32, '\n       モジュールの作成(module)');
-    cecho('    -action                              ', 32, '\n       アクションの作成(action)');
-    cecho('    -view                                ', 32, '\n       ビューの作成(view)');
+    cecho('    -project                             ', 32, '\n         プロジェクトの作成');
+    cecho('    -app                                 ', 32, '\n         アプリケーション(アプリキー)の作成(app)');
+    cecho('    -filesession                         ', 32, '\n         ファイルbaseのセッションディレクトリの作成');
+    cecho('    -module                              ', 32, '\n         モジュールの作成(module)');
+    cecho('    -action                              ', 32, '\n         アクションの作成(action)');
+    cecho('    -scaffold                            ', 32, '\n         コードの自動生成(scaffold)');
+    cecho('    -view                                ', 32, '\n         ビューの作成(view)');
     cecho('    -help                                ', 32, '\n         マニュアルの表示');
+    cecho('    -scaffold                            ', 32, '\n         コードの自動生成');
 
     cecho('unittest:', 33);
     cecho('    -go                                  ', 32, '\n       ユニットテストの実行(test)');

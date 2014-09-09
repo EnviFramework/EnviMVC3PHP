@@ -42,7 +42,7 @@ all:
   ################################
   # ディレクトリに関する設定
   ################################
-## <?php $ds = DIRECTORY_SEPARATOR; $base = realpath(__FILE__."..{$ds}apps{$ds}{$app_name}").$ds; ?>
+## <?php $ds = DIRECTORY_SEPARATOR; $base = realpath(dirname(dirname(__FILE__)))."{$ds}apps{$ds}{$app_name}{$ds}"; ?>
 
     base: "<?php echo $base;?>"
     ## 通常のリクエストやforwardで飛ばされるモジュール
@@ -79,15 +79,22 @@ all:
 
 ## 常にオートロードされるディレクトリ
   AUTOLOAD_CONSTANT:
-
     - "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>"
     - "<?php echo "{$base}libs{$ds}controller{$ds}";?>"
     - "<?php echo "{$base}libs{$ds}constant{$ds}";?>"
-## コールされた時にオートロードされるディレクトリ
+
+## コールされた時にオートロードされるディレクトリ(キャッシュあり)
   AUTOLOAD:
     - "<?php echo "{$base}libs{$ds}common{$ds}";?>"
+    # build-modelの名前空間対応をした場合は下記二行を削除してください
     - "<?php echo "{$base}libs{$ds}models{$ds}";?>"
     - "<?php echo "{$base}libs{$ds}models{$ds}om{$ds}";?>"
+
+## コールされた時にオートロードされるディレクトリ(キャッシュなし。PSR-0準拠)
+  AUTOLOAD_PSR:
+    - "<?php echo "{$base}libs{$ds}";?>"
+
+
 
   MEMCACHE:
   ################################

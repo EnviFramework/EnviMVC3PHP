@@ -24,8 +24,13 @@
  */
 
 
-define('ENVI_BASE_DIR', dirname(__FILE__).DIRECTORY_SEPARATOR);
-define('ENVI_ROOT_DIR', ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR);
+if (!defined('ENVI_BASE_DIR')) {
+    define('ENVI_BASE_DIR', dirname(__FILE__).DIRECTORY_SEPARATOR);
+}
+
+if (!defined('ENVI_ROOT_DIR')) {
+    define('ENVI_ROOT_DIR', ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR);
+}
 
 if (!defined('LW_START_MTIMESTAMP')) {
     define('LW_START_MTIMESTAMP', microtime(true));
@@ -57,7 +62,9 @@ require ENVI_BASE_DIR.'EnviLogWriter.php';
 require ENVI_BASE_DIR.'EnviExtension.php';
 
 
-define('ENVI_ENV', EnviServerStatus()->getServerStatus());
+if (!defined('ENVI_ENV')) {
+    define('ENVI_ENV', EnviServerStatus()->getServerStatus());
+}
 
 /**
  * +-- Redirect用の例外
@@ -313,7 +320,7 @@ class Envi
 
     protected $is_shutDown;
 
-    public $auto_load_classes;
+    public $auto_load_classes = array();
 
     public static $is_rested = false;
 
@@ -367,25 +374,64 @@ class Envi
      */
     protected function makeAutoLoadClassesCache($auto_load_classes_cache)
     {
-        foreach ($this->autoload_dirs as $dir) {
-            if (!is_dir($dir)) {
+        foreach ($this->autoload_dirs as $key => $dir) {
+            $dir = realpath($dir);
+            if (strlen($dir) === 0) {
+                throw new EnviException($this->autoload_dirs[$key].' is non exists aut load dir.');
                 continue;
             }
-            if (!($dh = opendir($dir))) {
-                continue;
-            }
-            while (($file = readdir($dh)) !== false) {
-                if (preg_match('/\.php/', $file)) {
-                    $class_name = preg_replace("/^(.*)\\.php$/", "\\1", $file);
-                    $class_name = preg_replace("/^(.*)\\.class$/", "\\1", $class_name);
-                    $this->auto_load_classes[$class_name] = $dir.$file;
-                }
-            }
-            closedir($dh);
+            $this->autoload_dirs[$key] = $dir.DIRECTORY_SEPARATOR;
+        }
+
+        foreach ($this->autoload_dirs as $dir_name) {
+            $this->auto_load_classes = array_merge($this->auto_load_classes, $this->mkAutoLoadSubmodules($dir_name, ''));
         }
         $this->configSerialize($auto_load_classes_cache, $this->auto_load_classes);
     }
     /* ----------------------------------------- */
+
+    /**
+     * +-- サブモジュールを読み込む
+     *
+     * @access      protected
+     * @param       var_text $dir_name
+     * @param       var_text $name_space
+     * @return      void
+     */
+    protected function mkAutoLoadSubmodules($dir_name, $name_space)
+    {
+        $dir_name = realpath($dir_name).DIRECTORY_SEPARATOR;
+        if (array_search($dir_name, $this->autoload_dirs) !== false && $name_space !== '') {
+            return array();
+        }
+        if (!is_dir($dir_name)) {
+            return array();
+        }
+        if (!($dh = opendir($dir_name))) {
+            return array();
+        }
+        $res = array();
+        while (($file = readdir($dh)) !== false) {
+            if (strpos($file, '.') === 0) {
+                continue;
+            }
+            if (is_dir($dir_name.$file) && PHP_MINOR_VERSION >= 3) {
+                $res = array_merge($res, $this->mkAutoLoadSubmodules($dir_name.$file, $name_space."\\".$file));
+            } elseif (preg_match('/\.php/', $file)) {
+                $class_name = preg_replace("/^(.*)\\.php$/", "\\1", $file);
+                $class_name = preg_replace("/^(.*)\\.class$/", "\\1", $class_name);
+                if (PHP_MINOR_VERSION >= 3 ) {
+                    $res[$name_space."\\".$class_name] = $dir_name.$file;
+                } else {
+                    $res[$class_name] = $dir_name.$file;
+                }
+            }
+        }
+        closedir($dh);
+        return $res;
+    }
+    /* ----------------------------------------- */
+
 
     /**
      * +-- autoload_constant_cacheの作成
@@ -680,15 +726,21 @@ class Envi
             if (!is_file($dir.$file)) {
                 throw new EnviException('not such file '.$dir.$file);
             }
-            if (!function_exists('spyc_load')) {
-                include ENVI_BASE_DIR.'spyc.php';
-            }
             ob_start();
             include $dir.$file;
             $buff      = ob_get_contents();
             ob_end_clean();
-
-            $buff = spyc_load($buff);
+            if (PHP_MINOR_VERSION <= 2) {
+                if (!function_exists('spyc_load')) {
+                    include ENVI_BASE_DIR.'spyc.php';
+                }
+                $buff = spyc_load($buff);
+            } else {
+                if (!function_exists('\spyc_load')) {
+                    include ENVI_BASE_DIR.'spyc.php';
+                }
+                $buff = \spyc_load($buff);
+            }
             $res = isset($buff[ENVI_ENV]) ? $this->mergeConfiguration($buff['all'], $buff[ENVI_ENV]) : $buff['all'];
             $this->configSerialize(ENVI_MVC_CACHE_PATH.$file.'.'.ENVI_ENV.'.envicc', $res);
         } else {
@@ -1229,10 +1281,46 @@ class Envi
      */
     public static function autoload($class_name)
     {
+        static $autoload_psr_dir;
         $auto_load_classes = self::singleton()->auto_load_classes;
         if (isset($auto_load_classes[$class_name])) {
             include $auto_load_classes[$class_name];
             return;
+        } elseif (isset($auto_load_classes["\\".$class_name])) {
+            include $auto_load_classes["\\".$class_name];
+            return;
+        }
+
+        // psr-0用のDIRECTORY
+        if (!$autoload_psr_dir) {
+            $autoload_psr_dir = self::singleton()->getConfiguration('AUTOLOAD_PSR');
+        }
+        if (!is_array($autoload_psr_dir) || count($autoload_psr_dir) === 0) {
+            return;
+        }
+
+        // psr-0
+        $class_name = ltrim($class_name, '\\');
+        $file_name  = '';
+        $namespace = '';
+        if ($last_ns_pos = strripos($class_name, '\\')) {
+            $namespace  = substr($class_name, 0, $last_ns_pos);
+            $class_name = substr($class_name, $last_ns_pos + 1);
+            $file_name  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
+        }
+        $file_name .= str_replace('_', DIRECTORY_SEPARATOR, $class_name);
+        foreach ($autoload_psr_dir as $dir_name) {
+            if (is_file($dir_name.DIRECTORY_SEPARATOR.$file_name.'.php')) {
+                include $dir_name.DIRECTORY_SEPARATOR.$file_name.'.php';
+                return;
+            }
+        }
+
+        foreach ($autoload_psr_dir as $dir_name) {
+            if (is_file($dir_name.DIRECTORY_SEPARATOR.$file_name.'.class.php')) {
+                include $dir_name.DIRECTORY_SEPARATOR.$file_name.'.class.php';
+                return;
+            }
         }
     }
     /* ----------------------------------------- */
