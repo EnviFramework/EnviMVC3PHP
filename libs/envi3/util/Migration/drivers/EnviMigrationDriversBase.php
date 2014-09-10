@@ -54,6 +54,7 @@ abstract class EnviMigrationDriversBase
     public function query($sql, array $arr = array())
     {
         if ($this->Migration()->isDryRun()) {
+            echo "[DRY]".$sql."\n";
             return;
         }
         $this->DBI()->query($sql, $arr);

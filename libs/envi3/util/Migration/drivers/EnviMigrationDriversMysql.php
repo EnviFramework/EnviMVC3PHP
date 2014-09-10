@@ -58,7 +58,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * @param       array $options OPTIONAL:array
      * @return      void
      */
-    public function addColumn($table_name, $column_name, $type, array $options = array())
+    public function addColumn($table_name, $column_name, $type, $options = array())
     {
         if (isset($option['limit'])) {
             $type .= "({$option['limit']})";
@@ -112,7 +112,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * @param       array $options OPTIONAL:array
      * @return      void
      */
-    public function addIndex($table_name, $column_name, array $options = array())
+    public function addIndex($table_name, $column_name, $options = array())
     {
         if (is_array($column_name)) {
             $column_name = join(',', $column_name);
@@ -178,7 +178,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      */
     public function changeColumn($table_name, $column_name, $type, $options = array())
     {
-        $sql = 'SHOW COLUMNS FROM {$table_name} WHERE Field LIKE :column_name';
+        $sql = "SHOW COLUMNS FROM {$table_name} WHERE Field LIKE :column_name";
         $res = $this->DBI()->getRow($sql, array('column_name' => $column_name));
 
 
@@ -189,7 +189,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
             $type .= "({$option['precision']}, {$option['scale']})";
         }
 
-        $sql = 'ALTER TABLE {$table_name} CHANGE {$column_name} {$table_name} ';
+        $sql = "ALTER TABLE {$table_name} CHANGE {$column_name} {$table_name} ";
         $sql .= $type;
         if (isset($options['null']) && $options['null'] === true) {
         } elseif (isset($res['Null']) && $res['Null'] === 'No') {
@@ -234,11 +234,11 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      */
     public function changeColumnDefault($table_name, $column_name, $default_val)
     {
-        $sql = 'SHOW COLUMNS FROM {$table_name} WHERE Field LIKE :column_name';
-        $res = $this->DBI()->getRow($sql, array('column_name' => $column_name));
+        $sql = "SHOW COLUMNS FROM {$table_name} WHERE Field LIKE :column_name";
+        $res = $this->DBI()->getRow($sql, array("column_name" => $column_name));
 
-        $sql = 'ALTER TABLE {$table_name} CHANGE {$column_name} {$table_name} ';
-        $sql .= $res['Type'];
+        $sql = "ALTER TABLE {$table_name} CHANGE {$column_name} {$table_name} ";
+        $sql .= $res["Type"];
 
         if (isset($res['Null']) && $res['Null'] === 'No') {
             $sql .= "  NOT NULL ";
@@ -432,10 +432,10 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      */
     public function renameColumn($table_name, $column_name, $new_column_name)
     {
-        $sql = 'SHOW COLUMNS FROM {$table_name} WHERE Field LIKE :column_name';
+        $sql = "SHOW COLUMNS FROM {$table_name} WHERE Field LIKE :column_name";
         $res = $this->DBI()->getRow($sql, array('column_name' => $column_name));
 
-        $sql = 'ALTER TABLE {$table_name} CHANGE {$column_name} {$new_column_name} ';
+        $sql = "ALTER TABLE {$table_name} CHANGE {$column_name} {$new_column_name} ";
         $sql .= $res['Type'];
 
         if (isset($res['Null']) && $res['Null'] === 'No') {
@@ -465,15 +465,15 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      */
     public function renameIndex($table_name, $old_name, $new_name)
     {
-        $sql = 'SHOW INDEX FROM  `{$table_name}` WHERE Key_name LIKE :old_name';
-        $res = $this->DBI()->getAll($sql, array('old_name' => $old_name));
+        $sql = "SHOW INDEX FROM  `{$table_name}` WHERE Key_name LIKE :old_name";
+        $res = $this->DBI()->getAll($sql, array("old_name" => $old_name));
         $column_name = array();
         foreach ($res as $row) {
-            $column_name[] = $row['Column_name'];
+            $column_name[] = $row["Column_name"];
         }
-        $column_name = join(',', $column_name);
+        $column_name = join(",", $column_name);
 
-        $sql = 'ALTER TABLE  `{$table_name}` DROP INDEX  `{$old_name}` ,ADD INDEX  `{$new_name}` ( {$column_name} )';
+        $sql = "ALTER TABLE  `{$table_name}` DROP INDEX  `{$old_name}` ,ADD INDEX  `{$new_name}` ( {$column_name} )";
         $this->query($sql);
     }
     /* ----------------------------------------- */

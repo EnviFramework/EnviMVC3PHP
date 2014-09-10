@@ -16,6 +16,7 @@
  * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
  */
+
 /**
  *
  *
@@ -90,6 +91,10 @@ abstract class EnviMigrationBase
         $buff      = ob_get_contents();
         ob_end_clean();
         $databases_yml = spyc_load($buff);
+
+        if (!isset($databases_yml[$this->env])) {
+            $databases_yml[$this->env] = array();
+        }
         $databases_yml = array_merge((array)$databases_yml['all'], (array)$databases_yml[$this->env]);
         $dsn = $databases_yml[$this->instance_name]['params']['dsn'];
         // コネクションの取得
@@ -97,7 +102,7 @@ abstract class EnviMigrationBase
         parse_str($dsn, $conf);
         switch ($conf['phptype']) {
         case 'mysql':
-            include dirname(__FILE__).DIRECTORY_SEPARATOR.'drivers'.DIRECTORY_SEPARATOR.'EnviMigrationDriversMysql.php';
+            include_once dirname(__FILE__).DIRECTORY_SEPARATOR.'drivers'.DIRECTORY_SEPARATOR.'EnviMigrationDriversMysql.php';
             $this->driver = new EnviMigrationDriversMysql($this);
             break;
         }

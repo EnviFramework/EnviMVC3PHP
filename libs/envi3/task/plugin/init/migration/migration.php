@@ -37,7 +37,7 @@ class ___class_name___ extends EnviMigrationBase
 
     public function __construct()
     {
-        $project_dir = '___project_dir___';
+        $project_dir = dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR;
 
         $this->databases_yml = $project_dir.'config'.DIRECTORY_SEPARATOR.'___app_name____databases.yml';
 

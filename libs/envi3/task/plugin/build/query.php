@@ -52,12 +52,6 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
     $sql .= "DROP TABLE IF EXISTS `{$table_name}`;\nCREATE TABLE `{$table_name}` (\n";
     foreach ($schema['schema'] as $column => $val) {
         $sql .= $comma;
-        if (isset($val['limit'])) {
-            $val['type'] .= "({$val['limit']})";
-        } elseif (isset($val['precision']) && isset($val['scale'])) {
-            $val['type'] .= "({$val['precision']}, {$val['scale']})";
-        }
-
         $sql .= "`{$column}` {$val['type']} ";
         if (isset($val['not_null'])) {
             $sql .= 'NOT NULL ';
@@ -96,8 +90,7 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
             $sql .= $comma.'KEY `'.$index_name.'` ('.join(',', $idx_column).')';
         }
     }
-    $engine = isset($schema['engine']) ? $schema['engine'] : 'InnoDB';
-    $sql .= ") ENGINE={$engine};\n";
+    $sql .= ") ENGINE=InnoDB;\n";
 }
 unset($schema);
 echo $sql;
