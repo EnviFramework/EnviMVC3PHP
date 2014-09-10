@@ -1,48 +1,53 @@
 <%if $type == 'textarea'%>
-  <input type="hidden" name="<%$name%>" value="<%$default%>">
+  <input type="hidden" name="<%$name%>" value="<%$smrty.post.$name%>">
   <div class="form-group">
     <label for="form_<%$name%>"><%$form_name%></label>
-    <%$default|nl2br%>
+    <%$smrty.post.$name|nl2br%>
   </div>
 <%elseif $type == 'date'%>
-  <input type="hidden" name="<%$name%>" value="<%$default%>">
+  <input type="hidden" name="<%$name%>" value="<%$smrty.post.$name%>">
   <div class="form-group">
     <label for="form_<%$name%>"><%$form_name%></label>
-    <%$options[$default]%>
+    <%$smrty.post.$name%>
   </div>
 
 <%elseif $type == 'time'%>
-  <input type="hidden" name="<%$name%>" value="<%$default%>">
+  <input type="hidden" name="<%$name%>" value="<%$smrty.post.$name%>">
   <div class="form-group">
     <label for="form_<%$name%>"><%$form_name%></label>
-    <%$options[$default]%>
+    <%$smrty.post.$name%>
   </div>
 
 <%elseif $type == 'datetime'%>
-  <input type="hidden" name="<%$name%>_date" value="<%$default|substr:0:10%>">
-  <input type="hidden" name="<%$name%>_time" value="<%$default|substr:-8:5%>">
+  <%assign var="datetime_date_key" value="`$name`_date"%>
+  <%assign var="datetime_time_key" value="`$name`_time"%>
+  <input type="hidden" name="<%$name%>_date" value="<%$smarty.post.$datetime_date_key%>">
+  <input type="hidden" name="<%$name%>_time" value="<%$smarty.post.$datetime_time_key%>">
   <div class="form-group">
     <label for="form_<%$name%>"><%$form_name%></label>
-    <%$default|substr:0:16%>
+    <%$smarty.post.$datetime_date_key%>
+    <%$smarty.post.$datetime_time_key%>
   </div>
 
 
 <%elseif $type == 'select'%>
-  <input type="hidden" name="<%$name%>" value="<%$default%>">
+  <input type="hidden" name="<%$name%>" value="<%$smrty.post.$name%>">
   <div class="form-group">
     <label for="form_<%$name%>"><%$form_name%></label>
-    <%$options[$default]%>
+    <%assign var="option_val" value="$smrty.post.$name"%>
+    <%$options[$option_val]%>
   </div>
 <%elseif $type == 'radio'%>
-  <input type="hidden" name="<%$name%>" value="<%$default%>">
+  <input type="hidden" name="<%$name%>" value="<%$smrty.post.$name%>">
   <div class="form-group">
     <label for="form_<%$name%>"><%$form_name%></label>
-    <%$options[$default]%>
+    <%assign var="option_val" value="$smrty.post.$name"%>
+    <%$options[$option_val]%>
   </div>
 <%elseif $type == 'checkbox'%>
   <div class="form-group">
     <label for="form_<%$name%>"><%$form_name%></label>
-    <%foreach from=$default key=key item=item%>
+    <%foreach from=$smrty.post.$name key=key item=item%>
       <input type="hidden" name="<%$name%>[]" value="<%$item%>">
       <%$options[$item]%>
     <%/foreach%>
@@ -50,7 +55,7 @@
 <%elseif $type == 'flag'%>
   <div class="form-group">
     <label for="form_<%$name%>"><%$form_name%></label>
-    <%if $default == 1%>
+    <%if $smrty.post.$name == 1%>
     <%$options.1|default:"はい"%>
     <input type="hidden" name="<%$name%>" value="1">
     <%else%>
@@ -58,16 +63,18 @@
     <%/if%>
   </div>
 <%elseif $type == 'zip_code'%>
-  <input type="hidden" name="<%$name%>_f" value="<%$default|substr:0:3%>">
-  <input type="hidden" name="<%$name%>_a" value="<%$default|substr:-4:4%>">
+  <%assign var="zip_code_f_key" value="`$name`_f"%>
+  <%assign var="zip_code_a_key" value="`$name`_a"%>
+  <input type="hidden" name="<%$name%>_f" value="<%$smarty.post.$zip_code_f_key%>">
+  <input type="hidden" name="<%$name%>_a" value="<%$smarty.post.$zip_code_a_key%>">
   <div class="form-group">
     <label for="form_<%$name%>"><%$form_name%></label>
     <%$default%>
   </div>
 <%else%>
-  <input type="hidden" name="<%$name%>" value="<%$default%>">
+  <input type="hidden" name="<%$name%>" value="<%$smrty.post.$name%>">
   <div class="form-group">
-    <label for="form_<%$name%>"><%$form_name%></label>
+    <label for="form_<%$name%>"><%$smrty.post.$name%></label>
     <%$default%>
   </div>
 <%/if%>
