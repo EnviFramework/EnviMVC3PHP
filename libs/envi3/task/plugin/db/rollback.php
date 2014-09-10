@@ -39,4 +39,4 @@ if (!isset($argv[2])) {
 require_once ENVI_BASE_DIR.'util'.DIRECTORY_SEPARATOR.'Migration'.DIRECTORY_SEPARATOR.'EnviMigrationCmd.php';
 
 $EnviMigrationCmd = new EnviMigrationCmd($current_work_dir);
-$EnviMigrationCmd->executeMigrate();
+$EnviMigrationCmd->executeRollback();
