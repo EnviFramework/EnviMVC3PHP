@@ -115,7 +115,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
     public function addIndex($table_name, $column_name, $options = array())
     {
         if (is_array($column_name)) {
-            $column_name = join(',', $column_name);
+            $column_name = join('`, `', $column_name);
         }
         $index_name = '';
 
@@ -126,8 +126,10 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
 
         if (isset($options['primary'])) {
             $index_type = 'PRIMARY KEY';
+            $index_name = '';
         } elseif (isset($options['index_type']) && strtolower($options['index_type']) === 'primary') {
             $index_type = 'PRIMARY KEY';
+            $index_name = '';
         }
 
         if (isset($options['unique'])) {
@@ -137,7 +139,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
         }
 
 
-        $sql = "ALTER TABLE `{$table_name}` ADD {$index_type} {$index_name}( {$column_name} )";
+        $sql = "ALTER TABLE `{$table_name}` ADD {$index_type} {$index_name} (`{$column_name}`)";
         $this->query($sql);
     }
     /* ----------------------------------------- */
@@ -151,7 +153,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      */
     public function addTimestamps($table_name)
     {
-        $sql = "ALTER TABLE  `{$table_name}` ADD  `time_stamp` timestamp NOT NULL ";
+        $sql = "ALTER TABLE `{$table_name}` ADD `time_stamp` timestamp NOT NULL";
         $this->query($sql);
     }
     /* ----------------------------------------- */
@@ -362,7 +364,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      */
     public function dropTable($table_name, $options = array())
     {
-        $sql = "DROP TABLE `{$table_name}`;";
+        $sql = "DROP TABLE `{$table_name}`";
         $this->query($sql);
     }
     /* ----------------------------------------- */
@@ -488,7 +490,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      */
     public function renameTable($table_name, $new_name)
     {
-        $sql = "RENAME TABLE {$table_name} TO {$new_name} ;";
+        $sql = "RENAME TABLE `{$table_name}` TO `{$new_name}`";
         $this->query($sql);
     }
     /* ----------------------------------------- */
