@@ -60,10 +60,10 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      */
     public function addColumn($table_name, $column_name, $type, $options = array())
     {
-        if (isset($option['limit'])) {
-            $type .= "({$option['limit']})";
-        } elseif (isset($option['precision']) && isset($option['scale'])) {
-            $type .= "({$option['precision']}, {$option['scale']})";
+        if (isset($options['limit'])) {
+            $type .= "({$options['limit']})";
+        } elseif (isset($options['precision']) && isset($options['scale'])) {
+            $type .= "({$options['precision']}, {$options['scale']})";
         }
         $sql = "ALTER TABLE  `{$table_name}` ADD  `{$column_name}` {$type} ";
 
@@ -183,10 +183,10 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
 
 
 
-        if (isset($option['limit'])) {
-            $type .= "({$option['limit']})";
-        } elseif (isset($option['precision']) && isset($option['scale'])) {
-            $type .= "({$option['precision']}, {$option['scale']})";
+        if (isset($options['limit'])) {
+            $type .= "({$options['limit']})";
+        } elseif (isset($options['precision']) && isset($options['scale'])) {
+            $type .= "({$options['precision']}, {$options['scale']})";
         }
 
         $sql = "ALTER TABLE {$table_name} CHANGE {$column_name} {$table_name} ";

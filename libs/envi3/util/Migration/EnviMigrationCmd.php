@@ -88,7 +88,7 @@ class EnviMigrationCmd
     {
         $res = array();
         foreach ($this->migration_class_files as $migration_class_file) {
-            list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4));
+            list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4), 3);
             if ($version <= $this->migration_status['last_version']) {
                 continue;
             }
@@ -104,7 +104,7 @@ class EnviMigrationCmd
         $migration_class_files = $this->migration_class_files;
         rsort($migration_class_files);
         foreach ($migration_class_files as $migration_class_file) {
-            list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4));
+            list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4), 3);
             if ($version > $this->migration_status['last_version']) {
                 continue;
             }
@@ -137,7 +137,7 @@ class EnviMigrationCmd
         $migration = $this->getMigrationStatus();
         $migration_class_file = array_pop($migration['executed']);
 
-        list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4));
+        list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4), 3);
         echo $migration_class_file,"\n";
         include $migration_class_file;
         $class_name = $app.'_'.$migration_class;
@@ -167,7 +167,7 @@ class EnviMigrationCmd
     {
         $migration = $this->getMigrationStatus();
         foreach ($this->getMigrationList() as $migration_class_file) {
-            list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4));
+            list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4), 3);
             echo $migration_class_file,"\n";
             include $migration_class_file;
             $class_name = $app.'_'.$migration_class;
