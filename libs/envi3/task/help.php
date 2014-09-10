@@ -48,6 +48,7 @@ if (isOption('--help') || isOption('-h') || isOption('-?') || !isset($argv[1])) 
     cecho('    -view                                ', 32, '\n         ビューの作成(view)');
     cecho('    -help                                ', 32, '\n         マニュアルの表示');
     cecho('    -scaffold                            ', 32, '\n         コードの自動生成');
+    cecho('    -migration                           ', 32, '\n         マイグレーションファイルを作成する');
 
     cecho('unittest:', 33);
     cecho('    -go                                  ', 32, '\n       ユニットテストの実行(test)');
@@ -55,6 +56,10 @@ if (isOption('--help') || isOption('-h') || isOption('-?') || !isset($argv[1])) 
     cecho('    -init                                ', 32, '\n       テストグループをカレントディレクトリに追加する');
     cecho('    -add                                 ', 32, '\n       テストをカレントディレクトリに追加する');
 
+    cecho('db:', 33);
+    cecho('    -help                                ', 32, '\n       マニュアルの表示');
+    cecho('    -migrate                             ', 32, '\n       マイグレーションをおこなう');
+    cecho('    -rollback                            ', 32, '\n       行ったマイグレーションをひとつ戻す');
 
     cecho('yml:', 33);
     cecho('    -test                                ', 32, '\n       YMLの展開テスト');
