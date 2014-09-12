@@ -16,13 +16,24 @@ all:
     use_i18n: false
     ## defaultの国際化ファイル
     default_i18n: "ja"
+    ## HTMLタグを自動エスケープするタイプのレンダラ ##
+    ## Smarty
     # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviSmartySecureRenderer.php"
+    ## Smarty3
     # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviSmarty3SecureRenderer.php"
+    ## Twig
     # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviTwigSecureRenderer.php"
+    ## PHP
     # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviPHPSecureRenderer.php"
+    
+    ## HTMLタグを自動エスケープしないタイプのレンダラ ##
+    ## Smarty
     # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviSmartyRenderer.php"
+    ## Smarty3
     # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviSmarty3Renderer.php"
+    ## Twig
     # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviTwigRenderer.php"
+    ## PHP
     renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviPHPRenderer.php"
     auto_load_cache: true
 
