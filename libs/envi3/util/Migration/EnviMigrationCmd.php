@@ -88,8 +88,7 @@ class EnviMigrationCmd
     {
         $res = array();
         foreach ($this->migration_class_files as $migration_class_file) {
-            list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4), 3);
-            if ($version <= $this->migration_status['last_version']) {
+            if (in_array($migration_class_file, $this->migration_status['executed']) ) {
                 continue;
             }
             $res[] = $migration_class_file;
@@ -155,7 +154,7 @@ class EnviMigrationCmd
         } else {
             $migration_class_file = $migration['executed'][count($migration['executed']) - 1];
             list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4));
-            $migration['last_version'] = $version;
+            $migration['last_version'] = $version < $migration['last_version'] ? $version : $migration['last_version'];
         }
 
 
@@ -175,7 +174,7 @@ class EnviMigrationCmd
             $obj->env = $this->env;
             $obj->change();
             $obj->up();
-            $migration['last_version'] = $version;
+            $migration['last_version'] = $version > $migration['last_version'] ? $version : $migration['last_version'];
             $migration['executed'][]   = $migration_class_file;
         }
         $this->setMigrationStatus($migration);
