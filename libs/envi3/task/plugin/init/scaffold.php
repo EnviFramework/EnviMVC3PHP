@@ -825,6 +825,32 @@ $table_schema_setting['time_stamp'] = array(
 $yaml = Spyc::YAMLDump(array('SCHEMA' => array(snake_case($model_name) => array('schema' => $table_schema_setting))), 2, 60);
 writeAction($yaml, $project_name.'_'.snake_case($model_name) , $project_dir.'config'.DIRECTORY_SEPARATOR, '.yml');
 
+
+if (!is_dir($project_dir.'db'.DIRECTORY_SEPARATOR.'migrate')) {
+    $cmd = 'mkdir -p '.$project_dir.'db'.DIRECTORY_SEPARATOR.'migrate';
+    echo `$cmd`;
+}
+$date_time = date('YmdHis');
+$yaml = Spyc::YAMLDump(array('force' => true, 'SCHEMA' => array(snake_case($model_name) => array('schema' => $table_schema_setting))), 2, 60);
+
+writeAction($yaml, $project_name.'_'.$date_time.'_create_table_'.snake_case($model_name) , $project_dir.'db'.DIRECTORY_SEPARATOR.'migrate'.DIRECTORY_SEPARATOR, '.yml');
+
+$contents = file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'scaffold'.DIRECTORY_SEPARATOR.'default'.DIRECTORY_SEPARATOR.'migration.php');
+
+
+$arr = array(
+    '___class_name___' => $project_name.'_create_table_'.snake_case($model_name),
+    '___app_name___' => $project_name,
+    '___project_dir___' => $project_dir,
+    '___file_name___' => $project_name.'_'.$date_time.'_create_table_'.snake_case($model_name)
+);
+
+$contents = strtr($contents, $arr);
+$file_path = $project_dir.'db'.DIRECTORY_SEPARATOR.'migrate'.DIRECTORY_SEPARATOR.$project_name.'_'.$date_time.'_create_table_'.snake_case($model_name).'.php';
+file_put_contents($file_path, $contents);
+
+
+
 // 各テンプレートの置き換え変数を定義する
 $replace_from = array(
     '_____action_name_____',
@@ -992,7 +1018,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/newAction.php')
 );
-writeAction($contents, $replace_to[0].'Action', $action_dir);
+writeAction($contents, $replace_to[0].'Action', $action_dir, !isOption('no_override:action'));
 
 
 // 新規作成
@@ -1002,7 +1028,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/createAction.php')
 );
-writeAction($contents, $replace_to[0].'Action', $action_dir);
+writeAction($contents, $replace_to[0].'Action', $action_dir, !isOption('no_override:action'));
 
 // 詳細表示
 $replace_to[0] = 'show';
@@ -1011,7 +1037,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/showAction.php')
 );
-writeAction($contents, $replace_to[0].'Action', $action_dir);
+writeAction($contents, $replace_to[0].'Action', $action_dir, !isOption('no_override:action'));
 
 // 編集フォーム
 $replace_to[0] = 'edit';
@@ -1020,7 +1046,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/editAction.php')
 );
-writeAction($contents, $replace_to[0].'Action', $action_dir);
+writeAction($contents, $replace_to[0].'Action', $action_dir, !isOption('no_override:action'));
 
 // 更新
 $replace_to[0] = 'update';
@@ -1029,7 +1055,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/updateAction.php')
 );
-writeAction($contents, $replace_to[0].'Action', $action_dir);
+writeAction($contents, $replace_to[0].'Action', $action_dir, !isOption('no_override:action'));
 
 // 削除
 $replace_to[0] = 'destroy';
@@ -1038,7 +1064,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/destroyAction.php')
 );
-writeAction($contents, $replace_to[0].'Action', $action_dir);
+writeAction($contents, $replace_to[0].'Action', $action_dir, !isOption('no_override:action'));
 
 // 一覧
 $replace_to[0] = 'index';
@@ -1047,7 +1073,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/indexAction.php')
 );
-writeAction($contents, $replace_to[0].'Action', $action_dir);
+writeAction($contents, $replace_to[0].'Action', $action_dir, !isOption('no_override:action'));
 
 // Ormap
 $contents = str_replace(
@@ -1055,7 +1081,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/OrmapPeer.php')
 );
-writeAction($contents, pascalize($model_name).'Peer', $schema_yaml['DIRECTORY']['model_dir'], '.class.php', false);
+writeAction($contents, pascalize($model_name).'Peer', $schema_yaml['DIRECTORY']['model_dir'], '.class.php', !isOption('no_override:model'));
 
 // データオブジェクト
 $contents = str_replace(
@@ -1063,7 +1089,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/Ormap.php')
 );
-writeAction($contents, pascalize($model_name), $schema_yaml['DIRECTORY']['model_dir'], '.class.php', false);
+writeAction($contents, pascalize($model_name), $schema_yaml['DIRECTORY']['model_dir'], '.class.php', !isOption('no_override:model'));
 
 // 関数定義
 
