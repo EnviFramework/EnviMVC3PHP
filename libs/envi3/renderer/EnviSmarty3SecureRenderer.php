@@ -25,9 +25,8 @@
  * @since      File available since Release 1.0.0
  */
 
-ini_set('include_path', ini_get('include_path') . (DIRECTORY_SEPARATOR === '/' ? ':' : ';') . realpath(ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'Smarty'));
 
-require 'ArtisanSmarty.class.php';
+require  realpath(ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'Smarty3').DIRECTORY_SEPARATOR.'ArtisanSmarty.class.php';
 
 /**
  * ArtisanSmartyレンダラー
@@ -47,7 +46,7 @@ require 'ArtisanSmarty.class.php';
  * @see        http://www.enviphp.net/
  * @since      Class available since Release 1.0.0
  */
-class EnviSmartySecureRenderer
+class EnviSmarty3SecureRenderer
 {
     public $_system_conf;
     public $_compile_id;
@@ -71,22 +70,55 @@ class EnviSmartySecureRenderer
      */
     public function setting($module_dir)
     {
-        $this->Smarty = new Smarty;
-        $this->Smarty->default_modifiers = array('escape');
-        $this->Smarty->compile_dir  = isset($this->_system_conf['DIRECTORY']['template_compile']) ? $this->_system_conf['DIRECTORY']['template_compile'] : $this->_system_conf['DIRECTORY']['templatec'];
-        $this->Smarty->etc_dir      = isset($this->_system_conf['DIRECTORY']['template_etc']) ? $this->_system_conf['DIRECTORY']['template_etc'] : $this->_system_conf['DIRECTORY']['templateetc'];
-        $this->Smarty->config_dir   = isset($this->_system_conf['DIRECTORY']['template_config']) ? $this->_system_conf['DIRECTORY']['template_config'] : $this->_system_conf['DIRECTORY']['config'];
 
+        $this->Smarty = new Smarty;
+
+        // エスケープする
+        $this->Smarty->setDefaultModifiers(array('escape'));
+
+        // デリミタ変更
+        $this->Smarty->left_delimiter = '<%';
+        $this->Smarty->right_delimiter = '%>';
+
+        // コンフィグ
+        if (isset($this->_system_conf['DIRECTORY']['template_config'])) {
+            $this->Smarty->setConfigDir($this->_system_conf['DIRECTORY']['template_config']);
+        } else {
+            $this->Smarty->setConfigDir($this->_system_conf['DIRECTORY']['config']);
+        }
+        // compile
+        if (isset($this->_system_conf['DIRECTORY']['template_compile'])) {
+            $this->Smarty->setCompileDir($this->_system_conf['DIRECTORY']['template_compile']);
+        } else {
+            $this->Smarty->setCompileDir($this->_system_conf['DIRECTORY']['templatec']);
+        }
+
+        // テンプレート
+        $templates = array();
+        $templates[] = $this->_system_conf['DIRECTORY']['modules'].$module_dir.DIRECTORY_SEPARATOR.'templates';
+        if (isset($this->_system_conf['DIRECTORY']['common_templates'])) {
+            if (!is_array($this->_system_conf['DIRECTORY']['common_templates'])) {
+                $templates[] = $this->_system_conf['DIRECTORY']['common_templates'];
+            } else {
+                $templates = array_merge($templates, $this->_system_conf['DIRECTORY']['common_templates']);
+            }
+        }
+        if (isset($this->_system_conf['DIRECTORY']['base_templates'])) {
+            if (!is_array($this->_system_conf['DIRECTORY']['base_templates'])) {
+                $templates[] = $this->_system_conf['DIRECTORY']['base_templates'];
+            } else {
+                $templates = array_merge($templates, $this->_system_conf['DIRECTORY']['base_templates']);
+            }
+        }
+        $this->Smarty->setTemplateDir($templates);
 
         // キャッシュ
         if (isset($this->_system_conf['DIRECTORY']['template_cache'])) {
-            $this->Smarty->cache_dir = $this->_system_conf['DIRECTORY']['template_cache'];
+            $this->Smarty->setCacheDir($this->_system_conf['DIRECTORY']['template_cache']);
         }
-
-        $this->Smarty->template_dir = $this->_system_conf['DIRECTORY']['modules'].$module_dir.DIRECTORY_SEPARATOR.'templates';
-        $this->Smarty->default_modifiers = array('escape');
         $this->Smarty->assign('Envi', Envi::singleton());
         $this->Smarty->assign('base_url', Envi::singleton()->getBaseUrl());
+
 
     }
 
