@@ -9,12 +9,12 @@
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
- * @since      File available since Release 1.0.0
+ * @since      File available since Release 3.4.0
  */
 /**
  *
@@ -26,12 +26,12 @@
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
- * @since      File available since Release 1.0.0
+ * @since      File available since Release 3.4.0
  */
 class EnviMigrationCmd
 {

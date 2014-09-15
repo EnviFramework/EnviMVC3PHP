@@ -14,7 +14,7 @@
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
@@ -74,7 +74,7 @@ if (!defined('ENVI_ENV')) {
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
@@ -116,7 +116,7 @@ class redirectException extends Exception
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
@@ -151,7 +151,7 @@ class killException extends Exception
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
@@ -190,7 +190,7 @@ class Envi404Exception extends Exception
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
@@ -230,7 +230,7 @@ class Envi403Exception extends Exception
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
@@ -294,7 +294,7 @@ function Envi($app = false, $debug = false)
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
@@ -309,6 +309,8 @@ class Envi
     const CONFORM        = 'CONFORM';
     const COMMIT         = 'COMMIT';
     const NONE           = 'NONE';
+
+    const VERSION        = '3.4.0.2';
 
     protected static $app_key;
     protected $_system_conf;

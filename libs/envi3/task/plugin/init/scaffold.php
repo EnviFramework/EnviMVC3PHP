@@ -15,7 +15,7 @@
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
- * @since      File available since Release 1.0.0
+ * @since      File available since Release 3.4.0
  */
 umask(0);
 if (!isset($argv[4])) {
