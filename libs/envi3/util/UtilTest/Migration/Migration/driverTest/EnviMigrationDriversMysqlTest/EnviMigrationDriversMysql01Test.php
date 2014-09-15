@@ -430,39 +430,115 @@ KEY `idx_subject` (subject)) ENGINE=InnoDB;
     /* ----------------------------------------- */
 
 
+    public function dropTableDataProvider()
+    {
+        self::$EnviDBInstance->getInstance('default_master')->query('DROP TABLE IF EXISTS `drop_table_test`');
+        self::$EnviDBInstance->getInstance('default_master')->
+            query('CREATE TABLE drop_table_test LIKE fooo');
+        return self::dataProvider();
+    }
+
     /**
      * +--
      *
+     * @test
      * @cover EnviMigrationDriversMysql::dropTable
-     * @dataProvider    dataProvider
+     * @dataProvider    dropTableDataProvider
      * @access      public
      * @return      void
      */
     public function dropTableTest($driver)
     {
         $fooo = self::$EnviDBInstance->getInstance('default_master')->
-            getAll('desc fooo');
+            getAll('desc drop_table_test');
         $this->assertArray($fooo);
         $mock = EnviMock::mock('EnviMigrationDriversBase');
         $mock->shouldReceive('query')
-            ->with('DROP TABLE `fooo`')
+            ->with('DROP TABLE `drop_table_test`')
             ->once()
             ->andNoBypass();
-        $driver->dropTable('fooo', array());
+        $driver->dropTable('drop_table_test', array());
 
         // 無いことを確認する
         $e = null;
         try {
             $foo = self::$EnviDBInstance->getInstance('default_master')->
-                getAll('desc fooo');
+                getAll('desc drop_table_test');
         } catch (exception $e) {
 
         }
         $this->assertInstanceOf('PDOException', $e);
-
     }
     /* ----------------------------------------- */
 
+
+    /**
+     * +--
+     *
+     * @test
+     * @cover EnviMigrationDriversMysql::dropTable
+     * @dataProvider    dropTableDataProvider
+     * @access      public
+     * @return      void
+     */
+    public function dropTableForceTrueTest($driver)
+    {
+
+        $fooo = self::$EnviDBInstance->getInstance('default_master')->
+            getAll('desc drop_table_test');
+        $this->assertArray($fooo);
+        $mock = EnviMock::mock('EnviMigrationDriversBase');
+        $mock->shouldReceive('query')
+            ->with('DROP TABLE IF EXISTS `drop_table_test`')
+            ->once()
+            ->andNoBypass();
+        $driver->dropTable('drop_table_test', array('force' => true));
+
+        // 無いことを確認する
+        $e = null;
+        try {
+            $foo = self::$EnviDBInstance->getInstance('default_master')->
+                getAll('desc drop_table_test');
+        } catch (exception $e) {
+
+        }
+        $this->assertInstanceOf('PDOException', $e);
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +--
+     *
+     * @test
+     * @cover EnviMigrationDriversMysql::dropTable
+     * @dataProvider    dropTableDataProvider
+     * @access      public
+     * @return      void
+     */
+    public function dropTableForceFalseTest($driver)
+    {
+        $fooo = self::$EnviDBInstance->getInstance('default_master')->
+            getAll('desc drop_table_test');
+        $this->assertArray($fooo);
+        $mock = EnviMock::mock('EnviMigrationDriversBase');
+        $mock->shouldReceive('query')
+            ->with('DROP TABLE `drop_table_test`')
+            ->once()
+            ->andNoBypass();
+        $driver->dropTable('drop_table_test', array('force' => false));
+
+        // 無いことを確認する
+        $e = null;
+        try {
+            $foo = self::$EnviDBInstance->getInstance('default_master')->
+                getAll('desc drop_table_test');
+        } catch (exception $e) {
+
+        }
+        $this->assertInstanceOf('PDOException', $e);
+    }
+    /* ----------------------------------------- */
 
     /**
      * +-- 終了処理

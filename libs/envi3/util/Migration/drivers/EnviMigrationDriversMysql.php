@@ -9,12 +9,12 @@
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
- * @since      File available since Release 1.0.0
+ * @since      File available since Release 3.4.0
  */
 
 /**
@@ -27,12 +27,12 @@
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
- * @since      File available since Release 1.0.0
+ * @since      File available since Release 3.4.0
  */
 class EnviMigrationDriversMysql extends EnviMigrationDriversBase
 {
@@ -47,20 +47,20 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * not_null   | null値を許可しないか | false
      * precision  | decimal 型の精度を指定 |
      * scale      | decimal 型の小数点以下の桁数 |
-     * primary    | 主キーをセットする |
-     * auto_increment | オートインクリメントにする |
-     * after      | 指定したcolumnの前ににつける |
+     * primary    | 主キーをセットする | false
+     * auto_increment | オートインクリメントにする | false
+     * after      | 指定したcolumnの前ににつける | false
      * first      | 先頭につける | false
      *
      *
      * @access      public
-     * @param       string $table_name
-     * @param       string $column_name
+     * @param       string $table_name テーブル名
+     * @param       string $column_name カラム名
      * @param       string $type
-     * @param       array $options OPTIONAL:array
+     * @param       array $options オプション設定 OPTIONAL:array
      * @return      void
      */
-    public function addColumn($table_name, $column_name, $type, $options = array())
+    public function addColumn($table_name, $column_name, $type, array $options = array())
     {
         if (isset($options['limit'])) {
             $type .= "({$options['limit']})";
@@ -103,19 +103,19 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      *
      * オプション | 説明 | デフォルト
      * ---------- | ---- | ----------
-     * name       | インデックスの名前
+     * name       | インデックスの名前 |
      * unique     | trueを指定するとユニークなインデックス | false
      * primary    | trueを指定すると主キー | false
      * index_type | インデックスの種類を指定する | INDEX
-     * length     | インデックスに含まれるカラムの長さ
+     * length     | インデックスに含まれるカラムの長さ |
      *
      * @access      public
-     * @param       var_text $table_name
-     * @param       var_text $column_name
-     * @param       array $options OPTIONAL:array
+     * @param       string $table_name テーブル名
+     * @param       string $column_name カラム名
+     * @param       array $options オプション設定 OPTIONAL:array
      * @return      void
      */
-    public function addIndex($table_name, $column_name, $options = array())
+    public function addIndex($table_name, $column_name, array $options = array())
     {
         if (is_array($column_name)) {
             $column_name = join('`, `', $column_name);
@@ -151,7 +151,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * +-- タイムスタンプを追加する
      *
      * @access      public
-     * @param       var_text $table_name
+     * @param       string $table_name テーブル名
      * @return      void
      */
     public function addTimestamps($table_name)
@@ -175,13 +175,13 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * auto_increment | オートインクリメントにする |
      *
      * @access      public
-     * @param       var_text $table_name
-     * @param       var_text $column_name
-     * @param       var_text $type
-     * @param       var_text $options OPTIONAL:array
+     * @param       string $table_name テーブル名
+     * @param       string $column_name カラム名
+     * @param       string $type データ型
+     * @param      array $options オプション設定 OPTIONAL:array
      * @return      void
      */
-    public function changeColumn($table_name, $column_name, $type, $options = array())
+    public function changeColumn($table_name, $column_name, $type, array $options = array())
     {
         $sql = "SHOW COLUMNS FROM {$table_name} WHERE Field LIKE :column_name";
         $res = $this->DBI()->getRow($sql, array('column_name' => $column_name));
@@ -235,8 +235,8 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * +-- カラムの初期値を設定
      *
      * @access      public
-     * @param       var_text $table_name
-     * @param       var_text $column_name
+     * @param       string $table_name テーブル名
+     * @param       string $column_name カラム名
      * @param       var_text $default_val
      * @return      void
      */
@@ -270,7 +270,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * ---------- | ---- | ----------
      * schema     | カラムオプション |
      * engine     | ストレージエンジン | InnoDB
-     * force      | テーブルを作成前に、既存のテーブルを削除 | InnoDB
+     * force      | テーブルを作成前に、既存のテーブルを削除 | false
      *
      * カラムオプション | 説明 | デフォルト
      * ---------------- | ---- | ----------
@@ -282,16 +282,16 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * precision        | decimal 型の精度を指定 |
      * scale            | decimal 型の小数点以下の桁数 |
      * primary          | 主キーをセットする |
-     * auto_increment   | オートインクリメントにする |
+     * auto_increment   | オートインクリメントにする | false
      * index            | インデックス名の配列 |
      * unique           | UNIQUEインデックス名の配列 |
      *
      * @access      public
-     * @param       var_text $table_name
-     * @param       var_text $options OPTIONAL:array
+     * @param       string $table_name テーブル名
+     * @param      array $options オプション設定 OPTIONAL:array
      * @return      void
      */
-    public function createTable($table_name, $options = array())
+    public function createTable($table_name, array $options = array())
     {
         $index = array();
         $unique = array();
@@ -318,9 +318,9 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
             }
             if (isset($val['auto_increment'])) {
                 $sql .= 'AUTO_INCREMENT ';
-            } elseif (isset($val['default'])) {
+            } elseif (array_key_exists('default', $val)) {
                 $sql .= 'DEFAULT ';
-                $sql .= (strtolower($val['default']) === 'null' && !isset($val['not_null'])) ? 'NULL ' : '"'.$val['default'].'" ';
+                $sql .= (strtolower($val['default']) === 'null' || $val['default'] === NULL) ? 'NULL ' : '"'.$val['default'].'" ';
             }
             if (isset($val['index'])) {
                 foreach ((array)$val['index'] as $item) {
@@ -368,14 +368,23 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
     /**
      * +-- テーブルを削除する
      *
+     * オプション | 説明 | デフォルト
+     * ---------- | ---- | ----------
+     * force      | テーブルを作成前に、既存のテーブルを削除 | false
+     *
      * @access      public
-     * @param       var_text $table_name
-     * @param       var_text $options OPTIONAL:array
+     * @param       string $table_name テーブル名
+     * @param       array $options オプション設定 OPTIONAL:array
      * @return      void
      */
-    public function dropTable($table_name, $options = array())
+    public function dropTable($table_name, array $options = array())
     {
-        $sql = "DROP TABLE `{$table_name}`";
+        if (isset($options['force']) && $options['force'] === true) {
+            $sql = "DROP TABLE IF EXISTS `{$table_name}`";
+        } else {
+            $sql = "DROP TABLE `{$table_name}`";
+        }
+
         $this->query($sql);
     }
     /* ----------------------------------------- */
@@ -384,8 +393,8 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * +-- カラムを削除する
      *
      * @access      public
-     * @param       var_text $table_name
-     * @param       var_text $column_names
+     * @param       string $table_name テーブル名
+     * @param       string $column_name カラム名s
      * @return      void
      */
     public function removeColumn($table_name, $column_names)
@@ -409,11 +418,11 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * +-- インデックスを消去します
      *
      * @access      public
-     * @param       var_text $table_name
-     * @param       var_text $options OPTIONAL:array
+     * @param       string $table_name テーブル名
+     * @param      array $options オプション設定 OPTIONAL:array
      * @return      void
      */
-    public function removeIndex($table_name, $options = array())
+    public function removeIndex($table_name, array $options = array())
     {
         if (isset($options['primary'])) {
             $sql = "ALTER TABLE `{$table_name}` DROP PRIMARY KEY";
@@ -428,7 +437,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * +-- タイムスタンプを消去します
      *
      * @access      public
-     * @param       var_text $table_name
+     * @param       string $table_name テーブル名
      * @return      void
      */
     public function removeTimestamps($table_name)
@@ -442,8 +451,8 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * +-- カラムをリネームします
      *
      * @access      public
-     * @param       var_text $table_name
-     * @param       var_text $column_name
+     * @param       string $table_name テーブル名
+     * @param       string $column_name カラム名
      * @param       var_text $new_column_name
      * @return      void
      */
@@ -475,7 +484,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * +-- インデックスをリネームします
      *
      * @access      public
-     * @param       var_text $table_name
+     * @param       string $table_name テーブル名
      * @param       var_text $old_name
      * @param       var_text $new_name
      * @return      void
@@ -499,7 +508,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * +-- テーブルをリネームします
      *
      * @access      public
-     * @param       var_text $table_name
+     * @param       string $table_name テーブル名
      * @param       var_text $new_name
      * @return      void
      */
@@ -509,5 +518,4 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
         $this->query($sql);
     }
     /* ----------------------------------------- */
-
 }
