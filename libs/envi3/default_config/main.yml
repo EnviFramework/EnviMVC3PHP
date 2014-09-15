@@ -16,8 +16,24 @@ all:
     use_i18n: false
     ## defaultの国際化ファイル
     default_i18n: "ja"
+    ## HTMLタグを自動エスケープするタイプのレンダラ ##
+    ## Smarty
+    # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviSmartySecureRenderer.php"
+    ## Smarty3
+    # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviSmarty3SecureRenderer.php"
+    ## Twig
+    # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviTwigSecureRenderer.php"
+    ## PHP
+    # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviPHPSecureRenderer.php"
+    
+    ## HTMLタグを自動エスケープしないタイプのレンダラ ##
+    ## Smarty
     # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviSmartyRenderer.php"
+    ## Smarty3
+    # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviSmarty3Renderer.php"
+    ## Twig
     # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviTwigRenderer.php"
+    ## PHP
     renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviPHPRenderer.php"
     auto_load_cache: true
 
@@ -49,13 +65,27 @@ all:
     modules: "<?php echo "{$base}modules{$ds}";?>"
     ## アクションチェイン専用のディレクトリ
     chain_modules: "<?php echo "{$base}chains{$ds}";?>"
-    templatec: "<?php echo "{$base}data{$ds}template.c{$ds}";?>"
-    templateetc: "<?php echo "{$base}data{$ds}template.etc{$ds}";?>"
+    # 設定ファイルのキャッシュ
     cache: "<?php echo realpath(ENVI_BASE_DIR."..{$ds}..{$ds}cache").$ds;?>"
-    config   : "<?php echo "{$base}template_config{$ds}";?>"
-    base_templates: "<?php echo "{$base}templates{$ds}";?>"
+    ## テンプレートのコンパイルキャッシュ
+    template_compile: "<?php echo "{$base}data{$ds}template.c{$ds}";?>"
+    ## テンプレートのetc
+    template_etc: "<?php echo "{$base}data{$ds}template.etc{$ds}";?>"
+    ## テンプレートキャッシュ
+    # template_cache   : "<?php echo "{$base}template_cache{$ds}";?>"
+    ## テンプレートcon府
+    # template_config   : "<?php echo "{$base}template_config{$ds}";?>"
+    ## 基底テンプレート
+    # base_templates: "<?php echo "{$base}templates{$ds}";?>"
+    ## 共通テンプレート
+    # common_templates: 
+    #  - "<?php echo "{$base}templates{$ds}";?>"
+    
+    # アクション保存パス
     actions: "actions/"
+    # ビュー保存パス
     views: "views/"
+    # テンプレート保存パス
     templates: "templates/"
 
   EXTENSION:

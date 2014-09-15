@@ -21,7 +21,9 @@ all:
     save_path: '/tmp/code_coverage.log'
     black_list:
       - "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR; ?>"
+      - "<?php echo ENVI_BASE_DIR; ?>"
     white_list:
+      - "<?php echo ENVI_BASE_DIR.'util'.DIRECTORY_SEPARATOR.'Migration'; ?>"
       
 
   scenario:

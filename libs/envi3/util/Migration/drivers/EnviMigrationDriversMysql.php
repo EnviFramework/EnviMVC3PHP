@@ -49,6 +49,8 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * scale      | decimal 型の小数点以下の桁数 |
      * primary    | 主キーをセットする |
      * auto_increment | オートインクリメントにする |
+     * after      | 指定したcolumnの前ににつける |
+     * first      | 先頭につける | false
      *
      *
      * @access      public
@@ -76,9 +78,9 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
 
         if (isset($options['auto_increment'])) {
             $sql .= ' AUTO_INCREMENT';
-        } elseif (isset($options['default'])) {
+        } elseif (array_key_exists('default', $options)) {
             $sql .= ' DEFAULT ';
-            $sql .= (strtolower($options['default']) === 'null' && !isset($options['not_null'])) ? 'NULL' : '"'.$options['default'].'"';
+            $sql .= (strtolower($options['default']) === 'null' || $options['default'] === NULL) ? 'NULL' : '"'.$options['default'].'"';
         }
         if (isset($options['primary']) || isset($options['auto_increment'])) {
             $sql .= ' PRIMARY KEY ';
@@ -86,11 +88,12 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
 
 
         if (isset($options['after'])) {
-            $sql .= " AFTER  `{$options['after']}` ";
+            $sql .= " AFTER `{$options['after']}` ";
         }
         if (isset($options['first']) && $options['first']) {
             $sql .= " FIRST ";
         }
+
         $this->query($sql);
     }
     /* ----------------------------------------- */
@@ -183,8 +186,6 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
         $sql = "SHOW COLUMNS FROM {$table_name} WHERE Field LIKE :column_name";
         $res = $this->DBI()->getRow($sql, array('column_name' => $column_name));
 
-
-
         if (isset($options['limit'])) {
             $type .= "({$options['limit']})";
         } elseif (isset($options['precision']) && isset($options['scale'])) {
@@ -193,14 +194,15 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
 
         $sql = "ALTER TABLE {$table_name} CHANGE {$column_name} {$table_name} ";
         $sql .= $type;
+        $res['not_null'] = false;
         if (isset($options['null']) && $options['null'] === true) {
-        } elseif (isset($res['Null']) && $res['Null'] === 'No') {
-            $sql .= "  NOT NULL ";
-            $res['not_null'] = true;
         } elseif (isset($options['null']) && $options['null'] === false) {
             $sql .= "  NOT NULL ";
             $res['not_null'] = true;
         } elseif (isset($options['not_null']) && $options['not_null'] === true) {
+            $sql .= "  NOT NULL ";
+            $res['not_null'] = true;
+        } elseif (isset($res['Null']) && strtolower($res['Null']) === 'no') {
             $sql .= "  NOT NULL ";
             $res['not_null'] = true;
         }
@@ -214,13 +216,17 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
         }
         if ($auto_increment) {
             $sql .= ' AUTO_INCREMENT';
-        } elseif (isset($options['default']) && strlen($res['default'])) {
-            $sql .= (strtolower($options['default']) === 'null' && !isset($options['not_null'])) ? 'NULL' : '"'.$options['default'].'"';
-        } elseif (isset($res['Default']) && strlen($res['Default'])) {
-            $sql .= ' DEFAULT ';
-            $sql .= (strtolower($res['Default']) === 'null' && !isset($res['not_null'])) ? 'NULL' : '"'.$res['Default'].'"';
+        } elseif (array_key_exists('default', $options)) {
+            if (!(($options['default'] === NULL || strtolower($options['default']) === 'null') && $res['not_null'] === true)) {
+                $sql .= ' DEFAULT ';
+                $sql .= ($options['default'] === NULL || strtolower($options['default']) === 'null') ? 'NULL' : '"'.$options['default'].'"';
+            }
+        } elseif (array_key_exists('Default', $res)) {
+            if (!($res['Default'] === NULL && $res['not_null'] === true)) {
+                $sql .= ' DEFAULT ';
+                $sql .= ($res['Default'] === NULL) ? 'NULL' : '"'.$res['Default'].'"';
+            }
         }
-
         $this->query($sql);
     }
     /* ----------------------------------------- */
@@ -242,15 +248,14 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
         $sql = "ALTER TABLE {$table_name} CHANGE {$column_name} {$table_name} ";
         $sql .= $res["Type"];
 
-        if (isset($res['Null']) && $res['Null'] === 'No') {
+        if (strtolower($res['Null']) === 'no') {
             $sql .= "  NOT NULL ";
             $res['not_null'] = true;
         }
-        if (isset($res['Extra']) && $res['Extra'] === 'auto_increment') {
-            $sql .= ' AUTO_INCREMENT';
-        } elseif (isset($res['Default']) && strlen($res['Default'])) {
-            $sql .= ' DEFAULT :default_val ';
+        if (strtolower($res['Extra']) === 'auto_increment') {
+            throw new EnviException('changeColumnDefault は auto_increment のcolumnに使用することは出来ません。');
         }
+        $sql .= ' DEFAULT :default_val ';
 
         $this->query($sql, array('default_val' => $default_val));
     }
@@ -312,18 +317,24 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
                 $sql .= 'NOT NULL ';
             }
             if (isset($val['auto_increment'])) {
-                $sql .= ' AUTO_INCREMENT';
+                $sql .= 'AUTO_INCREMENT ';
             } elseif (isset($val['default'])) {
-                $sql .= ' DEFAULT ';
-                $sql .= (strtolower($val['default']) === 'null' && !isset($val['not_null'])) ? 'NULL' : '"'.$val['default'].'"';
+                $sql .= 'DEFAULT ';
+                $sql .= (strtolower($val['default']) === 'null' && !isset($val['not_null'])) ? 'NULL ' : '"'.$val['default'].'" ';
             }
             if (isset($val['index'])) {
-                foreach ($val['index'] as $item) {
+                foreach ((array)$val['index'] as $item) {
+                    if ($item === true) {
+                        $item = 'idx_'.$column;
+                    }
                     $index[$item][] = $column;
                 }
             }
             if (isset($val['unique'])) {
-                foreach ($val['unique'] as $item) {
+                foreach ((array)$val['unique'] as $item) {
+                    if ($item === true) {
+                        $item = 'uq_'.$column;
+                    }
                     $unique[$item][] = $column;
                 }
             }
@@ -404,7 +415,11 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      */
     public function removeIndex($table_name, $options = array())
     {
-        $sql = "ALTER TABLE `{$table_name}` DROP INDEX `{$options['name']}`";
+        if (isset($options['primary'])) {
+            $sql = "ALTER TABLE `{$table_name}` DROP PRIMARY KEY";
+        } else {
+            $sql = "ALTER TABLE `{$table_name}` DROP INDEX `{$options['name']}`";
+        }
         $this->query($sql);
     }
     /* ----------------------------------------- */
@@ -440,17 +455,17 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
         $sql = "ALTER TABLE {$table_name} CHANGE {$column_name} {$new_column_name} ";
         $sql .= $res['Type'];
 
-        if (isset($res['Null']) && $res['Null'] === 'No') {
+        if (isset($res['Null']) && strtolower($res['Null']) === 'no') {
             $sql .= "  NOT NULL ";
-            $res['not_null'] = true;
         }
-        if (isset($res['Extra']) && $res['Extra'] === 'auto_increment') {
+        if (isset($res['Extra']) && strtolower($res['Extra']) === 'auto_increment') {
             $sql .= ' AUTO_INCREMENT';
-        } elseif (isset($res['Default']) && strlen($res['Default'])) {
-            $sql .= ' DEFAULT ';
-            $sql .= (strtolower($res['Default']) === 'null' && !isset($res['not_null'])) ? 'NULL' : '"'.$res['Default'].'"';
+        } elseif (array_key_exists('Default', $res) ) {
+            if (!(strtolower($res['Null']) === 'no' && $res['Default'] === NULL)) {
+                $sql .= ' DEFAULT ';
+                $sql .= ($res['Default'] === NULL) ? 'NULL' : '"'.$res['Default'].'"';
+            }
         }
-
 
         $this->query($sql);
     }
@@ -473,7 +488,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
         foreach ($res as $row) {
             $column_name[] = $row["Column_name"];
         }
-        $column_name = join(",", $column_name);
+        $column_name = '`'.join("`, `", $column_name).'`';
 
         $sql = "ALTER TABLE  `{$table_name}` DROP INDEX  `{$old_name}` ,ADD INDEX  `{$new_name}` ( {$column_name} )";
         $this->query($sql);

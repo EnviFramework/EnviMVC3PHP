@@ -20,8 +20,10 @@
  * @since      File available since Release 1.0.0
  * @doc_ignore
  */
+$ds = DIRECTORY_SEPARATOR;
+define('APP_BASE', realpath(dirname(__FILE__).$ds.'../../apps/'.basename(dirname(__FILE__)).'/').$ds);
+define('FIXTURE_DIR', realpath(dirname(__FILE__).$ds.'fixture').$ds);
 
-define('APP_BASE', realpath(dirname(__FILE__).DIRECTORY_SEPARATOR.'../../apps/'.basename(dirname(__FILE__)).'/').DIRECTORY_SEPARATOR);
 
 /**
  * テストのベースクラス
