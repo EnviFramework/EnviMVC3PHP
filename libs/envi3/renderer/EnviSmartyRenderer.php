@@ -78,7 +78,7 @@ class EnviSmartyRenderer
             $this->Smarty->cache_dir = $this->_system_conf['DIRECTORY']['template_cache'];
         }
 
-        $this->Smarty->template_dir = $this->_system_conf['DIRECTORY']['modules'].$module_dir.DIRECTORY_SEPARATOR.'templates';
+        $this->Smarty->template_dir = $this->_system_conf['DIRECTORY']['modules'].$module_dir.DIRECTORY_SEPARATOR.$this->_system_conf['DIRECTORY']['templates'];
         $this->Smarty->default_modifiers = array('escape');
         $this->Smarty->assign('Envi', Envi::singleton());
         $this->Smarty->assign('base_url', Envi::singleton()->getBaseUrl());
