@@ -73,14 +73,18 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
             $sql .= "  NOT NULL ";
         } elseif (isset($options['null']) && $options['null'] === false) {
             $sql .= "  NOT NULL ";
+        } else {
+            $options['not_null'] = false;
         }
 
 
         if (isset($options['auto_increment'])) {
             $sql .= ' AUTO_INCREMENT';
         } elseif (array_key_exists('default', $options)) {
-            $sql .= ' DEFAULT ';
-            $sql .= (strtolower($options['default']) === 'null' || $options['default'] === NULL) ? 'NULL' : '"'.$options['default'].'"';
+            if (!(($options['default'] === NULL || strtolower($options['default']) === 'null') && $options['not_null'] === true)) {
+                $sql .= ' DEFAULT ';
+                $sql .= (strtolower($options['default']) === 'null' || $options['default'] === NULL) ? 'NULL' : '"'.$options['default'].'"';
+            }
         }
         if (isset($options['primary']) || isset($options['auto_increment'])) {
             $sql .= ' PRIMARY KEY ';
@@ -313,14 +317,20 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
             }
             $sql .= $comma;
             $sql .= "`{$column}` {$val['type']} ";
-            if (isset($val['not_null'])) {
-                $sql .= 'NOT NULL ';
+            if (isset($val['not_null']) && $val['not_null']) {
+                $sql .= "  NOT NULL ";
+            } elseif (isset($val['null']) && $val['null'] === false) {
+                $sql .= "  NOT NULL ";
+            } else {
+                $val['not_null'] = false;
             }
             if (isset($val['auto_increment'])) {
                 $sql .= 'AUTO_INCREMENT ';
             } elseif (array_key_exists('default', $val)) {
-                $sql .= 'DEFAULT ';
-                $sql .= (strtolower($val['default']) === 'null' || $val['default'] === NULL) ? 'NULL ' : '"'.$val['default'].'" ';
+                if (!(($val['default'] === NULL || strtolower($val['default']) === 'null') && $val['not_null'] === true)) {
+                    $sql .= ' DEFAULT ';
+                    $sql .= (strtolower($val['default']) === 'null' || $val['default'] === NULL) ? 'NULL' : '"'.$val['default'].'"';
+                }
             }
             if (isset($val['index'])) {
                 foreach ((array)$val['index'] as $item) {
