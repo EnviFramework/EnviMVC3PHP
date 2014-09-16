@@ -96,7 +96,7 @@ class EnviSmarty3SecureRenderer
 
         // テンプレート
         $templates = array();
-        $templates[] = $this->_system_conf['DIRECTORY']['modules'].$module_dir.DIRECTORY_SEPARATOR.'templates';
+        $templates[] = $this->_system_conf['DIRECTORY']['modules'].$module_dir.DIRECTORY_SEPARATOR.$this->_system_conf['DIRECTORY']['templates'];
         if (isset($this->_system_conf['DIRECTORY']['common_templates'])) {
             if (!is_array($this->_system_conf['DIRECTORY']['common_templates'])) {
                 $templates[] = $this->_system_conf['DIRECTORY']['common_templates'];
