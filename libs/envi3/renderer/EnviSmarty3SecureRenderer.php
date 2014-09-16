@@ -26,7 +26,7 @@
  */
 
 
-require  realpath(ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'Smarty3').DIRECTORY_SEPARATOR.'ArtisanSmarty.class.php';
+require  realpath(ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'Smarty3').DIRECTORY_SEPARATOR.'Smarty.class.php';
 
 /**
  * ArtisanSmartyレンダラー
