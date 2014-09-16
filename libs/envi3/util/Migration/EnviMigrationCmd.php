@@ -176,7 +176,56 @@ class EnviMigrationCmd
             $obj->up();
             $migration['last_version'] = $version > $migration['last_version'] ? $version : $migration['last_version'];
             $migration['executed'][]   = $migration_class_file;
+            $this->setMigrationStatus($migration);
+            $this->saveMigrationStatus();
         }
+    }
+
+
+    public function executeCursorUp()
+    {
+        $migration = $this->getMigrationStatus();
+        foreach ($this->getMigrationList() as $migration_class_file) {
+            list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4), 3);
+            echo $migration_class_file,"\n";
+            include $migration_class_file;
+            $class_name = $app.'_'.$migration_class;
+            $obj = new $class_name;
+            $obj->env = $this->env;
+            $migration['last_version'] = $version > $migration['last_version'] ? $version : $migration['last_version'];
+            $migration['executed'][]   = $migration_class_file;
+            $this->setMigrationStatus($migration);
+            $this->saveMigrationStatus();
+            return;
+        }
+    }
+
+
+
+    public function executeCursorDown()
+    {
+        $migration = $this->getMigrationStatus();
+        $migration_class_file = array_pop($migration['executed']);
+
+        list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4), 3);
+        echo $migration_class_file,"\n";
+        include $migration_class_file;
+        $class_name = $app.'_'.$migration_class;
+        $obj = new $class_name;
+        $obj->env = $this->env;
+        // ダウン
+        $obj->is_up = false;
+
+        // バージョンを戻す
+        if (count($migration['executed']) === 0) {
+            // 実行履歴がゼロになった場合
+            $migration['last_version'] = 0;
+        } else {
+            $migration_class_file = $migration['executed'][count($migration['executed']) - 1];
+            list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4));
+            $migration['last_version'] = $version < $migration['last_version'] ? $version : $migration['last_version'];
+        }
+
         $this->setMigrationStatus($migration);
         $this->saveMigrationStatus();
     }
