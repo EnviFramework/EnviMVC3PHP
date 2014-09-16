@@ -71,6 +71,7 @@ class EnviSmarty3Renderer
         // デリミタ変更
         $this->Smarty->left_delimiter = '<%';
         $this->Smarty->right_delimiter = '%>';
+        $this->Smarty->error_reporting = E_ALL & ~E_NOTICE;
 
         // コンフィグ
         if (isset($this->_system_conf['DIRECTORY']['template_config'])) {
