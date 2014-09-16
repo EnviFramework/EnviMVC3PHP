@@ -83,7 +83,7 @@ class EnviSmarty3SecureRenderer
         // コンフィグ
         if (isset($this->_system_conf['DIRECTORY']['template_config'])) {
             $this->Smarty->setConfigDir($this->_system_conf['DIRECTORY']['template_config']);
-        } else {
+        } elseif (isset($this->_system_conf['DIRECTORY']['config'])) {
             $this->Smarty->setConfigDir($this->_system_conf['DIRECTORY']['config']);
         }
         // compile

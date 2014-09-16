@@ -73,7 +73,7 @@ all:
     template_etc: "<?php echo "{$base}data{$ds}template.etc{$ds}";?>"
     ## テンプレートキャッシュ
     # template_cache   : "<?php echo "{$base}template_cache{$ds}";?>"
-    ## テンプレートcon府
+    ## テンプレートconf
     # template_config   : "<?php echo "{$base}template_config{$ds}";?>"
     ## 基底テンプレート
     # base_templates: "<?php echo "{$base}templates{$ds}";?>"

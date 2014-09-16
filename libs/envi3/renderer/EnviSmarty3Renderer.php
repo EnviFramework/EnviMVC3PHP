@@ -75,13 +75,13 @@ class EnviSmarty3Renderer
         // コンフィグ
         if (isset($this->_system_conf['DIRECTORY']['template_config'])) {
             $this->Smarty->setConfigDir($this->_system_conf['DIRECTORY']['template_config']);
-        } else {
+        } elseif (isset($this->_system_conf['DIRECTORY']['config'])) {
             $this->Smarty->setConfigDir($this->_system_conf['DIRECTORY']['config']);
         }
         // compile
         if (isset($this->_system_conf['DIRECTORY']['template_compile'])) {
             $this->Smarty->setCompileDir($this->_system_conf['DIRECTORY']['template_compile']);
-        } else {
+        } elseif (isset($this->_system_conf['DIRECTORY']['template_compile'])) {
             $this->Smarty->setCompileDir($this->_system_conf['DIRECTORY']['templatec']);
         }
 
