@@ -748,6 +748,12 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
             $inner_replace_to,
         file_get_contents(dirname(__FILE__).'/scaffold/default/___form_column.tpl')
     );
+    // フォーム定義
+    $form_update_text .= str_replace(
+            $inner_replace_from,
+            $inner_replace_to,
+        file_get_contents(dirname(__FILE__).'/scaffold/default/___form_column_update.tpl')
+    );
 
     // conform定義
     $confirm_text .= str_replace(
@@ -850,13 +856,13 @@ $file_path = $project_dir.'db'.DIRECTORY_SEPARATOR.'migrate'.DIRECTORY_SEPARATOR
 file_put_contents($file_path, $contents);
 
 
-
 // 各テンプレートの置き換え変数を定義する
 $replace_from = array(
     '_____action_name_____',
     '/*%%validate_text%%*/',
     '/*%%setter_text%%*/',
     '/*%%form_text%%*/',
+    '/*%%form_update_text%%*/',
     '/*%%confirm_text%%*/',
     '/*%%show_text%%*/',
     '/*%%validate_unique_check_text%%*/',
@@ -880,6 +886,7 @@ $replace_to = array(
     $validate_text,
     $setter_text,
     $form_text,
+    $form_update_text,
     $confirm_text,
     $show_text,
     $validate_unique_check_text,

@@ -3,7 +3,7 @@
 <form action="./update.php" method="post">
 <input type="hidden" name="id" value="<%$smarty.get.id|default:$smarty.post.id%>">
 
-/*%%form_text%%*/
+/*%%form_update_text%%*/
 
 
 <button type="submit" name="confirm" value="確認">確認</button>
