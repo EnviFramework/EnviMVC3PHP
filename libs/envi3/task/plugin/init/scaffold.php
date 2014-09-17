@@ -279,6 +279,7 @@ $add_input_data_text = '';
 
 // フォームテンプレート
 $form_text = '';
+$form_update_text = '';
 // Confirmテンプレート
 $confirm_text = '';
 // 表示用テンプレート
