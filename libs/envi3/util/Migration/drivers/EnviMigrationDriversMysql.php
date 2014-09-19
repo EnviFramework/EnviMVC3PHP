@@ -196,7 +196,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
             $type .= "({$options['precision']}, {$options['scale']})";
         }
 
-        $sql = "ALTER TABLE {$table_name} CHANGE {$column_name} {$table_name} ";
+        $sql = "ALTER TABLE {$table_name} CHANGE {$column_name} {$column_name} ";
         $sql .= $type;
         $res['not_null'] = false;
         if (isset($options['null']) && $options['null'] === true) {
@@ -249,7 +249,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
         $sql = "SHOW COLUMNS FROM {$table_name} WHERE Field LIKE :column_name";
         $res = $this->DBI()->getRow($sql, array("column_name" => $column_name));
 
-        $sql = "ALTER TABLE {$table_name} CHANGE {$column_name} {$table_name} ";
+        $sql = "ALTER TABLE {$table_name} CHANGE {$column_name} {$column_name} ";
         $sql .= $res["Type"];
 
         if (strtolower($res['Null']) === 'no') {
@@ -318,9 +318,9 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
             $sql .= $comma;
             $sql .= "`{$column}` {$val['type']} ";
             if (isset($val['not_null']) && $val['not_null']) {
-                $sql .= "  NOT NULL ";
+                $sql .= "NOT NULL ";
             } elseif (isset($val['null']) && $val['null'] === false) {
-                $sql .= "  NOT NULL ";
+                $sql .= "NOT NULL ";
             } else {
                 $val['not_null'] = false;
             }
@@ -328,7 +328,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
                 $sql .= 'AUTO_INCREMENT ';
             } elseif (array_key_exists('default', $val)) {
                 if (!(($val['default'] === NULL || strtolower($val['default']) === 'null') && $val['not_null'] === true)) {
-                    $sql .= ' DEFAULT ';
+                    $sql .= 'DEFAULT ';
                     $sql .= (strtolower($val['default']) === 'null' || $val['default'] === NULL) ? 'NULL' : '"'.$val['default'].'"';
                 }
             }
