@@ -126,7 +126,7 @@ abstract class EnviMigrationBase
     {
         list(, $trace) = debug_backtrace();
         if ($trace['function'] === 'change' && !$this->is_up) {
-            $this->Driver()->removeIndex($table_name, $column_name, $options );
+            $this->Driver()->removeIndex($table_name, $options );
             return;
         }
         $this->Driver()->addIndex($table_name, $column_name, $options);

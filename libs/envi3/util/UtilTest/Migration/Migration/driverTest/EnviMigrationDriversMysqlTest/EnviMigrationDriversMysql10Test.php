@@ -103,7 +103,7 @@ class EnviMigrationDriversMysql10Test extends EnviMigrationDriversMysqlTestBase
         $ck = self::$EnviDBInstance->getInstance('default_master')->
             getAll('desc test_table_3');
         $mock->shouldReceive('query')
-            ->with('ALTER TABLE test_table_3 CHANGE foo test_table_3 varchar(200) DEFAULT :default_val ', array('default_val' => 'abcd'))
+            ->with('ALTER TABLE test_table_3 CHANGE foo foo varchar(200) DEFAULT :default_val ', array('default_val' => 'abcd'))
             ->once()
             ->andNoBypass();
         $driver->changeColumnDefault('test_table_3', 'foo', 'abcd');
@@ -126,7 +126,7 @@ class EnviMigrationDriversMysql10Test extends EnviMigrationDriversMysqlTestBase
         $ck = self::$EnviDBInstance->getInstance('default_master')->
             getAll('desc test_table_3');
         $mock->shouldReceive('query')
-            ->with('ALTER TABLE test_table_3 CHANGE hoo test_table_3 int(11)  NOT NULL  DEFAULT :default_val ', array('default_val' => '1'))
+            ->with('ALTER TABLE test_table_3 CHANGE hoo hoo int(11)  NOT NULL  DEFAULT :default_val ', array('default_val' => '1'))
             ->once()
             ->andNoBypass();
         $driver->changeColumnDefault('test_table_3', 'hoo', '1');

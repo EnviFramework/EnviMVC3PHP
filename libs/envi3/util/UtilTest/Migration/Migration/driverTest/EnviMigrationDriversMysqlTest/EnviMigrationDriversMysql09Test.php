@@ -103,7 +103,7 @@ class EnviMigrationDriversMysql09Test extends EnviMigrationDriversMysqlTestBase
     {
         // テスト開始
         $mock->shouldReceive('query')
-            ->with('ALTER TABLE test_table_3 CHANGE foo test_table_3 varchar(100) DEFAULT NULL')
+            ->with('ALTER TABLE test_table_3 CHANGE foo foo varchar(100) DEFAULT NULL')
             ->once()
             ->andNoBypass();
         $driver->changeColumn('test_table_3', 'foo', 'varchar', array(
@@ -129,7 +129,7 @@ class EnviMigrationDriversMysql09Test extends EnviMigrationDriversMysqlTestBase
     {
         // テスト開始
         $mock->shouldReceive('query')
-            ->with('ALTER TABLE test_table_3 CHANGE id test_table_3 int  NOT NULL  AUTO_INCREMENT')
+            ->with('ALTER TABLE test_table_3 CHANGE id id int  NOT NULL  AUTO_INCREMENT')
             ->once()
             ->andNoBypass();
         $driver->changeColumn('test_table_3', 'id', 'int', array(

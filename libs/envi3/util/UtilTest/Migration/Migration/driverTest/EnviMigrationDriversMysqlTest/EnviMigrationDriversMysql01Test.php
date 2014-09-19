@@ -112,7 +112,7 @@ class EnviMigrationDriversMysql01Test extends EnviMigrationDriversMysqlTestBase
 `email` varchar(128) NOT NULL ,
 `url` varchar(128) ,
 `nickname` varchar(128) ,
-`scale` decimal(6, 2) ,
+`scale` decimal(6, 2) NOT NULL ,
 `delete_flag` tinyint NOT NULL DEFAULT "0" ,
 PRIMARY KEY (id),
 UNIQUE KEY `uq_email` (email),
