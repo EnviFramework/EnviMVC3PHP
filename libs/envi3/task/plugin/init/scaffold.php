@@ -1026,7 +1026,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/newAction.php')
 );
-writeAction($contents, $replace_to[0].'Action', $action_dir, !isOption('no_override:action'));
+writeAction($contents, $replace_to[0].'Action', $action_dir, '.class.php', !isOption('no_override:action'));
 
 
 // 新規作成
@@ -1036,7 +1036,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/createAction.php')
 );
-writeAction($contents, $replace_to[0].'Action', $action_dir, !isOption('no_override:action'));
+writeAction($contents, $replace_to[0].'Action', $action_dir, '.class.php', !isOption('no_override:action'));
 
 // 詳細表示
 $replace_to[0] = 'show';
@@ -1045,7 +1045,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/showAction.php')
 );
-writeAction($contents, $replace_to[0].'Action', $action_dir, !isOption('no_override:action'));
+writeAction($contents, $replace_to[0].'Action', $action_dir, '.class.php', !isOption('no_override:action'));
 
 // 編集フォーム
 $replace_to[0] = 'edit';
@@ -1054,7 +1054,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/editAction.php')
 );
-writeAction($contents, $replace_to[0].'Action', $action_dir, !isOption('no_override:action'));
+writeAction($contents, $replace_to[0].'Action', $action_dir, '.class.php', !isOption('no_override:action'));
 
 // 更新
 $replace_to[0] = 'update';
@@ -1063,7 +1063,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/updateAction.php')
 );
-writeAction($contents, $replace_to[0].'Action', $action_dir, !isOption('no_override:action'));
+writeAction($contents, $replace_to[0].'Action', $action_dir, '.class.php', !isOption('no_override:action'));
 
 // 削除
 $replace_to[0] = 'destroy';
@@ -1072,7 +1072,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/destroyAction.php')
 );
-writeAction($contents, $replace_to[0].'Action', $action_dir, !isOption('no_override:action'));
+writeAction($contents, $replace_to[0].'Action', $action_dir, '.class.php', !isOption('no_override:action'));
 
 // 一覧
 $replace_to[0] = 'index';
@@ -1081,7 +1081,7 @@ $contents = str_replace(
     $replace_to,
     file_get_contents(dirname(__FILE__).'/scaffold/default/indexAction.php')
 );
-writeAction($contents, $replace_to[0].'Action', $action_dir, !isOption('no_override:action'));
+writeAction($contents, $replace_to[0].'Action', $action_dir, '.class.php', !isOption('no_override:action'));
 
 // Ormap
 $contents = str_replace(
