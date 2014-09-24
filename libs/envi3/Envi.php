@@ -310,7 +310,14 @@ class Envi
     const COMMIT         = 'COMMIT';
     const NONE           = 'NONE';
 
-    const VERSION        = '3.4.0.2';
+    // +-- バージョン番号定義
+    const VERSION        = '3.4.0.3';
+    const MAJOR_VERSION    = 3;
+    const MINOR_VERSION    = 4;
+    const RELEASE_VERSION  = 0;
+    const ALPHA_VERSION    = 3;
+    // ---------------------------
+
 
     protected static $app_key;
     protected $_system_conf;
