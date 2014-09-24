@@ -1,6 +1,6 @@
 <?php
 /**
- * PropelPDO風のオブジェクトを作成するベースクラス
+ * アクティブレコードベース
  *
  * PHP versions 5
  *
@@ -19,7 +19,7 @@
 
 
 /**
- * PropelPDO風のオブジェクトを作成するベースクラス
+ * アクティブレコードベース
  *
  * @abstract
  * @category   EnviMVC拡張
@@ -36,7 +36,7 @@
 abstract class EnviOrMapBase
 {
     protected $_from_hydrate, $to_save;
-    protected $_is_modify = true;
+    protected $_is_modify  = true;
     protected $_is_hydrate = false;
     protected $suffix = '';
     protected $table_name,$pkeys;
@@ -45,6 +45,31 @@ abstract class EnviOrMapBase
     protected $update_date;
 
     protected $default_instance_name = 'default_master';
+
+    /**
+     * +-- insertならtrue,updateならfalseを返す
+     *
+     * @access      public
+     * @return      boolean
+     */
+    public function isNew()
+    {
+        return $this->_is_hydrate === false;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- insertならfalse,updateならtrueを返す
+     *
+     * @access      public
+     * @return      boolean
+     */
+    public function isUpdate()
+    {
+        return $this->_is_hydrate;
+    }
+    /* ----------------------------------------- */
 
     /**
      * +-- テーブル名のサフィックスをセットする
@@ -68,6 +93,22 @@ abstract class EnviOrMapBase
     public function getTableName()
     {
         return $this->table_name.$this->suffix;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 配列から、オブジェクトにセットする
+     *
+     * @access      public
+     * @param       array $arr
+     * @return      void
+     */
+    public function setByArray(array $arr)
+    {
+        foreach ($arr as $method => $val) {
+            $method = 'set'.$this->pascalize($method);
+            $this->$method($arr);
+        }
     }
     /* ----------------------------------------- */
 
@@ -228,5 +269,23 @@ abstract class EnviOrMapBase
         trigger_error('undefined method:'.$name);
     }
     /* ----------------------------------------- */
+
+    /**
+     * +-- パスカライズする
+     *
+     * @access      protected
+     * @param       string $snake_case
+     * @return      string
+     */
+    protected function pascalize($snake_case)
+    {
+        $pascal_case = strtolower($snake_case);
+        $pascal_case = str_replace('_', ' ', $pascal_case);
+        $pascal_case = ucwords($pascal_case);
+        $pascal_case = str_replace(' ', '', $pascal_case);
+        return $pascal_case;
+    }
+    /* ----------------------------------------- */
+
 
 }
