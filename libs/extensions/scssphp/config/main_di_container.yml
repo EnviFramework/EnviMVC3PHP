@@ -1,17 +1,17 @@
 
-  Less:
+  Scss:
   ################################
-  # extension()->Less()の設定
+  # extension()->Scss()の設定
   ################################
     ## ここをtrueにすると、リクエストごとにロードされ、オブジェクトが生成されます
     constant: false
     class:
       ## ファイルの実態
-      resource: "<?php echo ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'lessphp'.DIRECTORY_SEPARATOR;?>EnviLessphpExtension.php"
+      resource: "<?php echo ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.'scssphp'.DIRECTORY_SEPARATOR;?>EnviScssphpExtension.php"
       ## クラス名
-      class_name: "EnviLessphpExtension"
+      class_name: "EnviScssphpExtension"
       ## シングルトン化するか
       singleton: true
     router:
       ## extensionの設定のパス
-      resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.$app_name.'_lessphp.yml';?>"
+      resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.$app_name.'_scssphp.yml';?>"
