@@ -1159,9 +1159,14 @@ function camelize($string)
  */
 function writeAction($contents, $file_name, $dir, $ext = '.class.php', $over_ride = true)
 {
+    global $project_dir;
     // 強制上書きじゃなければ、バックアップを保存する
     if (!$over_ride && is_file($dir.$file_name.$ext)) {
-        $rename = $dir.$file_name.$ext.'.'.time();
+        $work_dir = $project_dir.'works'.DIRECTORY_SEPARATOR.'scaffold'.DIRECTORY_SEPARATOR;
+        if (!is_dir($work_dir)) {
+            mkdir($work_dir, 0777, true);
+        }
+        $rename = $work_dir.$file_name.$ext.'.'.time().'.bk';
         rename($dir.$file_name.$ext, $rename);
         sysMessage('rename:', $dir.$file_name.$ext, $rename);
     }
