@@ -1,13 +1,24 @@
 <?php
 /**
+ * DBのマイグレーション基底ファイル
+ *
+ * Enviではマイグレーションと呼ばれる機能を使いテーブルを新規に作成したりカラムやインデックスの追加といった変更を行ないます。
+ *
+ * 通常テーブルを新規に作成するには必要なSQL文を直接実行して作成します。
+ * カラムを追加したりする場合も同じです。
+ *
+ * それに対してマイグレーションを使う場合は、テーブルを新規に作成するためのマイグレーションスクリプトと呼ばれる、
+ * スクリプトファイルを作成し実行します。
+ * 後からカラムを追加したい場合には、カラムを追加するための別のスクリプトファイルを作成し実行します。
  *
  *
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
+ *
+ * @category   フレームワーク基礎処理
+ * @package    DB
+ * @subpackage Migration
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -18,14 +29,23 @@
  */
 
 /**
+ * DBのマイグレーション基底クラス
  *
+ * `envi init:migration`
+ *
+ * コマンドで、このクラスを継承した、クラスを生成します。
+ *
+ * 実装するメソッドは、それぞれ、change、up、downです。
+ *
+ * 詳細は、それぞれのメソッドのドキュメントを参照して下さい。
  *
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
+ *
+ * @category   フレームワーク基礎処理
+ * @package    DB
+ * @subpackage Migration
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License

@@ -1,9 +1,9 @@
 <?=$sub_package_name?>
 
 ================================================================
-* [導入](<?=$driver->writePathToManPath($sub_package['intro_man_path'])?>)
-* [インストール/設定](<?=$driver->writePathToManPath($sub_package['setup_man_path'])?>)
-* [定義済み定数](<?=$driver->writePathToManPath($sub_package['constant_man_path'])?>)
+* [導入](./<?=$sub_package_name?>/intro)
+* [インストール/設定](./<?=$sub_package_name?>/intro#install)
+* [定義済み定数](./<?=$sub_package_name?>/constant)
 <?php foreach ($class_list as $class_name => $class_item) { ?>
 * [<?=$class_name?>](<?=$driver->writePathToManPath($class_item['class_item']['man_path'])?>) — <?=$class_item['class_item']['token']->getDocBlockToken()->getDocBlockSubject()?>
 

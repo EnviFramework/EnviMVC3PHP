@@ -3,7 +3,19 @@
  * MarkdownExtraを使用するためのエクステンションクラス
  *
  *
+ * Markdown拡張である、MarkdownExtra形式で記述されたテキストを、HTMLにコンパイルするエクステンションです。
  *
+ * 詳細は、
+
+ * https://michelf.ca/projects/php-markdown/extra/
+ *
+ * を参照して下さい。
+ *
+ * インストール・設定
+ * --------------------------------------------------
+ * envi install-extension {app_key} {DI設定ファイル} markdown
+ *
+ * コマンドでインストール出来ます。
  *
  *
  * PHP versions 5
