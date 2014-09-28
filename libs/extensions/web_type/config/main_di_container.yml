@@ -1,15 +1,15 @@
   WebType:
   ################################
-  # extension()->webType()‚Ìİ’è
+  # extension()->webType()ã®è¨­å®š
   ################################
     constant: true
     class:
-      ## ƒtƒ@ƒCƒ‹‚ÌÀ‘Ô
+      ## ãƒ•ã‚¡ã‚¤ãƒ«ã®å®Ÿæ…‹
       resource: "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>EnviWebtype.php"
-      ## ƒNƒ‰ƒX–¼
+      ## ã‚¯ãƒ©ã‚¹å
       class_name: "EnviWebtype"
-      ## ƒVƒ“ƒOƒ‹ƒgƒ“‰»‚·‚é‚©
+      ## ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³åŒ–ã™ã‚‹ã‹
       singleton: true
     router:
-      ## extension‚Ìİ’è‚ÌƒpƒX
+      ## extensionã®è¨­å®šã®ãƒ‘ã‚¹
       resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.$app_name.'_web_type.yml';?>"
