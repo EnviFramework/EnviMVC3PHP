@@ -1,0 +1,28 @@
+all:
+  default_master:
+    params:
+    #DSN
+      dsn: "phptype=mysql&username=exampleuser&password=example&hostspec=localhost&database=example_master"
+    # オブジェクトをリクエスト間で保持し続けるかどうか
+    # trueにしておくと、トランザクションなどの管理が楽になります
+      instance_pool: true
+    # Connection POOLのON OFF
+      connection_pool: false
+    # 接続時に実行するクエリ
+    # 必要ない場合は削除してください
+      initialize_query: "set names utf8;"
+  default_slave:
+    params:
+      dsn: "phptype=mysql&username=exampleuser&password=example&hostspec=localhost&database=example_slave"
+      instance_pool: true
+      connection_pool: false
+      initialize_query: "set names utf8;"
+  default_stage:
+    params:
+      dsn:
+    # 配列にしておくと、ランダムで接続先が変わるようになる
+        - "phptype=mysql&username=exampleuser&password=example&hostspec=localhost&database=example_stage"
+        - "phptype=mysql&username=exampleuser&password=example&hostspec=localhost&database=example_stage"
+      instance_pool: true
+      connection_pool: false
+      initialize_query: "set names utf8;"

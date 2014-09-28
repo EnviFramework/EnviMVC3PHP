@@ -850,7 +850,7 @@ class EnviValidator
 
             // @codeCoverageIgnoreStart
             } else {
-                trigger_error('Unknown validator selected', E_USER_ERROR);
+                trigger_error('Unknown validator selected : '.$validator, E_USER_ERROR);
             }
             // @codeCoverageIgnoreEnd
         } else {

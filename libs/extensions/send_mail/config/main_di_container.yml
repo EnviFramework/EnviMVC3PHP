@@ -1,0 +1,16 @@
+  mail:
+  ################################
+  # extension()->mail()の設定
+  ################################
+    constant: true
+    class:
+      ## ファイルの実態
+      resource: "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>EnviSendMail.php"
+      ## クラス名
+      class_name: "EnviSendMail"
+      ## シングルトン化するか
+      singleton: true
+    router:
+      ## extensionの設定のパス
+      resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.$app_name.'_send_mail.yml';?>"
+

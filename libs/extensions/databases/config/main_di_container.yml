@@ -1,0 +1,16 @@
+  DBI:
+  ################################
+  # extension()->DBI()の設定
+  ################################
+    ## ここをtrueにすると、リクエストごとにロードされ、オブジェクトが生成されます
+    constant: true
+    class:
+      ## ファイルの実態
+      resource: "<?php echo ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR;?>EnviDB.php"
+      ## クラス名
+      class_name: "EnviDBInstance"
+      ## シングルトン化するか
+      singleton: true
+    router:
+      ## extensionの設定のパス
+      resource: "<?php echo dirname(__FILE__).DIRECTORY_SEPARATOR.$app_name.'_databases.yml';?>"
