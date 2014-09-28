@@ -60,6 +60,14 @@ if (isOption('--help') || isOption('-h') || isOption('-?') || !isset($argv[1])) 
     cecho('    -help                                ', 32, '\n       マニュアルの表示');
     cecho('    -migrate                             ', 32, '\n       マイグレーションをおこなう');
     cecho('    -rollback                            ', 32, '\n       行ったマイグレーションをひとつ戻す');
+    cecho('    -cursor                              ', 32, '\n       マイグレーションは行わず、バージョンだけを更新する');
+    cecho('    -abort_if_pending_migrations         ', 32, '\n       適用されていないマイグレーションの確認');
+
+
+
+    cecho('install:', 33);
+    cecho('    -help                                ', 32, '\n       マニュアルの表示');
+    cecho('    -extension                           ', 32, '\n       エクステンションのインストールをおこなう');
 
     cecho('yml:', 33);
     cecho('    -test                                ', 32, '\n       YMLの展開テスト');

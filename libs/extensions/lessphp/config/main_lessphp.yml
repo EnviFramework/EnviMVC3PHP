@@ -1,50 +1,56 @@
 all:
-  ## Set the output format, includes "default", "compressed"
+  ## Set the output format: å‡ºåŠ›ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’é¸ã‚“ã§ä¸‹ã•ã„ 
+  ##  "default" : éåœ§ç¸®
+  ## "compressed" : åœ§ç¸®
   format: "compressed"
   
-  ## Keep /* */ comments in output
+  ## Keep /* */ comments in output : å‡ºåŠ›ã«ã€/* */ã‚³ãƒ¡ãƒ³ãƒˆã‚’å«ã‚ã‚‹ã‹ã©ã†ã‹
   preserve_comments: false
   
-  ## ƒLƒƒƒbƒVƒ…‚Ì—L–³: enable caching
+  ## ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æœ‰ç„¡: enable caching
   is_compile_cache: true
   
-  ## •K‚¸ƒRƒ“ƒpƒCƒ‹‚·‚é‚©‚Ç‚¤‚©:always compiled
+  ## å¿…ãšã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã™ã‚‹ã‹ã©ã†ã‹:always compiled
   is_force_compile: false
   
-  ## compile_id‚É©“®•t‰Á‚·‚éLessƒtƒ@ƒCƒ‹‚Ìƒo[ƒWƒ‡ƒ“”Ô†(‚±‚ê‚ğXV‚·‚é‚ÆAÄƒRƒ“ƒpƒCƒ‹‚³‚ê‚Ü‚·)
-  ## The version number of the Less files to be automatically added to compile_id (If you update it, it will be recompiled)
+  ## compile_idã«è‡ªå‹•ä»˜åŠ ã™ã‚‹Scssãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç•ªå·(ã“ã‚Œã‚’æ›´æ–°ã™ã‚‹ã¨ã€å†ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã•ã‚Œã¾ã™)
+  ## The version number of the Scss files to be automatically added to compile_id (If you update it, it will be recompiled)
   file_version: "1.0"
   
-  ## ƒLƒƒƒbƒVƒ…‚Ì•Û‘¶æ : Save directory of cache
+  ## ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®ä¿å­˜å…ˆ : Save directory of cache
   cache_path: "<?php echo ENVI_MVC_CACHE_PATH;?>"
   
 dev:
-  ## Set the output format, includes "default", "compressed"
+  ## Set the output format: å‡ºåŠ›ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’é¸ã‚“ã§ä¸‹ã•ã„ 
+  ##  "default" : éåœ§ç¸®
+  ## "compressed" : åœ§ç¸®
   format: "default"
-  ## Keep /* */ comments in output
+  ## Keep /* */ comments in output : å‡ºåŠ›ã«ã€/* */ã‚³ãƒ¡ãƒ³ãƒˆã‚’å«ã‚ã‚‹ã‹ã©ã†ã‹
   preserve_comments: true
-  ## ƒLƒƒƒbƒVƒ…‚Ì—L–³
+  ## ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æœ‰ç„¡
   is_compile_cache: true
-  ## •K‚¸ƒRƒ“ƒpƒCƒ‹‚·‚é‚©‚Ç‚¤‚©
+  ## å¿…ãšã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã™ã‚‹ã‹ã©ã†ã‹
   is_force_compile: true
   
-  ## compile_id‚É©“®•t‰Á‚·‚éLessƒtƒ@ƒCƒ‹‚Ìƒo[ƒWƒ‡ƒ“”Ô†(‚±‚ê‚ğXV‚·‚é‚ÆAÄƒRƒ“ƒpƒCƒ‹‚³‚ê‚Ü‚·)
+  ## compile_idã«è‡ªå‹•ä»˜åŠ ã™ã‚‹Scssãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç•ªå·(ã“ã‚Œã‚’æ›´æ–°ã™ã‚‹ã¨ã€å†ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã•ã‚Œã¾ã™)
   # file_version: "1.0"
   
-  ## ƒLƒƒƒbƒVƒ…‚Ì•Û‘¶æ
+  ## ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®ä¿å­˜å…ˆ
   cache_path: "<?php echo ENVI_MVC_CACHE_PATH;?>"
 prod:
-  ## Set the output format, includes "default", "compressed"
+  ## Set the output format: å‡ºåŠ›ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’é¸ã‚“ã§ä¸‹ã•ã„ 
+  ##  "default" : éåœ§ç¸®
+  ## "compressed" : åœ§ç¸®
   format: "compressed"
-  ## Keep /* */ comments in output
+  ## Keep /* */ comments in output : å‡ºåŠ›ã«ã€/* */ã‚³ãƒ¡ãƒ³ãƒˆã‚’å«ã‚ã‚‹ã‹ã©ã†ã‹
   preserve_comments: false
-  ## ƒLƒƒƒbƒVƒ…‚Ì—L–³
+  ## ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æœ‰ç„¡
   is_compile_cache: true
-  ## •K‚¸ƒRƒ“ƒpƒCƒ‹‚·‚é‚©‚Ç‚¤‚©
+  ## å¿…ãšã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã™ã‚‹ã‹ã©ã†ã‹
   is_force_compile: false
   
-  ## compile_id‚É©“®•t‰Á‚·‚éLessƒtƒ@ƒCƒ‹‚Ìƒo[ƒWƒ‡ƒ“”Ô†(‚±‚ê‚ğXV‚·‚é‚ÆAÄƒRƒ“ƒpƒCƒ‹‚³‚ê‚Ü‚·)
+  ## compile_idã«è‡ªå‹•ä»˜åŠ ã™ã‚‹Scssãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç•ªå·(ã“ã‚Œã‚’æ›´æ–°ã™ã‚‹ã¨ã€å†ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã•ã‚Œã¾ã™)
   # file_version: "1.0"
   
-  ## ƒLƒƒƒbƒVƒ…‚Ì•Û‘¶æ
+  ## ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®ä¿å­˜å…ˆ
   cache_path: "<?php echo ENVI_MVC_CACHE_PATH;?>"
