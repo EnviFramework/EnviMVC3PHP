@@ -3,13 +3,13 @@ all:
     params:
     #DSN
       dsn: "phptype=mysql&username=exampleuser&password=example&hostspec=localhost&database=example_master"
-    # ƒIƒuƒWƒFƒNƒg‚ğƒŠƒNƒGƒXƒgŠÔ‚Å•Û‚µ‘±‚¯‚é‚©‚Ç‚¤‚©
-    # true‚É‚µ‚Ä‚¨‚­‚ÆAƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“‚È‚Ç‚ÌŠÇ—‚ªŠy‚É‚È‚è‚Ü‚·
+    # ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆé–“ã§ä¿æŒã—ç¶šã‘ã‚‹ã‹ã©ã†ã‹
+    # trueã«ã—ã¦ãŠãã¨ã€ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ãªã©ã®ç®¡ç†ãŒæ¥½ã«ãªã‚Šã¾ã™
       instance_pool: true
-    # Connection POOL‚ÌON OFF
+    # Connection POOLã®ON OFF
       connection_pool: false
-    # Ú‘±‚ÉÀs‚·‚éƒNƒGƒŠ
-    # •K—v‚È‚¢ê‡‚Ííœ‚µ‚Ä‚­‚¾‚³‚¢
+    # æ¥ç¶šæ™‚ã«å®Ÿè¡Œã™ã‚‹ã‚¯ã‚¨ãƒª
+    # å¿…è¦ãªã„å ´åˆã¯å‰Šé™¤ã—ã¦ãã ã•ã„
       initialize_query: "set names utf8;"
   default_slave:
     params:
@@ -20,7 +20,7 @@ all:
   default_stage:
     params:
       dsn:
-    # ”z—ñ‚É‚µ‚Ä‚¨‚­‚ÆAƒ‰ƒ“ƒ_ƒ€‚ÅÚ‘±æ‚ª•Ï‚í‚é‚æ‚¤‚É‚È‚é
+    # é…åˆ—ã«ã—ã¦ãŠãã¨ã€ãƒ©ãƒ³ãƒ€ãƒ ã§æ¥ç¶šå…ˆãŒå¤‰ã‚ã‚‹ã‚ˆã†ã«ãªã‚‹
         - "phptype=mysql&username=exampleuser&password=example&hostspec=localhost&database=example_stage"
         - "phptype=mysql&username=exampleuser&password=example&hostspec=localhost&database=example_stage"
       instance_pool: true
