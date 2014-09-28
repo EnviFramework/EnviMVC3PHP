@@ -15,6 +15,7 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      File available since Release 3.4.0
+ * @doc_ignore
  */
 
 /**
@@ -33,6 +34,7 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      File available since Release 3.4.0
+ * @doc_ignore
  */
 class EnviMigrationDriversMysql extends EnviMigrationDriversBase
 {

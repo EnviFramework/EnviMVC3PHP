@@ -14,7 +14,7 @@
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
- * @since      File available since Release 1.0.0
+ * @since      File available since Release 3.0.0
  */
 
 
@@ -31,7 +31,7 @@
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
- * @since      Class available since Release 1.0.0
+ * @since      Class available since Release 3.0.0
  */
 abstract class EnviOrMapBase
 {
@@ -51,6 +51,7 @@ abstract class EnviOrMapBase
      *
      * @access      public
      * @return      boolean
+     * @since       3.4.0
      */
     public function isNew()
     {
@@ -64,6 +65,7 @@ abstract class EnviOrMapBase
      *
      * @access      public
      * @return      boolean
+     * @since       3.4.0
      */
     public function isUpdate()
     {
@@ -102,6 +104,7 @@ abstract class EnviOrMapBase
      * @access      public
      * @param       array $arr
      * @return      void
+     * @since       3.4.0
      */
     public function setByArray(array $arr)
     {
@@ -276,6 +279,7 @@ abstract class EnviOrMapBase
      * @access      protected
      * @param       string $snake_case
      * @return      string
+     * @since       3.0.0
      */
     protected function pascalize($snake_case)
     {
@@ -286,6 +290,5 @@ abstract class EnviOrMapBase
         return $pascal_case;
     }
     /* ----------------------------------------- */
-
 
 }
