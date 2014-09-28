@@ -406,7 +406,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      *
      * @access      public
      * @param       string $table_name テーブル名
-     * @param       string $column_name カラム名s
+     * @param       string $column_name カラム名
      * @return      void
      */
     public function removeColumn($table_name, $column_names)

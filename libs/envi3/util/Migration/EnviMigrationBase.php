@@ -365,13 +365,13 @@ abstract class EnviMigrationBase
      * @return      void
      * @since       3.4.0
      */
-    protected function removeColumn($table_name, $column_names)
+    protected function removeColumn($table_name, $column_name)
     {
         list(, $trace) = debug_backtrace();
         if ($trace['function'] === 'change') {
             throw new exception (__FUNCTION__.' は change 内で使用できません。');
         }
-        $this->Driver()->removeColumn($table_name, $column_names);
+        $this->Driver()->removeColumn($table_name, $column_name);
     }
     /* ----------------------------------------- */
 

@@ -8,6 +8,7 @@
  * @license http://opensource.org/licenses/MIT MIT
  *
  * @link http://leafo.net/scssphp
+ * @doc_ignore
  */
 
 /**

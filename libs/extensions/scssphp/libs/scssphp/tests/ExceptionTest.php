@@ -1,5 +1,11 @@
 <?php
 
+/**
+ *
+ *
+ * @doc_ignore
+ * @var         var_type
+ */
 require_once __DIR__ . "/../scss.inc.php";
 
 class ExceptionTest extends PHPUnit_Framework_TestCase {

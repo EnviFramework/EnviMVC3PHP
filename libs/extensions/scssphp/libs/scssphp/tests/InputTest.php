@@ -1,5 +1,10 @@
 <?php
-
+/**
+ *
+ *
+ * @doc_ignore
+ * @var         var_type
+ */
 require_once __DIR__ . "/../scss.inc.php";
 
 // Runs all the tests in inputs/ and compares their output to ouputs/
