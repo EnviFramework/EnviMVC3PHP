@@ -502,11 +502,11 @@ class EnviDBIBase
                 $last_parameters[$key] = $value;
             }
         }
-        console()->stopwatch();
+        $this->_stopwatch();
         $pdos->execute();
         $this->last_query = $pdos->queryString;
         $this->last_parameters = $last_parameters;
-        console()->_queryLog($this);
+        $this->_queryLog($this);
         return $pdos;
     }
     /* ----------------------------------------- */
@@ -539,16 +539,61 @@ class EnviDBIBase
     {
         if ($bind === NULL) {
             $this->last_query = $statement;
-            console()->stopwatch();
+            $this->_stopwatch();
             $pdos = $this->PDO->query($statement);
             $this->last_query = $pdos->queryString;
-            console()->_queryLog($this);
+            $this->_queryLog($this);
             $pdos->setFetchMode($this->default_fetch_mode);
             $this->last_parameters = array();
         } else {
             $pdos = $this->execute($this->prepare($statement), $bind);
         }
         return $pdos;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- ストップウォッチ起動
+     *
+     * @access      private
+     * @return      void
+     * @doc_ignore
+     */
+    private function _stopwatch()
+    {
+        static $is_console;
+        if ($is_console === NULL) {
+            $is_console = function_exists('console');
+            if ($is_console) {
+                $is_console = Envi()->isDebug();
+            }
+        }
+        if ($is_console) {
+            console()->stopwatch();
+        }
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- クエリログ記録
+     *
+     * @access      private
+     * @param       var_text $log
+     * @return      void
+     * @doc_ignore
+     */
+    private function _queryLog($log)
+    {
+        static $is_console;
+        if ($is_console === NULL) {
+            $is_console = function_exists('console');
+            if ($is_console) {
+                $is_console = Envi()->isDebug();
+            }
+        }
+        if ($is_console) {
+            console()->_queryLog($log);
+        }
     }
     /* ----------------------------------------- */
 

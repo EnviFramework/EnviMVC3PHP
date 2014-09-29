@@ -16,4 +16,4 @@ ob_end_clean();
 
 $buff = spyc_load($buff);
 
-var_dump($buff);
+var_export($buff);

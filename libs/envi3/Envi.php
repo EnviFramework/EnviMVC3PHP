@@ -57,6 +57,9 @@ require ENVI_BASE_DIR.'EnviController.php';
 require ENVI_BASE_DIR.'EnviRequest.php';
 require ENVI_BASE_DIR.'EnviUser.php';
 
+
+require ENVI_BASE_DIR.'EnviRouting.php';
+
 require ENVI_BASE_DIR.'EnviValidator.php';
 require ENVI_BASE_DIR.'EnviLogWriter.php';
 require ENVI_BASE_DIR.'EnviExtension.php';
@@ -739,7 +742,7 @@ class Envi
             }
 
             $filters = $envi->getConfiguration('FILTER');
-            if (isset($filters['input_filter'])) {
+            if (isset($filters['input_filter']) && is_array($filters['input_filter'])) {
                 foreach ($filters['input_filter'] as $input_filters) {
                     $class_name = $input_filters['class_name'];
                     if (!class_exists($class_name, false)) {
@@ -753,7 +756,7 @@ class Envi
             $envi->_run(true);
             $contents = ob_get_contents();
             ob_end_clean();
-            if (isset($filters['output_filter'])) {
+            if (isset($filters['output_filter']) && is_array($filters['output_filter'])) {
                 foreach ($filters['output_filter'] as $output_filters) {
                     $class_name = $output_filters['class_name'];
                     if (!class_exists($class_name, false)) {

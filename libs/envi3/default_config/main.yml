@@ -16,6 +16,8 @@ all:
     use_i18n: false
     ## defaultの国際化ファイル
     default_i18n: "ja"
+    
+    ### Rendererの定義 ###
     ## HTMLタグを自動エスケープするタイプのレンダラ ##
     ## Smarty
     # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviSmartySecureRenderer.php"
@@ -36,19 +38,29 @@ all:
     ## PHP
     renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviPHPRenderer.php"
     auto_load_cache: true
-
+    
+  Routing:
+  ################################
+  # Routingの設定
+  ################################
+    # -
+      # class_name: EnviDefaultRouter
+      # resource: "<?php echo ENVI_BASE_DIR."routers".DIRECTORY_SEPARATOR."EnviDefaultRouter.php";?>"
+    
+    
   FILTER:
   ################################
   # フィルターの設定
   ################################
     input_filter:
-      EnviInputFilter:
-        class_name: "EnviInputFilter"
-        resource: "<?php echo ENVI_BASE_DIR."filters".DIRECTORY_SEPARATOR."EnviInputFilter.php";?>"
+      # -
+        # class_name: "EnviInputFilter"
+        # resource: "<?php echo ENVI_BASE_DIR."filters".DIRECTORY_SEPARATOR."EnviInputFilter.php";?>"
     output_filter:
-      EnviInputFilter:
-        class_name: "EnviOutputFilter"
-        resource: "<?php echo ENVI_BASE_DIR."filters".DIRECTORY_SEPARATOR."EnviOutputFilter.php";?>"
+      # -
+        # class_name: "EnviOutputFilter"
+        # resource: "<?php echo ENVI_BASE_DIR."filters".DIRECTORY_SEPARATOR."EnviOutputFilter.php";?>"
+        
   I18N:
   ################################
   # 国際化の設定
