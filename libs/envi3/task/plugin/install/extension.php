@@ -98,7 +98,7 @@ echo $file_name."\n";
 // +-- DI本体設定
 
 // ファイルバックアップ
-$di_contents_yaml_path = dirname($di_yaml_path).DIRECTORY_SEPARATOR.$project_name.'_'.$extension_name.'.yaml';
+$di_contents_yaml_path = dirname($di_yaml_path).DIRECTORY_SEPARATOR.$project_name.'_'.$extension_name.'.yml';
 if (is_file($di_contents_yaml_path)) {
     $bk_file = $work_dir.basename($di_contents_yaml_path).'.'.time().'.bk';
     rename($di_contents_yaml_path, $bk_file);

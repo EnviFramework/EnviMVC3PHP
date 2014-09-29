@@ -76,6 +76,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
             $sql .= "  NOT NULL ";
         } elseif (isset($options['null']) && $options['null'] === false) {
             $sql .= "  NOT NULL ";
+            $options['not_null'] = true;
         } else {
             $options['not_null'] = false;
         }

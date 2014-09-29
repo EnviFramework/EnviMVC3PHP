@@ -110,7 +110,7 @@ abstract class EnviOrMapBase
     {
         foreach ($arr as $method => $val) {
             $method = 'set'.$this->pascalize($method);
-            $this->$method($arr);
+            $this->$method($val);
         }
     }
     /* ----------------------------------------- */

@@ -86,7 +86,7 @@ class EnviScssphpExtension
     public function compileFile($file_path, $compile_id = NULL)
     {
         if (!is_file($file_path)) {
-            throw EnviScssphpExtensionException('not file : '.$file_path);
+            throw new EnviScssphpExtensionException('not file : '.$file_path);
         }
         // cpu負荷節約
         $system_conf = $this->system_conf;

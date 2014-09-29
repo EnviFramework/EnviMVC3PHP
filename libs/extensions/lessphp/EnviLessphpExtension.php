@@ -85,7 +85,7 @@ class EnviLessphpExtension
     public function compileFile($file_path, $compile_id = NULL)
     {
         if (!is_file($file_path)) {
-            throw EnviLessphpExtensionException('not file : '.$file_path);
+            throw new EnviLessphpExtensionException('not file : '.$file_path);
         }
         // cpu負荷節約
         $system_conf = $this->system_conf;
