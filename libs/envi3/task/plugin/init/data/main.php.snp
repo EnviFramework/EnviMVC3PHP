@@ -28,6 +28,9 @@ define('LW_START_MTIMESTAMP', microtime(true));
 // もしPHP5.4系なら上記を削除して、下記コードを有効にして下さい。
 // define('LW_START_MTIMESTAMP', $_SERVER['REQUEST_TIME_FLOAT']);
 
+// プロジェクト基底ディレクトリ
+define('ENVI_ROOT_DIR', '%%project_dir%%'.DIRECTORY_SEPARATOR);
+
 // コンフィグファイルのパス(defaultでいい場合は省略可能)
 define('ENVI_MVC_APPKEY_PATH',     realpath('%%project_dir%%config/').DIRECTORY_SEPARATOR);
 

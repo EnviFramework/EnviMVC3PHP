@@ -14,7 +14,8 @@
  * @version    GIT: $Id$
  * @link       %%your_link%%
  * @see        %%your_see%%
- * @since      File available since Release 1.0.0
+ * @since      File available since Release 3.4.0
+ * @doc_ignore
  */
 
 /**
@@ -29,7 +30,8 @@
  * @version    Release: @package_version@
  * @link       %%your_link%%
  * @see        %%your_see%%
- * @since      Class available since Release 1.0.0
+ * @since      Class available since Release 3.4.0
+ * @doc_ignore
  */
 class ___class_name___ extends EnviMigrationBase
 {
