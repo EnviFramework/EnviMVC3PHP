@@ -59,7 +59,7 @@ if (!is_dir($extension_dir)) {
 }
 $work_dir = $project_dir.'works'.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR;
 if (!is_dir($work_dir)) {
-    mkdir($work_dir, '0777', true);
+    mkdir($work_dir, 0777, true);
 }
 
 // SpyCの読み込み
