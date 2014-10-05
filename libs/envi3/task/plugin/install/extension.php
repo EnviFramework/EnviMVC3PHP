@@ -90,7 +90,7 @@ echo $bk_file."\n";
 // 設定上書き
 $file_name = $di_yaml_path;
 $yaml = Spyc::YAMLDump($di_yaml, 2, 60);
-file_put_contents($file_name, $yaml);
+file_put_contents($file_name, file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'yaml_header.yml').$yaml);
 echo $file_name."\n";
 
 // ----------------
