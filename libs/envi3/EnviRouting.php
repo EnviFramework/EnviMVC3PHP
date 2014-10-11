@@ -4,12 +4,16 @@
  *
  * EnviMVCのルーティングを変更します。
  *
+ * ルーティングクラスは、必ず、EnviRouterBaseを継承し、作成して下さい。
+ * 設定は、Routingディレクティブ内で行って下さい。
+ * 作成しない場合は、デフォルトのルーティングを行います。
+ *
  * PHP versions 5
  *
  *
  * @category   フレームワーク基礎処理
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage Routing
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -28,7 +32,7 @@
  *
  * @category   フレームワーク基礎処理
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage Routing
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -36,6 +40,7 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      File available since Release 3.4.0
+ * @subpackage_main
  */
 class EnviRouting
 {
@@ -55,7 +60,7 @@ class EnviRouting
         $_system_conf = Envi::singleton()->getConfigurationAll();
         if (isset($_system_conf['Routing']) || is_array($_system_conf['Routing'])) {
             foreach ($_system_conf['Routing'] as $item) {
-                if (class_exists($item['class_name'], false)) {
+                if (!class_exists($item['class_name'], false)) {
                     include $item['resource'];
                 }
                 $class_name = $item['class_name'];
@@ -135,7 +140,7 @@ class EnviRouting
  *
  * @category   フレームワーク基礎処理
  * @package    Envi3
- * @subpackage EnviMVCCore
+ * @subpackage Routing
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License

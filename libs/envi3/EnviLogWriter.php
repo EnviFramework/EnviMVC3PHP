@@ -91,38 +91,165 @@ class EnviLogWriter
 {
 
     // エラータイプ
+    /**
+     * LOGGER:system:value_error_logging_level で使用します。エラータイプ:DEBUGレベルのログを出力する。
+     *
+     * @var         int
+     */
     const ETYPE_DEBUG =    1;
+    /**
+     * LOGGER:system:value_error_logging_level で使用します。エラータイプ:INFOレベルのログを出力する。
+     *
+     * @var         int
+     */
     const ETYPE_INFO =     2;
+    /**
+     * LOGGER:system:value_error_logging_level で使用します。エラータイプ:NOTICEレベルのログを出力する。
+     *
+     * @var         int
+     */
     const ETYPE_NOTICE =   4;
+    /**
+     * LOGGER:system:value_error_logging_level で使用します。エラータイプ:WARNINGレベルのログを出力する。
+     *
+     * @var         int
+     */
     const ETYPE_WARNING =  8;
+    /**
+     * LOGGER:system:value_error_logging_level で使用します。エラータイプ:FATALレベルのログを出力する。
+     *
+     * @var         int
+     */
     const ETYPE_FATAL =    16;
+    /**
+     * LOGGER:system:value_error_logging_level で使用します。エラータイプ:すべてのログを出力する。
+     *
+     * @var         int
+     */
     const ETYPE_ALL =      31;
 
     // ロガータイプ
+    /**
+     * LOGGER:system:value_error_logging_type で使用します。ロガータイプ:ファイルに出力する。
+     *
+     * @var         int
+     */
     const LTYPE_FILE =     1;
+    /**
+     * LOGGER:system:value_error_logging_type で使用します。ロガータイプ:DBに出力する。
+     *
+     * @var         int
+     */
     const LTYPE_DB =       2;
+    /**
+     * LOGGER:system:value_error_logging_type で使用します。ロガータイプ:メールで出力する。
+     *
+     * @var         int
+     */
     const LTYPE_MAIL =     4;
+    /**
+     * LOGGER:system:value_error_logging_type で使用します。ロガータイプ:画面に出力する。
+     *
+     * @var         int
+     */
     const LTYPE_DISPLAY =  8;
+    /**
+     * LOGGER:system:value_error_logging_type で使用します。ロガータイプ:システムログに出力する。
+     *
+     * @var         int
+     */
     const LTYPE_SYSTEM =   16;
 
     // ログ保存モード
+    /**
+     * LOGGER:system:value_logging_mode で使用します。ログ保存モード:コール時に出力する
+     *
+     * @var         int
+     */
     const LMODE_EACH =    1;
+    /**
+     * LOGGER:system:value_logging_mode で使用します。ログ保存モード:最後にまとめて出力する。
+     *
+     * @var         int
+     */
     const LMODE_LAST =    2;
 
     // リクエストログ保存グローバル変数
+    /**
+     * リクエストログ、レスポンスログ保存グローバル変数:$_SERVER
+     *
+     * @var         int
+     */
     const REQUEST_SERVER =    1;
+    /**
+     * リクエストログ、レスポンスログ保存グローバル変数:$_COOKIE
+     *
+     * @var         int
+     */
     const REQUEST_COOKIE =    2;
+    /**
+     * リクエストログ、レスポンスログ保存グローバル変数:$_ENV
+     *
+     * @var         int
+     */
     const REQUEST_ENV =       4;
+    /**
+     * リクエストログ、レスポンスログ保存グローバル変数:$_POST
+     *
+     * @var         int
+     */
     const REQUEST_POST =      8;
+    /**
+     * リクエストログ、レスポンスログ保存グローバル変数:$_GET
+     *
+     * @var         int
+     */
     const REQUEST_GET =       16;
+    /**
+     * リクエストログ、レスポンスログ保存グローバル変数:$_FILE
+     *
+     * @var         int
+     */
     const REQUEST_FILE =      32;
+    /**
+     * リクエストログ、レスポンスログ保存グローバル変数:$_SESSION
+     *
+     * @var         int
+     */
     const REQUEST_SESSION =   64;
+    /**
+     * リクエストログ、レスポンスログ保存グローバル変数:$GLOBALS
+     *
+     * @var         int
+     */
     const REQUEST_GLOBALS =   128;
+    /**
+     * リクエストログ、レスポンスログ保存グローバル変数:すべて
+     *
+     * @var         int
+     */
     const REQUEST_ALL =       255;
 
     // ログの記録形式
+    /**
+     * ログの記録形式:XML
+     *
+     * @var         int
+     */
     const PURSER_XML =        1;
+
+    /**
+     * ログの記録形式:PHPのserialize
+     *
+     * @var         int
+     */
     const PURSER_SERIALIZE =  2;
+
+    /**
+     * ログの記録形式:TEXT
+     *
+     * @var         int
+     */
     const PURSER_TEXT =       3;
 
 
