@@ -2,9 +2,12 @@
 /**
  * EnviMVCのメイン処理
  *
- * フロントのPHP内で、
- * require
- * してください。
+ * EnviMVCのコアクラス群です。
+ *
+ * Envi.phpにまとめて入っていますので、
+ *
+ * 各種定数の定義後、フロントのPHP内で、 require してください。
+ *
  * オートローダーの設定を含む、必要なコードのロードなどのFW動作に必要なことを適宜行います。
  *
  * PHP versions 5
@@ -306,18 +309,78 @@ function Envi($app = false, $debug = false)
  */
 class Envi
 {
+    /**
+     * validate()で返すと、defaultAccess()メソッドに遷移し、execute(),handleError(),defaultAccess()で返すと、defaultビューを呼ぶ。
+     *
+     * @var         string
+     */
     const DEFAULT_ACCESS = 'DEFAULT';
+
+    /**
+     * validate()で返すと、execute()メソッドに遷移し、execute(),handleError(),defaultAccess()で返すと、successビューを呼ぶ。
+     *
+     * @var         string
+     */
     const SUCCESS        = 'SUCCESS';
+
+    /**
+     * validate()で返すと、handleError()メソッドに遷移し、execute(),handleError(),defaultAccess()で返すと、errorビューを呼ぶ。
+     *
+     * @var         string
+     */
     const ERROR          = 'ERROR';
+    /**
+     * execute(),handleError(),defaultAccess()で返すと、confirmビューを呼ぶ。
+     *
+     * @var         string
+     */
     const CONFORM        = 'CONFORM';
+
+    /**
+     * execute(),handleError(),defaultAccess()で返すと、commitビューを呼ぶ。
+     *
+     * @var         string
+     */
     const COMMIT         = 'COMMIT';
+
+    /**
+     * execute(),handleError(),defaultAccess()で返すと、ビューをスキップする。
+     *
+     * @var         string
+     */
     const NONE           = 'NONE';
 
     // +-- バージョン番号定義
-    const VERSION        = '3.4.0.0';
+    /**
+     * バージョン番号を返す
+     *
+     * @var         string
+     */
+    const VERSION        = '3.4.1.0';
+
+    /**
+     * メジャーバージョン番号を返す
+     *
+     * @var         int
+     */
     const MAJOR_VERSION    = 3;
+    /**
+     * マイナーバージョン番号を返す
+     *
+     * @var         int
+     */
     const MINOR_VERSION    = 4;
-    const RELEASE_VERSION  = 0;
+    /**
+     * リリースバージョン番号を返す
+     *
+     * @var         int
+     */
+    const RELEASE_VERSION  = 1;
+    /**
+     * テストバージョン番号を返す
+     *
+     * @var         int
+     */
     const ALPHA_VERSION    = 0;
     // ---------------------------
 

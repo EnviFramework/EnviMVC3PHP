@@ -151,7 +151,7 @@ class EnviDocumenter
             $this->category_list[$category_name][$package_name][$sub_package_name] =& $this->package_list[$package_name][$sub_package_name];
             if ($class_item['file_name'] == $sub_package_name) {
                 $this->package_list[$package_name][$sub_package_name]['file_doc'] = $file_doc;
-            } elseif (strpos('@subpackage_main', (string)$file_doc) !== false) {
+            } elseif (strpos((string)$file_doc, '@subpackage_main') !== false) {
                 $this->package_list[$package_name][$sub_package_name]['file_doc'] = $file_doc;
             }
 
