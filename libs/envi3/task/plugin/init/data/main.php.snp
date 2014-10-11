@@ -11,22 +11,26 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
- * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
- * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
- * @version    GIT: $ Id:$
- * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        http://www.enviphp.net/c/man/v3/reference
- * @since      Class available since Release 1.0.0
+ * @category   %%project_category%%
+ * @package    %%project_name%%
+ * @subpackage %%subpackage_name%%
+ * @author     %%your_name%% <%%your_email%%>
+ * @copyright  %%your_project%%
+ * @license    %%your_license%%
+ * @version    GIT: $Id$
+ * @link       %%your_link%%
+ * @see        %%your_see%%
+ * @since      File available since Release 1.0.0
+ * @doc_ignore
  */
 
 // 実行時間計測用(defaultでいい場合は省略可能)
 define('LW_START_MTIMESTAMP', microtime(true));
 // もしPHP5.4系なら上記を削除して、下記コードを有効にして下さい。
 // define('LW_START_MTIMESTAMP', $_SERVER['REQUEST_TIME_FLOAT']);
+
+// プロジェクト基底ディレクトリ
+define('ENVI_ROOT_DIR', '%%project_dir%%'.DIRECTORY_SEPARATOR);
 
 // コンフィグファイルのパス(defaultでいい場合は省略可能)
 define('ENVI_MVC_APPKEY_PATH',     realpath('%%project_dir%%config/').DIRECTORY_SEPARATOR);

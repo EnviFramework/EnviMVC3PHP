@@ -25,7 +25,8 @@ cecho('    envi ', 34, '\n         Enviに対する操作を行います');
 cecho('Usage:', 33);
     echo '    envi task_name [arguments] [Options]'."\n";
 cecho('Task name:', 33);
-cecho('    console-log                                         ', 32, '\n       コンソールログを見ます\n       envi console-log <log_dir> <app_key> (<system:console:query:included_files>) (<backtrace:performance:log_text:memory_get_usage>');
+cecho('    console-log  <log_dir> <app_key> ([system:console:query:included_files]) ([backtrace:performance:log_text:memory_get_usage]                                        ', 32, '\n       コンソールログを見ます\n       envi console-log <log_dir> <app_key> (<system:console:query:included_files>) (<backtrace:performance:log_text:memory_get_usage>');
 
+cecho('    console-help                       ', 32, '\n        このヘルプを表示します');
 exit;
 die;

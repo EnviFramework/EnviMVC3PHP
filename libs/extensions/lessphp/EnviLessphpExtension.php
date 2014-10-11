@@ -2,7 +2,18 @@
 /**
  * Lessphpを使用するためのエクステンションクラス
  *
+ * CSS拡張のLessコンパイラを使用するためのエクステンションです。
  *
+ * http://leafo.net/lessphp
+ *
+ * を内部的に使用しています。
+ *
+ *
+ * インストール・設定
+ * --------------------------------------------------
+ * envi install-extension {app_key} {DI設定ファイル} lessphp
+ *
+ * コマンドでインストール出来ます。
  *
  *
  *
@@ -74,7 +85,7 @@ class EnviLessphpExtension
     public function compileFile($file_path, $compile_id = NULL)
     {
         if (!is_file($file_path)) {
-            throw EnviLessphpExtensionException('not file : '.$file_path);
+            throw new EnviLessphpExtensionException('not file : '.$file_path);
         }
         // cpu負荷節約
         $system_conf = $this->system_conf;

@@ -216,6 +216,11 @@ class EnviDocumenterDriver
      */
     protected function introWrite($write_path, $values)
     {
+        if (!isset($values['enable']) || !$values['enable']) {
+            return;
+        } elseif (strlen(trim($values['doc_detail'])) < 10) {
+            return;
+        }
         $this->write($write_path, $this->template_dir.'intro.tpl', $values);
     }
     /* ----------------------------------------- */
@@ -254,7 +259,7 @@ class EnviDocumenterDriver
     {
         $res = array('doc_subject' => '', 'doc_detail' => '', );
         foreach ($token_list as $token) {
-            $this->tokenToDocList($token);
+            return $this->tokenToDocList($token);
         }
         return $res;
     }
@@ -265,11 +270,10 @@ class EnviDocumenterDriver
         if ($token->getTokenName() === 'DOC_COMMENT') {
             $res['doc_subject'] = $token->getDocBlockSubject();
             $res['doc_detail'] = str_replace('PHP versions 5', '', $token->getDocBlockDetail());
-
+            $res['enable']     = strpos($token->getDocBlock(), '@sub_class') === false;
         }
         return $res;
     }
-
 
 
 }

@@ -27,5 +27,6 @@ cecho('Usage:', 33);
 cecho('Task name:', 33);
 cecho('    clear-cache                       ', 32, '\n        設定のキャシュの削除');
 cecho('    cc                                ', 32, '\n        clear-cacheへのエイリアス');
+cecho('    clear-help                       ', 32, '\n        このヘルプを表示します');
 exit;
 die;

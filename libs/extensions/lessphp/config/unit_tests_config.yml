@@ -1,6 +1,6 @@
 ################################################
 # This configuration file is for unit testing purposes only;
-# ‚±‚Ìİ’èƒtƒ@ƒCƒ‹‚ÍAƒ†ƒjƒbƒgƒeƒXƒgê—p‚Å‚·B
+# ã“ã®è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã¯ã€ãƒ¦ãƒ‹ãƒƒãƒˆãƒ†ã‚¹ãƒˆå°‚ç”¨ã§ã™ã€‚
 ################################################
 
 all:
@@ -10,17 +10,17 @@ all:
   ## Keep /* */ comments in output
   preserve_comments: false
   
-  ## ƒLƒƒƒbƒVƒ…‚Ì—L–³: enable caching
+  ## ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æœ‰ç„¡: enable caching
   is_compile_cache: true
   
-  ## •K‚¸ƒRƒ“ƒpƒCƒ‹‚·‚é‚©‚Ç‚¤‚©:always compiled
+  ## å¿…ãšã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã™ã‚‹ã‹ã©ã†ã‹:always compiled
   is_force_compile: false
   
-  ## compile_id‚É©“®•t‰Á‚·‚éLessƒtƒ@ƒCƒ‹‚Ìƒo[ƒWƒ‡ƒ“”Ô†(‚±‚ê‚ğXV‚·‚é‚ÆAÄƒRƒ“ƒpƒCƒ‹‚³‚ê‚Ü‚·)
+  ## compile_idã«è‡ªå‹•ä»˜åŠ ã™ã‚‹Lessãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç•ªå·(ã“ã‚Œã‚’æ›´æ–°ã™ã‚‹ã¨ã€å†ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã•ã‚Œã¾ã™)
   ## The version number of the Less files to be automatically added to compile_id (If you update it, it will be recompiled)
   file_version: "1.0"
   
-  ## ƒLƒƒƒbƒVƒ…‚Ì•Û‘¶æ : Save directory of cache
+  ## ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®ä¿å­˜å…ˆ : Save directory of cache
   cache_path: "<?php echo dirname(__FILE__);?>/../tests/datas/"
 
 simple_test:
@@ -30,13 +30,13 @@ simple_test:
   ## Keep /* */ comments in output
   preserve_comments: false
   
-  ## ƒLƒƒƒbƒVƒ…‚Ì—L–³
+  ## ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æœ‰ç„¡
   is_compile_cache: false
   
-  ## •K‚¸ƒRƒ“ƒpƒCƒ‹‚·‚é‚©‚Ç‚¤‚©
+  ## å¿…ãšã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã™ã‚‹ã‹ã©ã†ã‹
   is_force_compile: true
   
-  ## compile_id‚É©“®•t‰Á‚·‚éLessƒtƒ@ƒCƒ‹‚Ìƒo[ƒWƒ‡ƒ“”Ô†(‚±‚ê‚ğXV‚·‚é‚ÆAÄƒRƒ“ƒpƒCƒ‹‚³‚ê‚Ü‚·)
+  ## compile_idã«è‡ªå‹•ä»˜åŠ ã™ã‚‹Lessãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç•ªå·(ã“ã‚Œã‚’æ›´æ–°ã™ã‚‹ã¨ã€å†ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã•ã‚Œã¾ã™)
   # file_version: "1.0"
   
 cached_test:
@@ -46,12 +46,12 @@ cached_test:
   ## Keep /* */ comments in output
   preserve_comments: false
   
-  ## ƒLƒƒƒbƒVƒ…‚Ì—L–³
+  ## ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æœ‰ç„¡
   is_compile_cache: true
   
-  ## •K‚¸ƒRƒ“ƒpƒCƒ‹‚·‚é‚©‚Ç‚¤‚©
+  ## å¿…ãšã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã™ã‚‹ã‹ã©ã†ã‹
   is_force_compile: false
   
-  ## compile_id‚É©“®•t‰Á‚·‚éLessƒtƒ@ƒCƒ‹‚Ìƒo[ƒWƒ‡ƒ“”Ô†(‚±‚ê‚ğXV‚·‚é‚ÆAÄƒRƒ“ƒpƒCƒ‹‚³‚ê‚Ü‚·)
+  ## compile_idã«è‡ªå‹•ä»˜åŠ ã™ã‚‹Lessãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç•ªå·(ã“ã‚Œã‚’æ›´æ–°ã™ã‚‹ã¨ã€å†ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã•ã‚Œã¾ã™)
   # file_version: "1.0"
   
