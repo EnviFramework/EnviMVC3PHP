@@ -23,16 +23,16 @@
 cecho('Name:', 33);
 cecho('    envi ', 34, '\n         Enviに対する操作を行います');
 cecho('Usage:', 33);
-    echo '    envi task_name [arguments] [Options]'."\n";
+    echo '    envi task_name <arguments> <Options>'."\n";
 cecho('Task name:', 33);
 cecho('    init-project                                         ', 32, '\n       プロジェクトの作成');
-cecho('    init-app [app name]                                  ', 32, '\n       アプリケーション(アプリキー)の作成(app)');
-cecho('    init-filesession [app name]                          ', 32, '\n       ファイルbaseのセッションディレクトリの作成');
-cecho('    init-module [app name] [module name]                 ', 32, '\n       モジュールの作成(module)');
-cecho('    init-action [app name] [module name] [action name] [return_str(Option)]  ', 32, '\n       アクションの作成(action)');
-cecho('    init-view [app name] [module name] [action name]     ', 32, '\n       ビューの作成(view)');
-cecho('    init-scaffold [column_name]:[data_type]:[form_name],([not_null]),([unique])     ', 32, '\n       自動的にベースファイルを作成します');
-cecho('    init-migratipn [app_name] [migration_name]            ', 32, '\n       マイグレーションクラスファイルを作成します。');
+cecho('    init-app <app name>                                  ', 32, '\n       アプリケーション(アプリキー)の作成(app)');
+cecho('    init-filesession <app name>                          ', 32, '\n       ファイルbaseのセッションディレクトリの作成');
+cecho('    init-module <app name> <module name>                 ', 32, '\n       モジュールの作成(module)');
+cecho('    init-action <app name> <module name> <action name> (<return_str>)  ', 32, '\n       アクションの作成(action)');
+cecho('    init-view <app name> <module name> <action name>     ', 32, '\n       ビューの作成(view)');
+cecho('    init-scaffold <column_name>:<data_type>:<form_name>,([not_null]),([unique]),(<バリデーション>)     ', 32, '\n       自動的にベースファイルを作成します');
+cecho('    init-migratipn <app_name> <migration_name>            ', 32, '\n       マイグレーションクラスファイルを作成します。');
 
 exit;
 die;

@@ -27,5 +27,6 @@ cecho('Usage:', 33);
 cecho('Task name:', 33);
 cecho('    install-extension <app_key> <di_yaml path> <extension name>                          ', 32, '\n       エクステンションをインストールします\n       envi install-extension <app_key> <di_yaml path> <extension name>');
 
+cecho('    install-help                       ', 32, '\n        このヘルプを表示します');
 exit;
 die;

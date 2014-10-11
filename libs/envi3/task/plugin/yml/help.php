@@ -26,6 +26,7 @@ cecho('Usage:', 33);
     echo '    envi task_name [arguments] [Options]'."\n";
 cecho('Task name:', 33);
 cecho('    yaml-test <テストを行うファイルのパス>                 ', 32, '\n       YAMLのテストをします。\n       envi yaml-test <テストを行うファイルのパス>');
+cecho('    yaml-help                            ', 32, '\n    このマニュアルを実行する');
 
 exit;
 die;

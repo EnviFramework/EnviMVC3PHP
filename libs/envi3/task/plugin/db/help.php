@@ -39,5 +39,6 @@ cecho('    db-new <app_key> <limit>                     ', 32, '\n       未実�
 cecho('    db-history <app_key> <limit>                     ', 32, '\n       実行済みのマイグレーションを取得する\n       envi db-new <app_key> <limit>');
 
 
+cecho('    db-help                       ', 32, '\n        このヘルプを表示します');
 exit;
 die;

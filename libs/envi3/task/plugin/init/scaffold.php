@@ -419,7 +419,7 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
     $scaffold_form_type = 'text';
 
     // $scaffold_typeに合わせて、固定のバリデーションとスキーマを定義する
-        switch ($scaffold_type) {
+    switch ($scaffold_type) {
         case 'date':
             $table_schema_setting[$scaffold_name]['type'] = 'date';
             $validate['date'] = true;
