@@ -134,10 +134,19 @@ class EnviMigrationCmd
 
 
 
-
+    /**
+     * +-- マイグレーションを一つ戻します
+     *
+     * @access      public
+     * @return      boolean
+     */
     public function executeRollback()
     {
         $migration = $this->getMigrationStatus();
+        if (count($migration['executed']) === 0) {
+            return false;
+        }
+
         $migration_class_file = array_pop($migration['executed']);
 
         list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4), 3);
@@ -148,6 +157,19 @@ class EnviMigrationCmd
         $obj->env = $this->env;
         // ダウン
         $obj->is_up = false;
+
+        try{
+            $obj->DBI()->beginTransaction();
+            $obj->safeChange();
+            $obj->safeDown();
+            $obj->DBI()->commit();
+        } catch (exception $e) {
+            $obj->DBI()->rollback();
+            echo $e->getMessage(),"\n","db:rollback roll back";
+            return;
+        }
+
+
         $obj->change();
         $obj->down();
 
@@ -157,40 +179,141 @@ class EnviMigrationCmd
             $migration['last_version'] = 0;
         } else {
             $migration_class_file = $migration['executed'][count($migration['executed']) - 1];
-            list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4));
+            $app = $this->app_key;
+            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4));
             $migration['last_version'] = $version < $migration['last_version'] ? $version : $migration['last_version'];
         }
 
-
         $this->setMigrationStatus($migration);
         $this->saveMigrationStatus();
+        return true;
     }
+    /* ----------------------------------------- */
 
-    public function executeMigrate()
+    /**
+     * +-- Downを実行する
+     *
+     * @access      public
+     * @param       var_text $count OPTIONAL:1
+     * @return      void
+     */
+    public function executeDown($count = 1)
+    {
+        while ($count--) {
+            $res = $this->executeRollback();
+            if (!$res) {
+                return;
+            }
+        }
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- すべてのマイグレーションを実行します
+     *
+     *
+     * @access      public
+     * @param       integer $count OPTIONAL:NULL
+     * @return      void
+     */
+    public function executeMigrate($count = NULL)
     {
         $migration = $this->getMigrationStatus();
         foreach ($this->getMigrationList() as $migration_class_file) {
-            list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4), 3);
+            $app = $this->app_key;
+            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 3);
             echo $migration_class_file,"\n";
             include $migration_class_file;
             $class_name = $app.'_'.$migration_class;
             $obj = new $class_name;
             $obj->env = $this->env;
+            try{
+                $obj->DBI()->beginTransaction();
+                $obj->safeChange();
+                $obj->safeUp();
+                $obj->DBI()->commit();
+            } catch (exception $e) {
+                $obj->DBI()->rollback();
+                echo $e->getMessage(),"\n","db:migrate roll back";
+                return;
+            }
+
             $obj->change();
             $obj->up();
             $migration['last_version'] = $version > $migration['last_version'] ? $version : $migration['last_version'];
             $migration['executed'][]   = $migration_class_file;
             $this->setMigrationStatus($migration);
             $this->saveMigrationStatus();
+            if ($count === NULL) {
+                // 通常migration
+                continue;
+            }
+            if (--$count <= 0) {
+                // UPの処理
+                return;
+            }
         }
     }
+    /* ----------------------------------------- */
 
 
+
+
+    /**
+     * +-- マイグレーション履歴を表示します
+     *
+     * @access      public
+     * @param       integer $count OPTIONAL:5
+     * @return      void
+     */
+    public function executeHistory($count = 5)
+    {
+        $migration = $this->getMigrationStatus();
+        while ($count--) {
+            $migration_class_file = array_pop($migration['executed']);
+            $app = $this->app_key;
+            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 3);
+            echo $version,":",$migration_class,"\n";
+        }
+    }
+    /* ----------------------------------------- */
+
+
+
+    /**
+     * +-- マイグレーション履歴を表示します
+     *
+     * @access      public
+     * @param       integer $count OPTIONAL:5
+     * @return      void
+     */
+    public function executeNew($count = 5)
+    {
+        $migration = $this->getMigrationList();
+        while ($count--) {
+            $migration_class_file = array_shift($migration);
+            $app = $this->app_key;
+            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 3);
+            echo $version,":",$migration_class,"\n";
+        }
+    }
+    /* ----------------------------------------- */
+
+
+
+
+    /**
+     * +-- カーソルだけを一つあげます
+     *
+     * @access      public
+     * @return      void
+     */
     public function executeCursorUp()
     {
         $migration = $this->getMigrationStatus();
         foreach ($this->getMigrationList() as $migration_class_file) {
-            list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4), 3);
+            $app = $this->app_key;
+            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 3);
             echo $migration_class_file,"\n";
             include $migration_class_file;
             $class_name = $app.'_'.$migration_class;
@@ -203,15 +326,25 @@ class EnviMigrationCmd
             return;
         }
     }
+    /* ----------------------------------------- */
 
 
-
+    /**
+     * +-- カーソルだけを一つ下げます
+     *
+     * @access      public
+     * @return      void
+     */
     public function executeCursorDown()
     {
         $migration = $this->getMigrationStatus();
+        if (count($migration['executed']) === 0) {
+            return false;
+        }
         $migration_class_file = array_pop($migration['executed']);
 
-        list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4), 3);
+        $app = $this->app_key;
+        list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 3);
         echo $migration_class_file,"\n";
         include $migration_class_file;
         $class_name = $app.'_'.$migration_class;
@@ -233,4 +366,5 @@ class EnviMigrationCmd
         $this->setMigrationStatus($migration);
         $this->saveMigrationStatus();
     }
+    /* ----------------------------------------- */
 }

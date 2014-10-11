@@ -419,7 +419,7 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
     $scaffold_form_type = 'text';
 
     // $scaffold_typeに合わせて、固定のバリデーションとスキーマを定義する
-        switch ($scaffold_type) {
+    switch ($scaffold_type) {
         case 'date':
             $table_schema_setting[$scaffold_name]['type'] = 'date';
             $validate['date'] = true;
@@ -690,7 +690,7 @@ while (isset($argv[$i]) ? $scaffold_data = $argv[$i] : false) {
     }
 
     // デフォルト値対応
-    $table_schema_setting[$scaffold_name]['default'] = isset($scaffold_data_f['default']) ? (int)$scaffold_data_f['default'] : NULL;
+    $table_schema_setting[$scaffold_name]['default'] = isset($scaffold_data_f['default']) ? $scaffold_data_f['default'] : NULL;
 
     // 定義されたバリデータから、バリデータ用のコードをジェネレートする
     foreach ($validate as $validator => &$val) {

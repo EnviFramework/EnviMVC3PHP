@@ -60,11 +60,18 @@ class EnviRouting
                 }
                 $class_name = $item['class_name'];
                 $router = new $class_name;
-                $router->initialize($this->_i18n, $this->_request_module_name, $this->_request_action_name, $this->_ext_path_info);
+                $initialize_res = $router->initialize($this->_i18n, $this->_request_module_name, $this->_request_action_name, $this->_ext_path_info);
+                if ($initialize_res === false) {
+                    return;
+                }
                 $this->_i18n = $router->getI18n();
                 $this->_request_module_name = $router->getRequestModule();
                 $this->_request_action_name = $router->getRequestAction();
                 $this->_ext_path_info = $router->getPathInfo();
+                $shutdown_res = $router->shutdown($this->_i18n, $this->_request_module_name, $this->_request_action_name, $this->_ext_path_info);
+                if (!$shutdown_res === false) {
+                    return;
+                }
             }
         }
     }
@@ -142,10 +149,16 @@ abstract class EnviRouterBase
     /**
      * +-- 初期化する
      *
+     * falseを返すと、ルーティングを終了する
+     *
      * @access      public
-     * @return      void
+     * @param       string $i18n          現在のi18n
+     * @param       string $module_name   現在のmodule_name
+     * @param       string $action_name   現在のaction_name
+     * @param       string $exp_path_info 現在のexp_path_info
+     * @return      boolean
      */
-    public function initialize()
+    public function initialize($i18n, $module_name, $action_name, $exp_path_info)
     {
         return true;
     }
@@ -154,10 +167,16 @@ abstract class EnviRouterBase
     /**
      * +-- 終了処理をする
      *
+     * falseを返すと、ルーティングを終了する
+     *
      * @access      public
-     * @return      void
+     * @param       string $i18n          現在のi18n
+     * @param       string $module_name   現在のmodule_name
+     * @param       string $action_name   現在のaction_name
+     * @param       string $exp_path_info 現在のexp_path_info
+     * @return      boolean
      */
-    public function shutdown()
+    public function shutdown($i18n, $module_name, $action_name, $exp_path_info)
     {
         return true;
     }

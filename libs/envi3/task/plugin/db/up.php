@@ -32,12 +32,18 @@ require_once ENVI_BASE_DIR.'vendor'.DIRECTORY_SEPARATOR.'EnviDB.php';
 require_once ENVI_BASE_DIR.'spyc.php';
 
 
-if (!isset($argv[2])) {
+if (!isset($argv[3])) {
     eecho('引数が足りません。');
-    eecho('envi db-migrate {app key} (env:{環境キー})');
+    eecho('envi db-up {app key} {実効回数} (env:{環境キー})');
     die;
 }
+if (!ctype_digit($argv[3])) {
+    eecho('実効回数は数字で入力して下さい。');
+    eecho('envi db-up {app key} {実効回数} (env:{環境キー})');
+    die;
+}
+
 require_once ENVI_BASE_DIR.'util'.DIRECTORY_SEPARATOR.'Migration'.DIRECTORY_SEPARATOR.'EnviMigrationCmd.php';
 
 $EnviMigrationCmd = new EnviMigrationCmd($current_work_dir);
-$EnviMigrationCmd->executeMigrate();
+$EnviMigrationCmd->executeMigrate((int)$argv[3]);
