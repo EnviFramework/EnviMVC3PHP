@@ -280,6 +280,26 @@ class EnviMigrationCmd
 
 
 
+    /**
+     * +-- マイグレーション履歴を表示します
+     *
+     * @access      public
+     * @param       integer $count OPTIONAL:5
+     * @return      void
+     */
+    public function executeNew($count = 5)
+    {
+        $migration = $this->getMigrationList();
+        while ($count--) {
+            $migration_class_file = array_shift($migration);
+            $app = $this->app_key;
+            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 3);
+            echo $version,":",$migration_class,"\n";
+        }
+    }
+    /* ----------------------------------------- */
+
+
 
 
     /**
