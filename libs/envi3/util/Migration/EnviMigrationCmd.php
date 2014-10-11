@@ -157,6 +157,19 @@ class EnviMigrationCmd
         $obj->env = $this->env;
         // ダウン
         $obj->is_up = false;
+
+        try{
+            $obj->DBI()->beginTransaction();
+            $obj->safeChange();
+            $obj->safeDown();
+            $obj->DBI()->commit();
+        } catch (exception $e) {
+            $obj->DBI()->rollback();
+            echo $e->getMessage(),"\n","db:rollback roll back";
+            return;
+        }
+
+
         $obj->change();
         $obj->down();
 
@@ -212,6 +225,17 @@ class EnviMigrationCmd
             $class_name = $app.'_'.$migration_class;
             $obj = new $class_name;
             $obj->env = $this->env;
+            try{
+                $obj->DBI()->beginTransaction();
+                $obj->safeChange();
+                $obj->safeUp();
+                $obj->DBI()->commit();
+            } catch (exception $e) {
+                $obj->DBI()->rollback();
+                echo $e->getMessage(),"\n","db:migrate roll back";
+                return;
+            }
+
             $obj->change();
             $obj->up();
             $migration['last_version'] = $version > $migration['last_version'] ? $version : $migration['last_version'];

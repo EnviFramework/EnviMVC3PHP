@@ -51,6 +51,17 @@ class ___class_name___ extends EnviMigrationBase
         $this->instance_name = 'default_master';
     }
 
+    public function safeChange()
+    {
+    }
+
+    public function safeUp()
+    {
+    }
+
+    public function safeDown()
+    {
+    }
 
 
     public function change()

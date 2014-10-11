@@ -50,18 +50,28 @@ class ___class_name___ extends EnviMigrationBase
     }
 
 
+    public function safeChange()
+    {
+    }
+
+    public function safeUp()
+    {
+    }
+
+    public function safeDown()
+    {
+    }
 
     public function change()
     {
-
     }
+
     public function up()
     {
-
     }
+
     public function down()
     {
-
     }
 
 }
