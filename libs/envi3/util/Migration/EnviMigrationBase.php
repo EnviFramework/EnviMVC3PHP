@@ -105,6 +105,52 @@ abstract class EnviMigrationBase
     abstract public function down();
     /* ----------------------------------------- */
 
+
+
+
+
+    /**
+     * +-- Transactionを利用してカラムの変更処理を登録するメソッド
+     *
+     * * changeColumn
+     * * changeColumnDefault
+     * * dropTable
+     * * removeIndex
+     *
+     * 以外のメソッドであれば、changeメソッドに登録することによって、自動的にロールバックを作成します。
+     *
+     *
+     *
+     * @access      public
+     * @return      void
+     */
+     public function safeChange()
+     {
+     }
+    /* ----------------------------------------- */
+    /**
+     * +-- Transactionを利用してcolumnのバージョンアップを登録するメソッド
+     *
+     * @access      public
+     * @return      void
+     */
+     public function saveUp()
+     {
+     }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- Transactionを利用してcolumnのバージョンダウンを塔録すメソッド
+     *
+     * @access      public
+     * @return      void
+     */
+    public function safeDown()
+    {
+    }
+    /* ----------------------------------------- */
+
+
     /**
      * +-- EnviDBIを返す
      *

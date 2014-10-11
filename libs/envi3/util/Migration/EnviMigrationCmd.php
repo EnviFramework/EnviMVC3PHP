@@ -157,6 +157,19 @@ class EnviMigrationCmd
         $obj->env = $this->env;
         // ダウン
         $obj->is_up = false;
+
+        try{
+            $obj->DBI()->beginTransaction();
+            $obj->safeChange();
+            $obj->safeDown();
+            $obj->DBI()->commit();
+        } catch (exception $e) {
+            $obj->DBI()->rollback();
+            echo $e->getMessage(),"\n","db:rollback roll back";
+            return;
+        }
+
+
         $obj->change();
         $obj->down();
 
@@ -166,7 +179,8 @@ class EnviMigrationCmd
             $migration['last_version'] = 0;
         } else {
             $migration_class_file = $migration['executed'][count($migration['executed']) - 1];
-            list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4));
+            $app = $this->app_key;
+            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4));
             $migration['last_version'] = $version < $migration['last_version'] ? $version : $migration['last_version'];
         }
 
@@ -206,12 +220,24 @@ class EnviMigrationCmd
     {
         $migration = $this->getMigrationStatus();
         foreach ($this->getMigrationList() as $migration_class_file) {
-            list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4), 3);
+            $app = $this->app_key;
+            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 3);
             echo $migration_class_file,"\n";
             include $migration_class_file;
             $class_name = $app.'_'.$migration_class;
             $obj = new $class_name;
             $obj->env = $this->env;
+            try{
+                $obj->DBI()->beginTransaction();
+                $obj->safeChange();
+                $obj->safeUp();
+                $obj->DBI()->commit();
+            } catch (exception $e) {
+                $obj->DBI()->rollback();
+                echo $e->getMessage(),"\n","db:migrate roll back";
+                return;
+            }
+
             $obj->change();
             $obj->up();
             $migration['last_version'] = $version > $migration['last_version'] ? $version : $migration['last_version'];
@@ -245,7 +271,8 @@ class EnviMigrationCmd
         $migration = $this->getMigrationStatus();
         while ($count--) {
             $migration_class_file = array_pop($migration['executed']);
-            list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4), 3);
+            $app = $this->app_key;
+            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 3);
             echo $version,":",$migration_class,"\n";
         }
     }
@@ -265,7 +292,8 @@ class EnviMigrationCmd
     {
         $migration = $this->getMigrationStatus();
         foreach ($this->getMigrationList() as $migration_class_file) {
-            list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4), 3);
+            $app = $this->app_key;
+            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 3);
             echo $migration_class_file,"\n";
             include $migration_class_file;
             $class_name = $app.'_'.$migration_class;
@@ -290,9 +318,13 @@ class EnviMigrationCmd
     public function executeCursorDown()
     {
         $migration = $this->getMigrationStatus();
+        if (count($migration['executed']) === 0) {
+            return false;
+        }
         $migration_class_file = array_pop($migration['executed']);
 
-        list($app, $version, $migration_class) = explode('_', substr(basename($migration_class_file), 0, -4), 3);
+        $app = $this->app_key;
+        list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 3);
         echo $migration_class_file,"\n";
         include $migration_class_file;
         $class_name = $app.'_'.$migration_class;
