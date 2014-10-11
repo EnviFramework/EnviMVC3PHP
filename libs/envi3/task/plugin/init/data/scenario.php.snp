@@ -7,15 +7,15 @@
  *
  *
  *
- * @category   テスト
- * @package    テスト
- * @subpackage TestCode
- * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
- * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @category   %%project_category%%
+ * @package    %%project_name%%
+ * @subpackage %%subpackage_name%%
+ * @author     %%your_name%% <%%your_email%%>
+ * @copyright  %%your_project%%
+ * @license    %%your_license%%
  * @version    GIT: $Id$
- * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        http://www.enviphp.net/c/man/v3/reference
+ * @link       %%your_link%%
+ * @see        http://www.enviphp.net/c/man/v3/core/unittest
  * @since      File available since Release 1.0.0
  * @doc_ignore
  */
@@ -31,16 +31,17 @@ require_once dirname(__FILE__).'/testCaseBase.php';
  *
  *
  *
- * @category   テスト
- * @package    テスト
- * @subpackage TestCode
- * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
- * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @category   %%project_category%%
+ * @package    %%project_name%%
+ * @subpackage %%subpackage_name%%
+ * @author     %%your_name%% <%%your_email%%>
+ * @copyright  %%your_project%%
+ * @license    %%your_license%%
  * @version    GIT: $Id$
- * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        http://www.enviphp.net/c/man/v3/reference
+ * @link       %%your_link%%
+ * @see        http://www.enviphp.net/c/man/v3/core/unittest
  * @since      File available since Release 1.0.0
+ * @doc_ignore
  */
 class Scenario extends EnviTestScenario
 {

@@ -8,7 +8,7 @@
  *
  * @category   %%project_category%%
  * @package    %%project_name%%
- * @subpackage
+ * @subpackage %%subpackage_name%%
  * @author     %%your_name%% <%%your_email%%>
  * @copyright  %%your_project%%
  * @license    %%your_license%%
@@ -25,7 +25,7 @@
  *
  * @category   %%project_category%%
  * @package    %%project_name%%
- * @subpackage
+ * @subpackage %%subpackage_name%%
  * @author     %%your_name%% <%%your_email%%>
  * @copyright  %%your_project%%
  * @license    %%your_license%%
