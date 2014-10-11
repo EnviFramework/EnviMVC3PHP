@@ -34,6 +34,7 @@ require_once ENVI_BASE_DIR.'spyc.php';
 
 if (!isset($argv[2])) {
     eecho('引数が足りません。');
+    eecho('envi db-rollback {app key} (env:{環境キー})');
     die;
 }
 require_once ENVI_BASE_DIR.'util'.DIRECTORY_SEPARATOR.'Migration'.DIRECTORY_SEPARATOR.'EnviMigrationCmd.php';
