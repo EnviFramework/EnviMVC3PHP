@@ -1,6 +1,6 @@
 <%include file="_header.tpl"%>
 <%include file="_error.tpl"%>
-<form action="./create.php" method="post">
+<form action="./destroy.php" method="post">
 <input type="hidden" name="id" value="<%$smarty.get.id|default:$smarty.post.id%>">
 
 ID:

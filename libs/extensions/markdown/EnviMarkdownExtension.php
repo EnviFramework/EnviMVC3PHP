@@ -80,6 +80,7 @@ class EnviMarkdownExtension
      * @access      public
      * @param       string $file_path ファイルパス
      * @param       string $compile_id コンパイルID OPTIONAL:NULL
+     * @param       string $extra エクストラフラグ OPTIONAL:NULL
      * @return      string
      */
     public function compileFile($file_path, $compile_id = NULL, $extra = NULL)

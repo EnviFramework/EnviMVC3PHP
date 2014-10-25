@@ -74,14 +74,8 @@ class _____action_name_____Action extends _____module_name_____Actions
      */
     public function validate()
     {
-        if($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            return Envi::DEFAULT_ACCESS;
-        }
-        if (!EnviRequest::hasParameter('commit')) {
-            return Envi::DEFAULT_ACCESS;
-        }
-
         // バリデーション
+        $validator = validator();
         $validator->autoPrepare(array('id' => _('URL')), 'noblank', false, false, validator::METHOD_GET|validator::METHOD_POST);
         $validator->chain('id', 'maxwidth', false, 20);
         $validator->chain('id', 'integer', false);
@@ -94,6 +88,12 @@ class _____action_name_____Action extends _____module_name_____Actions
         $validator->free();
 
 
+        if(EnviRequest::isGet()) {
+            return Envi::DEFAULT_ACCESS;
+        }
+        if (!EnviRequest::hasParameter('commit')) {
+            return Envi::DEFAULT_ACCESS;
+        }
         return Envi::SUCCESS;
     }
     /* ----------------------------------------- */
@@ -108,7 +108,7 @@ class _____action_name_____Action extends _____module_name_____Actions
     public function execute()
     {
         $_____model_pascal_case_name_____  = _____model_pascal_case_name_____Peer::retrieveByPK(EnviRequest::getAttribute('id'));
-        if (!$_____model_pascal_case_name_____ instanceof $_____model_pascal_case_name_____) {
+        if (!$_____model_pascal_case_name_____ instanceof _____model_pascal_case_name_____) {
             EnviController::killBy404Error();
         }
 
@@ -128,11 +128,17 @@ class _____action_name_____Action extends _____module_name_____Actions
      */
     public function defaultAccess()
     {
-        if (!EnviRequest::hasParameter('commit')) {
+        if (EnviRequest::hasParameter('commit')) {
             EnviRequest::setAttribute('commit', 'destroy');
             EnviController::forward('index');
             return Envi::NONE;
         }
+        $_____model_pascal_case_name_____  = _____model_pascal_case_name_____Peer::retrieveByPK(EnviRequest::getAttribute('id'));
+        if (!$_____model_pascal_case_name_____ instanceof _____model_pascal_case_name_____) {
+            EnviController::killBy404Error();
+        }
+
+        $this->Renderer()->setAttribute('_____model_pascal_case_name_____', $_____model_pascal_case_name_____->toArray());
         $this->Renderer()->display('destroy.tpl');
     }
     /* ----------------------------------------- */

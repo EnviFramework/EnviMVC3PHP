@@ -160,6 +160,9 @@ abstract class EnviMigrationBase
      */
     public function &DBI()
     {
+        if (!$this->dbi) {
+            $this->Driver();
+        }
         return $this->dbi;
     }
     /* ----------------------------------------- */

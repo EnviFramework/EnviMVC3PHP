@@ -221,7 +221,7 @@ class EnviMigrationCmd
         $migration = $this->getMigrationStatus();
         foreach ($this->getMigrationList() as $migration_class_file) {
             $app = $this->app_key;
-            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 3);
+            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 2);
             echo $migration_class_file,"\n";
             include $migration_class_file;
             $class_name = $app.'_'.$migration_class;
@@ -272,7 +272,7 @@ class EnviMigrationCmd
         while ($count--) {
             $migration_class_file = array_pop($migration['executed']);
             $app = $this->app_key;
-            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 3);
+            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 2);
             echo $version,":",$migration_class,"\n";
         }
     }
@@ -293,7 +293,7 @@ class EnviMigrationCmd
         while ($count--) {
             $migration_class_file = array_shift($migration);
             $app = $this->app_key;
-            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 3);
+            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 2);
             echo $version,":",$migration_class,"\n";
         }
     }
@@ -313,7 +313,7 @@ class EnviMigrationCmd
         $migration = $this->getMigrationStatus();
         foreach ($this->getMigrationList() as $migration_class_file) {
             $app = $this->app_key;
-            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 3);
+            list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 2);
             echo $migration_class_file,"\n";
             include $migration_class_file;
             $class_name = $app.'_'.$migration_class;
@@ -344,7 +344,7 @@ class EnviMigrationCmd
         $migration_class_file = array_pop($migration['executed']);
 
         $app = $this->app_key;
-        list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 3);
+        list($version, $migration_class) = explode('_', substr(basename($migration_class_file), strlen($app) + 1, -4), 2);
         echo $migration_class_file,"\n";
         include $migration_class_file;
         $class_name = $app.'_'.$migration_class;

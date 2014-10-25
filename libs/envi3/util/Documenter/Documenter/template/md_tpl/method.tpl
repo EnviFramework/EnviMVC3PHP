@@ -53,7 +53,7 @@ foreach ($arguments as $k => $v) {
     ) {
         $arguments[$k] .= $doc_array['param'][$i][0].' '.$k;
     } else {
-        echo $method->getMethodName().' error';
+        echo $token->getMethodName().' error';
         var_dump($doc_array['param'][$i]);
         var_dump($k);
         die();
