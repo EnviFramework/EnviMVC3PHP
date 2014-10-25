@@ -425,7 +425,7 @@ class EnviValidator
      * isError()メソッドでエラーのチェックを行えます。
      *
      * @param string|array $validation_name バリデートするフォームデータ名
-     * @param bool $object_clean エラーオブジェクトを毎回空にするか
+     * @param boolean $object_clean エラーオブジェクトを毎回空にするか
      * @return array,object
      * @see EnviValidator::isError()
      * @see EnviValidator::prepare()
@@ -556,10 +556,10 @@ class EnviValidator
      *
      * @param string|array $validation_name バリデートするフォームデータ名。
      * @param string|array $validator バリデータ名,$this->getChainFormat()の結果
-     * @param bool $validator_chain エラーがあった場合に確認処理を継続するか
-     * @param bool $trim 入力検証データをtrimするかどうか
-     * @param integer|boolean VM_METHOD_POST = POSTのみ VM_METHOD_GET = GETのみ VM_METHOD_POST|VM_METHOD_GET = POSTかGETのどちらか。
-     * @param mix $validate_mode バリデータオプション
+     * @param boolean $validator_chain エラーがあった場合に確認処理を継続するか OPTIONAL: true
+     * @param boolean $trim 入力検証データをtrimするかどうか OPTIONAL: false
+     * @param integer $post_only validator::METHOD_POST = POSTのみ validator::METHOD_GET = GETのみ validator::METHOD_POST|validator::METHOD_GET = POSTかGETのどちらか。 OPTIONAL: validator::METHOD_POST|validator::METHOD_GET
+     * @param mixed $validate_mode バリデータオプション OPTIONAL: false
      * @see EnviValidator::prepare()
      * @return void
      */
@@ -590,7 +590,7 @@ class EnviValidator
      * @param string|array $validation_name バリデートするフォームデータ名。
      * @param string|array $validator バリデータ名,$this->getChainFormat()の結果
      * @param mixed $validation_data バリデートするデータ
-     * @param bool $validator_chain エラーがあった場合に確認処理を継続するか
+     * @param boolean $validator_chain エラーがあった場合に確認処理を継続するか
      * @param mixed $validate_mode バリデータオプション
      * @see EnviValidator::autoPrepare()
      * @return void
@@ -656,7 +656,7 @@ class EnviValidator
      *
      * @param string $validation_name バリデートするフォームデータ名
      * @param string $validator バリデータ名
-     * @param bool $validator_chain エラーの場合につなげてバリデート処理を行うか
+     * @param boolean $validator_chain エラーの場合につなげてバリデート処理を行うか
      * @param bool,string,int,array $validate_mode バリデータオプション
      * @return void
      * @see EnviValidator::prepare()
@@ -685,7 +685,7 @@ class EnviValidator
      * @param string $group フォーマットグループ名
      * @param string $validator バリデータ名
      * @param string,int $order チェインされる順番
-     * @param bool $validator_chain エラーの場合につなげてバリデート処理を行うか
+     * @param boolean $validator_chain エラーの場合につなげてバリデート処理を行うか
      * @param bool,string,int,array $validate_mode バリデータオプション
      * @see EnviValidator::getChainFormat()
      * @return void
@@ -750,7 +750,7 @@ class EnviValidator
      * バリデート結果がエラーかどうかを判断し、実行結果はエラーの場合に、TRUEを返します。
      *
      * @param object,string,int,array $result execute()・executeAllの結果
-     * @return bool エラーかどうか
+     * @return boolean エラーかどうか
      * @see EnviValidator::executeAll()
      * @see EnviValidator::execute()
      */
@@ -785,7 +785,7 @@ class EnviValidator
      * @param string $validator 使用するバリデータ
      * @param string,arrray $data バリデータにかけるデータ
      * @param string|array $option バリデータオプション
-     * @return bool 正しいかどうか
+     * @return boolean 正しいかどうか
      */
     public function validation($validator, $data, $option)
     {
@@ -863,8 +863,8 @@ class EnviValidator
      * バリデートするデータを取得
      *
      * @param string $validation_name バリデーションチェイン名
-     * @param bool $trim trimするか？
-     * @param bool $post_only POSTのみ取得
+     * @param boolean $trim trimするか？
+     * @param boolean $post_only POSTのみ取得
      * @return mixed
      */
     protected function _getValidationData($validation_name, &$trim, &$post_only)
@@ -1306,7 +1306,7 @@ class EnviValidator
      * 数値を表す値かどうか
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $dummy ダミー変数
+     * @param boolean $dummy ダミー変数
      */
     protected function _typeNumber(&$ValidationData, $dummy)
     {
@@ -1348,7 +1348,7 @@ class EnviValidator
      * 電話番号かどうか
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $kana $ValidationDataを半角英数字に変更
+     * @param boolean $kana $ValidationDataを半角英数字に変更
      */
     protected function _typeTelephoneFormat(&$ValidationData, &$kana)
     {
@@ -1366,7 +1366,7 @@ class EnviValidator
      * アルファベットかどうか
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $dummy ダミー変数
+     * @param boolean $dummy ダミー変数
      */
     protected function _typeAlphabet(&$ValidationData, $dummy)
     {
@@ -1380,7 +1380,7 @@ class EnviValidator
      * アルファベット以外の文字が含まれるかどうかを調べる
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $dummy ダミー変数
+     * @param boolean $dummy ダミー変数
      */
     protected function _typeWithoutAlphabet(&$ValidationData, $dummy)
     {
@@ -1394,7 +1394,7 @@ class EnviValidator
      * アルファベットもしくは数字かどうか
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $dummy ダミー変数
+     * @param boolean $dummy ダミー変数
      */
     protected function _typeAlphabetOrNumber(&$ValidationData, $dummy)
     {
@@ -1409,7 +1409,7 @@ class EnviValidator
      * アルファベットと数字以外の文字が入っているかどうか
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $dummy ダミー変数
+     * @param boolean $dummy ダミー変数
      */
     protected function _typeWithoutAlphabetOrNumber(&$ValidationData, $dummy)
     {
@@ -1423,7 +1423,7 @@ class EnviValidator
      * ローマ字区域の文字列かどうか
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $convert 半角変換するか？
+     * @param boolean $convert 半角変換するか？
      */
     protected function _typeRome(&$ValidationData, $convert)
     {
@@ -1440,7 +1440,7 @@ class EnviValidator
      * 整数かどうか
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $dummy ダミー変数
+     * @param boolean $dummy ダミー変数
      */
     protected function _typeInteger(&$ValidationData, $dummy)
     {
@@ -1458,7 +1458,7 @@ class EnviValidator
      * 自然数かどうか(0も許容)
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $dummy ダミー変数
+     * @param boolean $dummy ダミー変数
      */
     protected function _typeNaturalNumber(&$ValidationData, $dummy)
     {
@@ -1531,7 +1531,7 @@ class EnviValidator
      * 空欄(もしくは送信されていない)かどうか
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $dummy ダミー変数
+     * @param boolean $dummy ダミー変数
      */
     protected function _typeBlank(&$ValidationData, $dummy)
     {
@@ -1553,7 +1553,7 @@ class EnviValidator
      * 空欄(もしくは送信されていない)になっていないかどうか
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $dummy ダミー変数
+     * @param boolean $dummy ダミー変数
      */
     protected function _typeNoBlank(&$ValidationData, $dummy)
     {
@@ -1574,7 +1574,7 @@ class EnviValidator
      * 非送信になっていないかどうか
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $dummy ダミー変数
+     * @param boolean $dummy ダミー変数
      */
     protected function _typeNoSubmit(&$ValidationData, $dummy)
     {
@@ -1601,7 +1601,7 @@ class EnviValidator
      * タグが含まれていないか
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $dummy ダミー変数
+     * @param boolean $dummy ダミー変数
      */
     protected function _typeNoTags(&$ValidationData, $dummy)
     {
@@ -1615,7 +1615,7 @@ class EnviValidator
      * 機種依存文字
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $kana 半角カナを全角カナに
+     * @param boolean $kana 半角カナを全角カナに
      */
     protected function _typeDepend(&$ValidationData, &$kana)
     {
@@ -1640,7 +1640,7 @@ class EnviValidator
      * ひらがな
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $kana 全角片カナ・半角片カナを全角平がなに変える
+     * @param boolean $kana 全角片カナ・半角片カナを全角平がなに変える
      */
     protected function _typeHiragana(&$ValidationData, &$kana)
     {
@@ -1657,7 +1657,7 @@ class EnviValidator
      * カタカナ
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $kana 全角平がな・半角片カナを全角片カナに変える
+     * @param boolean $kana 全角平がな・半角片カナを全角片カナに変える
      */
     protected function _typeKatakana(&$ValidationData, &$kana)
     {
@@ -1674,7 +1674,7 @@ class EnviValidator
      * ひらがなのふりがな
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $kana 全角片カナ・半角片カナを全角平がなに変える
+     * @param boolean $kana 全角片カナ・半角片カナを全角平がなに変える
      */
     protected function _typeHFurigana(&$ValidationData, &$kana)
     {
@@ -1691,7 +1691,7 @@ class EnviValidator
      * カタカナのフリガナ
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $kana 全角平がな・半角片カナを全角片カナに変える
+     * @param boolean $kana 全角平がな・半角片カナを全角片カナに変える
      */
     protected function _typeKFurigana(&$ValidationData, &$kana)
     {
@@ -1708,7 +1708,7 @@ class EnviValidator
      * メールアドレスフォーマット
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $kana 全角英数字を半角に変換
+     * @param boolean $kana 全角英数字を半角に変換
      * @link http://www.din.or.jp/~ohzaki/perl.htm
      */
     protected function _typeMailFormat(&$ValidationData, &$kana)
@@ -1727,7 +1727,7 @@ class EnviValidator
      * シンプルなメールアドレスフォーマット
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $kana 全角英数字を半角に変換
+     * @param boolean $kana 全角英数字を半角に変換
      */
     protected function _typeMailFormatSymple(&$ValidationData, &$kana)
     {
@@ -1745,7 +1745,7 @@ class EnviValidator
      * URLフォーマット
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $kana 全角英数字を半角に変換
+     * @param boolean $kana 全角英数字を半角に変換
      * @link http://bakera.jp/hatomaru.aspx/yomoyama/perlnote
      */
     protected function _typeUrlFormat(&$ValidationData, &$kana)
@@ -1764,7 +1764,7 @@ class EnviValidator
      * 郵便番号フォーマット
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $kana 全角英数字を半角に変換
+     * @param boolean $kana 全角英数字を半角に変換
      */
     protected function _typePostcodeFormat(&$ValidationData, &$kana)
     {
@@ -1783,7 +1783,7 @@ class EnviValidator
      * メールアドレス
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $kana 全角英数字を半角に変換
+     * @param boolean $kana 全角英数字を半角に変換
      */
     protected function _typeMail(&$ValidationData, &$kana)
     {
@@ -1803,7 +1803,7 @@ class EnviValidator
      * URL
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $kana 全角英数字を半角に変換
+     * @param boolean $kana 全角英数字を半角に変換
      */
     protected function _typeUrl(&$ValidationData, &$kana)
     {
@@ -1928,7 +1928,7 @@ class EnviValidator
      * 配列かどうか
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $dummy ダミー変数
+     * @param boolean $dummy ダミー変数
      */
     protected function _typeArray(&$ValidationData, $dummy)
     {
@@ -1939,7 +1939,7 @@ class EnviValidator
      * 配列で無いかかどうか
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $dummy ダミー変数
+     * @param boolean $dummy ダミー変数
      */
     protected function _typeNotArray(&$ValidationData, $dummy)
     {
@@ -1972,7 +1972,7 @@ class EnviValidator
      * 数字のみの配列かどうか
      *
      * @param strings,array $ValidationData 入力検証を行う変数
-     * @param bool $dummy ダミー変数
+     * @param boolean $dummy ダミー変数
      */
     protected function _typeArrayNumber(&$ValidationData, $dummy)
     {
