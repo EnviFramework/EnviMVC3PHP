@@ -11,13 +11,20 @@
  * スクリプトファイルを作成し実行します。
  * 後からカラムを追加したい場合には、カラムを追加するための別のスクリプトファイルを作成し実行します。
  *
+ * *
+ * インストール・設定
+ * --------------------------------------------------
+ * Envi デフォルトで動作しますが、3.4.0からの新機能です。
+ *
+ *
+ *
  *
  * PHP versions 5
  *
  *
  *
- * @category   フレームワーク基礎処理
- * @package    DB
+ * @category   EnviMVC拡張
+ * @package    データベース
  * @subpackage Migration
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
@@ -26,6 +33,7 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      File available since Release 3.4.0
+ * @subpackage_main
  */
 
 /**
@@ -43,8 +51,8 @@
  *
  *
  *
- * @category   フレームワーク基礎処理
- * @package    DB
+ * @category   EnviMVC拡張
+ * @package    データベース
  * @subpackage Migration
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
@@ -53,6 +61,7 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      File available since Release 3.4.0
+ * @subpackage_main
  */
 abstract class EnviMigrationBase
 {
@@ -75,13 +84,16 @@ abstract class EnviMigrationBase
      * * dropTable
      * * removeIndex
      *
-     * 以外のメソッドであれば、changeメソッドに登録することによって、自動的にロールバックを作成します。
+     * 以外のメソッドであれば、changeメソッドに登録することによって、自動的にロールバック(downメソッド)を作成します。
      *
      *
      *
      * @access      public
      * @abstract
      * @return      void
+     * @see EnviMigrationBase::up()
+     * @see EnviMigrationBase::down()
+     * @see EnviMigrationBase::safeChange()
      */
     abstract public function change();
     /* ----------------------------------------- */
@@ -91,6 +103,9 @@ abstract class EnviMigrationBase
      * @access      public
      * @abstract
      * @return      void
+     * @see EnviMigrationBase::change()
+     * @see EnviMigrationBase::down()
+     * @see EnviMigrationBase::saveUp()
      */
     abstract public function up();
     /* ----------------------------------------- */
@@ -101,11 +116,12 @@ abstract class EnviMigrationBase
      * @access      public
      * @abstract
      * @return      void
+     * @see EnviMigrationBase::up()
+     * @see EnviMigrationBase::change()
+     * @see EnviMigrationBase::safeDown()
      */
     abstract public function down();
     /* ----------------------------------------- */
-
-
 
 
 
@@ -123,6 +139,8 @@ abstract class EnviMigrationBase
      *
      * @access      public
      * @return      void
+     * @see EnviMigrationBase::saveUp()
+     * @see EnviMigrationBase::safeDown()
      */
      public function safeChange()
      {
@@ -133,6 +151,8 @@ abstract class EnviMigrationBase
      *
      * @access      public
      * @return      void
+     * @see EnviMigrationBase::safeChange()
+     * @see EnviMigrationBase::safeDown()
      */
      public function saveUp()
      {
@@ -144,6 +164,8 @@ abstract class EnviMigrationBase
      *
      * @access      public
      * @return      void
+     * @see EnviMigrationBase::saveUp()
+     * @see EnviMigrationBase::safeChange()
      */
     public function safeDown()
     {
@@ -323,7 +345,7 @@ abstract class EnviMigrationBase
      * @param       string $table_name テーブル名
      * @param       string $column_name カラム名
      * @param       string $type データ型
-     * @param      array $options オプション設定 OPTIONAL:array
+     * @param       array $options オプション設定 OPTIONAL:array
      * @return      void
      * @since       3.4.0
      */
@@ -344,7 +366,7 @@ abstract class EnviMigrationBase
      * @access      protected
      * @param       string $table_name テーブル名
      * @param       string $column_name カラム名
-     * @param       var_text $default_val
+     * @param       string $default_val
      * @return      void
      * @since       3.4.0
      */
@@ -385,7 +407,7 @@ abstract class EnviMigrationBase
      * @doc_enable
      * @access      protected
      * @param       string $table_name テーブル名
-     * @param      array $options オプション設定 OPTIONAL:array
+     * @param       array $options オプション設定 OPTIONAL:array
      * @return      void
      * @since       3.4.0
      */
@@ -430,7 +452,7 @@ abstract class EnviMigrationBase
      * @doc_enable
      * @access      protected
      * @param       string $table_name テーブル名
-     * @param       string $column_name カラム名s
+     * @param       string $column_name カラム名
      * @return      void
      * @since       3.4.0
      */
@@ -451,7 +473,7 @@ abstract class EnviMigrationBase
      * @doc_enable
      * @access      protected
      * @param       string $table_name テーブル名
-     * @param      array $options オプション設定 OPTIONAL:array
+     * @param       array $options オプション設定 OPTIONAL:array
      * @return      void
      * @since       3.4.0
      */
@@ -492,7 +514,7 @@ abstract class EnviMigrationBase
      * @access      protected
      * @param       string $table_name テーブル名
      * @param       string $column_name カラム名
-     * @param       var_text $new_column_name
+     * @param       string $new_column_name
      * @return      void
      * @since       3.4.0
      */
@@ -513,8 +535,8 @@ abstract class EnviMigrationBase
      * @doc_enable
      * @access      protected
      * @param       string $table_name テーブル名
-     * @param       var_text $old_name
-     * @param       var_text $new_name
+     * @param       string $old_name
+     * @param       string $new_name
      * @return      void
      * @since       3.4.0
      */
@@ -535,7 +557,7 @@ abstract class EnviMigrationBase
      * @doc_enable
      * @access      protected
      * @param       string $table_name テーブル名
-     * @param       var_text $new_name
+     * @param       string $new_name
      * @return      void
      * @since       3.4.0
      */
