@@ -177,7 +177,7 @@ foreach ($doc_array['see'] as $see) {
         continue;
     }
 
-    echo "* [",$see[0],"](",$driver->writePathToManPath($write_path),") — ",$method_list[$see[0]]['token']->getDocBlockToken()->getDocBlockSubject(),"\n";
+    echo "* [",$see[0],"](",$driver->writePathToManPath($method_list[$see[0]]['man_path']),") — ",$method_list[$see[0]]['token']->getDocBlockToken()->getDocBlockSubject(),"\n";
 
 }
 

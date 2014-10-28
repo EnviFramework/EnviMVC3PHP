@@ -6,8 +6,8 @@
  *
  *
  *
- * @category   フレームワーク基礎処理
- * @package    DB
+ * @category   EnviMVC拡張
+ * @package    データベース
  * @subpackage Migration
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
@@ -25,8 +25,8 @@
  *
  *
  *
- * @category   フレームワーク基礎処理
- * @package    DB
+ * @category   EnviMVC拡張
+ * @package    データベース
  * @subpackage Migration
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2014 Artisan Project
