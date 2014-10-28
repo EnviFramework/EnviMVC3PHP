@@ -145,7 +145,7 @@ class EnviWebType
         }
         if (preg_match('/DreamPassport/', $user_agent)) {
             $blo['os'] = 'DreamFlyer';
-        } elseif (preg_match("/Android *(\d)/i", $user_agent, $matches)) {
+        } elseif (preg_match("/Android *(\\d)/i", $user_agent, $matches)) {
             $blo['os'] = "Android $matches[1]";
         } elseif (preg_match("/iPod touch/", $user_agent)) {
             $blo['os'] = 'iPod touch';
@@ -175,7 +175,7 @@ class EnviWebType
             $blo['os'] = 'Windows Vista';
         } elseif (preg_match("/Windows NT 6.1/", $user_agent)) {
             $blo['os'] = 'Windows 7';
-        } elseif (preg_match("/Windows NT 6.2; ARM; Trident/6.0/", $user_agent)) {
+        } elseif (preg_match("/Windows NT 6.2; ARM; Trident\\/6.0/", $user_agent)) {
             $blo['os'] = 'Windows RT';
         } elseif (preg_match("/Windows NT 6.2/", $user_agent)) {
             $blo['os'] = 'Windows 8';
@@ -211,7 +211,7 @@ class EnviWebType
             $blo['os'] = 'Linux (Others)';
         } elseif (preg_match("/X11/", $user_agent)) {
             $blo['os'] = 'Others (X Window)';
-        } elseif (preg_match("/OS\/2/", $user_agent)) {
+        } elseif (preg_match("/OS\\/2/", $user_agent)) {
             $blo['os'] = 'OS/2';
         } elseif (preg_match("/sharp pda browser/", $user_agent)) {
             $blo['os'] = 'Zaurus';
@@ -236,33 +236,33 @@ class EnviWebType
         } elseif (preg_match("/Another_HTML-lint/", $user_agent)) {
             $blo['os'] = 'Another HTML-lint';
         } else {
-            if (preg_match("/Mozilla\/(\d)/i", $user_agent, $matches)) {
+            if (preg_match("/Mozilla\\/(\\d)/i", $user_agent, $matches)) {
                 $mv = $matches[1];
-            if  (preg_match("/NetCaptor *(\d)/i", $user_agent, $matches)) {
+            if  (preg_match("/NetCaptor *(\\d)/i", $user_agent, $matches)) {
                 $blo['os'] = 'Unknown (NetCaptor)';
-            } elseif (preg_match("/MSIE *(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/MSIE *(\\d)/i", $user_agent, $matches)) {
                 $blo['os'] = 'Unknown (IE)';
-            } elseif (preg_match("/Konqueror\/(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Konqueror\\/(\\d)/i", $user_agent, $matches)) {
                 $blo['os'] = 'Others (KDE : Konqueror)';
             } else {
                 $blo['os'] = 'Unknown (NN)';
             }
             } else {
-                if (preg_match("/InternetNinja *(\d)/i", $user_agent, $matches)) {
+                if (preg_match("/InternetNinja *(\\d)/i", $user_agent, $matches)) {
                     $blo['os'] = 'Unknown (InternetNinja User)';
-                } elseif (preg_match("/Sleipnir Version *(\d)/i", $user_agent, $matches)) {
+                } elseif (preg_match("/Sleipnir Version *(\\d)/i", $user_agent, $matches)) {
                     $blo['os'] = 'Unknown (Sleipnir)';
-                } elseif (preg_match("/Borg\/(\d)/i", $user_agent, $matches)) {
+                } elseif (preg_match("/Borg\\/(\\d)/i", $user_agent, $matches)) {
                     $blo['os'] = 'Unknown (AirWeb)';
-                } elseif (preg_match("/WebAuto\/(\d)/i", $user_agent, $matches)) {
+                } elseif (preg_match("/WebAuto\\/(\\d)/i", $user_agent, $matches)) {
                     $blo['os'] = 'Unknown (WebAuto)';
-                } elseif (preg_match("/Lynx\/(\d)/i", $user_agent, $matches)) {
+                } elseif (preg_match("/Lynx\\/(\\d)/i", $user_agent, $matches)) {
                     $blo['os'] = 'Unknown (Lynx)';
-                } elseif (preg_match("/InternetLinkAgent\/(\d)/i", $user_agent, $matches)) {
+                } elseif (preg_match("/InternetLinkAgent\\/(\\d)/i", $user_agent, $matches)) {
                     $blo['os'] = 'Unknown (InternetLinkAgent)';
-                } elseif (preg_match("/W3CRobot\/(\d)/i", $user_agent, $matches)) {
+                } elseif (preg_match("/W3CRobot\\/(\\d)/i", $user_agent, $matches)) {
                     $blo['os'] = 'Unknown (W3CRobot)';
-                } elseif (preg_match("/Openbot\/(\d)/i", $user_agent, $matches)) {
+                } elseif (preg_match("/Openbot\\/(\\d)/i", $user_agent, $matches)) {
                     $blo['os'] = 'Unknown (Openbot)';
                 } elseif (preg_match("/Lunascape/i", $user_agent, $matches)) {
                     $blo['os'] = 'Unknown (Lunascape)';
@@ -287,15 +287,15 @@ class EnviWebType
                 }
             }
         }
-        if (preg_match("/Mozilla\/(\d)/i", $user_agent, $matches)) {
+        if (preg_match("/Mozilla\\/(\\d)/i", $user_agent, $matches)) {
             $mv = $matches[1];
-            if (preg_match("/DreamPassport\/(\d)/i", $user_agent, $matches)) {
+            if (preg_match("/DreamPassport\\/(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "DreamPassport $matches[1].x";
-            } elseif (preg_match("/NetCaptor *(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/NetCaptor *(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "NetCaptor $matches[1].x";
-            } elseif (preg_match("/Opera *(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Opera *(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Opera $matches[1].x";
-            } elseif (preg_match("/Lunascape *(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Lunascape *(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Lunascape (IE Component) $matches[1].x";
             } elseif (preg_match("/MSIE 5.01/i", $user_agent, $matches)) {
                 $blo['browser'] = 'IE 5.01';
@@ -309,27 +309,27 @@ class EnviWebType
                 $blo['browser'] = 'IE 5.5';
             } elseif (preg_match("/MSIE 6.0/i", $user_agent, $matches)) {
                 $blo['browser'] = 'IE 6.0';
-            } elseif (preg_match("/MSIE *(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/MSIE *(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "IE $matches[1].x";
-            } elseif (preg_match("/Netscape6\/(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Netscape6\\/(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Netscape $matches[1].x";
-            } elseif (preg_match("/Netscape\/(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Netscape\\/(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Netscape $matches[1].x";
-            } elseif (preg_match("/Phoenix\/(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Phoenix\\/(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Phoenix $matches[1].x";
-            } elseif (preg_match("/Firebird\/(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Firebird\\/(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Firebird $matches[1].x";
-            } elseif (preg_match("/Firefox\/(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Firefox\\/(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Firefox $matches[1].x";
-            } elseif (preg_match("/Camino\/(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Camino\\/(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Camino $matches[1].x";
-            } elseif (preg_match("/Galeon\/(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Galeon\\/(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Galeon $matches[1].x";
-            } elseif (preg_match("/Chrome *(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Chrome *(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Chrome $matches[1].x";
             } elseif (preg_match("/Safari/", $user_agent, $matches)) {
                 $blo['browser'] = 'Safari';
-            } elseif (preg_match("/Konqueror\/(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Konqueror\\/(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Konqueror $matches[1].x";
             } elseif (preg_match("/Gecko/", $user_agent, $matches)) {
                 $blo['browser'] = 'Others (Gecko)';
@@ -337,51 +337,51 @@ class EnviWebType
                 $blo['browser'] = "NN $mv.x";
             }
         } else {
-            if (preg_match("/InternetNinja *(\d)/i", $user_agent, $matches)) {
+            if (preg_match("/InternetNinja *(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Internet Ninja $matches[1].x";
-            } elseif (preg_match("/Sleipnir Version *(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Sleipnir Version *(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Sleipnir $matches[1].x";
-            } elseif (preg_match("/Borg\/(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Borg\\/(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "AirWeb $matches[1].x";
-            } elseif (preg_match("/WebAuto\/(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/WebAuto\\/(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "WebAuto $matches[1].x";
-            } elseif (preg_match("/Lynx\/(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Lynx\\/(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Lynx $matches[1].x";
-            } elseif (preg_match("/InternetLinkAgent\/(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/InternetLinkAgent\\/(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "InternetLinkAgent $matches[1].x";
-            } elseif (preg_match("/W3CRobot\/(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/W3CRobot\\/(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "W3CRobot $matches[1].x";
-            } elseif (preg_match("/Openbot\/(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Openbot\\/(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Openbot $matches[1].x";
-            } elseif (preg_match("/sharp pda browser\/(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/sharp pda browser\\/(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "sharp pda browser $matches[1].x";
-            } elseif (preg_match("/Cuam Ver *(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Cuam Ver *(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Cuam(IE Component) $matches[1].x";
-            } elseif (preg_match("/CuserAgentm Ver *(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/CuserAgentm Ver *(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "CuserAgentm (IE Component) $matches[1].x";
-            } elseif (preg_match("/Donut R\/*(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Donut R\\/*(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Donut $matches[1].x";
-            } elseif (preg_match("/Moon Browser ver.*(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Moon Browser ver.*(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Moon Browser ver. $matches[1].x";
-            } elseif (preg_match("/w3m\/*(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/w3m\\/*(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "w3m $matches[1].x";
-            } elseif (preg_match("/WWWC\/*(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/WWWC\\/*(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "WWWC $matches[1].x";
-            } elseif (preg_match("/PageDown\/*(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/PageDown\\/*(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "PageDown $matches[1].x";
-            } elseif (preg_match("/NexTools WebAgent \/*(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/NexTools WebAgent \\/*(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "NexTools WebAgent $matches[1].x";
-            } elseif (preg_match("/UP.Browser\/*(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/UP.Browser\\/*(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "UP.Browser $matches[1].x";
-            } elseif (preg_match("/J-PHONE\/*(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/J-PHONE\\/*(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "J-PHONE $matches[1].x";
-            } elseif (preg_match("/DoCoMo\/*(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/DoCoMo\\/*(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "DoCoMo $matches[1].x";
-            } elseif (preg_match("/W3C_Validator\/*(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/W3C_Validator\\/*(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "W3C Validator $matches[1].x";
-            } elseif (preg_match("/W3C_CSS_Validator_JFouffa\/*(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/W3C_CSS_Validator_JFouffa\\/*(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "W3C CSS Validator JFouffa $matches[1].x";
-            } elseif (preg_match("/Another_HTML-lint\/*(\d)/i", $user_agent, $matches)) {
+            } elseif (preg_match("/Another_HTML-lint\\/*(\\d)/i", $user_agent, $matches)) {
                 $blo['browser'] = "Another HTML-lint $matches[1].x";
             } else {
                 $blo['browser'] = "Others";
