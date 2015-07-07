@@ -68,7 +68,7 @@ class ___class_name___ extends EnviMigrationBase
     {
         // 使用する場合はコメントを外して下さい
         /*
-        $schema_yaml = spyc_load(dirname(__FILE__).DIRECTORY_SEPARATOR.'___file_name___.yml');
+        $schema_yaml = spyc_load_file(dirname(__FILE__).DIRECTORY_SEPARATOR.'___file_name___.yml');
         foreach ($schema_yaml['SCHEMA'] as $table_name => $options) {
             $this->createTable($table_name, $options);
         }
