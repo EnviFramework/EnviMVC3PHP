@@ -76,6 +76,7 @@ $model_base_name_space  = '';
 
 $model_name_space_use   = '';
 $base_model_name_space_use   = '';
+$model_base_name_space_use   = '';
 if (PHP_MINOR_VERSION >= 3) {
     $model_name_space            = isset($config['SETTING']['model_name_space']) ? $config['SETTING']['model_name_space']: '';
     $model_base_name_space       = isset($config['SETTING']['model_base_name_space']) ? $config['SETTING']['model_base_name_space']: '';
