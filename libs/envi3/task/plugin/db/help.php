@@ -25,7 +25,7 @@ cecho('    envi ', 34, '\n         Enviに対する操作を行います');
 cecho('Usage:', 33);
     echo '    envi task_name [arguments] [Options]'."\n";
 cecho('Task name:', 33);
-cecho('    db-migration <app_key> ([--dry_run]) (env:<envelopment>)       ', 32, '\n       DBのマイグレーション\n       envi db-migration <app_key> ([--dry_run]) (env:<envelopment>)');
+cecho('    db-migrate <app_key> ([--dry_run]) (env:<envelopment>)       ', 32, '\n       DBのマイグレーション\n       envi db-migration <app_key> ([--dry_run]) (env:<envelopment>)');
 cecho('    db-rollback <app_key> ([--dry_run]) (env:<envelopment>)        ', 32, '\n       一個前のバージョンに戻す\n       envi db-rollback <app_key> ([--dry_run]) (env:<envelopment>)');
 
 
