@@ -58,7 +58,7 @@ class EnviRouting
     public function run()
     {
         $_system_conf = Envi::singleton()->getConfigurationAll();
-        if (isset($_system_conf['Routing']) || is_array($_system_conf['Routing'])) {
+        if (isset($_system_conf['Routing']) && is_array($_system_conf['Routing'])) {
             foreach ($_system_conf['Routing'] as $item) {
                 if (!class_exists($item['class_name'], false)) {
                     include $item['resource'];
