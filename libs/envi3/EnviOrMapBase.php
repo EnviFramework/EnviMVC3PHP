@@ -205,7 +205,7 @@ abstract class EnviOrMapBase
     public function delete(EnviDBIBase $con = NULL)
     {
         $arr = array();
-        $sql = "DELETE FROM {$this->getTableName()} WHERE ";
+        $sql = 'DELETE FROM '.$this->getTableName().' WHERE ';
         $and = '';
         foreach ($this->pkeys as $pkey) {
             $sql .= $and.$pkey.' = ?';
