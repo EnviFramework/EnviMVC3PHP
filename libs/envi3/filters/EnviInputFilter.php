@@ -7,6 +7,7 @@
  * PHP versions 5
  *
  *
+ * @sub_class
  * @category   EnviMVC拡張
  * @package    フィルタ
  * @subpackage InputFilter
@@ -25,6 +26,7 @@
  *
  * 入力時のフィルタのサンプル
  *
+ * @sub_class
  * @category   EnviMVC拡張
  * @package    フィルタ
  * @subpackage InputFilter

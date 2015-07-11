@@ -24,7 +24,7 @@
  * @see        http://www.enviphp.net/
  * @since      File available since Release 3.3.3.5
  */
-require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'../EnviUnitTest/EnviCodeParser.php';
+require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'../EnviUnitTest/CodeParser/EnviCodeParser.php';
 require dirname(__FILE__).DIRECTORY_SEPARATOR.'Documenter/EnviDocumenterDriver.php';
 
 /**
@@ -151,7 +151,7 @@ class EnviDocumenter
             $this->category_list[$category_name][$package_name][$sub_package_name] =& $this->package_list[$package_name][$sub_package_name];
             if ($class_item['file_name'] == $sub_package_name) {
                 $this->package_list[$package_name][$sub_package_name]['file_doc'] = $file_doc;
-            } elseif (strpos('@subpackage_main', (string)$file_doc) !== false) {
+            } elseif (strpos((string)$file_doc, '@subpackage_main') !== false) {
                 $this->package_list[$package_name][$sub_package_name]['file_doc'] = $file_doc;
             }
 
@@ -167,7 +167,12 @@ class EnviDocumenter
                         die;
                 }
                 $doc_block_array = $method->getDocBlockToken()->getDocBlockArray();
-                if (isset($doc_block_array['access'][0][0]) && $doc_block_array['access'][0][0] !== 'public') {
+                $force_doc = false;
+                if (isset($doc_block_array['doc_enable'])) {
+                    $force_doc = true;
+                }
+
+                if (isset($doc_block_array['access'][0][0]) && $doc_block_array['access'][0][0] !== 'public' && !$force_doc) {
                     unset($class_list[$class_name]['methods'][$method_name]);
                     continue;
                 }
@@ -175,11 +180,11 @@ class EnviDocumenter
                     unset($class_list[$class_name]['methods'][$method_name]);
                     continue;
                 }
-                if ($method->getVisibility() !== 'public') {
+                if ($method->getVisibility() !== 'public' && !$force_doc) {
                     unset($class_list[$class_name]['methods'][$method_name]);
                     continue;
                 }
-                if (strpos($method->getName(), '_') === 0) {
+                if (strpos($method->getName(), '_') === 0 && !$force_doc) {
                     unset($class_list[$class_name]['methods'][$method_name]);
                     continue;
                 }

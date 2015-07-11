@@ -2,6 +2,26 @@
 /**
  * EnviInputFilter基底クラス
  *
+ * EnviInputFilterは、ルーティング後、初めてのアクションが実行される前に実行されます。
+ *
+ * すべてのアクションで実行されるため、たとえば、
+ *
+ * * メンテナンス時のSorry画面へのリダイレクト
+ * * ログインセッションと、ユーザーデータの管理
+ * * アクセス制限
+ *
+ * 等を記述することで、処理を簡素化出来ます。
+ *
+ * InputFilterは、EnviInputFilterBaseを継承し、execute()メソッドをオーバーライドする事で、実装可能です。
+ *
+ *
+ * インストール・設定
+ * --------------------------------------------------
+ * Envi デフォルトで動作しますが、使用するフィルターは、コンフィグファイルに記述する必要があります。
+ *
+ * 詳しくは、[基本リファレンス->入力フィルタ](/c/man/v3/core/input_filter)を参照してください。
+ *
+ *
  * PHP versions 5
  *
  *
@@ -22,6 +42,9 @@
 /**
  * EnviInputFilter基底クラス
  *
+ * InputFilter基底クラスです。
+ * InputFilterを作成する場合は、必ず継承してください。
+ *
  * @abstract
  * @category   EnviMVC拡張
  * @package    フィルタ
@@ -33,6 +56,7 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      Class available since Release 1.0.0
+ * @subpackage_main
  */
 abstract class EnviInputFilterBase
 {

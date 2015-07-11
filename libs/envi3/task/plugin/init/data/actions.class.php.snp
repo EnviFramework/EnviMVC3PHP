@@ -1,13 +1,13 @@
 <?php
 /**
- *
+ * %%module_name%%の基底アクション
  *
  * PHP versions 5
  *
  *
  * @category   %%project_category%%
  * @package    %%project_name%%
- * @subpackage
+ * @subpackage %%subpackage_name%%
  * @author     %%your_name%% <%%your_email%%>
  * @copyright  %%your_project%%
  * @license    %%your_license%%
@@ -18,11 +18,22 @@
  */
 
 /**
+ * %%module_name%%の基底アクションクラス
+ *
+ * execute{ActionName}
+ * 形式の記述で、%%module_name%%内のActionをまとめて記述することが出来ます。
+ * その場合、単体ファイルのアクションが優先され、単体ファイルがある場合は、
+ * execute{ActionName}形式での記法は使用できません。
+ *
+ * EnviMvcでは、アクションクラスの命名規則上、モジュールを超えた、同一アクションへのforwardは、
+ * 単体ファイル・単体クラスの、アクションへの遷移では無く、
+ * execute{ActionName}形式での、アクションに遷移させる必要があります。
+ * また、それは、ビュークラスも同じです、
  *
  *
  * @category   %%project_category%%
  * @package    %%project_name%%
- * @subpackage
+ * @subpackage %%subpackage_name%%
  * @author     %%your_name%% <%%your_email%%>
  * @copyright  %%your_project%%
  * @license    %%your_license%%
@@ -120,6 +131,5 @@ class %%module_name%%Actions extends actionBase
         return false;
     }
     /* ----------------------------------------- */
-
 
 }

@@ -10,6 +10,14 @@
  *
  * `envi build-model`の使用方法や、クラスリファレンス以外の、詳しい使用方法は、[こちらを参照して下さい](/c/man/v3/core/db)
  *
+ *
+ * インストール・設定
+ * --------------------------------------------------
+ * envi install-extension {app_key} {DI設定ファイル} databases
+ *
+ * コマンドでインストール出来ます。
+ *
+ *
  * PHP versions 5
  *
  *
@@ -494,11 +502,11 @@ class EnviDBIBase
                 $last_parameters[$key] = $value;
             }
         }
-        console()->stopwatch();
+        $this->_stopwatch();
         $pdos->execute();
         $this->last_query = $pdos->queryString;
         $this->last_parameters = $last_parameters;
-        console()->_queryLog($this);
+        $this->_queryLog($this);
         return $pdos;
     }
     /* ----------------------------------------- */
@@ -531,16 +539,61 @@ class EnviDBIBase
     {
         if ($bind === NULL) {
             $this->last_query = $statement;
-            console()->stopwatch();
+            $this->_stopwatch();
             $pdos = $this->PDO->query($statement);
             $this->last_query = $pdos->queryString;
-            console()->_queryLog($this);
+            $this->_queryLog($this);
             $pdos->setFetchMode($this->default_fetch_mode);
             $this->last_parameters = array();
         } else {
             $pdos = $this->execute($this->prepare($statement), $bind);
         }
         return $pdos;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- ストップウォッチ起動
+     *
+     * @access      private
+     * @return      void
+     * @doc_ignore
+     */
+    private function _stopwatch()
+    {
+        static $is_console;
+        if ($is_console === NULL) {
+            $is_console = function_exists('console');
+            if ($is_console) {
+                $is_console = Envi()->isDebug();
+            }
+        }
+        if ($is_console) {
+            console()->stopwatch();
+        }
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- クエリログ記録
+     *
+     * @access      private
+     * @param       var_text $log
+     * @return      void
+     * @doc_ignore
+     */
+    private function _queryLog($log)
+    {
+        static $is_console;
+        if ($is_console === NULL) {
+            $is_console = function_exists('console');
+            if ($is_console) {
+                $is_console = Envi()->isDebug();
+            }
+        }
+        if ($is_console) {
+            console()->_queryLog($log);
+        }
     }
     /* ----------------------------------------- */
 
@@ -889,18 +942,18 @@ class EnviDBIBase
         // table_fields置き換え
         $table_fields = $arr;
         switch ($mode) {
-        case EnviDB::AUTOQUERY_INSERT:
-            return 'INSERT INTO '.$table.' ('.$names.') VALUES ('.$values.')';
-        break;
-        case EnviDB::AUTOQUERY_INSERT_IGNORE:
-            return 'INSERT IGNORE INTO '.$table.' ('.$names.') VALUES ('.$values.')';
-        break;
-        case EnviDB::AUTOQUERY_REPLACE:
-            return 'REPLACE INTO '.$table.' ('.$names.') VALUES ('.$values.')';
-        break;
-        default:
-            throw new PDOException;
-        break;
+            case EnviDB::AUTOQUERY_INSERT:
+                return 'INSERT INTO '.$table.' ('.$names.') VALUES ('.$values.')';
+                break;
+            case EnviDB::AUTOQUERY_INSERT_IGNORE:
+                return 'INSERT IGNORE INTO '.$table.' ('.$names.') VALUES ('.$values.')';
+                break;
+            case EnviDB::AUTOQUERY_REPLACE:
+                return 'REPLACE INTO '.$table.' ('.$names.') VALUES ('.$values.')';
+                break;
+            default:
+                throw new PDOException;
+                break;
         }
     }
 

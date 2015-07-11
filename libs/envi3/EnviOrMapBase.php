@@ -1,6 +1,6 @@
 <?php
 /**
- * PropelPDO風のオブジェクトを作成するベースクラス
+ * アクティブレコードベース
  *
  * PHP versions 5
  *
@@ -14,12 +14,12 @@
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
- * @since      File available since Release 1.0.0
+ * @since      File available since Release 3.0.0
  */
 
 
 /**
- * PropelPDO風のオブジェクトを作成するベースクラス
+ * アクティブレコードベース
  *
  * @abstract
  * @category   EnviMVC拡張
@@ -31,17 +31,47 @@
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
- * @since      Class available since Release 1.0.0
+ * @since      Class available since Release 3.0.0
  */
 abstract class EnviOrMapBase
 {
     protected $_from_hydrate, $to_save;
-    protected $_is_modify = true;
+    protected $_is_modify  = true;
     protected $_is_hydrate = false;
     protected $suffix = '';
     protected $table_name,$pkeys;
 
+    protected $insert_date;
+    protected $update_date;
+
     protected $default_instance_name = 'default_master';
+
+    /**
+     * +-- insertならtrue,updateならfalseを返す
+     *
+     * @access      public
+     * @return      boolean
+     * @since       3.4.0
+     */
+    public function isNew()
+    {
+        return $this->_is_hydrate === false;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- insertならfalse,updateならtrueを返す
+     *
+     * @access      public
+     * @return      boolean
+     * @since       3.4.0
+     */
+    public function isUpdate()
+    {
+        return $this->_is_hydrate;
+    }
+    /* ----------------------------------------- */
 
     /**
      * +-- テーブル名のサフィックスをセットする
@@ -65,6 +95,23 @@ abstract class EnviOrMapBase
     public function getTableName()
     {
         return $this->table_name.$this->suffix;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 配列から、オブジェクトにセットする
+     *
+     * @access      public
+     * @param       array $arr
+     * @return      void
+     * @since       3.4.0
+     */
+    public function setByArray(array $arr)
+    {
+        foreach ($arr as $method => $val) {
+            $method = 'set'.$this->pascalize($method);
+            $this->$method($val);
+        }
     }
     /* ----------------------------------------- */
 
@@ -112,6 +159,14 @@ abstract class EnviOrMapBase
         $dbi = $con ? $con : extension()->DBI()->getInstance($this->default_instance_name);
 
         if (!$this->_is_hydrate) {
+            if ($this->insert_date) {
+                $this->to_save[$this->insert_date] = date('Y-m-d H:i:s');
+            }
+
+            if ($this->update_date) {
+                $this->to_save[$this->update_date] = date('Y-m-d H:i:s');
+            }
+
             $dbi->autoExecute($table_name, $this->to_save, EnviDB::AUTOQUERY_INSERT);
             if (!isset($this->to_save[$pkeys[0]])) {
                 $this->to_save[$pkeys[0]] = $dbi->lastInsertId();
@@ -130,9 +185,13 @@ abstract class EnviOrMapBase
             $sql .= " {$and} {$v}=".$dbi->quoteSmart($this->_from_hydrate[$v]);
             $and = ' AND ';
         }
+        if ($this->update_date) {
+            $this->to_save[$this->update_date] = date('Y-m-d H:i:s');
+        }
+
         $dbi->autoExecute($table_name, $this->to_save, EnviDB::AUTOQUERY_UPDATE, $sql);
         $this->_from_hydrate = $this->to_save;
-        $this->_is_modify = false;
+        $this->_is_modify    = false;
     }
     /* ----------------------------------------- */
 
@@ -146,7 +205,7 @@ abstract class EnviOrMapBase
     public function delete(EnviDBIBase $con = NULL)
     {
         $arr = array();
-        $sql = "DELETE FROM {$this->getTableName()} WHERE ";
+        $sql = 'DELETE FROM '.$this->getTableName().' WHERE ';
         $and = '';
         foreach ($this->pkeys as $pkey) {
             $sql .= $and.$pkey.' = ?';
@@ -211,6 +270,24 @@ abstract class EnviOrMapBase
             return;
         }
         trigger_error('undefined method:'.$name);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- パスカライズする
+     *
+     * @access      protected
+     * @param       string $snake_case
+     * @return      string
+     * @since       3.0.0
+     */
+    protected function pascalize($snake_case)
+    {
+        $pascal_case = strtolower($snake_case);
+        $pascal_case = str_replace('_', ' ', $pascal_case);
+        $pascal_case = ucwords($pascal_case);
+        $pascal_case = str_replace(' ', '', $pascal_case);
+        return $pascal_case;
     }
     /* ----------------------------------------- */
 

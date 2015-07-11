@@ -1,4 +1,6 @@
 <?php
+%%model_base_name_space%%
+%%model_name_space_use%%
 /**
  * データアクセサベースクラス
  *
@@ -9,16 +11,17 @@
  * PHP versions 5
  *
  *
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
- * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
- * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
- * @version    GIT: $Id$
- * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        http://www.enviphp.net/c/man/v3/reference
- * @since      File available since Release 1.0.0
+ * @category   %%project_category%%
+ * @package    %%project_name%%
+ * @subpackage %%subpackage_name%%
+ * @author     %%your_name%% <%%your_email%%>
+ * @copyright  %%your_project%%
+ * @license    %%your_license%%
+ * @version    Release: @package_version@
+ * @link       %%your_link%%
+ * @see        http://www.enviphp.net/c/man/v3/core/db/build-model
+ * @since      Class available since Release 1.0.0
+ * @doc_ignore
  */
 
 
@@ -29,16 +32,17 @@
  * pkey での抽出のみ、デフォルトでサポートします、
  *
  * @abstract
- * @category   MVC
- * @package    Envi3
- * @subpackage EnviMVCCore
- * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
- * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
+ * @category   %%project_category%%
+ * @package    %%project_name%%
+ * @subpackage %%subpackage_name%%
+ * @author     %%your_name%% <%%your_email%%>
+ * @copyright  %%your_project%%
+ * @license    %%your_license%%
  * @version    Release: @package_version@
- * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        http://www.enviphp.net/c/man/v3/reference
+ * @link       %%your_link%%
+ * @see        http://www.enviphp.net/c/man/v3/core/db/build-model
  * @since      Class available since Release 1.0.0
+ * @doc_ignore
  */
 class Base%%class_name%%Peer
 {
@@ -50,6 +54,7 @@ class Base%%class_name%%Peer
      */
     protected static $table_name = '%%table_name%%';
 
+
     /**
      * クエリリスト
      *
@@ -57,6 +62,72 @@ class Base%%class_name%%Peer
      * @var         array
      */
     protected static $queries = array();
+
+
+    /**
+     * +-- 複数行抽出する
+     *
+     * @access      public
+     * @static
+     * @param       string $query_key  クエリリストで設定したクエリのkey
+     * @param       array $bind_array  バインドする値
+     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
+     * @return      array
+     */
+    public static function retrieveAll($query_key, array $bind_array = array(), EnviDBIBase $con = NULL)
+    {
+        return self::retrieveAllWithSuffix($query_key, $bind_array, NULL, $con);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 一行抽出する
+     *
+     * @access      public
+     * @static
+     * @param       string $query_key  クエリリストで設定したクエリのkey
+     * @param       array $bind_array  バインドする値
+     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
+     * @return      %%class_name%%|boolean
+     */
+    public static function retrieve($query_key, array $bind_array = array(), EnviDBIBase $con = NULL)
+    {
+        return self::retrieveWithSuffix($query_key, $bind_array, NULL, $con);
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- 一行抽出する。なければ新規オブジェクトを返す
+     *
+     * @access      public
+     * @static
+     * @param       string $query_key  クエリリストで設定したクエリのkey
+     * @param       array $bind_array  バインドする値
+     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
+     * @return      %%class_name%%|boolean
+     */
+    public static function retrieveOrNew($query_key, array $bind_array = array(), EnviDBIBase $con = NULL)
+    {
+        return self::retrieveWithSuffixOrNew($query_key, $bind_array, NULL, $con);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- SQLを実行する
+     *
+     * @access      public
+     * @static
+     * @param       string $query_key  クエリリストで設定したクエリのkey
+     * @param       array $bind_array  バインドする値
+     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
+     * @return      PDOStatement|boolean
+     */
+    public static function query($query_key, array $bind_array = array(), EnviDBIBase $con = NULL)
+    {
+        return self::queryWithSuffix($query_key, $bind_array, NULL, $con);
+    }
+    /* ----------------------------------------- */
 
 
     /**
@@ -153,54 +224,6 @@ class Base%%class_name%%Peer
     }
     /* ----------------------------------------- */
 
-    /**
-     * +-- 複数行抽出する
-     *
-     * @access      public
-     * @static
-     * @param       string $query_key  クエリリストで設定したクエリのkey
-     * @param       array $bind_array  バインドする値
-     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
-     * @return      array
-     */
-    public static function retrieveAll($query_key, array $bind_array = array(), EnviDBIBase $con = NULL)
-    {
-        return self::retrieveAllWithSuffix($query_key, $bind_array, NULL, $con);
-    }
-    /* ----------------------------------------- */
-
-    /**
-     * +-- 一行抽出する
-     *
-     * @access      public
-     * @static
-     * @param       string $query_key  クエリリストで設定したクエリのkey
-     * @param       array $bind_array  バインドする値
-     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
-     * @return      %%class_name%%|boolean
-     */
-    public static function retrieve($query_key, array $bind_array = array(), EnviDBIBase $con = NULL)
-    {
-        return self::retrieveWithSuffix($query_key, $bind_array, NULL, $con);
-    }
-    /* ----------------------------------------- */
-
-    /**
-     * +-- SQLを実行する
-     *
-     * @access      public
-     * @static
-     * @param       string $query_key  クエリリストで設定したクエリのkey
-     * @param       array $bind_array  バインドする値
-     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
-     * @return      PDOStatement|boolean
-     */
-    public static function query($query_key, array $bind_array = array(), EnviDBIBase $con = NULL)
-    {
-        return self::queryWithSuffix($query_key, $bind_array, NULL, $con);
-    }
-    /* ----------------------------------------- */
-
 
     /**
      * +-- PKで抽出
@@ -214,7 +237,7 @@ class Base%%class_name%%Peer
     public static function retrieveByPK(%%args%%, EnviDBIBase $con = NULL)
     {
         %%cache_load%%
-        
+
         $dbi = $con ? $con : extension()->DBI()->getInstance('%%instance_name%%');
 
         $res = $dbi->getRow('%%sql%%', array(%%args%%));
@@ -274,6 +297,118 @@ class Base%%class_name%%Peer
     }
     /* ----------------------------------------- */
 
+
+
+    /**
+     * +-- Suffix対応で一行抽出する、なければ新規オブジェクトを返す
+     *
+     * @access      public
+     * @static
+     * @param       string $query_key  クエリリストで設定したクエリのkey
+     * @param       array $bind_array  バインドする値
+     * @param       string $suffix     テーブルのサフィックス OPTIONAL:NULL
+     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
+     * @return      %%class_name%%|boolean
+     */
+    public static function retrieveWithSuffixOrNew($query_key, array $bind_array = array(), $suffix = NULL, EnviDBIBase $con = NULL)
+    {
+        if (!isset(%%class_name%%Peer::$queries[$query_key])) {
+            throw new EnviException("{$query_key}は存在しません");
+        }
+        $dbi = $con ? $con : extension()->DBI()->getInstance('%%instance_name%%');
+        $sql = self::getReplacedSQL(%%class_name%%Peer::$queries[$query_key], $bind_array, $suffix);
+
+
+        $res = $dbi->getRow($sql, $bind_array);
+        $ormap = new %%class_name%%;
+        if (!$res) {
+            return $ormap;
+        }
+        $ormap->hydrate($res);
+        if ($suffix !== NULL) {
+            $ormap->setSuffix($suffix);
+        }
+        return $ormap;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- PKで抽出、なければ新規オブジェクトを返す
+     *
+     * @access public
+     * @static
+     * @param mixed %%args%%
+     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
+     * @return      %%class_name%%|boolean
+     */
+    public static function retrieveByPKOrNew(%%args%%, EnviDBIBase $con = NULL)
+    {
+        %%cache_load%%
+
+        $dbi = $con ? $con : extension()->DBI()->getInstance('%%instance_name%%');
+
+        $res = $dbi->getRow('%%sql%%', array(%%args%%));
+        $ormap = new %%class_name%%;
+        if (!$res) {
+            return $ormap ;
+        }
+        $ormap->hydrate($res);
+        return $ormap;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- キャッシュを無視してPKで抽出、なければ新規オブジェクトを返す
+     *
+     * @access public
+     * @static
+     * @param mixed %%args%%
+     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
+     * @return      %%class_name%%|boolean
+     */
+    public static function retrieveByPKNoCacheOrNew(%%args%%, EnviDBIBase $con = NULL)
+    {
+        $dbi = $con ? $con : extension()->DBI()->getInstance('%%instance_name%%');
+
+        $res = $dbi->getRow('%%sql%%', array(%%args%%));
+        $ormap = new %%class_name%%;
+        if (!$res) {
+            return $ormap;
+        }
+        $ormap->hydrate($res);
+        return $ormap;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- For UpdateをつけてPKで抽出、なければ新規オブジェクトを返す
+     *
+     * @access public
+     * @static
+     * @param mixed %%args%%
+     * @param       EnviDBIBase $con   DBインスタンス OPTIONAL:NULL
+     * @return      %%class_name%%|boolean
+     */
+    public static function retrieveByPKForUpdateOrNew(%%args%%, EnviDBIBase $con = NULL)
+    {
+        $dbi = $con ? $con : extension()->DBI()->getInstance('%%instance_name%%');
+
+        $res = $dbi->getRow('%%sql%% FOR UPDATE', array(%%args%%));
+        $ormap = new %%class_name%%;
+        if (!$res) {
+            return $ormap;
+        }
+        $ormap->hydrate($res);
+        return $ormap;
+    }
+    /* ----------------------------------------- */
+
+
+
+
+
     /**
      * +-- $sqlの__TABLE__を正しいテーブル名に置き換えて、返す。
      *
@@ -304,4 +439,5 @@ class Base%%class_name%%Peer
         return str_replace(array('__TABLE__'), array($table_name), $sql);
     }
     /* ----------------------------------------- */
+    
 }

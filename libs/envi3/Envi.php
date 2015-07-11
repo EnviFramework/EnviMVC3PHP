@@ -2,9 +2,12 @@
 /**
  * EnviMVCのメイン処理
  *
- * フロントのPHP内で、
- * require
- * してください。
+ * EnviMVCのコアクラス群です。
+ *
+ * Envi.phpにまとめて入っていますので、
+ *
+ * 各種定数の定義後、フロントのPHP内で、 require してください。
+ *
  * オートローダーの設定を含む、必要なコードのロードなどのFW動作に必要なことを適宜行います。
  *
  * PHP versions 5
@@ -14,7 +17,7 @@
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
@@ -24,8 +27,13 @@
  */
 
 
-define('ENVI_BASE_DIR', dirname(__FILE__).DIRECTORY_SEPARATOR);
-define('ENVI_ROOT_DIR', ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR);
+if (!defined('ENVI_BASE_DIR')) {
+    define('ENVI_BASE_DIR', dirname(__FILE__).DIRECTORY_SEPARATOR);
+}
+
+if (!defined('ENVI_ROOT_DIR')) {
+    define('ENVI_ROOT_DIR', ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR);
+}
 
 if (!defined('LW_START_MTIMESTAMP')) {
     define('LW_START_MTIMESTAMP', microtime(true));
@@ -52,12 +60,17 @@ require ENVI_BASE_DIR.'EnviController.php';
 require ENVI_BASE_DIR.'EnviRequest.php';
 require ENVI_BASE_DIR.'EnviUser.php';
 
+
+require ENVI_BASE_DIR.'EnviRouting.php';
+
 require ENVI_BASE_DIR.'EnviValidator.php';
 require ENVI_BASE_DIR.'EnviLogWriter.php';
 require ENVI_BASE_DIR.'EnviExtension.php';
 
 
-define('ENVI_ENV', EnviServerStatus()->getServerStatus());
+if (!defined('ENVI_ENV')) {
+    define('ENVI_ENV', EnviServerStatus()->getServerStatus());
+}
 
 /**
  * +-- Redirect用の例外
@@ -67,7 +80,7 @@ define('ENVI_ENV', EnviServerStatus()->getServerStatus());
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
@@ -109,7 +122,7 @@ class redirectException extends Exception
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
@@ -144,7 +157,7 @@ class killException extends Exception
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
@@ -183,7 +196,7 @@ class Envi404Exception extends Exception
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
@@ -223,7 +236,7 @@ class Envi403Exception extends Exception
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
@@ -287,7 +300,7 @@ function Envi($app = false, $debug = false)
  * @package    Envi3
  * @subpackage EnviMVCCore
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
@@ -296,12 +309,81 @@ function Envi($app = false, $debug = false)
  */
 class Envi
 {
+    /**
+     * validate()で返すと、defaultAccess()メソッドに遷移し、execute(),handleError(),defaultAccess()で返すと、defaultビューを呼ぶ。
+     *
+     * @var         string
+     */
     const DEFAULT_ACCESS = 'DEFAULT';
+
+    /**
+     * validate()で返すと、execute()メソッドに遷移し、execute(),handleError(),defaultAccess()で返すと、successビューを呼ぶ。
+     *
+     * @var         string
+     */
     const SUCCESS        = 'SUCCESS';
+
+    /**
+     * validate()で返すと、handleError()メソッドに遷移し、execute(),handleError(),defaultAccess()で返すと、errorビューを呼ぶ。
+     *
+     * @var         string
+     */
     const ERROR          = 'ERROR';
+    /**
+     * execute(),handleError(),defaultAccess()で返すと、confirmビューを呼ぶ。
+     *
+     * @var         string
+     */
     const CONFORM        = 'CONFORM';
+
+    /**
+     * execute(),handleError(),defaultAccess()で返すと、commitビューを呼ぶ。
+     *
+     * @var         string
+     */
     const COMMIT         = 'COMMIT';
+
+    /**
+     * execute(),handleError(),defaultAccess()で返すと、ビューをスキップする。
+     *
+     * @var         string
+     */
     const NONE           = 'NONE';
+
+    // +-- バージョン番号定義
+    /**
+     * バージョン番号を返す
+     *
+     * @var         string
+     */
+    const VERSION        = '3.4.2.0';
+
+    /**
+     * メジャーバージョン番号を返す
+     *
+     * @var         int
+     */
+    const MAJOR_VERSION    = 3;
+    /**
+     * マイナーバージョン番号を返す
+     *
+     * @var         int
+     */
+    const MINOR_VERSION    = 4;
+    /**
+     * リリースバージョン番号を返す
+     *
+     * @var         int
+     */
+    const RELEASE_VERSION  = 2;
+    /**
+     * テストバージョン番号を返す
+     *
+     * @var         int
+     */
+    const ALPHA_VERSION    = 0;
+    // ---------------------------
+
 
     protected static $app_key;
     protected $_system_conf;
@@ -313,14 +395,14 @@ class Envi
 
     protected $is_shutDown;
 
-    public $auto_load_classes;
+    public $auto_load_classes = array();
 
     public static $is_rested = false;
 
     /**
      * +-- コンストラクタ
      *
-     * @access private
+     * @access protected
      * @param string $app
      * @param boolean $debug OPTIONAL:false
      * @return void
@@ -345,7 +427,7 @@ class Envi
 
         $this->autoload_dirs = array_merge(
             array(
-                ENVI_BASE_DIR,
+                array('path' => ENVI_BASE_DIR, 'is_psr' => false),
             ), $this->_system_conf['AUTOLOAD']
         );
         $auto_load_classes_cache = ENVI_MVC_CACHE_PATH.self::$app_key.'.'.ENVI_ENV.'.auto_load_files.envicc';
@@ -357,78 +439,15 @@ class Envi
     }
     /* ----------------------------------------- */
 
-
     /**
-     * +-- auto_load_classes_cacheの作成
+     * +-- Singletonインスタンスを破棄します。
      *
-     * @access      protected
-     * @param       var_text $auto_load_classes_cache
-     * @return      void
-     */
-    protected function makeAutoLoadClassesCache($auto_load_classes_cache)
-    {
-        foreach ($this->autoload_dirs as $dir) {
-            if (!is_dir($dir)) {
-                continue;
-            }
-            if (!($dh = opendir($dir))) {
-                continue;
-            }
-            while (($file = readdir($dh)) !== false) {
-                if (preg_match('/\.php/', $file)) {
-                    $class_name = preg_replace("/^(.*)\\.php$/", "\\1", $file);
-                    $class_name = preg_replace("/^(.*)\\.class$/", "\\1", $class_name);
-                    $this->auto_load_classes[$class_name] = $dir.$file;
-                }
-            }
-            closedir($dh);
-        }
-        $this->configSerialize($auto_load_classes_cache, $this->auto_load_classes);
-    }
-    /* ----------------------------------------- */
-
-    /**
-     * +-- autoload_constant_cacheの作成
-     *
-     * @access      protected
-     * @param       var_text $autoload_constant_cache
-     * @return      void
-     */
-    protected function makeAutoLoadConstantCache($autoload_constant_cache)
-    {
-        $autoload_constant_dir = $this->_system_conf['AUTOLOAD_CONSTANT'];
-        $autoload_constant = array();
-        $autoload_constant[] = $this->_system_conf['SYSTEM']['renderer'];
-        if ($autoload_constant_dir) {
-            foreach ($autoload_constant_dir as $dir) {
-                if (!is_dir($dir)) {
-                    continue;
-                }
-                if (!($dh = opendir($dir))) {
-                    continue;
-                }
-                while (($file = readdir($dh)) !== false) {
-                    if (strpos($file, '.php')) {
-                        $autoload_constant[] = $dir.$file;
-                    }
-                }
-                closedir($dh);
-            }
-        }
-        $cache = "<?php\n";
-        foreach ($autoload_constant as $v) {
-            $cache .= "include '".$v."';\n";
-        }
-        file_put_contents($autoload_constant_cache, $cache);
-    }
-    /* ----------------------------------------- */
-
-    /**
-     * +-- テスト用
+     * テスト用のメソッドです。
      *
      * @access public
      * @static
      * @return void
+     * @doc_ignore
      */
     public static function _free()
     {
@@ -483,7 +502,6 @@ class Envi
         return $this->_system_conf;
     }
     /* ----------------------------------------- */
-
 
 
     /**
@@ -680,15 +698,21 @@ class Envi
             if (!is_file($dir.$file)) {
                 throw new EnviException('not such file '.$dir.$file);
             }
-            if (!function_exists('spyc_load')) {
-                include ENVI_BASE_DIR.'spyc.php';
-            }
             ob_start();
             include $dir.$file;
             $buff      = ob_get_contents();
             ob_end_clean();
-
-            $buff = spyc_load($buff);
+            if (PHP_MINOR_VERSION <= 2 || PHP_MAJOR_VERSION > 5) {
+                if (!function_exists('spyc_load')) {
+                    include ENVI_BASE_DIR.'spyc.php';
+                }
+                $buff = spyc_load($buff);
+            } else {
+                if (!function_exists('\spyc_load')) {
+                    include ENVI_BASE_DIR.'spyc.php';
+                }
+                $buff = \spyc_load($buff);
+            }
             $res = isset($buff[ENVI_ENV]) ? $this->mergeConfiguration($buff['all'], $buff[ENVI_ENV]) : $buff['all'];
             $this->configSerialize(ENVI_MVC_CACHE_PATH.$file.'.'.ENVI_ENV.'.envicc', $res);
         } else {
@@ -697,21 +721,6 @@ class Envi
         return $res;
     }
     /* ----------------------------------------- */
-
-    private function mergeConfiguration($all_conf, $env_conf)
-    {
-        foreach ($all_conf as $key => $values) {
-            if (!isset($env_conf[$key])) {
-                continue;
-            }
-            if (is_array($env_conf[$key]) && !isset($env_conf[$key][0])) {
-                $all_conf[$key] = $this->mergeConfiguration($values, $env_conf[$key]);
-                continue;
-            }
-            return array_merge($all_conf, $env_conf);
-        }
-        return $all_conf;
-    }
 
 
     /**
@@ -796,7 +805,7 @@ class Envi
             }
 
             $filters = $envi->getConfiguration('FILTER');
-            if (isset($filters['input_filter'])) {
+            if (isset($filters['input_filter']) && is_array($filters['input_filter'])) {
                 foreach ($filters['input_filter'] as $input_filters) {
                     $class_name = $input_filters['class_name'];
                     if (!class_exists($class_name, false)) {
@@ -810,7 +819,7 @@ class Envi
             $envi->_run(true);
             $contents = ob_get_contents();
             ob_end_clean();
-            if (isset($filters['output_filter'])) {
+            if (isset($filters['output_filter']) && is_array($filters['output_filter'])) {
                 foreach ($filters['output_filter'] as $output_filters) {
                     $class_name = $output_filters['class_name'];
                     if (!class_exists($class_name, false)) {
@@ -1126,50 +1135,6 @@ class Envi
     }
     /* ----------------------------------------- */
 
-
-    /**
-     * +-- DIコンテナ用のエクステンションを読み込む
-     *
-     * @access protected
-     * @return void
-     */
-    protected function loadExtension()
-    {
-        $load_extension_constant = ENVI_MVC_CACHE_PATH.self::$app_key.'.'.ENVI_ENV.'.load_extension_constant.envicc';
-        $load_extension = ENVI_MVC_CACHE_PATH.self::$app_key.'.'.ENVI_ENV.'.load_extension.envicc';
-        if (self::$debug || !is_file($load_extension_constant) || !is_file($load_extension)) {
-            $extension = isset($this->_system_conf['EXTENSION']['extensions']) && count((array)$this->_system_conf['EXTENSION']['extensions']) > 0 ?
-                $this->_system_conf['EXTENSION']['extensions'] : array();
-            if ($this->_system_conf['EXTENSION']['load_yml']) {
-                $extension = array_merge(
-                    $extension,
-                    $this->parseYml(basename($this->_system_conf['EXTENSION']['load_yml_resource']), dirname($this->_system_conf['EXTENSION']['load_yml_resource']).DIRECTORY_SEPARATOR)
-                );
-            }
-            if (!is_array($extension)) {
-                $extension = array();
-            }
-            $cache = "<?php\n";
-            foreach ($extension as $v) {
-                if (isset($v['constant']) && $v['constant'] === true) {
-                    if (!class_exists($v['class']['class_name'], false)) {
-                        $v = $v['class']['resource'];
-                        $cache .= "include '".$v."';\n";
-                    }
-                }
-            }
-            file_put_contents($load_extension_constant, $cache);
-            $this->configSerialize($load_extension, $extension);
-        } else {
-            $extension = $this->configUnSerialize($load_extension);
-        }
-
-        include $load_extension_constant;
-        EnviExtension::_singleton($extension);
-    }
-    /* ----------------------------------------- */
-
-
     /**
      * +-- レジストのみを行う(コマンドライン用)
      *
@@ -1229,10 +1194,46 @@ class Envi
      */
     public static function autoload($class_name)
     {
+        static $autoload_psr_dir;
         $auto_load_classes = self::singleton()->auto_load_classes;
         if (isset($auto_load_classes[$class_name])) {
             include $auto_load_classes[$class_name];
             return;
+        } elseif (isset($auto_load_classes["\\".$class_name])) {
+            include $auto_load_classes["\\".$class_name];
+            return;
+        }
+
+        // psr-0用のDIRECTORY
+        if (!$autoload_psr_dir) {
+            $autoload_psr_dir = self::singleton()->getConfiguration('AUTOLOAD_PSR');
+        }
+        if (!is_array($autoload_psr_dir) || count($autoload_psr_dir) === 0) {
+            return;
+        }
+
+        // psr-0
+        $class_name = ltrim($class_name, '\\');
+        $file_name  = '';
+        $namespace = '';
+        if ($last_ns_pos = strripos($class_name, '\\')) {
+            $namespace  = substr($class_name, 0, $last_ns_pos);
+            $class_name = substr($class_name, $last_ns_pos + 1);
+            $file_name  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
+        }
+        $file_name .= str_replace('_', DIRECTORY_SEPARATOR, $class_name);
+        foreach ($autoload_psr_dir as $dir_name) {
+            if (is_file($dir_name.DIRECTORY_SEPARATOR.$file_name.'.php')) {
+                include $dir_name.DIRECTORY_SEPARATOR.$file_name.'.php';
+                return;
+            }
+        }
+
+        foreach ($autoload_psr_dir as $dir_name) {
+            if (is_file($dir_name.DIRECTORY_SEPARATOR.$file_name.'.class.php')) {
+                include $dir_name.DIRECTORY_SEPARATOR.$file_name.'.class.php';
+                return;
+            }
         }
     }
     /* ----------------------------------------- */
@@ -1332,5 +1333,196 @@ class Envi
         return $is_message_pack ? msgpack_unpack($data) : unserialize($data);
     }
     /* ----------------------------------------- */
-}
 
+    // +-- protected method
+
+    /**
+     * +-- auto_load_classes_cacheの作成
+     *
+     * @access      protected
+     * @param       var_text $auto_load_classes_cache
+     * @return      void
+     * @doc_ignore
+     */
+    protected function makeAutoLoadClassesCache($auto_load_classes_cache)
+    {
+        // 名前空間が利用できるバージョンかどうか
+        $use_namespace = (PHP_MINOR_VERSION >= 3 || PHP_MAJOR_VERSION > 5);
+        foreach ($this->autoload_dirs as $key => $dir) {
+            $is_psr = $use_namespace;
+            if (is_array($dir)) {
+                $is_psr = (isset($dir['is_psr']) && $use_namespace) ? $dir['is_psr'] : $is_psr;
+                $dir    = $dir['path'];
+            }
+            $dir = realpath($dir);
+            if (strlen($dir) === 0) {
+                throw new EnviException($this->autoload_dirs[$key].' is non exists aut load dir.');
+                continue;
+            }
+            $this->autoload_dirs[$key] = $dir.DIRECTORY_SEPARATOR;
+        }
+
+        foreach ($this->autoload_dirs as $dir_name) {
+            $this->auto_load_classes = array_merge($this->auto_load_classes, $this->mkAutoLoadSubmodules($dir_name, '', $is_psr, $use_namespace));
+        }
+        $this->configSerialize($auto_load_classes_cache, $this->auto_load_classes);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- サブモジュールを読み込む
+     *
+     * @access      protected
+     * @param       var_text $dir_name
+     * @param       var_text $name_space
+     * @param       boolean $is_psr OPTIONAL:true
+     * @param       boolean $use_namespace OPTIONAL:false
+     * @return      array
+     * @doc_ignore
+     */
+    protected function mkAutoLoadSubmodules($dir_name, $name_space, $is_psr = true, $use_namespace = false)
+    {
+        $dir_name = realpath($dir_name).DIRECTORY_SEPARATOR;
+        if (array_search($dir_name, $this->autoload_dirs) !== false && $name_space !== '') {
+            return array();
+        }
+        if (!is_dir($dir_name)) {
+            return array();
+        }
+        if (!($dh = opendir($dir_name))) {
+            return array();
+        }
+        $res = array();
+        while (($file = readdir($dh)) !== false) {
+            if (strpos($file, '.') === 0) {
+                continue;
+            }
+            if (is_dir($dir_name.$file) && $is_psr) {
+                $res = array_merge($res, $this->mkAutoLoadSubmodules($dir_name.$file, $name_space."\\".$file, $is_psr, $use_namespace));
+            } elseif (preg_match('/\.php/', $file)) {
+                $class_name = preg_replace("/^(.*)\\.php$/", "\\1", $file);
+                $class_name = preg_replace("/^(.*)\\.class$/", "\\1", $class_name);
+                if ($use_namespace) {
+                    $res[$name_space."\\".$class_name] = $dir_name.$file;
+                } else {
+                    $res[$class_name] = $dir_name.$file;
+                }
+            }
+        }
+        closedir($dh);
+        return $res;
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- autoload_constant_cacheの作成
+     *
+     * @access      protected
+     * @param       var_text $autoload_constant_cache
+     * @return      void
+     * @doc_ignore
+     */
+    protected function makeAutoLoadConstantCache($autoload_constant_cache)
+    {
+        $autoload_constant_dir = $this->_system_conf['AUTOLOAD_CONSTANT'];
+        $autoload_constant = array();
+        $autoload_constant[] = $this->_system_conf['SYSTEM']['renderer'];
+        if ($autoload_constant_dir) {
+            foreach ($autoload_constant_dir as $dir) {
+                if (!is_dir($dir)) {
+                    continue;
+                }
+                if (!($dh = opendir($dir))) {
+                    continue;
+                }
+                while (($file = readdir($dh)) !== false) {
+                    if (strpos($file, '.php')) {
+                        $autoload_constant[] = $dir.$file;
+                    }
+                }
+                closedir($dh);
+            }
+        }
+        $cache = "<?php\n";
+        foreach ($autoload_constant as $v) {
+            $cache .= "include '".$v."';\n";
+        }
+        file_put_contents($autoload_constant_cache, $cache);
+    }
+    /* ----------------------------------------- */
+
+
+    /**
+     * +-- DIコンテナ用のエクステンションを読み込む
+     *
+     * @access protected
+     * @return void
+     * @doc_ignore
+     */
+    protected function loadExtension()
+    {
+        $load_extension_constant = ENVI_MVC_CACHE_PATH.self::$app_key.'.'.ENVI_ENV.'.load_extension_constant.envicc';
+        $load_extension = ENVI_MVC_CACHE_PATH.self::$app_key.'.'.ENVI_ENV.'.load_extension.envicc';
+        if (self::$debug || !is_file($load_extension_constant) || !is_file($load_extension)) {
+            $extension = isset($this->_system_conf['EXTENSION']['extensions']) && count((array)$this->_system_conf['EXTENSION']['extensions']) > 0 ?
+                $this->_system_conf['EXTENSION']['extensions'] : array();
+            if ($this->_system_conf['EXTENSION']['load_yml']) {
+                $extension = array_merge(
+                    $extension,
+                    $this->parseYml(basename($this->_system_conf['EXTENSION']['load_yml_resource']), dirname($this->_system_conf['EXTENSION']['load_yml_resource']).DIRECTORY_SEPARATOR)
+                );
+            }
+            if (!is_array($extension)) {
+                $extension = array();
+            }
+            $cache = "<?php\n";
+            foreach ($extension as $v) {
+                if (isset($v['constant']) && $v['constant'] === true) {
+                    if (!class_exists($v['class']['class_name'], false)) {
+                        $v = $v['class']['resource'];
+                        $cache .= "include '".$v."';\n";
+                    }
+                }
+            }
+            file_put_contents($load_extension_constant, $cache);
+            $this->configSerialize($load_extension, $extension);
+        } else {
+            $extension = $this->configUnSerialize($load_extension);
+        }
+
+        include $load_extension_constant;
+        EnviExtension::_singleton($extension);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 再帰的にコンフィグ情報をマージする
+     *
+     * @access      protected
+     * @param       mixed $all_conf
+     * @param       mixed $env_conf
+     * @return      array
+     * @doc_ignore
+     */
+    protected function mergeConfiguration($all_conf, $env_conf)
+    {
+        foreach ($all_conf as $key => $values) {
+            if (!isset($env_conf[$key])) {
+                // 環境別の設定がない場合は何もしない
+                continue;
+            }
+            if (is_array($env_conf[$key]) && !isset($env_conf[$key][0])) {
+                // 入れ子の処理
+                $all_conf[$key] = $this->mergeConfiguration($all_conf[$key], $env_conf[$key]);
+                continue;
+            }
+            $all_conf[$key] = $env_conf[$key];
+        }
+        return $all_conf;
+    }
+    /* ----------------------------------------- */
+
+    /* ----------------------------------------- */
+
+}

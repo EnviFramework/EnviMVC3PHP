@@ -1,0 +1,88 @@
+<?php
+/**
+ * DB Migrationファイル
+ *
+ * PHP versions 5
+ *
+ *
+ * @category   %%project_category%%
+ * @package    %%project_name%%
+ * @subpackage %%subpackage_name%%
+ * @author     %%your_name%% <%%your_email%%>
+ * @copyright  %%your_project%%
+ * @license    %%your_license%%
+ * @version    GIT: $Id$
+ * @link       %%your_link%%
+ * @see        http://www.enviphp.net/c/man/v3/core/migrate
+ * @since      File available since Release 3.4.0
+ * @doc_ignore
+ */
+
+/**
+ * DB Migrationファイル
+ *
+ * PHP versions 5
+ *
+ *
+ * @category   %%project_category%%
+ * @package    %%project_name%%
+ * @subpackage %%subpackage_name%%
+ * @author     %%your_name%% <%%your_email%%>
+ * @copyright  %%your_project%%
+ * @license    %%your_license%%
+ * @version    GIT: $Id$
+ * @link       %%your_link%%
+ * @see        http://www.enviphp.net/c/man/v3/core/migrate
+ * @since      File available since Release 3.4.0
+ * @doc_ignore
+ */
+class ___class_name___ extends EnviMigrationBase
+{
+
+
+    public function __construct()
+    {
+        $project_dir = dirname(dirname(dirname(__FILE__))).DIRECTORY_SEPARATOR;
+
+        $this->databases_yml = $project_dir.'config'.DIRECTORY_SEPARATOR.'___app_name____databases.yml';
+
+        $this->env = trim(file_get_contents(dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'env'));
+
+        $this->instance_name = 'default_master';
+    }
+
+    public function safeChange()
+    {
+    }
+
+    public function safeUp()
+    {
+    }
+
+    public function safeDown()
+    {
+    }
+
+
+    public function change()
+    {
+        // 使用する場合はコメントを外して下さい
+        /*
+        $schema_yaml = spyc_load_file(dirname(__FILE__).DIRECTORY_SEPARATOR.'___file_name___.yml');
+        foreach ($schema_yaml['SCHEMA'] as $table_name => $options) {
+            $this->createTable($table_name, $options);
+        }
+        */
+    }
+
+    public function up()
+    {
+
+    }
+
+    public function down()
+    {
+
+    }
+
+}

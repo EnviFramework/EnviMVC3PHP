@@ -21,10 +21,10 @@
   </li>
   <%if $smarty.server.PHP_SELF == "/c/man/v3/reference/<?=urlencode($package_name)?>/<?=urlencode($sub_package_name)?>/intro"%><li class="active"><%else%><li><%/if%>
   <a href="/c/man/v3/reference/<?=urlencode($package_name)?>/<?=urlencode($sub_package_name)?>/intro">導入</a></li>
-  <%if $smarty.server.PHP_SELF == "/c/man/v3/reference/<?=urlencode($package_name)?>/<?=urlencode($sub_package_name)?>/setup"%><li class="active"><%else%><li><%/if%>
-  <a href="/c/man/v3/reference/<?=urlencode($package_name)?>/<?=urlencode($sub_package_name)?>/setup">インストール/設定</a></li>
+  <%if $smarty.server.PHP_SELF == "/c/man/v3/reference/<?=urlencode($package_name)?>/<?=urlencode($sub_package_name)?>/intro#install"%><li class="active"><%else%><li><%/if%>
+  <a href="/c/man/v3/reference/<?=urlencode($package_name)?>/<?=urlencode($sub_package_name)?>/intro#install">インストール/設定</a></li>
   <%if $smarty.server.PHP_SELF == "/c/man/v3/reference/<?=urlencode($package_name)?>/<?=urlencode($sub_package_name)?>/constants"%><li class="active"><%else%><li><%/if%>
-  <a href="/c/man/v3/reference/<?=urlencode($package_name)?>/<?=urlencode($sub_package_name)?>/constants">定義済み定数</a></li>
+  <a href="/c/man/v3/reference/<?=urlencode($package_name)?>/<?=urlencode($sub_package_name)?>/constant">定義済み定数</a></li>
   <?php foreach ($sub_package['class_list'] as $class_name => $class_item) { ?>
   <%if strpos($smarty.server.PHP_SELF, '/c/man/v3/reference/<?=urlencode($package_name)?>/<?=urlencode($sub_package_name)?>/<?=$class_name?>') === 0 %><li class="active"><%else%><li><%/if%>
 	<a href="/c/man/v3/reference/<?=urlencode($package_name)?>/<?=urlencode($sub_package_name)?>/<?=$class_name?>"><?=$class_name?></a>

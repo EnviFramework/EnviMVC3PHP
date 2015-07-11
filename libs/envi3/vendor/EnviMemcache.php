@@ -1,12 +1,25 @@
 <?php
 /**
- * Memcache
+ * Memcachedを使用するためのクラス。
+ *
+ * Enviに標準で組み込まれている、Memcacheクラス。
+ * Sessionハンドラで利用されている他、直接EnviMemcacheを利用することで、ユーザーに起因しない情報も保存することが出来ます。
+ *
+ * 内部的には、[Memcache](http://php.net/manual/ja/book.memcache.php)を使用しています。
+ *
+ *
+ * インストール・設定
+ * --------------------------------------------------
+ * EnviMVC標準で動作しますが、
+ * [Memcache](http://php.net/manual/ja/book.memcache.php)のインストールが必要です。
+ * より高機能な、[Memcached](http://php.net/manual/ja/book.memcached.php)に移行が検討されています。
+ *
  *
  * PHP versions 5
  *
  *
- * @category   EnviMVC拡張
- * @package    EnviPHPが用意するエクステンション
+ * @category   フレームワーク基礎処理
+ * @package    Envi3
  * @subpackage Memcache
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project
@@ -15,13 +28,24 @@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
  * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
+ * @subpackage_main
  */
 
 /**
  * Memcache
  *
- * @category   EnviMVC拡張
- * @package    EnviPHPが用意するエクステンション
+ * Enviに標準で組み込まれている、Memcacheクラスです。
+ * Sessionハンドラで直接利用されていますが、このクラスを直接利用することで、ユーザーに起因しない情報も保存することが出来ます。
+ *
+ *
+ * インストール・設定
+ * --------------------------------------------------
+ * EnviMVC標準で動作しますが、
+ * [Memcache](http://php.net/manual/ja/book.memcache.php)のインストールが必要です。
+ * より高機能な、[Memcached](http://php.net/manual/ja/book.memcached.php)に移行が検討されています。
+ *
+ * @category   フレームワーク基礎処理
+ * @package    Envi3
  * @subpackage Memcache
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2013 Artisan Project

@@ -3,7 +3,19 @@
  * MarkdownExtraを使用するためのエクステンションクラス
  *
  *
+ * Markdown拡張である、MarkdownExtra形式で記述されたテキストを、HTMLにコンパイルするエクステンションです。
  *
+ * 詳細は、
+
+ * https://michelf.ca/projects/php-markdown/extra/
+ *
+ * を参照して下さい。
+ *
+ * インストール・設定
+ * --------------------------------------------------
+ * envi install-extension {app_key} {DI設定ファイル} markdown
+ *
+ * コマンドでインストール出来ます。
  *
  *
  * PHP versions 5
@@ -68,6 +80,7 @@ class EnviMarkdownExtension
      * @access      public
      * @param       string $file_path ファイルパス
      * @param       string $compile_id コンパイルID OPTIONAL:NULL
+     * @param       string $extra エクストラフラグ OPTIONAL:NULL
      * @return      string
      */
     public function compileFile($file_path, $compile_id = NULL, $extra = NULL)
@@ -198,7 +211,7 @@ class EnviMarkdownExtension
         $parser->fn_link_class = $system_conf['fn_link_class'];
         $parser->fn_backlink_class = $system_conf['fn_backlink_class'];
         $parser->code_class_prefix = $system_conf['code_class_prefix'];
-        $parser->code_attr_on_pre   = $system_conf['code_attr_on_pre'];
+        $parser->code_attr_on_pre   = isset($system_conf['code_attr_on_pre']) ? $system_conf['code_attr_on_pre'] : false;
         $parser->predef_abbr = $system_conf['predef_abbr'];
     }
 

@@ -27,7 +27,7 @@
  * @package    Envi3
  * @subpackage Request
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
@@ -46,7 +46,7 @@
  * @package    Envi3
  * @subpackage Request
  * @author     Akito <akito-artisan@five-foxes.com>
- * @copyright  2011-2013 Artisan Project
+ * @copyright  2011-2014 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    Release: @package_version@
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
@@ -201,6 +201,21 @@ class EnviRequest
     public static function initialize()
     {
         $_system_conf = Envi::singleton()->getConfigurationAll();
+
+        // Routerがある場合は、Routerを使ってルーティングする
+        if (isset($_system_conf['Routing']) && count($_system_conf['Routing'])) {
+            $router = new EnviRouting;
+            $router->run();
+            self::$_request_module_name = $router->getRequestModule();
+            self::$_request_action_name = $router->getRequestAction();
+            self::$_i18n = $router->getI18n();
+            self::$_ext_path_info = $router->getPathInfo();
+            self::$_module_name = self::$_request_module_name;
+            self::$_action_name = self::$_request_action_name;
+            return;
+        }
+
+
         // デフォルト指定
         self::$_request_module_name = $_system_conf['SYSTEM']['default_module'];
         self::$_request_action_name = $_system_conf['SYSTEM']['default_action'];
@@ -229,7 +244,7 @@ class EnviRequest
             self::$_request_module_name = array_shift($exp_pathinfo);
         }
         // アクション名
-        if (count($exp_pathinfo)) {
+        if (count($exp_pathinfo) && $exp_pathinfo[0] !== '') {
             self::$_request_action_name = preg_replace("/\\.".$_system_conf['SYSTEM']['ext'].'$/', '', array_shift($exp_pathinfo));
         }
 
@@ -708,6 +723,69 @@ class EnviRequest
     public static function hasError($name)
     {
         return isset(self::$_error_message[$name]);
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- Postメソッドでのリクエストかどうか確認します
+     *
+     * PostならTrueそうで無いなら、falseを返します。
+     *
+     * @access      public
+     * @static
+     * @return      boolean
+     * @since       3.4.0
+     */
+    public static function isPost()
+    {
+        return isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] === 'POST' : false;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- Getメソッドでのリクエストかどうか確認します
+     *
+     * GetならTrueそうで無いなら、falseを返します。
+     *
+     * @access      public
+     * @static
+     * @return      boolean
+     * @since       3.4.0
+     */
+    public static function isGet()
+    {
+        return isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] === 'GET' : false;
+    }
+    /* ----------------------------------------- */
+    /**
+     * +-- Putメソッドでのリクエストかどうか確認します
+     *
+     * PutならTrueそうで無いなら、falseを返します。
+     *
+     * @access      public
+     * @static
+     * @return      boolean
+     * @since       3.4.0
+     */
+    public static function isPut()
+    {
+        return isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] === 'PUT' : false;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- Headメソッドでのリクエストかどうか確認します
+     *
+     * HeadならTrueそうで無いなら、falseを返します。
+     *
+     * @access      public
+     * @static
+     * @return      boolean
+     * @since       3.4.0
+     */
+    public static function isHead()
+    {
+        return isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] === 'HEAD' : false;
     }
     /* ----------------------------------------- */
 }

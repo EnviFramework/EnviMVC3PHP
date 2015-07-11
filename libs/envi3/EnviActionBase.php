@@ -144,7 +144,7 @@ abstract class EnviActionBase
     /**
      * セキュアなページかどうか
      *
-     * [EnviUser::isLogin()](/c/man/v3/reference/EnviUser/EnviUser/isLogin)がtrueの場合のみ、
+     * [EnviUser::isLogin()](/c/man/v3/reference/Envi3/User/EnviUser/isLogin)がtrueの場合のみ、
      * アクセス可能なアクションコントローラーとして定義します。
      *
      * 制限に引っかかった場合は、Envi403Exceptionを発行し、403ヘッダを出力します。
@@ -161,7 +161,7 @@ abstract class EnviActionBase
      * Controllerから直接呼ばれるアクションかどうか？
      *
      * ディスパッチャーから直接アクセスされず、
-     * [EnviController::forward()](/c/man/v3/reference/EnviController/EnviController/forward)や、
+     * [EnviController::forward()](/c/man/v3/reference/Envi3/Controller/EnviController/forward)や、
      * [アクションチェイン](/c/man/v3/core/action_chain)でのみアクセス可能なアクションコントローラーとして定義されます。
      *
      * 制限に引っかかった場合は、Envi404Exceptionを発行し、404ヘッダを出力します。

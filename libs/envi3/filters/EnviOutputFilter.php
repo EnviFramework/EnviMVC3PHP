@@ -7,6 +7,7 @@
  * PHP versions 5
  *
  *
+ * @sub_class
  * @category   EnviMVC拡張
  * @package    フィルタ
  * @subpackage OutputFilter
@@ -24,6 +25,7 @@
  * アウトプットFilterサンプルクラス
  * 出力時のフィルタのサンプル
  *
+ * @sub_class
  * @category   EnviMVC拡張
  * @package    フィルタ
  * @subpackage OutputFilter

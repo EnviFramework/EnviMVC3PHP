@@ -25,6 +25,7 @@ $arr[] = $current_work_dir.'cache';
 $arr[] = $current_work_dir.'config';
 $arr[] = $current_work_dir.'logs';
 $arr[] = $current_work_dir.'tests';
+$arr[] = $current_work_dir.'db';
 $ds = DIRECTORY_SEPARATOR;
 foreach ($arr as $item) {
     mkdir($item);
@@ -32,3 +33,4 @@ foreach ($arr as $item) {
 }
 touch($current_work_dir.'envi.prj');
 
+copy(dirname(__FILE__).DIRECTORY_SEPARATOR.'migration'.DIRECTORY_SEPARATOR.'env', $current_work_dir.'db'.DIRECTORY_SEPARATOR.'env');
