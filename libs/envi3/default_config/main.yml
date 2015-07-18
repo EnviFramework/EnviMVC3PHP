@@ -8,15 +8,15 @@ all:
     default_module: "index"
     default_action: "index"
     ext: "php"
-    top_url: "http://<?php echo $_SERVER["HTTP_HOST"];?>"
-    ssl_top_url: "https://<?php echo $_SERVER["HTTP_HOST"];?>"
-    dispatch_url: "http://<?php echo $_SERVER["HTTP_HOST"].$_SERVER["SCRIPT_NAME"];?>"
-    ssl_dispatch_url: "https://<?php echo $_SERVER["HTTP_HOST"].$_SERVER["SCRIPT_NAME"];?>"
+    top_url: "//<?php echo $_SERVER["HTTP_HOST"];?>/"
+    ssl_top_url: "https://<?php echo $_SERVER["HTTP_HOST"];?>/"
+    dispatch_url: "http://<?php echo $_SERVER["HTTP_HOST"].$_SERVER["SCRIPT_NAME"];?>/"
+    ssl_dispatch_url: "https://<?php echo $_SERVER["HTTP_HOST"].'/'.$_SERVER["SCRIPT_NAME"];?>"
     ## 国際化設定の使用をするかどうか
     use_i18n: false
     ## defaultの国際化ファイル
     default_i18n: "ja"
-    
+
     ### Rendererの定義 ###
     ## HTMLタグを自動エスケープするタイプのレンダラ ##
     ## Smarty
@@ -27,7 +27,7 @@ all:
     # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviTwigSecureRenderer.php"
     ## PHP
     # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviPHPSecureRenderer.php"
-    
+
     ## HTMLタグを自動エスケープしないタイプのレンダラ ##
     ## Smarty
     # renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviSmartyRenderer.php"
@@ -38,7 +38,7 @@ all:
     ## PHP
     renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviPHPRenderer.php"
     auto_load_cache: true
-    
+
   Routing:
   ################################
   # Routingの設定
@@ -46,8 +46,8 @@ all:
     # -
       # class_name: EnviDefaultRouter
       # resource: "<?php echo ENVI_BASE_DIR."routers".DIRECTORY_SEPARATOR."EnviDefaultRouter.php";?>"
-    
-    
+
+
   FILTER:
   ################################
   # フィルターの設定
@@ -60,7 +60,7 @@ all:
       # -
         # class_name: "EnviOutputFilter"
         # resource: "<?php echo ENVI_BASE_DIR."filters".DIRECTORY_SEPARATOR."EnviOutputFilter.php";?>"
-        
+
   I18N:
   ################################
   # 国際化の設定
@@ -90,9 +90,9 @@ all:
     ## 基底テンプレート
     # base_templates: "<?php echo "{$base}templates{$ds}";?>"
     ## 共通テンプレート
-    # common_templates: 
+    # common_templates:
     #  - "<?php echo "{$base}templates{$ds}";?>"
-    
+
     # アクション保存パス
     actions: "actions/"
     # ビュー保存パス
@@ -129,10 +129,10 @@ all:
   AUTOLOAD:
     - "<?php echo "{$base}libs{$ds}common{$ds}";?>"
     # build-modelの名前空間対応をした場合は下記二項目を削除してください
-    - 
+    -
       path: "<?php echo "{$base}libs{$ds}models{$ds}";?>"
       is_psr: false
-    - 
+    -
       path: "<?php echo "{$base}libs{$ds}models{$ds}om{$ds}";?>"
       is_psr: false
 

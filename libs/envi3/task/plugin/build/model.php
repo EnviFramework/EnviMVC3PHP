@@ -131,6 +131,8 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
 
     $insert_date = isset($schema['insert_date']) ? $schema['insert_date'] : '';
     $update_date = isset($schema['update_date']) ? $schema['update_date'] : '';
+    $time_stamp = isset($schema['time_stamp']) ? $schema['time_stamp'] : '';
+    $auto_increment = isset($schema['auto_increment']) ? $schema['auto_increment'] : '';
 
 
     $sql = "SELECT * FROM {$table_name} ";
@@ -145,6 +147,14 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
             $and = 'AND ';
             $func_args[] = '$pkey'.count($func_args);
             $pkeys[] = "'{$column}'";
+        }
+        if (isset($status['type']) && $status['type'] === 'timestamp') {
+            // クエリ作成に関係ないけど、タイムスタンプ型のチェック
+            $time_stamp = $column;
+        }
+        if (isset($status['auto_increment']) && $status['auto_increment'] == true) {
+            // クエリ作成に関係ないけど、auto_incrementのチェック
+            $auto_increment = $column;
         }
         $getter_setter .= str_replace(
             array('%%method%%', '%%column%%'),
@@ -235,9 +245,9 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
     $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'Base.class.php.snp');
     $text = str_replace(
         array('%%model_name_space%%', '%%model_base_name_space%%', '%%model_name_space_use%%', '%%model_base_name_space_use%%', '%%insert_date%%', '%%update_date%%', '%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%',
-            '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%', '%%cache_hydrate%%', '%%fk_getter%%', '%%fk_cache_item%%', '%%cache_load%%'),
+            '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%', '%%cache_hydrate%%', '%%fk_getter%%', '%%fk_cache_item%%', '%%cache_load%%', '%%time_stamp%%', '%%auto_increment%%'),
         array($model_name_space, $model_base_name_space, $base_model_name_space_use, $model_base_name_space_use, $insert_date, $update_date, $class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name,
-            $getter_setter, $enable_magic, $default_array, $cache_hydrate, $fk_getter, $fk_cache_item, $cache_load),
+            $getter_setter, $enable_magic, $default_array, $cache_hydrate, $fk_getter, $fk_cache_item, $cache_load, $time_stamp, $auto_increment),
         $text
     );
 
