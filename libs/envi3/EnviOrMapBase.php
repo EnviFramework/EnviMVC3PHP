@@ -43,6 +43,8 @@ abstract class EnviOrMapBase
 
     protected $insert_date;
     protected $update_date;
+    protected $time_stamp;
+    protected $auto_increment;
 
     protected $default_instance_name = 'default_master';
 
@@ -126,8 +128,8 @@ abstract class EnviOrMapBase
      */
     public function hydrate(array $arr)
     {
-        $this->_is_modify = false;
-        $this->_is_hydrate = true;
+        $this->_is_modify    = false;
+        $this->_is_hydrate   = true;
         $this->_from_hydrate = $arr;
         $this->to_save       = $arr;
     }
@@ -167,9 +169,15 @@ abstract class EnviOrMapBase
                 $this->to_save[$this->update_date] = date('Y-m-d H:i:s');
             }
 
-            $dbi->autoExecute($table_name, $this->to_save, EnviDB::AUTOQUERY_INSERT);
-            if (!isset($this->to_save[$pkeys[0]])) {
-                $this->to_save[$pkeys[0]] = $dbi->lastInsertId();
+            $to_save = $this->to_save;
+
+            if ($this->time_stamp) {
+                unset($to_save[$this->time_stamp]);
+            }
+
+            $dbi->autoExecute($table_name, $to_save, EnviDB::AUTOQUERY_INSERT);
+            if ($this->auto_increment && !isset($this->to_save[$this->auto_increment])) {
+                $this->to_save[$this->auto_increment] = $dbi->lastInsertId();
             }
             $this->_from_hydrate = $this->to_save;
             $this->_is_modify = false;
@@ -189,7 +197,13 @@ abstract class EnviOrMapBase
             $this->to_save[$this->update_date] = date('Y-m-d H:i:s');
         }
 
-        $dbi->autoExecute($table_name, $this->to_save, EnviDB::AUTOQUERY_UPDATE, $sql);
+        $to_save = $this->to_save;
+
+        if ($this->time_stamp) {
+            unset($to_save[$this->time_stamp]);
+        }
+
+        $dbi->autoExecute($table_name, $to_save, EnviDB::AUTOQUERY_UPDATE, $sql);
         $this->_from_hydrate = $this->to_save;
         $this->_is_modify    = false;
     }
@@ -250,6 +264,24 @@ abstract class EnviOrMapBase
     }
     /* ----------------------------------------- */
 
+
+    /**
+     * +-- マジックメソッド
+     *
+     * @access public
+     * @param  $name
+     * @return void
+     */
+    public function __clone()
+    {
+        if ($this->auto_increment && !isset($this->to_save[$this->auto_increment])) {
+            $this->to_save[$this->auto_increment] = NULL;
+        }
+        $this->_is_modify  = true;
+        $this->_is_hydrate = false;
+    }
+    /* ----------------------------------------- */
+
     /**
      * +-- マジックメソッド
      *
@@ -267,7 +299,7 @@ abstract class EnviOrMapBase
             $name = strtolower(substr(preg_replace('/([A-Z])/', '_\1', $name), 4));
             $this->to_save[$name] = $arguments[0];
             $this->_is_modify = true;
-            return;
+            return $this;
         }
         trigger_error('undefined method:'.$name);
     }
