@@ -53,7 +53,7 @@ class Base%%class_name%% extends EnviOrMapBase
      * @var         var_type
      */
     protected $insert_date = '%%insert_date%%';
-    
+
     /**
      * INSERT INTOおよびUPDATE時に自動更新される値
      *
@@ -61,9 +61,23 @@ class Base%%class_name%% extends EnviOrMapBase
      * @var         var_type
      */
     protected $update_date = '%%update_date%%';
-    
 
 
+    /**
+     * TimeStamp型の値
+     *
+     * @access      protected
+     * @var         var_type
+     */
+    protected $time_stamp = '%%time_stamp%%';
+
+    /**
+     * AutoIncrementの値
+     *
+     * @access      protected
+     * @var         var_type
+     */
+    protected $auto_increment = '%%auto_increment%%';
 
     /**
      * +-- コンストラクタ

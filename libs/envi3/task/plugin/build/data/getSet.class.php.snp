@@ -8,5 +8,6 @@
     {
         $this->_is_modify = true;
         $this->to_save['%%column%%'] = $val;
+        return $this;
     }
 
