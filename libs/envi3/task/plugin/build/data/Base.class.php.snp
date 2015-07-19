@@ -92,6 +92,7 @@ class Base%%class_name%% extends EnviOrMapBase
         $this->_is_modify = true;
         $this->_from_hydrate = %%default_array%%;
         $this->to_save       = %%default_array%%;
+        $this->default_data  = %%default_array%%;
     }
     /* ----------------------------------------- */
 

@@ -35,7 +35,7 @@
  */
 abstract class EnviOrMapBase
 {
-    protected $_from_hydrate, $to_save;
+    protected $_from_hydrate, $to_save, $default_data;
     protected $_is_modify  = true;
     protected $_is_hydrate = false;
     protected $suffix = '';
