@@ -876,6 +876,12 @@ class EnviValidator
             } elseif (($post_only === 3 || $post_only === 2 ||  (is_bool($post_only) && !$post_only)) &&
                 (isset($_GET[$validation_name]) !== false ? $_GET[$validation_name] !== '' : false)) {
                 $res = $_GET[$validation_name];
+            } elseif (($post_only === 3 || $post_only === 1 || is_bool($post_only)) &&
+                (isset($_POST[$validation_name]) !== false)) {
+                $res = $_POST[$validation_name];
+            } elseif (($post_only === 3 || $post_only === 2 ||  (is_bool($post_only) && !$post_only)) &&
+                (isset($_GET[$validation_name]) !== false)) {
+                $res = $_GET[$validation_name];
             } else {
                 $res = $this->_empty_form_data;
                 return $res;
@@ -890,6 +896,12 @@ class EnviValidator
                 $res = $_POST[$regs[1][0]];
             } elseif (($post_only === 3 || $post_only === 2 ||  (is_bool($post_only) && !$post_only)) &&
                 (isset($_GET[$regs[1][0]]) !== false ? $_GET[$regs[1][0]] !== '' : false)) {
+                $res = $_GET[$regs[1][0]];
+            } elseif (($post_only === 3 || $post_only === 1 ||  is_bool($post_only)) &&
+                (isset($_POST[$regs[1][0]]) !== false)) {
+                $res = $_POST[$regs[1][0]];
+            } elseif (($post_only === 3 || $post_only === 2 ||  (is_bool($post_only) && !$post_only)) &&
+                (isset($_GET[$regs[1][0]]) !== false)) {
                 $res = $_GET[$regs[1][0]];
             } else {
                 $res = $this->_empty_form_data;

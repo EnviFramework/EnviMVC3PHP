@@ -7,6 +7,6 @@ ID:
 <%$smarty.get.id|default:$smarty.post.id%>を削除します。
 
 
-<button type="submit" name="commit" value="削除">削除</button>
+<button type="submit" name="commit" value="削除" class="btn btn-danger">削除</button>
 </form>
 <%include file="_footer.tpl"%>

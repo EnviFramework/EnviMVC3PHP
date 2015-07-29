@@ -38,4 +38,20 @@
 class _____model_pascal_case_name_____ extends /*%%model_base_name_space%%*/Base_____model_pascal_case_name_____
 {
 
+    /**
+     * INSERT INTO時に自動更新される値
+     *
+     * @access      protected
+     * @var         var_type
+     */
+    protected $insert_date = 'insert_date';
+
+    /**
+     * INSERT INTOおよびUPDATE時に自動更新される値
+     *
+     * @access      protected
+     * @var         var_type
+     */
+    protected $update_date = 'update_date';
+
 }
