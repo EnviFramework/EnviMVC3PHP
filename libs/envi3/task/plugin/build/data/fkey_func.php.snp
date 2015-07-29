@@ -3,7 +3,7 @@
      * +-- 
      *
      * @access      public
-     * @return      void
+     * @return      %%fk_name%%
      */
     public function %%fk_name%%()
     {
