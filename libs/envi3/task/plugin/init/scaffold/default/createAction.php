@@ -75,7 +75,7 @@ class _____action_name_____Action extends _____module_name_____Actions
     public function validate()
     {
         $validator = validator();
-        if($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             return Envi::DEFAULT_ACCESS;
         }
         if (!EnviRequest::hasParameter('commit') && !EnviRequest::hasParameter('confirm')) {
