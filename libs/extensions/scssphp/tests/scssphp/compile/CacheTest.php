@@ -65,7 +65,7 @@ class CacheTest extends testCaseBase
         $symple_test_config = $this->parseYml('unit_tests_config.yml', 'cached_test');
         $EnviScssphpExtension = new EnviScssphpExtension($symple_test_config);
         $res = $EnviScssphpExtension->compile(file_get_contents($this->test_data_dir.'simple_test.scss'), 'test');
-        $this->assertEquals(file_get_contents($this->test_data_dir.'simple_test.scss.css'), $res, $res);
+        $this->assertEquals(file_get_contents($this->test_data_dir.'simple_test.scss.min.css'), $res, $res);
         $this->assertFileExists($this->test_data_dir.'scss_php_cache_test_1.0_unittest.css.envicc');
         // 再コンパイルしてみる
         $res2 = $EnviScssphpExtension->compile(file_get_contents($this->test_data_dir.'simple_test.scss'), 'test');
@@ -91,7 +91,7 @@ class CacheTest extends testCaseBase
         $symple_test_config = $this->parseYml('unit_tests_config.yml', 'cached_test');
         $EnviScssphpExtension = new EnviScssphpExtension($symple_test_config);
         $res = $EnviScssphpExtension->compileFile($this->test_data_dir.'simple_test.scss', 'test');
-        $this->assertEquals(file_get_contents($this->test_data_dir.'simple_test.scss.css'), $res);
+        $this->assertEquals(file_get_contents($this->test_data_dir.'simple_test.scss.min.css'), $res);
         $this->assertFileExists($this->test_data_dir.'scss_php_cache_test_1.0_unittest.css.envicc');
 
         // 再コンパイルしてみる
