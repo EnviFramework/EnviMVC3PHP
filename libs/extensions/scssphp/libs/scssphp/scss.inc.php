@@ -2716,7 +2716,7 @@ class scss_parser {
 	/**
 	 * Parser buffer
 	 *
-	 * @param string $buffer;
+	 * @param string $buffer
 	 *
 	 * @return \StdClass
 	 */

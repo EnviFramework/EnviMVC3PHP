@@ -91,6 +91,10 @@ class EnviDocumenter
     public function parseFile($file_name)
     {
         $this->cliWrite($file_name.' parse start');
+        // テストファイルを除外
+        if (strpos($file_name, '/tests/')) {
+            return;
+        }
         $cpr = $this->code_parser->parseFile($file_name);
         $token_list = $cpr->getTokenList();
 
