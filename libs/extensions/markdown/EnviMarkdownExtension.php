@@ -34,7 +34,7 @@
 */
 
 if (!class_exists('\Michelf\Markdown', false)) {
-    require dirname(__FILE__).DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'Michelf'.DIRECTORY_SEPARATOR.'MarkdownExtra.inc.php';
+    require dirname(__FILE__).DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'Michelf'.DIRECTORY_SEPARATOR.'Michelf'.DIRECTORY_SEPARATOR.'MarkdownExtra.inc.php';
 }
 use \Michelf\Markdown, \Michelf\SmartyPants,\Michelf\MarkdownExtra;
 
