@@ -8,7 +8,8 @@
   a2: 0.5;
   mix: #020304;
   rgba: rgba(170, 119, 204, 0.4);
-  rgba: rgba(170, 119, 204, 0.4); }
+  rgba: rgba(170, 119, 204, 0.4);
+  green: 139; }
 
 #hsl {
   color: #79c653;
@@ -49,7 +50,13 @@
 #string {
   color: hello what is going on;
   color: "yeah";
-  color: "I do?"; }
+  color: "I do?";
+  color: 2;
+  color: sinserttring;
+  color: 6;
+  color: tri;
+  color: 'string';
+  color: STRING; }
 
 #number {
   color: 250%;
@@ -70,12 +77,9 @@
   hello: one, two, three, hello, world, what, is, going;
   hello: one, two, three, hello;
   index: 2;
-  index: false;
   index: 3;
   index: 1;
-  index: false;
   index: 1;
-  index: false;
   index: 2;
   index: 2;
   index: 1;
@@ -124,3 +128,8 @@
   a: 1;
   a: 0.5;
   a: alpha(currentColor); }
+
+#exists {
+  a: true;
+  b: true;
+  c: false; }

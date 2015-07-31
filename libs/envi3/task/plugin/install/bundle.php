@@ -92,6 +92,40 @@ class EnviBundle
     /* ----------------------------------------- */
 
     /**
+     * +-- mode new
+     *
+     * @access      public
+     * @param       array $bundle_config
+     * @return      void
+     */
+    public function executeUpdate(array $bundle_config)
+    {
+        switch ($bundle_config['type']) {
+            case 'extension':
+            $this->extensionUpdate($bundle_config);
+            break;
+        }
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- mode new
+     *
+     * @access      public
+     * @param       array $bundle_config
+     * @return      void
+     */
+    public function executeDelete(array $bundle_config)
+    {
+        switch ($bundle_config['type']) {
+            case 'extension':
+            $this->extensionDelete($bundle_config);
+            break;
+        }
+    }
+    /* ----------------------------------------- */
+
+    /**
      * +-- Extensionのインストールを行います
      *
      * @access      public

@@ -1,5 +1,9 @@
-/*.scss
-/*.css
 .sass-cache
+composer.lock
+pscss.phar
+/*.css
+/*.scss
+/_site/
 /sass/
 /compass/
+/vendor/

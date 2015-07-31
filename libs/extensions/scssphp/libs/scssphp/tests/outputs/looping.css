@@ -10,7 +10,19 @@ div {
   background: this;
   border: what;
   border: is;
-  border: this; }
+  border: this;
+  background: what what;
+  background: is is;
+  background: this this;
+  background: what what;
+  background: is is;
+  background: this this; }
+  div h1 {
+    font-size: 2em; }
+  div h2 {
+    font-size: 1.5em; }
+  div h3 {
+    font-size: 1.2em; }
 
 span {
   color: 0;
@@ -43,3 +55,9 @@ pre {
   cool: 5;
   cool: 4;
   cool: 3; }
+
+div {
+  a: false;
+  b: true;
+  c: true;
+  c: true; }

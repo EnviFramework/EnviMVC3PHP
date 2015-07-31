@@ -27,6 +27,6 @@ depend:
         license: "LGPL-3.0"
         install:
             path: "libs/Michelf/"
-            version: "1.4.0"
+            version: "1.5.0"
             mode: "git"
             clone: "https://github.com/michelf/php-markdown.git"

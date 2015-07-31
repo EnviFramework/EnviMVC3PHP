@@ -18,14 +18,14 @@ require: {
     php: ">=5.2"
     envi: ">=3.0"
 install:
-    version: "v1.0"
+    version: "v1.1"
     mode: "git"
     clone: "https://github.com/EnviMVC/EnviLessphpExtension.git"
 depend:
     lessphp:
         install:
             path: "libs/lessphp/"
-            version: "v0.4.0"
+            version: "v0.5.0"
             mode: "git"
             clone: "https://github.com/leafo/lessphp.git"
         homepage: "http://leafo.net/lessphp/"
