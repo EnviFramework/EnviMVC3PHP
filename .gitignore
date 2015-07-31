@@ -2,3 +2,5 @@
 document/man/*
 *.log
 libs/tests/EnviTest/copy/*
+work/
+bundle/temp.yml

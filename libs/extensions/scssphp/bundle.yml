@@ -1,0 +1,32 @@
+name: "scssphp"
+type: "extension"
+description: "Scssphpを使用するためのエクステンションクラス"
+keywords: "css,scss"
+homepage: "http://www.enviphp.net/"
+license: "LGPL-2.0"
+authors:
+    -
+        name: "akito"
+        email: "akito-artisan@five-foxes.com"
+    -
+        name: "suzunone"
+        email: "suzunone.eleven@gmail.com"
+support:
+    issues: "https://github.com/EnviMVC/EnviScssphpExtension/issues"
+    forum: "https://github.com/EnviMVC/EnviScssphpExtension/issues"
+require: {
+    php: ">=5.2"
+    envi: ">=3.4.8"
+install:
+    version: "v1.0"
+    mode: "git"
+    clone: "https://github.com/EnviMVC/EnviScssphpExtension.git"
+depend:
+    scssphp:
+        homepage: "http://leafo.net/scssphp/"
+        license: "MIT"
+        install:
+            path: "libs/scssphp/"
+            version: "v0.0.12"
+            mode: "git"
+            clone: "https://github.com/leafo/scssphp.git"

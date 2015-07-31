@@ -1,0 +1,37 @@
+name: "lessphp"
+type: "extension"
+description: "Lessphpを使用するためのエクステンションクラス"
+keywords: "less,css"
+homepage: "http://www.enviphp.net/"
+license: "LGPL-2.0"
+authors:
+    -
+        name: "akito"
+        email: "akito-artisan@five-foxes.com"
+    -
+        name: "suzunone"
+        email: "suzunone.eleven@gmail.com"
+support:
+    issues: "https://github.com/EnviMVC/EnviLessphpExtension/issues"
+    forum: "https://github.com/EnviMVC/EnviLessphpExtension/issues"
+require: {
+    php: ">=5.2"
+    envi: ">=3.0"
+install:
+    version: "@new"
+    mode: "git"
+    clone: "https://github.com/EnviMVC/EnviLessphpExtension.git"
+depend:
+    lessphp:
+        install:
+            path: "libs/lessphp/"
+            version: "v0.4.0"
+            mode: "git"
+            clone: "https://github.com/leafo/lessphp.git"
+        homepage: "http://leafo.net/lessphp/"
+        license: "MIT GPL3.0"
+        authors:
+            -
+                name: "Leaf Corcoran"
+                email: "leafot@gmail.com"
+                homepage: "http://leafo.net/"

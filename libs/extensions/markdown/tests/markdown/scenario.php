@@ -6,7 +6,6 @@
  * PHP versions 5
  *
  *
- *
  * @category   テスト
  * @package    テスト
  * @subpackage TestCode
@@ -15,21 +14,23 @@
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        http://www.enviphp.net/c/man/v3/reference
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      File available since Release 1.0.0
  * @doc_ignore
  */
 
 $scenario_dir = dirname(__FILE__).DIRECTORY_SEPARATOR;
-define('ENVI_MVC_APPKEY_PATH', $scenario_dir.'/../../config/');
 define('ENVI_TEST_YML', basename(dirname(__FILE__)).'.yml');
 
+require_once dirname(__FILE__).'/../../../../envi3/test/EnviTest.php';
 require_once dirname(__FILE__).'/testCaseBase.php';
 
 /**
  * テストのScenarioクラス
  *
  *
+ * PHP versions 5
+ *
  *
  * @category   テスト
  * @package    テスト
@@ -39,7 +40,7 @@ require_once dirname(__FILE__).'/testCaseBase.php';
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
  * @version    GIT: $Id$
  * @link       https://github.com/EnviMVC/EnviMVC3PHP
- * @see        http://www.enviphp.net/c/man/v3/reference
+ * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      File available since Release 1.0.0
  */
 class Scenario extends EnviTestScenario

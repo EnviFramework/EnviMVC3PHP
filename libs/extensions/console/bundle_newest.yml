@@ -1,0 +1,23 @@
+name: "console"
+type: "extension"
+description: "コンソールログを使用するためのエクステンションクラス"
+keywords: "log,debug.console"
+homepage: "http://www.enviphp.net/"
+license: "LGPL-2.0"
+authors:
+    -
+        name: "akito"
+        email: "akito-artisan@five-foxes.com"
+    -
+        name: "suzunone"
+        email: "suzunone.eleven@gmail.com"
+support:
+    issues: "https://github.com/EnviMVC/EnviConsoleExtension/issues"
+    forum: "https://github.com/EnviMVC/EnviConsoleExtension/issues"
+require: {
+    php: ">=5.2"
+    envi: ">=3.0"
+install:
+    version: "@new"
+    mode: "git"
+    clone: "https://github.com/EnviMVC/EnviConsoleExtension.git"

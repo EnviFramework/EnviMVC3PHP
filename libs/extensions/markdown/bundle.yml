@@ -1,0 +1,32 @@
+name: "markdown"
+type: "extension"
+description: "MarkdownExtraを使用するためのエクステンションクラス"
+keywords: "markdown,MarkdownExtra"
+homepage: "http://www.enviphp.net/"
+license: "LGPL-2.0"
+authors:
+    -
+        name: "akito"
+        email: "akito-artisan@five-foxes.com"
+    -
+        name: "suzunone"
+        email: "suzunone.eleven@gmail.com"
+support:
+    issues: "https://github.com/EnviMVC/EnviMarkdownExtension/issues"
+    forum: "https://github.com/EnviMVC/EnviMarkdownExtension/issues"
+require: {
+    php: ">=5.2"
+    envi: ">=3.4.8"
+install:
+    version: "v1.0"
+    mode: "git"
+    clone: "https://github.com/EnviMVC/EnviMarkdownExtension.git"
+depend:
+    markdown:
+        homepage: "https://michelf.ca/projects/php-markdown/extra/"
+        license: "LGPL-3.0"
+        install:
+            path: "libs/Michelf/"
+            version: "1.4.0"
+            mode: "git"
+            clone: "https://github.com/michelf/php-markdown.git"
