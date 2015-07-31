@@ -17,9 +17,9 @@ Contribution Guides
 コードの実行環境
 --------------------------------------
 
-PHP 5.2および、PHP 5.3が正常動作する環境での開発を行って下さい。
-PHP5.2および、PHP5.3で互換を保つようにして下さい。
-EnviMVCでは、PHP 5.4を正式サポートしてはおりませんが、PHP 5.4で互換がない変更は行わないで下さい。
+PHP 5.2~5.5が正常動作する環境での開発を行って下さい。
+PHP 5.2~PHP5.5で互換を保つようにして下さい。
+EnviMVCでは、PHP 5.6を正式サポートしてはおりませんが、PHP 5.6で互換がない変更は行わないで下さい。
 
 
 PullRequestについて
@@ -73,10 +73,9 @@ Please refer to the link below and modification of the code , with respect to re
 Execution environment of code
 --------------------------------------
 
-And PHP 5.2, should be developed in an environment where PHP 5.3 is normal operation .
-And PHP5.2, be sure to keep compatibility with PHP5.3.
-In EnviMVC, it does not attempt has been made to officially support PHP 5.4 , but please do not change it is not compatible with PHP 5.4.
-
+Please do PHP 5.2 ~ 5.5 is the development of a normal operating environment.
+Try to keep the compatibility with PHP 5.2 ~ PHP5.5.
+In EnviMVC, but No attempt has been made to officially support PHP 5.6, please do not attempt to change is not compatible with PHP 5.6.
 
 About PullRequest
 --------------------------------------
