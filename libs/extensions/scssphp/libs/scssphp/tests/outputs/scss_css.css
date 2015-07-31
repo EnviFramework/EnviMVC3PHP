@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import "foo.css";
 @import 'foo.css';
 @import url("foo.css");
@@ -5,11 +6,8 @@
 @import url(foo.css);
 @import "foo.css" screen;
 @import "foo.css" screen, print;
-/* Foo
-   * Bar */
-/* Baz
-   * Bang */
-@charset "UTF-8";
+@import "foo.css" screen, print and (foo: 0);
+@import "foo.css" screen, only print, screen and (foo: 0);
 [foo~=bar] {
   a: b; }
 
@@ -42,15 +40,26 @@ sel {
   p: v; }
 
 .foo {
+  /* Foo
+   Bar
+   Baz */
   a: b; }
 
 .foo {
+  /* Foo
+   Bar
+   Baz */
   a: b; }
 
 .foo {
+  /* Foo
+   Bar */
   a: b; }
 
 .foo {
+  /* Foo
+   Bar
+   Baz */
   a: b; }
 
 @foo {
@@ -79,11 +88,10 @@ bar {
   bar: baz; }
 
 baz {
-  bar: baz;
-  /*
+  bar: baz; }
+/*
  * foo
- */ }
-
+ */
 bar {
   baz: bang; }
 
@@ -94,33 +102,27 @@ E F, G H {
   a: b; }
 
 E > F, G > H {
-  a: b;
-  /* This is a CSS comment. */ }
-
+  a: b; }
+/* This is a CSS comment. */
 .one {
-  color: green;
-  /* Another comment */
-  /* The following should not be used:
-.two {color: red;} */ }
-
+  color: green; }
+/* Another comment */
+/* The following should not be used:
+ .two {color: red;} */
 .three {
-  /* color: red; */
   color: green;
-  /**
-.four {color: red;} */ }
-
+  /* color: red; */ }
+/**
+ .four {color: red;} */
 .five {
-  color: green;
-  /**/ }
-
+  color: green; }
+/**/
 .six {
-  color: green;
-  /*********/ }
-
+  color: green; }
+/*********/
 .seven {
-  color: green;
-  /* a comment **/ }
-
+  color: green; }
+/* a comment **/
 .eight {
   color: green; }
 
@@ -203,10 +205,6 @@ foo {
   a: foo-bar(12);
   b: -foo-bar-baz(13, 14 15); }
 
-@import "foo.css" screen, print and (foo: 0);
-
-@import "foo.css" screen, only print, screen and (foo: 0);
-
 foo {
   a: foo !important;
   b: foo bar !important;
@@ -217,14 +215,17 @@ foo {
   b: foo -o-bar-baz; }
 
 foo {
-  /* b; c: */
-  a: d; }
+  a: d;
+  /* b; c: */ }
 
 foo {
-  /*: b; c */
   a : d;
+  /*: b; c */ }
+/* Foo
+ * Bar */
+.foo {
   /* Foo
- * Bar */ }
+   * Bar */ }
 
 [foo] {
   a: b; }
@@ -385,6 +386,26 @@ foo {
 @bar baz {
   c: d; }
 
+@foo bar;
+@bar baz;
+
+
+/* Foo
+ * Bar */
+/* Baz
+ * Bang */
+
+
+.foo {
+  /* Foo
+   * Bar */
+  /* Baz
+   * Bang */ }
+
+.foo {
+  /* Foo Bar */
+  /* Baz Bang */ }
+
 @namespace "http://www.w3.org/Profiles/xhtml1-strict";
 
 @namespace url(http://www.w3.org/Profiles/xhtml1-strict);
@@ -522,21 +543,23 @@ foo {
   prop2: val; }
 
 .foo {
+  /* Foo */
   a: b; }
 
 .foo {
-  a: b;
-  /* Foo */ }
-
-.foo {
-  a: b;
   /* Foo
- * Bar */ }
-
+   * Bar */
+  a: b; }
+/* Foo */
+.foo {
+  a: b; }
+/* Foo
+ * Bar */
 .foo {
   a: b; }
 
 .foo #bar:baz(/* bang )*/ bip) {
+  /* .a #foo */
   a: b; }
 
 > E {
@@ -571,6 +594,11 @@ E F {
 
 E, F G, H {
   a: b; }
+
+body {
+  /*
+   //comment here
+   */ }
 
 E > F {
   a: b; }

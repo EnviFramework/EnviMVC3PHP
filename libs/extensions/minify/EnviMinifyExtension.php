@@ -7,7 +7,7 @@
  *
  * 内部的には
  *
- * http://www.minifier.org
+ * http://www.minifier.org/
  *
  * のライブラリを使用しています。
  *
@@ -26,7 +26,7 @@
  *
  * @category   EnviMVC拡張
  * @package    EnviPHPが用意するエクステンション
- * @subpackage EnviMinifyExtension
+ * @subpackage MinifyExtension
  * @author     Akito <akito-artisan@five-foxes.com>
  * @copyright  2011-2015 Artisan Project
  * @license    http://opensource.org/licenses/BSD-2-Clause The BSD 2-Clause License
@@ -35,7 +35,9 @@
  * @see        https://github.com/EnviMVC/EnviMVC3PHP/wiki
  * @since      File available since Release 1.0.0
 */
+
 use MatthiasMullie\Minify;
+
 if (!class_exists('Minify', false)) {
     require dirname(__FILE__).DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'minify'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Exception.php';
     require dirname(__FILE__).DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR.'minify'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Minify.php';
