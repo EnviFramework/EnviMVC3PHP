@@ -138,6 +138,7 @@ abstract class EnviMigrationBase
      *
      *
      * @access      public
+     * @abstract
      * @return      void
      * @see EnviMigrationBase::saveUp()
      * @see EnviMigrationBase::safeDown()
@@ -150,6 +151,7 @@ abstract class EnviMigrationBase
      * +-- Transactionを利用してcolumnのバージョンアップを登録するメソッド
      *
      * @access      public
+     * @abstract
      * @return      void
      * @see EnviMigrationBase::safeChange()
      * @see EnviMigrationBase::safeDown()
@@ -163,6 +165,7 @@ abstract class EnviMigrationBase
      * +-- Transactionを利用してcolumnのバージョンダウンを塔録すメソッド
      *
      * @access      public
+     * @abstract
      * @return      void
      * @see EnviMigrationBase::saveUp()
      * @see EnviMigrationBase::safeChange()

@@ -18,6 +18,7 @@
  * @since      File available since Release 3.4.0
  * @doc_ignore
  */
+
 /**
  *
  *
@@ -132,7 +133,19 @@ class EnviMigrationCmd
         }
     }
 
-
+    /**
+     * +-- マイグレーションの再実行
+     *
+     * @access      public
+     * @param       integer $step
+     * @return      void
+     */
+    public function executeRedo($step)
+    {
+        $this->executeDown($step);
+        $this->executeMigrate();
+    }
+    /* ----------------------------------------- */
 
     /**
      * +-- マイグレーションを一つ戻します
