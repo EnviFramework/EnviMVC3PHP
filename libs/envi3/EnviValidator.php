@@ -826,11 +826,11 @@ class EnviValidator
      */
 
     /**
-     * バリデートする
+     * +-- バリデートする
      *
-     * @param string $validator 使用するバリデータ
-     * @param string,arrray $data バリデータにかけるデータ
-     * @param string|array $option バリデータオプション
+     * @param string & $validator 使用するバリデータ
+     * @param string,arrray & $data バリデータにかけるデータ
+     * @param string|array & $option バリデータオプション
      * @access private
      * @return bool
      */
@@ -858,9 +858,10 @@ class EnviValidator
         }
         return $ck;
     }
+    /* ----------------------------------------- */
 
     /**
-     * バリデートするデータを取得
+     * +- バリデートするデータを取得
      *
      * @param string $validation_name バリデーションチェイン名
      * @param boolean $trim trimするか？
@@ -923,12 +924,15 @@ class EnviValidator
         }
         return $res;
     }
+    /* ----------------------------------------- */
+
 
     /**
-     * 再帰的にtrimする
+     * +-- 再帰的にtrimする
      *
-     * @param string|array $validation_data trimするデータ
-     *
+     * @access      protected
+     * @param       string|array $validation_data
+     * @return      string|array
      */
     protected function _trimmer($validation_data)
     {
@@ -941,20 +945,28 @@ class EnviValidator
         }
         return $validation_data;
     }
+    /* ----------------------------------------- */
+
 
     /**
-     * エラー処理
+     * +-- エラー処理
      *
-     * @param string $name バリデータチェイン名
-     * @return void
+     * @access      protected
+     * @param       string $name       バリデータチェイン名
+     * @param       string $form_name  フォーム名
+     * @param       string $validator  バリデータ名
+     * @param       mixed $data        検証データ
+     * @param       mixed $option      バリデータオプション
+     * @return      void
      */
     protected function _handleError($name, $form_name, $validator, $data, $option)
     {
-        if(!is_object(self::$_error_object)) {
+        if (!is_object(self::$_error_object)) {
             self::$_error_object = new $this->error_class();
         }
         self::$_error_object->setError($name, $form_name, $validator, $data, $option);
     }
+    /* ----------------------------------------- */
 
 
     /**#@-*/
@@ -971,7 +983,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $check_data
+     * @param       mixed $check_data
      * @return      void
      */
     protected function _typeEqual(&$ValidationData, $check_data)
@@ -985,7 +997,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $check_data
+     * @param       mixed $check_data
      * @return      void
      */
     protected function _typeNotEqual(&$ValidationData, $check_data)
@@ -1002,7 +1014,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typeNotXdigit(&$ValidationData, $dummy)
@@ -1020,7 +1032,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typeWithoutDigit(&$ValidationData, $dummy)
@@ -1038,7 +1050,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typeWithoutCntrl(&$ValidationData, $dummy)
@@ -1056,7 +1068,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typeWithoutGraph(&$ValidationData, $dummy)
@@ -1073,7 +1085,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typeWithoutLower(&$ValidationData, $dummy)
@@ -1091,7 +1103,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typeWithoutUpper(&$ValidationData, $dummy)
@@ -1108,7 +1120,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typeWithoutPrint(&$ValidationData, $dummy)
@@ -1125,7 +1137,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typeWithoutPunct(&$ValidationData, $dummy)
@@ -1142,7 +1154,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typeWithoutSpace(&$ValidationData, $dummy)
@@ -1160,7 +1172,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typeXdigit(&$ValidationData, $dummy)
@@ -1178,7 +1190,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typeDigit(&$ValidationData, $dummy)
@@ -1196,7 +1208,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typeCntrl(&$ValidationData, $dummy)
@@ -1215,7 +1227,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typeGraph(&$ValidationData, $dummy)
@@ -1232,7 +1244,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typeLower(&$ValidationData, $dummy)
@@ -1250,7 +1262,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typeUpper(&$ValidationData, $dummy)
@@ -1267,7 +1279,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typePrint(&$ValidationData, $dummy)
@@ -1285,7 +1297,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typePunct(&$ValidationData, $dummy)
@@ -1302,7 +1314,7 @@ class EnviValidator
      *
      * @access      protected
      * @param       & $ValidationData
-     * @param       var_text $dummy
+     * @param       boolean $dummy
      * @return      void
      */
     protected function _typeSpace(&$ValidationData, $dummy)
@@ -1317,7 +1329,7 @@ class EnviValidator
     /**
      * 数値を表す値かどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $dummy ダミー変数
      */
     protected function _typeNumber(&$ValidationData, $dummy)
@@ -1331,7 +1343,7 @@ class EnviValidator
     /**
      * X以下の数字かどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param integer $max 最大値
      */
     protected function _typeNumberMax(&$ValidationData, &$max)
@@ -1345,7 +1357,7 @@ class EnviValidator
     /**
      * X以上の数字かどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param integer $min 最小値
      */
     protected function _typeNumberMin(&$ValidationData, &$min)
@@ -1359,7 +1371,7 @@ class EnviValidator
     /**
      * 電話番号かどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $kana $ValidationDataを半角英数字に変更
      */
     protected function _typeTelephoneFormat(&$ValidationData, &$kana)
@@ -1377,7 +1389,7 @@ class EnviValidator
     /**
      * アルファベットかどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $dummy ダミー変数
      */
     protected function _typeAlphabet(&$ValidationData, $dummy)
@@ -1391,7 +1403,7 @@ class EnviValidator
     /**
      * アルファベット以外の文字が含まれるかどうかを調べる
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $dummy ダミー変数
      */
     protected function _typeWithoutAlphabet(&$ValidationData, $dummy)
@@ -1405,7 +1417,7 @@ class EnviValidator
     /**
      * アルファベットもしくは数字かどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $dummy ダミー変数
      */
     protected function _typeAlphabetOrNumber(&$ValidationData, $dummy)
@@ -1420,7 +1432,7 @@ class EnviValidator
     /**
      * アルファベットと数字以外の文字が入っているかどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $dummy ダミー変数
      */
     protected function _typeWithoutAlphabetOrNumber(&$ValidationData, $dummy)
@@ -1434,7 +1446,7 @@ class EnviValidator
     /**
      * ローマ字区域の文字列かどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $convert 半角変換するか？
      */
     protected function _typeRome(&$ValidationData, $convert)
@@ -1451,7 +1463,7 @@ class EnviValidator
     /**
      * 整数かどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $dummy ダミー変数
      */
     protected function _typeInteger(&$ValidationData, $dummy)
@@ -1469,7 +1481,7 @@ class EnviValidator
     /**
      * 自然数かどうか(0も許容)
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $dummy ダミー変数
      */
     protected function _typeNaturalNumber(&$ValidationData, $dummy)
@@ -1484,7 +1496,7 @@ class EnviValidator
     /**
      * 文字数が既定値以内かどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param integer $max 最大値
      */
     protected function _typeMaxLen(&$ValidationData, &$max)
@@ -1499,7 +1511,7 @@ class EnviValidator
     /**
      * 文字数が既定値以上かどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param integer $min 最小値
      */
     protected function _typeMinLen(&$ValidationData, &$min)
@@ -1513,7 +1525,7 @@ class EnviValidator
     /**
      * 文字はばが既定値以内かどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param integer $max 最大値
      */
     protected function _typeMaxWidth(&$ValidationData, &$max)
@@ -1528,7 +1540,7 @@ class EnviValidator
     /**
      * 文字はばが既定値以上かどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param integer $min 最小値
      */
     protected function _typeMinWidth(&$ValidationData, &$min)
@@ -1542,7 +1554,7 @@ class EnviValidator
     /**
      * 空欄(もしくは送信されていない)かどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $dummy ダミー変数
      */
     protected function _typeBlank(&$ValidationData, $dummy)
@@ -1564,7 +1576,7 @@ class EnviValidator
     /**
      * 空欄(もしくは送信されていない)になっていないかどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $dummy ダミー変数
      */
     protected function _typeNoBlank(&$ValidationData, $dummy)
@@ -1585,7 +1597,7 @@ class EnviValidator
     /**
      * 非送信になっていないかどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $dummy ダミー変数
      */
     protected function _typeNoSubmit(&$ValidationData, $dummy)
@@ -1596,8 +1608,8 @@ class EnviValidator
     /**
      * 文字コードが既定値どおりになっているか？
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
-     * @param strings $encoding エンコード名
+     * @param string,array $ValidationData 入力検証を行う変数
+     * @param string $encoding エンコード名
      */
     protected function _typeEncoding(&$ValidationData, &$encoding)
     {
@@ -1612,7 +1624,7 @@ class EnviValidator
     /**
      * タグが含まれていないか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $dummy ダミー変数
      */
     protected function _typeNoTags(&$ValidationData, $dummy)
@@ -1626,7 +1638,7 @@ class EnviValidator
     /**
      * 機種依存文字
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $kana 半角カナを全角カナに
      */
     protected function _typeDepend(&$ValidationData, &$kana)
@@ -1651,7 +1663,7 @@ class EnviValidator
     /**
      * ひらがな
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $kana 全角片カナ・半角片カナを全角平がなに変える
      */
     protected function _typeHiragana(&$ValidationData, &$kana)
@@ -1668,7 +1680,7 @@ class EnviValidator
     /**
      * カタカナ
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $kana 全角平がな・半角片カナを全角片カナに変える
      */
     protected function _typeKatakana(&$ValidationData, &$kana)
@@ -1685,7 +1697,7 @@ class EnviValidator
     /**
      * ひらがなのふりがな
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $kana 全角片カナ・半角片カナを全角平がなに変える
      */
     protected function _typeHFurigana(&$ValidationData, &$kana)
@@ -1702,7 +1714,7 @@ class EnviValidator
     /**
      * カタカナのフリガナ
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $kana 全角平がな・半角片カナを全角片カナに変える
      */
     protected function _typeKFurigana(&$ValidationData, &$kana)
@@ -1719,7 +1731,7 @@ class EnviValidator
     /**
      * メールアドレスフォーマット
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $kana 全角英数字を半角に変換
      * @link http://www.din.or.jp/~ohzaki/perl.htm
      */
@@ -1738,7 +1750,7 @@ class EnviValidator
     /**
      * シンプルなメールアドレスフォーマット
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $kana 全角英数字を半角に変換
      */
     protected function _typeMailFormatSymple(&$ValidationData, &$kana)
@@ -1756,7 +1768,7 @@ class EnviValidator
     /**
      * URLフォーマット
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $kana 全角英数字を半角に変換
      * @link http://bakera.jp/hatomaru.aspx/yomoyama/perlnote
      */
@@ -1775,7 +1787,7 @@ class EnviValidator
     /**
      * 郵便番号フォーマット
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $kana 全角英数字を半角に変換
      */
     protected function _typePostcodeFormat(&$ValidationData, &$kana)
@@ -1794,7 +1806,7 @@ class EnviValidator
     /**
      * メールアドレス
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $kana 全角英数字を半角に変換
      */
     protected function _typeMail(&$ValidationData, &$kana)
@@ -1814,7 +1826,7 @@ class EnviValidator
     /**
      * URL
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $kana 全角英数字を半角に変換
      */
     protected function _typeUrl(&$ValidationData, &$kana)
@@ -1835,7 +1847,7 @@ class EnviValidator
     /**
      * WhiteListに入っているデータかどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param array $White_list ホワイトリスト
      */
     protected function _typeWhiteList(&$ValidationData, &$WhiteList)
@@ -1854,7 +1866,7 @@ class EnviValidator
      * YYYYMMDDフォーマットのデータの他に、配列を使用することが出来ます。
      * $DateListに、年月日に対応する配列名を入れる事で日付配列のチェックも出来ます。
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param array,bool $DateList array(month(月の配列名),day(日の配列名),year(年の配列名))
      */
     protected function _typeDate(&$ValidationData, &$DateList)
@@ -1897,7 +1909,7 @@ class EnviValidator
      * HH || HHMM || HHMMSS フォーマットのデータの他に、配列を使用することが出来ます。
      * $DateListに、時分病秒に対応する配列名を入れる事で時間配列のチェックも出来ます。
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param array,int $TimeFormat array(hour(時の配列名),minute(分の配列名),second(秒の配列名)),VM_HOUR_ONLY,VM_HOUR_TO_MINUTE,VM_HOUR_TO_SECOND
      */
     protected function _typeTime(&$ValidationData, &$TimeFormat)
@@ -1939,7 +1951,7 @@ class EnviValidator
     /**
      * 配列かどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $dummy ダミー変数
      */
     protected function _typeArray(&$ValidationData, $dummy)
@@ -1950,7 +1962,7 @@ class EnviValidator
     /**
      * 配列で無いかかどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $dummy ダミー変数
      */
     protected function _typeNotArray(&$ValidationData, $dummy)
@@ -1961,7 +1973,7 @@ class EnviValidator
     /**
      * 配列で送信されたデータで、指定されたキーが送信されているかどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param array|string|int $keys キー
      */
     protected function _typeArrayKeyExists(&$ValidationData, $keys)
@@ -1983,7 +1995,7 @@ class EnviValidator
     /**
      * 数字のみの配列かどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param boolean $dummy ダミー変数
      */
     protected function _typeArrayNumber(&$ValidationData, $dummy)
@@ -2003,7 +2015,7 @@ class EnviValidator
     /**
      * 数字のみの配列の合計が既定値以内かどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param integer $max 最大値
      */
     protected function _typeArrayNumberMax(&$ValidationData, &$max)
@@ -2017,7 +2029,7 @@ class EnviValidator
     /**
      * 数字のみの配列の合計が既定値以上かどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param integer $min 最小値
      */
     protected function _typeArrayNumberMin(&$ValidationData, &$min)
@@ -2031,7 +2043,7 @@ class EnviValidator
     /**
      * 配列の数が指定より少ないか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param integer $max 最大値
      */
     protected function _typeArrayCountMax(&$ValidationData, &$max)
@@ -2045,7 +2057,7 @@ class EnviValidator
     /**
      * 配列の数が指定より多いか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param integer $min 最小値
      */
     protected function _typeArrayCountMin(&$ValidationData, &$min)
@@ -2059,7 +2071,7 @@ class EnviValidator
     /**
      * 改行数が指定より少ないか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param integer $max 最大値
      */
     protected function _typeMaxBr(&$ValidationData, &$max)
@@ -2073,7 +2085,7 @@ class EnviValidator
     /**
      * 改行数が指定より多いか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param integer $min 最小値
      */
     protected function _typeMinBr(&$ValidationData, &$min)
@@ -2087,8 +2099,8 @@ class EnviValidator
     /**
      * 指定されたファイルが、指定されたディレクトリ上にあるか
      *
-     * @param strings $ValidationData 入力検証を行う変数
-     * @param strings $ 最小値
+     * @param string $ValidationData 入力検証を行う変数
+     * @param string $ 最小値
      */
     protected function _typeDirPath(&$ValidationData, &$path)
     {
@@ -2101,7 +2113,7 @@ class EnviValidator
     /**
      * 指定されたファイルが存在するかどうか
      *
-     * @param strings $ValidationData 入力検証を行う変数
+     * @param string $ValidationData 入力検証を行う変数
      * @param string $dummy ダミー変数
      */
     protected function _typeFile(&$ValidationData, $dummy)
@@ -2116,7 +2128,7 @@ class EnviValidator
     /**
      * 正規表現にマッチするかどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param string $regformat 正規表現文字列
      */
     protected function _typeEreg(&$ValidationData, &$regformat)
@@ -2130,7 +2142,7 @@ class EnviValidator
     /**
      * 正規表現にマッチするかどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param string $regformat 正規表現文字列
      */
     protected function _typePreg(&$ValidationData, &$regformat)
@@ -2144,7 +2156,7 @@ class EnviValidator
     /**
      * すべての値がユニークな配列かどうか
      *
-     * @param strings,array $ValidationData 入力検証を行う変数
+     * @param string,array $ValidationData 入力検証を行う変数
      * @param string $skip_blank 空の値をスキップして、ユニークチェックするかどうか (OPTIONAL)
      */
     protected function _typeArrayUnique($ValidationData, $skip_blank = true)

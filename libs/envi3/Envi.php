@@ -356,7 +356,7 @@ class Envi
      *
      * @var         string
      */
-    const VERSION        = '3.4.8.0';
+    const VERSION        = '3.4.9.0';
 
     /**
      * メジャーバージョン番号を返す
@@ -377,7 +377,7 @@ class Envi
      *
      * @var         int
      */
-    const RELEASE_VERSION  = 8;
+    const RELEASE_VERSION  = 9;
 
     /**
      * テストバージョン番号を返す
@@ -1343,7 +1343,7 @@ class Envi
      * +-- auto_load_classes_cacheの作成
      *
      * @access      protected
-     * @param       var_text $auto_load_classes_cache
+     * @param       string $auto_load_classes_cache
      * @return      void
      * @doc_ignore
      */
@@ -1376,8 +1376,8 @@ class Envi
      * +-- サブモジュールを読み込む
      *
      * @access      protected
-     * @param       var_text $dir_name
-     * @param       var_text $name_space
+     * @param       string $dir_name
+     * @param       string $name_space
      * @param       boolean $is_psr OPTIONAL:true
      * @param       boolean $use_namespace OPTIONAL:false
      * @return      array
@@ -1422,7 +1422,7 @@ class Envi
      * +-- autoload_constant_cacheの作成
      *
      * @access      protected
-     * @param       var_text $autoload_constant_cache
+     * @param       string $autoload_constant_cache
      * @return      void
      * @doc_ignore
      */

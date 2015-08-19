@@ -112,7 +112,7 @@ class ParsePHP
      *
      * @final
      * @access      public
-     * @param       var_text $contents
+     * @param       string $contents
      * @return      void
      */
     final public function parseFile($contents)

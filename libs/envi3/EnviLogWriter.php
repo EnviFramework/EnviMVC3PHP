@@ -1469,8 +1469,8 @@ class EnviLogWriterConsoleLog extends EnviLogWriterConsole
      * +-- システムログ(直接コールできません)
      *
      * @access      public
-     * @param       var_text $log_text
-     * @param       var_text $log_type
+     * @param       string $log_text
+     * @param       string $log_type
      * @return      void
      */
     public function _systemLog($log_text, $log_type)

@@ -207,7 +207,7 @@ class EnviMigrationCmd
      * +-- Downを実行する
      *
      * @access      public
-     * @param       var_text $count OPTIONAL:1
+     * @param       integer $count OPTIONAL:1
      * @return      void
      */
     public function executeDown($count = 1)

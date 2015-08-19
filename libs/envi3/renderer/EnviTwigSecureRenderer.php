@@ -74,7 +74,7 @@ class EnviTwigSecureRenderer
      * +-- 設定を行う
      *
      * @access      public
-     * @param       var_text $module_dir
+     * @param       string $module_dir
      * @return      void
      * @doc_ignore
      */

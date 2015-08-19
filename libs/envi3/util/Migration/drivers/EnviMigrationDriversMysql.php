@@ -245,7 +245,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * @access      public
      * @param       string $table_name テーブル名
      * @param       string $column_name カラム名
-     * @param       var_text $default_val
+     * @param       string $default_val
      * @return      void
      */
     public function changeColumnDefault($table_name, $column_name, $default_val)
@@ -467,7 +467,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * @access      public
      * @param       string $table_name テーブル名
      * @param       string $column_name カラム名
-     * @param       var_text $new_column_name
+     * @param       string $new_column_name
      * @return      void
      */
     public function renameColumn($table_name, $column_name, $new_column_name)
@@ -499,8 +499,8 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      *
      * @access      public
      * @param       string $table_name テーブル名
-     * @param       var_text $old_name
-     * @param       var_text $new_name
+     * @param       string $old_name   古いインデックス名
+     * @param       string $new_name   新しいインデックス名
      * @return      void
      */
     public function renameIndex($table_name, $old_name, $new_name)
@@ -523,7 +523,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      *
      * @access      public
      * @param       string $table_name テーブル名
-     * @param       var_text $new_name
+     * @param       string $new_name   変更後のテーブル名
      * @return      void
      */
     public function renameTable($table_name, $new_name)
