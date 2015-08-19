@@ -47,7 +47,7 @@ class _____model_pascal_case_name_____Peer extends /*%%model_base_name_space%%*/
      *
      * @access      public
      * @static
-     * @param       var_text $con OPTIONAL:NULL
+     * @param       EnviDBIBase $con OPTIONAL:NULL
      * @return      array
      */
     public static function getAllByArray($con = NULL)

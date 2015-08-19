@@ -578,7 +578,7 @@ class EnviDBIBase
      * +-- クエリログ記録
      *
      * @access      private
-     * @param       var_text $log
+     * @param       string $log
      * @return      void
      * @doc_ignore
      */
