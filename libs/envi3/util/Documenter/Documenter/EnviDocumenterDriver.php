@@ -77,10 +77,18 @@ class EnviDocumenterDriver
      */
     public function writePathToManPath($write_path)
     {
+
+        $write_path = str_replace("\\", '/', $write_path);
         mb_ereg('document/man/(.*).md$', realpath($write_path), $man_path);
+
         return '/c/man/v3/'.$man_path[1];
     }
     /* ----------------------------------------- */
+
+    public function toPath($path)
+    {
+        return mb_ereg_replace("\\\\", '/', $path);
+    }
 
     /**
      * +-- コンスタントドライバ
@@ -248,9 +256,10 @@ class EnviDocumenterDriver
         include $tpl_path;
         $res = ob_get_contents();
         ob_end_clean();
-        @mkdir(dirname($write_path), 0777, true);
-        file_put_contents($write_path, $res);
-        $this->documenter->cliWrite($write_path);
+        $this->documenter->cliWrite(dirname($this->toPath($write_path)));
+        @mkdir(dirname($this->toPath($write_path)), 0777, true);
+        file_put_contents($this->toPath($write_path), $res);
+        $this->documenter->cliWrite($this->toPath($write_path));
     }
 
 
