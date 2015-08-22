@@ -377,7 +377,7 @@ class Envi
      *
      * @var         int
      */
-    const RELEASE_VERSION  = 9;
+    const RELEASE_VERSION  = 10;
 
     /**
      * テストバージョン番号を返す
