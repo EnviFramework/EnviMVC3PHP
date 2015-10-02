@@ -89,12 +89,12 @@ if (PHP_MINOR_VERSION >= 3) {
 if (strlen($model_name_space)) {
     $model_name_space_name = "\\".$model_name_space."\\";
     $model_name_space = 'namespace ' . $model_name_space .';';
-    $model_name_space_use = "\nuse \\EnviOrMapBase;\nuse \\EnviOrMapPeerBase;\nuse \\EnviDBInstance;\nuse \\EnviDB;\nuse \\EnviException;\nuse \\EnviDBIBase;\n";
+    $model_name_space_use = "\nuse \\EnviOrMapBase;\nuse \\EnviOrMapPeerBase;\nuse \\EnviDBInstance;\nuse \\EnviDB;\nuse \\EnviException;\nuse \\EnviDBIBase;\nuse \\EnviDataCache;\n";
 }
 if (strlen($model_base_name_space)) {
     $model_base_name_space_name = "\\".$model_base_name_space."\\";
     $model_base_name_space     = 'namespace ' . $model_base_name_space .';';
-    $model_base_name_space_use = "\nuse \\EnviOrMapBase;\nuse \\EnviOrMapPeerBase;\nuse \\EnviDBInstance;\nuse \\EnviDB;\nuse \\EnviException;\nuse \\EnviDBIBase;\n";
+    $model_base_name_space_use = "\nuse \\EnviOrMapBase;\nuse \\EnviOrMapPeerBase;\nuse \\EnviDBInstance;\nuse \\EnviDB;\nuse \\EnviException;\nuse \\EnviDBIBase;\nuse \\EnviDataCache;\n";
 }
 
 
