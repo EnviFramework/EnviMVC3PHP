@@ -356,7 +356,7 @@ class Envi
      *
      * @var         string
      */
-    const VERSION        = '3.4.9.0';
+    const VERSION        = '3.4.10.0';
 
     /**
      * メジャーバージョン番号を返す
