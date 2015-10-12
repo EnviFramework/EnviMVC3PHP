@@ -5,7 +5,7 @@
      * @access      public
      * @return      void
      */
-    public function add%%fk_name%%($%%fk_name%%))
+    public function add%%fk_name%%($%%fk_name%%)
     {
        $this->%%fk_name%% = $%%fk_name%%;
     }
