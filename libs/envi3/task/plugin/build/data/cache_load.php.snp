@@ -1,6 +1,9 @@
 
         $pkeys = func_get_args();
-        array_pop($pkeys);
+        $k = count($pkeys) - 1;
+        if ($pkeys[$k] instanceof EnviDBIBase) {
+              unset($pkeys[$k]);
+        }
         
         $res = EnviDataCache::fetchByPk(json_encode($pkeys), %%class_name%%Peer::$table_name);
         if ($res) {
