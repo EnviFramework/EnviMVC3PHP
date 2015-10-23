@@ -356,7 +356,7 @@ class Envi
      *
      * @var         string
      */
-    const VERSION        = '3.4.12.0';
+    const VERSION        = '3.4.13.0';
 
     /**
      * メジャーバージョン番号を返す
@@ -377,7 +377,7 @@ class Envi
      *
      * @var         int
      */
-    const RELEASE_VERSION  = 12;
+    const RELEASE_VERSION  = 13;
 
     /**
      * テストバージョン番号を返す
@@ -393,6 +393,7 @@ class Envi
     protected $_i18n = array();
     public $module_dir;
     public $autoload_dirs;
+    public $autoload_base_dirs;
     protected static $instance;
     public static $debug;
 
@@ -428,15 +429,15 @@ class Envi
             );
         }
 
-        $this->autoload_dirs = array_merge(
-            array(
-                array('path' => ENVI_BASE_DIR, 'is_psr' => false),
-            ), $this->_system_conf['AUTOLOAD']
-        );
         $auto_load_classes_cache = ENVI_MVC_CACHE_PATH.self::$app_key.'.'.ENVI_ENV.'.auto_load_files.envicc';
         if (!$debug && is_file($auto_load_classes_cache)) {
             $this->auto_load_classes = $this->configUnSerialize($auto_load_classes_cache);
         } else {
+            $this->autoload_dirs = array_merge(
+                array(
+                    array('path' => ENVI_BASE_DIR, 'is_psr' => false),
+                ), $this->_system_conf['AUTOLOAD']
+            );
             $this->makeAutoLoadClassesCache($auto_load_classes_cache);
         }
     }
@@ -1351,26 +1352,32 @@ class Envi
     {
         // 名前空間が利用できるバージョンかどうか
         $use_namespace = (PHP_MINOR_VERSION >= 3 || PHP_MAJOR_VERSION > 5);
+        $this->autoload_base_dirs = array();
         foreach ($this->autoload_dirs as $key => $dir) {
             $is_psr = $use_namespace;
-            if (is_array($dir)) {
-                $is_psr = (isset($dir['is_psr']) && $use_namespace) ? $dir['is_psr'] : $is_psr;
-                $dir    = $dir['path'];
+            if (!is_array($dir)) {
+                $dir = array(
+                    'is_psr' => false,
+                    'path' => $dir,
+                );
             }
-            $dir = realpath($dir);
-            if (strlen($dir) === 0) {
-                throw new EnviException($this->autoload_dirs[$key].' is non exists aut load dir.');
+            $dir['path'] = realpath($dir['path']);
+            if (strlen($dir['path']) === 0) {
+                throw new EnviException($this->autoload_dirs[$key]['path'].' is non exists aut load dir.');
                 continue;
             }
-            $this->autoload_dirs[$key] = $dir.DIRECTORY_SEPARATOR;
+            $dir['path'] .= DIRECTORY_SEPARATOR;
+            $this->autoload_dirs[$key] = $dir;
+            $this->autoload_base_dirs[$key] = $dir['path'];
         }
 
-        foreach ($this->autoload_dirs as $dir_name) {
-            $this->auto_load_classes = array_merge($this->auto_load_classes, $this->mkAutoLoadSubmodules($dir_name, '', $is_psr, $use_namespace));
+        foreach ($this->autoload_dirs as $dir) {
+            $this->auto_load_classes = array_merge($this->auto_load_classes, $this->mkAutoLoadSubmodules($dir['path'], '', $dir['is_psr'], $use_namespace));
         }
         $this->configSerialize($auto_load_classes_cache, $this->auto_load_classes);
     }
     /* ----------------------------------------- */
+
 
     /**
      * +-- サブモジュールを読み込む
@@ -1386,7 +1393,7 @@ class Envi
     protected function mkAutoLoadSubmodules($dir_name, $name_space, $is_psr = true, $use_namespace = false)
     {
         $dir_name = realpath($dir_name).DIRECTORY_SEPARATOR;
-        if (array_search($dir_name, $this->autoload_dirs) !== false && $name_space !== '') {
+        if (array_search($dir_name, $this->autoload_base_dirs) !== false && $name_space !== '') {
             return array();
         }
         if (!is_dir($dir_name)) {
