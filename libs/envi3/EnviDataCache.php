@@ -56,8 +56,8 @@ class EnviDataCache
         }
         if ($use_apc) {
             $res = apc_fetch($key);
-            self::$local_cache = $res;
-            return self::$local_cache;
+            self::$local_cache[$key] = $res;
+            return self::$local_cache[$key];
         }
         return false;
     }
@@ -79,7 +79,11 @@ class EnviDataCache
         $key = self::getKey($pk, $class_name);
         self::$local_cache[$key] = $data;
         if ($use_apc) {
-            $res = apc_store($key, $data, 120);
+            $ttl = 120;
+            if ($data instanceof EnviOrMapBase) {
+                $ttl = $data->cache_ttl ? $data->cache_ttl : 120;
+            }
+            $res = apc_store($key, $data, $ttl);
         }
         return false;
     }
