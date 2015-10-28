@@ -48,6 +48,8 @@ abstract class EnviOrMapBase
 
     protected $default_instance_name = 'default_master';
 
+    public $cache_ttl = 120;
+
     /**
      * +-- insertならtrue,updateならfalseを返す
      *

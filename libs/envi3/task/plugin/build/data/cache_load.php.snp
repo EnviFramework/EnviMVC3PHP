@@ -4,8 +4,8 @@
         if ($pkeys[$k] instanceof EnviDBIBase) {
               unset($pkeys[$k]);
         }
-        
-        $res = EnviDataCache::fetchByPk(json_encode($pkeys), %%class_name%%Peer::$table_name);
+        $use_apc = %%use_apc%%;
+        $res = EnviDataCache::fetchByPk(join(':', $pkeys), %%class_name%%Peer::$table_name, $use_apc);
         if ($res) {
             return $res;
         }

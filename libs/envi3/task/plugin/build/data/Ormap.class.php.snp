@@ -37,5 +37,6 @@
 class %%class_name%% extends %%model_base_name_space_name%%Base%%class_name%%
 {
 
+    public $cache_ttl = 120;
 
 }
