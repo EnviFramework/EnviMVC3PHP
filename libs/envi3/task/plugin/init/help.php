@@ -32,7 +32,7 @@ cecho('    init-module <app name> <module name>                 ', 32, '\n      
 cecho('    init-action <app name> <module name> <action name> (<return_str>)  ', 32, '\n       アクションの作成(action)');
 cecho('    init-view <app name> <module name> <action name>     ', 32, '\n       ビューの作成(view)');
 cecho('    init-scaffold <app name> <module name> <column_name>:<data_type>:<form_name>,([not_null]),([unique]),([default]:<デフォルトパラメータ>),(<バリデーション>)     ', 32, '\n       自動的にベースファイルを作成します');
-cecho('    init-migratipn <app_name> <migration_name>            ', 32, '\n       マイグレーションクラスファイルを作成します。');
+cecho('    init-migration <app_name> <migration_name>            ', 32, '\n       マイグレーションクラスファイルを作成します。');
 
 exit;
 die;

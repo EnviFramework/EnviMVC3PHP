@@ -52,19 +52,27 @@ class EnviSmarty3SecureRenderer
     public $_compile_id;
     public $Smarty;
 
+    /**
+     * +-- コンストラクタ
+     *
+     * @access      public
+     * @return      void
+     * @doc_ignore
+     */
     public function __construct()
     {
         $this->_compile_id  = EnviRequest::getThisModule();
         $this->_system_conf = Envi()->getConfigurationAll();
         $this->setting(EnviRequest::getThisModule());
     }
+    /* ----------------------------------------- */
 
 
     /**
      * +-- 設定を行う
      *
      * @access      public
-     * @param       var_text $module_dir
+     * @param       string $module_dir
      * @return      void
      * @doc_ignore
      */

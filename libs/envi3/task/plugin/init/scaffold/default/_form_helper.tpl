@@ -1,7 +1,9 @@
 <div class="form-group<%if $error && $error.keys.$name && $custom_error !== false%> has-error<%/if%>">
 <%if $type == 'textarea'%>
-  <label for="form_<%$name%>"><%$form_name%></label>
-  <textarea type="<%$type%>" name="<%$name%>" class="form-control" id="form_<%$name%>" placeholder="<%$form_name%>" rows="<%$rows|default:3%>"><%$smarty.post.$name|default:$default%></textarea>
+  <%if !$hidden_label%>
+  <label for="form_<%$name%>"><%$form_name%><%if $required%><span class="label label-danger"><%$required_text|default:"必須"%></span><%/if%></label>
+  <%/if%>
+  <textarea type="<%$type%>" name="<%$name%>" class="form-control<%if $class%> <%$class%><%/if%>" id="form_<%$name%>" placeholder="<%$form_name%>" rows="<%$rows|default:3%>"<%if $required%> required<%/if%>><%$smarty.post.$name|default:$default%></textarea>
 
 <%elseif $type == 'datetime'%>
   <%assign var="datetime_date_key" value="`$name`_date"%>
@@ -9,35 +11,53 @@
   <%assign var="datetime_date_default" value=$default|substr:0:10%>
   <%assign var="datetime_time_default" value=$default|substr:-8:5%>
 
-  <label for="form_<%$name%>"><%$form_name%></label>
-  <input type="date" name="<%$name%>_date" id="form_<%$name%>" value="<%$smarty.post.$datetime_date_key|default:$datetime_date_default%>">
-  <input type="time" name="<%$name%>_time" id="form_<%$name%>" value="<%$smarty.post.$datetime_time_key|default:$datetime_time_default%>">
+  <%if !$hidden_label%>
+  <label for="form_<%$name%>"><%$form_name%><%if $required%><span class="label label-danger"><%$required_text|default:"必須"%></span><%/if%></label>
+  <%/if%>
+  <input type="date" name="<%$name%>_date" id="form_<%$name%>"<%if $class%> class="<%$class%>"<%/if%> value="<%$smarty.post.$datetime_date_key|default:$datetime_date_default%>"<%if $required%> required<%/if%>>
+  <input type="time" name="<%$name%>_time" id="form_<%$name%>"<%if $class%> class="<%$class%>"<%/if%> value="<%$smarty.post.$datetime_time_key|default:$datetime_time_default%>"<%if $required%> required<%/if%>>
 
 <%elseif $type == 'date'%>
-  <label for="form_<%$name%>"><%$form_name%></label>
-  <input type="date" name="<%$name%>" class="form-control" id="form_<%$name%>" placeholder="<%$form_name%>" value="<%$smarty.post.$name|default:$default%>">
+  <%if !$hidden_label%>
+  <label for="form_<%$name%>"><%$form_name%><%if $required%><span class="label label-danger"><%$required_text|default:"必須"%></span><%/if%></label>
+  <%/if%>
+  <input type="date" name="<%$name%>" class="form-control<%if $class%> <%$class%><%/if%>" id="form_<%$name%>" placeholder="<%$form_name%>" value="<%$smarty.post.$name|default:$default%>"<%if $required%> required<%/if%>>
 
 <%elseif $type == 'time'%>
-  <label for="form_<%$name%>"><%$form_name%></label>
-  <input type="time" name="<%$name%>" class="form-control" id="form_<%$name%>" placeholder="<%$form_name%>" value="<%$smarty.post.$name|default:$default%>">
+  <%if !$hidden_label%>
+  <label for="form_<%$name%>"><%$form_name%><%if $required%><span class="label label-danger"><%$required_text|default:"必須"%></span><%/if%></label>
+  <%/if%>
+  <input type="time" name="<%$name%>" class="form-control<%if $class%> <%$class%><%/if%>" id="form_<%$name%>" placeholder="<%$form_name%>" value="<%$smarty.post.$name|default:$default%>"<%if $required%> required<%/if%>>
 
 <%elseif $type == 'select'%>
-  <label for="form_<%$name%>"><%$form_name%></label>
-  <select name="<%$name%>" id="form_<%$name%>" class="form-control">
+  <%if !$hidden_label%>
+  <label for="form_<%$name%>"><%$form_name%><%if $required%><span class="label label-danger"><%$required_text|default:"必須"%></span><%/if%></label>
+  <%/if%>
+  <select name="<%$name%>" id="form_<%$name%>" class="form-control<%if $class%> <%$class%><%/if%>"<%if $required%> required<%/if%>>
     <%html_options selected=$smarty.post.$name|default:$default options=$options%>
   </select>
 
 <%elseif $type == 'radio'%>
-  <label for="form_<%$name%>"><%$form_name%></label>
+  <%if !$hidden_label%>
+  <label for="form_<%$name%>"><%$form_name%><%if $required%><span class="label label-danger"><%$required_text|default:"必須"%></span><%/if%></label>
+  <%/if%>
+  <div class="form-group">
   <%html_radios name=$name selected=$smarty.post.$name|default:$default options=$options separator=$separator|default:""%>
+  </div>
 
 <%elseif $type == 'checkbox'%>
-  <label for="form_<%$name%>"><%$form_name%></label>
+  <%if !$hidden_label%>
+  <label for="form_<%$name%>"><%$form_name%><%if $required%><span class="label label-danger"><%$required_text|default:"必須"%></span><%/if%></label>
+  <%/if%>
+  <div class="form-group">
   <%html_checkboxes name="`$name`[]" selected=$smarty.post.$name|default:$default options=$options separator=$separator|default:""%>
+  </div>
 
 <%elseif $type == 'flag'%>
-  <label for="form_<%$name%>"><%$form_name%></label>
-  <input type="checkbox" name="<%$name%>" id="form_<%$name%>" value="1"<%if $default || $smarty.post.$name%> checked="checked"<%/if%>>
+  <%if !$hidden_label%>
+  <label for="form_<%$name%>"><%$form_name%><%if $required%><span class="label label-danger"><%$required_text|default:"必須"%></span><%/if%></label>
+  <%/if%>
+  <input type="checkbox" name="<%$name%>" id="form_<%$name%>"<%if $class%> class="<%$class%>"<%/if%> value="1"<%if $default || $smarty.post.$name%> checked="checked"<%/if%>>
 
 <%elseif $type == 'zip_code'%>
   <%assign var="zip_code_f_key" value="`$name`_f"%>
@@ -45,22 +65,26 @@
   <%assign var="zip_code_f_default" value=$default|substr:0:3%>
   <%assign var="zip_code_a_default" value=$default|substr:-4:4%>
 
-  <label for="form_<%$name%>"><%$form_name%></label>
+  <%if !$hidden_label%>
+  <label for="form_<%$name%>"><%$form_name%><%if $required%><span class="label label-danger"><%$required_text|default:"必須"%></span><%/if%></label>
+  <%/if%>
     <div class="row">
       <div class="col-xs-3">
-      <input type="text" name="<%$name%>_f" class="form-control" id="form_<%$name%>_first" placeholder="<%$form_name_f%>" value="<%$smarty.post.$zip_code_f_key|default:$zip_code_f_default%>" size="3">
+      <input type="text" name="<%$name%>_f" class="form-control<%if $class%> <%$class%><%/if%>" id="form_<%$name%>_first" placeholder="<%$form_name_f%>" value="<%$smarty.post.$zip_code_f_key|default:$zip_code_f_default%>" size="3"<%if $required%> required<%/if%>>
       </div>
       <div class="col-xs-1">
       -
       </div>
       <div class="col-xs-4">
-      <input type="text" name="<%$name%>_a" class="form-control" id="form_<%$name%>_last" placeholder="<%$form_name_a%>" value="<%$smarty.post.$zip_code_a_key|default:$zip_code_a_default%>" size="4">
+      <input type="text" name="<%$name%>_a" class="form-control<%if $class%> <%$class%><%/if%>" id="form_<%$name%>_last" placeholder="<%$form_name_a%>" value="<%$smarty.post.$zip_code_a_key|default:$zip_code_a_default%>" size="4"<%if $required%> required<%/if%>>
       </div>
     </div>
 
 <%else%>
-  <label for="form_<%$name%>"><%$form_name%></label>
-  <input type="<%$type%>" name="<%$name%>" class="form-control" id="form_<%$name%>" placeholder="<%$form_name%>" value="<%$smarty.post.$name|default:$default%>">
+  <%if !$hidden_label%>
+  <label for="form_<%$name%>"><%$form_name%><%if $required%><span class="label label-danger"><%$required_text|default:"必須"%></span><%/if%></label>
+  <%/if%>
+  <input type="<%$type%>" name="<%$name%>" class="form-control<%if $class%> <%$class%><%/if%>" id="form_<%$name%>" placeholder="<%$form_name%>" value="<%$smarty.post.$name|default:$default%>"<%if $required%> required<%/if%>>
 
 <%/if%>
   <%if $error && $error.keys.$name && $custom_error !== false%>

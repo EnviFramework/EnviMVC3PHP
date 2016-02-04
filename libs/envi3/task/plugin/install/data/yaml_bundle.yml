@@ -1,0 +1,23 @@
+
+name: "package_name"
+type": "extension"
+description: "package_description"
+keywords: "",
+homepage: "",
+license: "LGPL-3.0"
+authors:
+    name: "suzunone"
+    email: "suzunone.eleven@gmail.com"
+support:
+    irc: ""
+    issues: ""
+    forum: ""
+require: {
+    php: ">=5.2"
+    envi: ">=3.0"
+install_version: "@new"
+installmode: "git"
+depend:
+    package_name:
+        path: "相対パス"
+        install_version: "@new"

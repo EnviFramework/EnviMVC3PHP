@@ -631,7 +631,7 @@ class EnviRequest
      *
      * @access public
      * @static
-     * @params array $data
+     * @param array $data
      * @return void
      * @doc_ignore
      */

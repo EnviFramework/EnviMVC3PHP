@@ -7,7 +7,7 @@
 /*%%confirm_text%%*/
 
 
-<button type="submit" name="commit" value="送信">送信</button>
+<button type="submit" name="commit" value="送信" class="btn btn-primary">送信</button>
 </form>
 
 

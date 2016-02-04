@@ -67,6 +67,7 @@ if (isOption('--help') || isOption('-h') || isOption('-?') || !isset($argv[1])) 
 
     cecho('install:', 33);
     cecho('    -help                                ', 32, '\n       マニュアルの表示');
+    cecho('    -bundle                              ', 32, '\n       パッケージを追加・更新・削除します');
     cecho('    -extension                           ', 32, '\n       エクステンションのインストールをおこなう');
 
     cecho('yml:', 33);

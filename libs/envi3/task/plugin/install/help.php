@@ -25,6 +25,7 @@ cecho('    envi ', 34, '\n         Enviに対する操作を行います');
 cecho('Usage:', 33);
     echo '    envi task_name [arguments] [Options]'."\n";
 cecho('Task name:', 33);
+cecho('    install-bundle {new|update|delete} <bundle.yml uri(or path)>                         ', 32, '\n       パッケージを追加・更新・削除します\n        envi bundle-bundle <mode> <bundle.yml uri(or path)>');
 cecho('    install-extension <app_key> <di_yaml path> <extension name>                          ', 32, '\n       エクステンションをインストールします\n       envi install-extension <app_key> <di_yaml path> <extension name>');
 
 cecho('    install-help                       ', 32, '\n        このヘルプを表示します');

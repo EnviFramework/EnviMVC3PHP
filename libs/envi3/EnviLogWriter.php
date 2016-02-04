@@ -584,24 +584,12 @@ class EnviLogWriter
             return true;
         }
 
-        $gc = debug_backtrace();
-        $debug = $gc[0];
-        if (isset($debug['class']) ? $debug['class'] !== 'EnviLogWriter' : true) {
-            $res = array(
-                'time'        => $_SERVER['REQUEST_TIME'],
-                'line'        => $debug['line'],
-                'file'        => $debug['file'],
-                'performance' => $this->getExecutionTime(),
-            );
-        } else {
-            $debug = $gc[1];
-            $res = array(
-                'time'        => $_SERVER['REQUEST_TIME'],
-                'line'        => $debug['line'],
-                'file'        => $debug['file'],
-                'performance' => $this->getExecutionTime(),
-            );
-        }
+        $res = array(
+            'time'        => $_SERVER['REQUEST_TIME'],
+            'line'        => 'shutdown',
+            'file'        => $_SERVER['REQUEST_URI'],
+            'performance' => $this->getExecutionTime(),
+        );
 
         if ($this->_system_conf['system']['flag_use_response_log']) {
             if ($this->_system_conf['system']['value_request_log_type'] === self::PURSER_TEXT) {
@@ -1469,8 +1457,8 @@ class EnviLogWriterConsoleLog extends EnviLogWriterConsole
      * +-- システムログ(直接コールできません)
      *
      * @access      public
-     * @param       var_text $log_text
-     * @param       var_text $log_type
+     * @param       string $log_text
+     * @param       string $log_type
      * @return      void
      */
     public function _systemLog($log_text, $log_type)

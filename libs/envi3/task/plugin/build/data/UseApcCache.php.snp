@@ -14,6 +14,6 @@
         foreach ($this->pkeys as $key) {
             $pk_data[] = $arr[$key];
         }
-        EnviDataCache::storeByPk(json_encode($pk_data), $this->table_name, $this, true);
+        EnviDataCache::storeByPk(join(':', $pk_data), $this->table_name, $this, true);
     }
     /* ----------------------------------------- */

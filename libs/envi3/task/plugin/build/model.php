@@ -73,6 +73,8 @@ $getter_setter_text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPAR
 // ネームスペース
 $model_name_space       = '';
 $model_base_name_space  = '';
+$model_name_space_name       = '';
+$model_base_name_space_name  = '';
 
 $model_name_space_use   = '';
 $base_model_name_space_use   = '';
@@ -85,12 +87,14 @@ if (PHP_MINOR_VERSION >= 3) {
 
 }
 if (strlen($model_name_space)) {
+    $model_name_space_name = "\\".$model_name_space."\\";
     $model_name_space = 'namespace ' . $model_name_space .';';
-    $model_name_space_use = "\nuse \\EnviOrMapBase;\nuse \\EnviOrMapPeerBase;\nuse \\EnviDBInstance;\nuse \\EnviDB;\nuse \\EnviException;\nuse \\EnviDBIBase;\n";
+    $model_name_space_use = "\nuse \\EnviOrMapBase;\nuse \\EnviOrMapPeerBase;\nuse \\EnviDBInstance;\nuse \\EnviDB;\nuse \\EnviException;\nuse \\EnviDBIBase;\nuse \\EnviDataCache;\n";
 }
 if (strlen($model_base_name_space)) {
+    $model_base_name_space_name = "\\".$model_base_name_space."\\";
     $model_base_name_space     = 'namespace ' . $model_base_name_space .';';
-    $model_base_name_space_use = "\nuse \\EnviOrMapBase;\nuse \\EnviOrMapPeerBase;\nuse \\EnviDBInstance;\nuse \\EnviDB;\nuse \\EnviException;\nuse \\EnviDBIBase;\n";
+    $model_base_name_space_use = "\nuse \\EnviOrMapBase;\nuse \\EnviOrMapPeerBase;\nuse \\EnviDBInstance;\nuse \\EnviDB;\nuse \\EnviException;\nuse \\EnviDBIBase;\nuse \\EnviDataCache;\n";
 }
 
 
@@ -131,9 +135,11 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
 
     $insert_date = isset($schema['insert_date']) ? $schema['insert_date'] : '';
     $update_date = isset($schema['update_date']) ? $schema['update_date'] : '';
+    $time_stamp = isset($schema['time_stamp']) ? $schema['time_stamp'] : '';
+    $auto_increment = isset($schema['auto_increment']) ? $schema['auto_increment'] : '';
 
 
-    $sql = "SELECT * FROM {$table_name} ";
+    $sql = "SELECT * FROM __TABLE__ ";
     $func_args = array();
     $pkeys = array();
     $comma = '';
@@ -145,6 +151,14 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
             $and = 'AND ';
             $func_args[] = '$pkey'.count($func_args);
             $pkeys[] = "'{$column}'";
+        }
+        if (isset($status['type']) && $status['type'] === 'timestamp') {
+            // クエリ作成に関係ないけど、タイムスタンプ型のチェック
+            $time_stamp = $column;
+        }
+        if (isset($status['auto_increment']) && $status['auto_increment'] == true) {
+            // クエリ作成に関係ないけど、auto_incrementのチェック
+            $auto_increment = $column;
         }
         $getter_setter .= str_replace(
             array('%%method%%', '%%column%%'),
@@ -184,17 +198,17 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
     if ($use_cache) {
         $cache_load = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'cache_load.php.snp');
         $cache_load = str_replace(
-            array('%%model_name_space%%', '%%model_base_name_space%%', '%%model_name_space_use%%', '%%model_base_name_space_use%%', '%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%',
-                '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%', '%%cache_hydrate%%', '%%fk_getter%%', '%%fk_cache_item%%'),
-            array($model_name_space, $model_base_name_space, $model_name_space_use, $model_base_name_space_use, $class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array, $cache_hydrate, $fk_getter, $fk_cache_item),
+            array('%%model_name_space_name%%', '%%model_base_name_space_name%%', '%%model_name_space%%', '%%model_base_name_space%%', '%%model_name_space_use%%', '%%model_base_name_space_use%%', '%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%',
+                '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%', '%%cache_hydrate%%', '%%fk_getter%%', '%%fk_cache_item%%', '%%use_apc%%'),
+            array($model_name_space_name, $model_base_name_space_name, $model_name_space, $model_base_name_space, $model_name_space_use, $model_base_name_space_use, $class_name, $instance_name, $sql, join(".':'.", $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array, $cache_hydrate, $fk_getter, $fk_cache_item, $use_apc_cache ? 'true' : 'false'),
             $cache_load
         );
     }
 
     $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'OrmapPeer.class.php.snp');
     $text = str_replace(
-        array('%%model_name_space%%', '%%model_base_name_space%%', '%%model_name_space_use%%', '%%model_base_name_space_use%%', '%%insert_date%%', '%%update_date%%', '%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%', '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%'),
-        array($model_name_space, substr($model_base_name_space, 0, -1)."\\", $model_name_space_use, $model_base_name_space_use, $insert_date, $update_date, $class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array),
+        array('%%model_name_space_name%%', '%%model_base_name_space_name%%', '%%model_name_space%%', '%%model_base_name_space%%', '%%model_name_space_use%%', '%%model_base_name_space_use%%', '%%insert_date%%', '%%update_date%%', '%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%', '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%'),
+        array($model_name_space_name, $model_base_name_space_name, $model_name_space, substr($model_base_name_space, 0, -1)."\\", $model_name_space_use, $model_base_name_space_use, $insert_date, $update_date, $class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array),
         $text
     );
     if (!is_file($model_dir.$class_name.'Peer.class.php')) {
@@ -205,8 +219,8 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
 
     $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'Ormap.class.php.snp');
     $text = str_replace(
-        array('%%model_name_space%%', '%%model_base_name_space%%', '%%model_name_space_use%%', '%%model_base_name_space_use%%', '%%insert_date%%', '%%update_date%%', '%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%', '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%'),
-        array($model_name_space, substr($model_base_name_space, 0, -1)."\\", $model_name_space_use, $model_base_name_space_use, $insert_date, $update_date, $class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array),
+        array('%%model_name_space_name%%', '%%model_base_name_space_name%%', '%%model_name_space%%', '%%model_base_name_space%%', '%%model_name_space_use%%', '%%model_base_name_space_use%%', '%%insert_date%%', '%%update_date%%', '%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%', '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%'),
+        array($model_name_space_name, $model_base_name_space_name, $model_name_space, substr($model_base_name_space, 0, -1)."\\", $model_name_space_use, $model_base_name_space_use, $insert_date, $update_date, $class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array),
         $text
     );
     if (!is_file($model_dir.$class_name.'.class.php')) {
@@ -235,9 +249,9 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
     $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'Base.class.php.snp');
     $text = str_replace(
         array('%%model_name_space%%', '%%model_base_name_space%%', '%%model_name_space_use%%', '%%model_base_name_space_use%%', '%%insert_date%%', '%%update_date%%', '%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%',
-            '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%', '%%cache_hydrate%%', '%%fk_getter%%', '%%fk_cache_item%%', '%%cache_load%%'),
+            '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%', '%%cache_hydrate%%', '%%fk_getter%%', '%%fk_cache_item%%', '%%cache_load%%', '%%time_stamp%%', '%%auto_increment%%'),
         array($model_name_space, $model_base_name_space, $base_model_name_space_use, $model_base_name_space_use, $insert_date, $update_date, $class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name,
-            $getter_setter, $enable_magic, $default_array, $cache_hydrate, $fk_getter, $fk_cache_item, $cache_load),
+            $getter_setter, $enable_magic, $default_array, $cache_hydrate, $fk_getter, $fk_cache_item, $cache_load, $time_stamp, $auto_increment),
         $text
     );
 

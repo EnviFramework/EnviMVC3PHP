@@ -6,7 +6,7 @@
 /*%%form_update_text%%*/
 
 
-<button type="submit" name="confirm" value="確認">確認</button>
+<button type="submit" name="confirm" value="確認" class="btn btn-primary">確認</button>
 </form>
 
 <%include file="_footer.tpl"%>

@@ -17,6 +17,21 @@ div {
 	@each $var in $list {
 		border: $var;
 	}
+
+	@each $var in what what, is is, this this {
+		background: $var;
+	}
+
+	@each $var in (what: what, is: is, this: this) {
+		background: $var;
+	}
+
+	@each $header, $size, $nonexistent in (h1: 2em, h2: 1.5em, h3: 1.2em) {
+ 		#{$header} {
+ 			font-size: $size;
+ 			border: $nonexistent;
+ 		}
+ 	}
 }
 
 
@@ -48,4 +63,24 @@ $j: null;
 @while $j {
   .item { width: 2em; }
   $j: false;
+}
+
+@function contains($list, $values...) {
+  @each $value in $values {
+    @if type-of(index($list, $value)) != "number" {
+      @return false;
+    }
+  }
+  @return true;
+}
+
+@function is-number($value) {
+  @return contains("0" "1" "2" "3" "4" "5" "6" "7" "8" "9" 0 1 2 3 4 5 6 7 8 9, $value);
+}
+
+div {
+  a: is-number('red');
+  b: is-number('1');
+  c: is-number("3");
+  c: is-number(5);
 }

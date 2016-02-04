@@ -91,6 +91,10 @@ class EnviDocumenter
     public function parseFile($file_name)
     {
         $this->cliWrite($file_name.' parse start');
+        // テストファイルを除外
+        if (strpos($file_name, '/tests/')) {
+            return;
+        }
         $cpr = $this->code_parser->parseFile($file_name);
         $token_list = $cpr->getTokenList();
 
@@ -163,8 +167,8 @@ class EnviDocumenter
                     unset($class_list[$class_name]['methods'][$method_name]);
                     continue;
                 } elseif (!($method->getDocBlockToken() instanceof EnviParserToken_DOC_COMMENT)) {
-                        var_dump($method->getDocBlockToken()->getTokenName());
-                        die;
+                    var_dump($method->getDocBlockToken()->getTokenName());
+                    die;
                 }
                 $doc_block_array = $method->getDocBlockToken()->getDocBlockArray();
                 $force_doc = false;
@@ -275,6 +279,9 @@ class EnviDocumenter
     private function getFileListByDirectory($dir_path, $suffix = '.php', $prefix = '')
     {
         if (!is_dir($dir_path)) {
+            return array();
+        }
+        if (is_file($dir_path.'/.envi_doc_ignore')) {
             return array();
         }
         $list = $tmp = array();

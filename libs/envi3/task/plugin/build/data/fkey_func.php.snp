@@ -5,6 +5,18 @@
      * @access      public
      * @return      void
      */
+    public function add%%fk_name%%($%%fk_name%%)
+    {
+       $this->%%fk_name%% = $%%fk_name%%;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- 
+     *
+     * @access      public
+     * @return      %%fk_name%%
+     */
     public function %%fk_name%%()
     {
         if ($this->%%fk_name%%) {
