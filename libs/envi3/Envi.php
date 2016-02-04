@@ -356,7 +356,7 @@ class Envi
      *
      * @var         string
      */
-    const VERSION        = '3.4.16.0';
+    const VERSION        = '3.4.16.1';
 
     /**
      * メジャーバージョン番号を返す
@@ -384,7 +384,7 @@ class Envi
      *
      * @var         int
      */
-    const ALPHA_VERSION    = 0;
+    const ALPHA_VERSION    = 1;
     // ---------------------------
 
 
@@ -698,7 +698,7 @@ class Envi
                 self::$debug &&
                 @filemtime($dir.$file) > @filemtime(ENVI_MVC_CACHE_PATH.$file.'.'.ENVI_ENV.'.envicc')
             )
-          ) {
+        ) {
             if (!is_file($dir.$file)) {
                 throw new EnviException('not such file '.$dir.$file);
             }
