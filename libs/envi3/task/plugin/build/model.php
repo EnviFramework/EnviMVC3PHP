@@ -139,7 +139,7 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
     $auto_increment = isset($schema['auto_increment']) ? $schema['auto_increment'] : '';
 
 
-    $sql = "SELECT * FROM {$table_name} ";
+    $sql = "SELECT * FROM __TABLE__ ";
     $func_args = array();
     $pkeys = array();
     $comma = '';
@@ -200,7 +200,7 @@ foreach ($config['SCHEMA'] as $table_name => &$schema) {
         $cache_load = str_replace(
             array('%%model_name_space_name%%', '%%model_base_name_space_name%%', '%%model_name_space%%', '%%model_base_name_space%%', '%%model_name_space_use%%', '%%model_base_name_space_use%%', '%%class_name%%', '%%instance_name%%', '%%sql%%', '%%args%%', '%%pkeys%%', '%%table_name%%',
                 '%%getter_setter%%', '%%enable_magic%%', '%%default_array%%', '%%cache_hydrate%%', '%%fk_getter%%', '%%fk_cache_item%%', '%%use_apc%%'),
-            array($model_name_space_name, $model_base_name_space_name, $model_name_space, $model_base_name_space, $model_name_space_use, $model_base_name_space_use, $class_name, $instance_name, $sql, join(',', $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array, $cache_hydrate, $fk_getter, $fk_cache_item, $use_apc_cache ? 'true' : 'false'),
+            array($model_name_space_name, $model_base_name_space_name, $model_name_space, $model_base_name_space, $model_name_space_use, $model_base_name_space_use, $class_name, $instance_name, $sql, join(".':'.", $func_args), join(',', $pkeys), $table_name, $getter_setter, $enable_magic, $default_array, $cache_hydrate, $fk_getter, $fk_cache_item, $use_apc_cache ? 'true' : 'false'),
             $cache_load
         );
     }

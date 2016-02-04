@@ -271,7 +271,7 @@ abstract class EnviMigrationBase
     protected function addColumn($table_name, $column_name, $type, $options = array())
     {
         list(, $trace) = debug_backtrace();
-        if ($trace['function'] === 'change' && !$this->is_up) {
+        if (($trace['function'] === 'change' && !$this->is_up) || ($trace['function'] === 'safeChange' && !$this->is_up)) {
             $this->Driver()->removeColumn($table_name, $column_name);
             return;
         }
@@ -301,7 +301,7 @@ abstract class EnviMigrationBase
     protected function addIndex($table_name, $column_name, $options = array())
     {
         list(, $trace) = debug_backtrace();
-        if ($trace['function'] === 'change' && !$this->is_up) {
+        if (($trace['function'] === 'change' && !$this->is_up) || ($trace['function'] === 'safeChange' && !$this->is_up)) {
             $this->Driver()->removeIndex($table_name, $options );
             return;
         }
@@ -322,7 +322,7 @@ abstract class EnviMigrationBase
     protected function addTimestamps($table_name)
     {
         list(, $trace) = debug_backtrace();
-        if ($trace['function'] === 'change' && !$this->is_up) {
+        if (($trace['function'] === 'change' && !$this->is_up) || ($trace['function'] === 'safeChange' && !$this->is_up)) {
             $this->Driver()->removeTimestamps($table_name);
             return;
         }
@@ -355,7 +355,7 @@ abstract class EnviMigrationBase
     protected function changeColumn($table_name, $column_name, $type, $options = array())
     {
         list(, $trace) = debug_backtrace();
-        if ($trace['function'] === 'change') {
+        if ($trace['function'] === 'change' || $trace['function'] === 'safeChange') {
             throw new exception (__FUNCTION__.' は change 内で使用できません。');
         }
         $this->Driver()->changeColumn($table_name, $column_name, $type, $options);
@@ -376,7 +376,7 @@ abstract class EnviMigrationBase
     protected function changeColumnDefault($table_name, $column_name, $default_val)
     {
         list(, $trace) = debug_backtrace();
-        if ($trace['function'] === 'change') {
+        if ($trace['function'] === 'change' || $trace['function'] === 'safeChange') {
             throw new exception (__FUNCTION__.' は change 内で使用できません。');
         }
         $this->Driver()->changeColumnDefault($table_name, $column_name, $default_val);
@@ -417,7 +417,7 @@ abstract class EnviMigrationBase
     protected function createTable($table_name, $options = array())
     {
         list(, $trace) = debug_backtrace();
-        if ($trace['function'] === 'change' && !$this->is_up) {
+        if (($trace['function'] === 'change' && !$this->is_up) || ($trace['function'] === 'safeChange' && !$this->is_up)) {
             $this->Driver()->dropTable($table_name);
             return;
         }
@@ -442,7 +442,7 @@ abstract class EnviMigrationBase
     protected function dropTable($table_name, $options = array())
     {
         list(, $trace) = debug_backtrace();
-        if ($trace['function'] === 'change') {
+        if ($trace['function'] === 'change' || $trace['function'] === 'safeChange') {
             throw new exception (__FUNCTION__.' は change 内で使用できません。');
         }
         $this->Driver()->dropTable($table_name, $options);
@@ -462,7 +462,7 @@ abstract class EnviMigrationBase
     protected function removeColumn($table_name, $column_name)
     {
         list(, $trace) = debug_backtrace();
-        if ($trace['function'] === 'change') {
+        if ($trace['function'] === 'change' || $trace['function'] === 'safeChange') {
             throw new exception (__FUNCTION__.' は change 内で使用できません。');
         }
         $this->Driver()->removeColumn($table_name, $column_name);
@@ -483,7 +483,7 @@ abstract class EnviMigrationBase
     protected function removeIndex($table_name, $options = array())
     {
         list(, $trace) = debug_backtrace();
-        if ($trace['function'] === 'change') {
+        if ($trace['function'] === 'change' || $trace['function'] === 'safeChange') {
             throw new exception (__FUNCTION__.' は change 内で使用できません。');
         }
         $this->Driver()->removeIndex($table_name, $options);
@@ -502,7 +502,7 @@ abstract class EnviMigrationBase
     protected function removeTimestamps($table_name)
     {
         list(, $trace) = debug_backtrace();
-        if ($trace['function'] === 'change' && !$this->is_up) {
+        if (($trace['function'] === 'change' && !$this->is_up) || ($trace['function'] === 'safeChange' && !$this->is_up)) {
             $this->Driver()->addTimestamps($table_name);
             return;
         }
@@ -524,7 +524,7 @@ abstract class EnviMigrationBase
     protected function renameColumn($table_name, $column_name, $new_column_name)
     {
         list(, $trace) = debug_backtrace();
-        if ($trace['function'] === 'change' && !$this->is_up) {
+        if (($trace['function'] === 'change' && !$this->is_up) || ($trace['function'] === 'safeChange' && !$this->is_up)) {
             $this->Driver()->renameColumn($table_name, $new_column_name, $column_name);
             return;
         }
@@ -546,7 +546,7 @@ abstract class EnviMigrationBase
     protected function renameIndex($table_name, $old_name, $new_name)
     {
         list(, $trace) = debug_backtrace();
-        if ($trace['function'] === 'change' && !$this->is_up) {
+        if (($trace['function'] === 'change' && !$this->is_up) || ($trace['function'] === 'safeChange' && !$this->is_up)) {
             $this->Driver()->renameColumn($table_name, $new_name, $old_name);
             return;
         }
@@ -567,7 +567,7 @@ abstract class EnviMigrationBase
     protected function renameTable($table_name, $new_name)
     {
         list(, $trace) = debug_backtrace();
-        if ($trace['function'] === 'change' && !$this->is_up) {
+        if (($trace['function'] === 'change' && !$this->is_up) || ($trace['function'] === 'safeChange' && !$this->is_up)) {
             $this->Driver()->renameTable($new_name, $table_name);
             return;
         }

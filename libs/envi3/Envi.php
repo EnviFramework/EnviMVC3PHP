@@ -356,7 +356,7 @@ class Envi
      *
      * @var         string
      */
-    const VERSION        = '3.4.14.0';
+    const VERSION        = '3.4.15.0';
 
     /**
      * メジャーバージョン番号を返す
@@ -377,7 +377,7 @@ class Envi
      *
      * @var         int
      */
-    const RELEASE_VERSION  = 14;
+    const RELEASE_VERSION  = 15;
 
     /**
      * テストバージョン番号を返す
@@ -698,7 +698,7 @@ class Envi
                 self::$debug &&
                 @filemtime($dir.$file) > @filemtime(ENVI_MVC_CACHE_PATH.$file.'.'.ENVI_ENV.'.envicc')
             )
-            ) {
+           ) {
             if (!is_file($dir.$file)) {
                 throw new EnviException('not such file '.$dir.$file);
             }
@@ -1350,11 +1350,8 @@ class Envi
      */
     protected function makeAutoLoadClassesCache($auto_load_classes_cache)
     {
-        // 名前空間が利用できるバージョンかどうか
-        $use_namespace = (PHP_MINOR_VERSION >= 3 || PHP_MAJOR_VERSION > 5);
         $this->autoload_base_dirs = array();
         foreach ($this->autoload_dirs as $key => $dir) {
-            $is_psr = $use_namespace;
             if (!is_array($dir)) {
                 $dir = array(
                     'is_psr' => false,
@@ -1370,7 +1367,7 @@ class Envi
             $this->autoload_dirs[$key] = $dir;
             $this->autoload_base_dirs[$key] = $dir['path'];
         }
-
+        $use_namespace = version_compare(PHP_VERSION, '5.3.0') >= 0;
         foreach ($this->autoload_dirs as $dir) {
             $this->auto_load_classes = array_merge($this->auto_load_classes, $this->mkAutoLoadSubmodules($dir['path'], '', $dir['is_psr'], $use_namespace));
         }
@@ -1524,8 +1521,7 @@ class Envi
             }
             if (is_array($env_conf[$key]) && !isset($env_conf[$key][0])) {
                 // 入れ子の処理
-                $all_conf[$key] = $this->mergeConfiguration($all_conf[$key], $env_conf[$key]);
-                continue;
+                $env_conf[$key] = $this->mergeConfiguration($values, $env_conf[$key]);
             }
             $all_conf[$key] = $env_conf[$key];
         }
