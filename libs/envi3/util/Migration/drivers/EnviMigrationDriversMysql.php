@@ -54,7 +54,12 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * auto_increment | オートインクリメントにする | false
      * after      | 指定したcolumnの前ににつける | false
      * first      | 先頭につける | false
+     * on_update_current_timestamp   | on update CURRENT_TIMESTAMPにする | false
      *
+     *
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.alert .alert-notice}
+     * ※on_update_current_timestampは3.4.20.0以降の機能となります
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      *
      * @access      public
      * @param       string $table_name テーブル名
@@ -87,7 +92,17 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
         } elseif (array_key_exists('default', $options)) {
             if (!(($options['default'] === NULL || strtolower($options['default']) === 'null') && $options['not_null'] === true)) {
                 $sql .= ' DEFAULT ';
-                $sql .= (strtolower($options['default']) === 'null' || $options['default'] === NULL) ? 'NULL' : '"'.$options['default'].'"';
+                if (is_string($options['default']) && strtoupper($options['default']) === 'CURRENT_TIMESTAMP') {
+                    $sql .= ' CURRENT_TIMESTAMP ';
+                    if (isset($options['on_update_current_timestamp']) && $options['on_update_current_timestamp']) {
+                        $sql .= 'ON UPDATE CURRENT_TIMESTAMP ';
+                    }
+                } elseif ($options['default'] === NULL || strtolower($options['default']) === 'null') {
+                    $sql .= ' NULL ';
+                } else {
+                    $sql .= '"'.$options['default'].'"';
+                }
+
             }
         }
         if (isset($options['primary']) || isset($options['auto_increment'])) {
@@ -181,6 +196,12 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * precision  | decimal 型の精度を指定 |
      * scale      | decimal 型の小数点以下の桁数 |
      * auto_increment | オートインクリメントにする |
+     * on_update_current_timestamp   | on update CURRENT_TIMESTAMPにする | false
+     *
+     *
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.alert .alert-notice}
+     * ※on_update_current_timestampは3.4.20.0以降の機能となります
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      *
      * @access      public
      * @param       string $table_name テーブル名
@@ -227,12 +248,30 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
         } elseif (array_key_exists('default', $options)) {
             if (!(($options['default'] === NULL || strtolower($options['default']) === 'null') && $res['not_null'] === true)) {
                 $sql .= ' DEFAULT ';
-                $sql .= ($options['default'] === NULL || strtolower($options['default']) === 'null') ? 'NULL' : '"'.$options['default'].'"';
+                if (is_string(strtoupper($options['default'])) && strtoupper($options['default'])=== 'CURRENT_TIMESTAMP') {
+                    $sql .= ' CURRENT_TIMESTAMP ';
+                    if (isset($options['on_update_current_timestamp']) && $options['on_update_current_timestamp']) {
+                        $sql .= 'ON UPDATE CURRENT_TIMESTAMP ';
+                    }
+                } elseif ($options['default'] === NULL || strtolower($options['default']) === 'null') {
+                    $sql .= ' NULL ';
+                } else {
+                    $sql .= '"'.$options['default'].'"';
+                }
             }
         } elseif (array_key_exists('Default', $res)) {
             if (!($res['Default'] === NULL && $res['not_null'] === true)) {
                 $sql .= ' DEFAULT ';
-                $sql .= ($res['Default'] === NULL) ? 'NULL' : '"'.$res['Default'].'"';
+                if (is_string(strtoupper($res['Default'])) && strtoupper($res['Default']) === 'CURRENT_TIMESTAMP') {
+                    $sql .= ' CURRENT_TIMESTAMP ';
+                    if (isset($res['Extra']) && strtoupper($res['Extra']) === 'ON UPDATE CURRENT_TIMESTAMP') {
+                        $sql .= 'ON UPDATE CURRENT_TIMESTAMP ';
+                    }
+                } elseif ($res['Default'] === NULL) {
+                    $sql .= ' NULL ';
+                } else {
+                    $sql .= '"'.$res['Default'].'"';
+                }
             }
         }
         $this->query($sql);
@@ -293,6 +332,11 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
      * auto_increment   | オートインクリメントにする | false
      * index            | インデックス名の配列 |
      * unique           | UNIQUEインデックス名の配列 |
+     * on_update_current_timestamp   | on update CURRENT_TIMESTAMPにする | false
+     *
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.alert .alert-notice}
+     * ※on_update_current_timestampは3.4.20.0以降の機能となります
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      *
      * @access      public
      * @param       string $table_name テーブル名
@@ -333,7 +377,18 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
             } elseif (array_key_exists('default', $val)) {
                 if (!(($val['default'] === NULL || strtolower($val['default']) === 'null') && $val['not_null'] === true)) {
                     $sql .= 'DEFAULT ';
-                    $sql .= (strtolower($val['default']) === 'null' || $val['default'] === NULL) ? 'NULL' : '"'.$val['default'].'"';
+
+                    if (is_string($val['default']) && strtoupper($val['default']) === 'CURRENT_TIMESTAMP') {
+                        $sql .= ' CURRENT_TIMESTAMP ';
+                        if (isset($val['on_update_current_timestamp']) && $val['on_update_current_timestamp']) {
+                            $sql .= 'ON UPDATE CURRENT_TIMESTAMP ';
+                        }
+                    } elseif ($val['default'] === NULL || strtolower($val['default']) === 'null') {
+                        $sql .= ' NULL ';
+                    } else {
+                        $sql .= '"'.$val['default'].'"';
+                    }
+
                 }
             }
             if (isset($val['index'])) {
@@ -483,10 +538,19 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
         }
         if (isset($res['Extra']) && strtolower($res['Extra']) === 'auto_increment') {
             $sql .= ' AUTO_INCREMENT';
-        } elseif (array_key_exists('Default', $res) ) {
+        } elseif (array_key_exists('Default', $res)) {
             if (!(strtolower($res['Null']) === 'no' && $res['Default'] === NULL)) {
                 $sql .= ' DEFAULT ';
-                $sql .= ($res['Default'] === NULL) ? 'NULL' : '"'.$res['Default'].'"';
+                if (is_string(strtoupper($res['Default'])) && strtoupper($res['Default']) === 'CURRENT_TIMESTAMP') {
+                    $sql .= ' CURRENT_TIMESTAMP ';
+                    if (isset($res['Extra']) && strtoupper($res['Extra']) === 'ON UPDATE CURRENT_TIMESTAMP') {
+                        $sql .= 'ON UPDATE CURRENT_TIMESTAMP ';
+                    }
+                } elseif ($res['Default'] === NULL) {
+                    $sql .= ' NULL ';
+                } else {
+                    $sql .= '"'.$res['Default'].'"';
+                }
             }
         }
 
@@ -513,7 +577,7 @@ class EnviMigrationDriversMysql extends EnviMigrationDriversBase
         }
         $column_name = '`'.join("`, `", $column_name).'`';
 
-        $sql = "ALTER TABLE  `{$table_name}` DROP INDEX  `{$old_name}` ,ADD INDEX  `{$new_name}` ( {$column_name} )";
+        $sql = "ALTER TABLE `{$table_name}` DROP INDEX  `{$old_name}` ,ADD INDEX  `{$new_name}` ({$column_name})";
         $this->query($sql);
     }
     /* ----------------------------------------- */

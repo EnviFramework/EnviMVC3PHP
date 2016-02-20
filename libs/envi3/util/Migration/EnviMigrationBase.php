@@ -258,6 +258,12 @@ abstract class EnviMigrationBase
      * auto_increment | オートインクリメントにする | false
      * after      | 指定したcolumnの前ににつける | false
      * first      | 先頭につける | false
+     * on_update_current_timestamp   | on update CURRENT_TIMESTAMPにする | false
+     *
+     *
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.alert .alert-notice}
+     * ※on_update_current_timestampは3.4.20.0以降の機能となります
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      *
      * @doc_enable
      * @access      protected
@@ -342,6 +348,12 @@ abstract class EnviMigrationBase
      * precision  | decimal 型の精度を指定 |
      * scale      | decimal 型の小数点以下の桁数 |
      * auto_increment | オートインクリメントにする |
+     * on_update_current_timestamp   | on update CURRENT_TIMESTAMPにする | false
+     *
+     *
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.alert .alert-notice}
+     * ※on_update_current_timestampは3.4.20.0以降の機能となります
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      *
      * @doc_enable
      * @access      protected
@@ -406,6 +418,12 @@ abstract class EnviMigrationBase
      * auto_increment   | オートインクリメントにする | false
      * index            | インデックス名の配列 |
      * unique           | UNIQUEインデックス名の配列 |
+     * on_update_current_timestamp   | on update CURRENT_TIMESTAMPにする | false
+     *
+     *
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.alert .alert-notice}
+     * ※on_update_current_timestampは3.4.20.0以降の機能となります
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      *
      * @doc_enable
      * @access      protected
@@ -575,6 +593,37 @@ abstract class EnviMigrationBase
     }
     /* ----------------------------------------- */
 
-
+    /**
+     * +-- 接続情報を初期化し、新しいインスタンス名をセットします
+     *
+     * マイグレーションする接続情報を変更できます。
+     * これは主に、複数DBに分散されているテーブルに対して均一的にマイグレーションを行う為の機能です。
+     *
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.alert .alert-notice}
+     * ※この機能は3.4.20.0以降の機能となります
+     * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     *
+     * @doc_enable
+     * @access      protected
+     * @param       string $instance_name
+     * @return      void
+     */
+    protected function resetInstance($instance_name)
+    {
+        $inTransaction = false;
+        if (!empty($this->dbi)) {
+            $inTransaction = $this->dbi->inTransaction();
+            if ($inTransaction) {
+                $this->dbi->commit();
+            }
+        }
+        $this->instance_name = $instance_name;
+        $this->driver = NULL;
+        $this->dbi = NULL;
+        if ($inTransaction) {
+            $this->DBI()->beginTransaction();
+        }
+    }
+    /* ----------------------------------------- */
 
 }
