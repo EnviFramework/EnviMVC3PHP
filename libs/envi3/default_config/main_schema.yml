@@ -40,6 +40,14 @@ SCHEMA:
       instance_name: "command_log"
       # テーブル定義から自動取得するかどうか(省略可能、省略した場合はデフォルを使用)
       auto_schema: false
+    # 外部キー設定
+    foreign_key:
+      # メソッド名
+      ObjectGetMethod:
+        # 依存させるクラス
+        class_name: \models\SampleClassName
+        columns:
+          - index
 
 DIRECTORY:
   # モデルを保存するdirectory
@@ -58,12 +66,12 @@ SETTING:
   default_auto_schema: true
   # auto_schemaの結果を反映した、yamlファイルを出力するかどうか
   reverse_yaml: true
-  
+
   # OrMapperが所属するデフォルトのネームスペース
   # PHP 5.3以降ではネームスペースが使用できるようになりました。
   # model_name_space: models
   model_name_space: ""
-  
+
   # OrMapperのベースクラスがが所属するデフォルトのネームスペース
   # model_base_name_space: models\om
   model_base_name_space: ""
