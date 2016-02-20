@@ -105,7 +105,7 @@ abstract class EnviMigrationBase
      * @return      void
      * @see EnviMigrationBase::change()
      * @see EnviMigrationBase::down()
-     * @see EnviMigrationBase::saveUp()
+     * @see EnviMigrationBase::saｆeUp()
      */
     abstract public function up();
     /* ----------------------------------------- */
@@ -140,7 +140,7 @@ abstract class EnviMigrationBase
      * @access      public
      * @abstract
      * @return      void
-     * @see EnviMigrationBase::saveUp()
+     * @see EnviMigrationBase::saｆeUp()
      * @see EnviMigrationBase::safeDown()
      */
      public function safeChange()
@@ -156,7 +156,7 @@ abstract class EnviMigrationBase
      * @see EnviMigrationBase::safeChange()
      * @see EnviMigrationBase::safeDown()
      */
-     public function saveUp()
+     public function saｆeUp()
      {
      }
     /* ----------------------------------------- */
@@ -167,7 +167,7 @@ abstract class EnviMigrationBase
      * @access      public
      * @abstract
      * @return      void
-     * @see EnviMigrationBase::saveUp()
+     * @see EnviMigrationBase::saｆeUp()
      * @see EnviMigrationBase::safeChange()
      */
     public function safeDown()
