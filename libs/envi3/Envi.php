@@ -718,11 +718,18 @@ class Envi
                 $buff = \spyc_load($buff);
             }
             $res = isset($buff[ENVI_ENV]) ? $this->mergeConfiguration($buff['all'], $buff[ENVI_ENV]) : $buff['all'];
-            $this->configSerialize(ENVI_MVC_CACHE_PATH.$file.'.'.ENVI_ENV.'.envicc', $res);
+
+            // 表記揺れの対処
+            $config = array();
+            foreach ($res as $key => $item) {
+                $config[strtoupper($key)] = $item;
+            }
+
+            $this->configSerialize(ENVI_MVC_CACHE_PATH.$file.'.'.ENVI_ENV.'.envicc', $config);
         } else {
-            $res      = $this->configUnSerialize(ENVI_MVC_CACHE_PATH.$file.'.'.ENVI_ENV.'.envicc');
+            $config      = $this->configUnSerialize(ENVI_MVC_CACHE_PATH.$file.'.'.ENVI_ENV.'.envicc');
         }
-        return $res;
+        return $config;
     }
     /* ----------------------------------------- */
 
