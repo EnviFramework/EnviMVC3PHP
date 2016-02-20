@@ -415,7 +415,7 @@ class Envi
     {
         self::$debug     = $debug;
         self::$app_key   = $app;
-        $this->_system_conf      = $this->parseYml($app.'.yml');
+        $this->_system_conf      = $this->parseYml($app.'.yml', ENVI_MVC_APPKEY_PATH, true);
         $autoload_constant_cache = ENVI_MVC_CACHE_PATH.$app.'.'.ENVI_ENV.'.autoload_constant.envicc';
         if ($debug || !is_file($autoload_constant_cache)) {
             $this->makeAutoLoadConstantCache($autoload_constant_cache);
@@ -690,9 +690,10 @@ class Envi
      * @access public
      * @param string $file YAMLファイルのファイル名
      * @param string $dir YAMLファイルがあるdirectory OPTIONAL:ENVI_MVC_APPKEY_PATH
+     * @param       var_text $strtoupper OPTIONAL:false
      * @return array パース後の値
      */
-    public function parseYml($file, $dir = ENVI_MVC_APPKEY_PATH)
+    public function parseYml($file, $dir = ENVI_MVC_APPKEY_PATH, $strtoupper = false)
     {
         if (!is_file(ENVI_MVC_CACHE_PATH.$file.'.'.ENVI_ENV.'.envicc') || (
                 self::$debug &&
@@ -721,9 +722,14 @@ class Envi
 
             // 表記揺れの対処
             $config = array();
-            foreach ($res as $key => $item) {
-                $config[strtoupper($key)] = $item;
+            if ($strtoupper) {
+                foreach ($res as $key => $item) {
+                    $config[strtoupper($key)] = $item;
+                }
+            } else {
+                $config = $res;
             }
+
 
             $this->configSerialize(ENVI_MVC_CACHE_PATH.$file.'.'.ENVI_ENV.'.envicc', $config);
         } else {
