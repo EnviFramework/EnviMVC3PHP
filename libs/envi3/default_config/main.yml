@@ -39,7 +39,7 @@ all:
     renderer: "<?php echo ENVI_BASE_DIR; ?>renderer/EnviPHPRenderer.php"
     auto_load_cache: true
 
-  Routing:
+  ROUTING:
   ################################
   # Routingの設定
   ################################
