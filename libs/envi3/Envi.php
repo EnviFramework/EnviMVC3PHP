@@ -356,7 +356,7 @@ class Envi
      *
      * @var         string
      */
-    const VERSION        = '3.4.16.0';
+    const VERSION        = '3.4.20.0';
 
     /**
      * メジャーバージョン番号を返す
@@ -377,7 +377,7 @@ class Envi
      *
      * @var         int
      */
-    const RELEASE_VERSION  = 16;
+    const RELEASE_VERSION  = 20;
 
     /**
      * テストバージョン番号を返す
