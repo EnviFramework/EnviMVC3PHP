@@ -203,7 +203,7 @@ class EnviRequest
         $_system_conf = Envi::singleton()->getConfigurationAll();
 
         // Routerがある場合は、Routerを使ってルーティングする
-        if (isset($_system_conf['Routing']) && count($_system_conf['Routing'])) {
+        if (isset($_system_conf['ROUTING']) && count($_system_conf['ROUTING'])) {
             $router = new EnviRouting;
             $router->run();
             self::$_request_module_name = $router->getRequestModule();
