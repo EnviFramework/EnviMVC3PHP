@@ -377,7 +377,7 @@ class Envi
      *
      * @var         int
      */
-    const RELEASE_VERSION  = 20;
+    const RELEASE_VERSION  = 21;
 
     /**
      * テストバージョン番号を返す
@@ -521,7 +521,8 @@ class Envi
     public function getConfiguration($key)
     {
         $args = func_get_args();
-        $system_conf = $this->_system_conf;
+
+        $system_conf = $this->_system_conf[strtoupper(array_shift($args))];
         foreach ($args as $k) {
             if (!isset($system_conf[$k])) {
                 return null;
@@ -529,6 +530,21 @@ class Envi
             $system_conf = $system_conf[$k];
         }
         return $system_conf;
+    }
+    /* ----------------------------------------- */
+
+    /**
+     * +-- コンフィグデータを、キー指定で取得します
+     *
+     * 可変長引数非対応のgetConfiguration
+     *
+     * @access      public
+     * @param       var_text $key
+     * @return mixed 定義されたコンフィグデータ
+     */
+    public function getConfigurationSimple($key)
+    {
+        return  $this->_system_conf[$key];
     }
     /* ----------------------------------------- */
 
@@ -821,7 +837,7 @@ class Envi
                 $envi = self::$instance;
             }
 
-            $filters = $envi->getConfiguration('FILTER');
+            $filters = $envi->getConfigurationSimple('FILTER');
             if (isset($filters['input_filter']) && is_array($filters['input_filter'])) {
                 foreach ($filters['input_filter'] as $input_filters) {
                     $class_name = $input_filters['class_name'];
@@ -1223,7 +1239,7 @@ class Envi
 
         // psr-0用のDIRECTORY
         if (!$autoload_psr_dir) {
-            $autoload_psr_dir = self::singleton()->getConfiguration('AUTOLOAD_PSR');
+            $autoload_psr_dir = self::singleton()->getConfigurationSimple('AUTOLOAD_PSR');
         }
         if (!is_array($autoload_psr_dir) || count($autoload_psr_dir) === 0) {
             return;
