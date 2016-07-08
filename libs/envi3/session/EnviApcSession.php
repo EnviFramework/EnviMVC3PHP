@@ -34,9 +34,9 @@
 class EnviApcSession extends EnviSessionBase implements EnviSessionInterface
 {
 
-    protected static  $_envi_system_value = "__ENVI_USER__";
-    protected static  $_attribute = array();
-    protected static  $_is_login = '_is_login';
+    protected static $_envi_system_value = '__ENVI_USER__';
+    protected static $_attribute         = array();
+    protected static $_is_login          = '_is_login';
 
     public $_system_conf;
     public $sess_base_save_path;
@@ -48,7 +48,7 @@ class EnviApcSession extends EnviSessionBase implements EnviSessionInterface
 
     public function close()
     {
-        return(true);
+        return true;
     }
 
     public function read($id)
@@ -69,7 +69,7 @@ class EnviApcSession extends EnviSessionBase implements EnviSessionInterface
     public function destroy($id)
     {
         $session_key = 'sess_'.$this->_system_conf['SESSION']['cookie_name'].$id;
-        setcookie (session_name(), $id, $_SERVER['REQUEST_TIME'] - 3600);
+        setcookie(session_name(), $id, $_SERVER['REQUEST_TIME'] - 3600);
         return @apc_delete($session_key);
     }
 
@@ -85,22 +85,22 @@ class EnviApcSession extends EnviSessionBase implements EnviSessionInterface
     public function sessionStart()
     {
         $this->sess_base_save_path = $this->_system_conf['SESSION']['sess_base_save_path'];
-        $session_name = $this->_system_conf['SESSION']['cookie_name'];
+        $session_name              = $this->_system_conf['SESSION']['cookie_name'];
         session_name($session_name);
         ini_set('session.gc_maxlifetime', $this->_system_conf['SESSION']['gc_lifetime']);
         ini_set('session.cookie_lifetime', $this->_system_conf['SESSION']['cookie_lifetime']);
-        session_set_save_handler (
+        session_set_save_handler(
             array($this, 'open'),
-            array($this,'close'),
-            array($this,'read'),
-            array($this,'write'),
-            array($this,'destroy'),
-            array($this,'gc')
+            array($this, 'close'),
+            array($this, 'read'),
+            array($this, 'write'),
+            array($this, 'destroy'),
+            array($this, 'gc')
         );
         $is_new_session = true;
         //セッションIDの正誤性をチェックする。
         if (isset($_COOKIE[$session_name])) {
-            $id  = $_COOKIE[$session_name];
+            $id          = $_COOKIE[$session_name];
             $session_key = 'sess_'.$this->_system_conf['SESSION']['cookie_name'].$id;
             if (apc_exists($session_key)) {
                 $is_new_session = false;
@@ -108,7 +108,7 @@ class EnviApcSession extends EnviSessionBase implements EnviSessionInterface
         }
 
         if ($is_new_session) {
-            while(true) {
+            while (true) {
                 $id = $this->newSession();
                 if (!apc_exists($id)) {
                     session_id($id);
@@ -122,7 +122,7 @@ class EnviApcSession extends EnviSessionBase implements EnviSessionInterface
 
     public function getAttribute($key)
     {
-        return isset($_SESSION[self::$_envi_system_value][$key]) ? $_SESSION[self::$_envi_system_value][$key] : NULL;
+        return isset($_SESSION[self::$_envi_system_value][$key]) ? $_SESSION[self::$_envi_system_value][$key] : null;
     }
     public function hasAttribute($key)
     {
@@ -155,5 +155,4 @@ class EnviApcSession extends EnviSessionBase implements EnviSessionInterface
     {
         return isset($_SESSION[self::$_is_login]) ? $_SESSION[self::$_is_login] : false;
     }
-
 }

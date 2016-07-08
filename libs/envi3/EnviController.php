@@ -52,13 +52,13 @@ class EnviController
     private static $_action_chain_data = array();
     private static $_system_conf;
     private static $_is_action_chain   = false;
-    private static $_action_chain_name = NULL;
+    private static $_action_chain_name = null;
 
     /**
      * +-- オブジェクト化させない
      *
      * @access      private
-     * @return      void
+     * @return void
      * @doc_ignore
      */
     private function __construct()
@@ -86,7 +86,7 @@ class EnviController
      * @final
      * @access public
      * @static
-     * @return boolean アクションチェイン内かどうか
+     * @return bool アクションチェイン内かどうか
      */
     final public static function isActionChain()
     {
@@ -111,17 +111,17 @@ class EnviController
      * {/@example_result}
      *
      * @final
-     * @param string $action アクション名
-     * @param string $module モジュール名 OPTIONAL:NULL
-     * @return boolean 必ずtrueを返す
+     * @param  string $action アクション名
+     * @param  string $module モジュール名 OPTIONAL:NULL
+     * @return bool   必ずtrueを返す
      * @see EnviRequest::getThisModule()
      * @see EnviRequest::getThisAction()
      */
-    final public static function forward($action, $module = NULL)
+    final public static function forward($action, $module = null)
     {
         $cpm = EnviRequest::$_module_name;
         $cpa = EnviRequest::$_action_name;
-        if ($module !== NULL) {
+        if ($module !== null) {
             EnviRequest::$_module_name = $module;
         }
 
@@ -186,8 +186,8 @@ class EnviController
      * @final
      * @access public
      * @static
-     * @param string $url リダイレクトするURL
-     * @param boolean $die リダイレクトヘッダ出力後の処理を中断するかどうか。 OPTIONAL:true
+     * @param  string $url リダイレクトするURL
+     * @param  bool   $die リダイレクトヘッダ出力後の処理を中断するかどうか。 OPTIONAL:true
      * @return void
      */
     final public static function redirect($url, $die = true)
@@ -222,20 +222,20 @@ class EnviController
      * @final
      * @access public
      * @static
-     * @param string $action アクション名
-     * @param string $module モジュール名。省略された場合は、実行中のモジュールになります。OPTIONAL:NULL
-     * @param string $url フロントコントローラーへのURL。省略された場合は、実行中のフロントコントローラーになります。OPTIONAL:NULL
+     * @param  string $action アクション名
+     * @param  string $module モジュール名。省略された場合は、実行中のモジュールになります。OPTIONAL:NULL
+     * @param  string $url    フロントコントローラーへのURL。省略された場合は、実行中のフロントコントローラーになります。OPTIONAL:NULL
      * @return string
      */
-    final public static function generateUrl($action, $module = NULL, $url = NULL)
+    final public static function generateUrl($action, $module = null, $url = null)
     {
-        if ($url === NULL) {
+        if ($url === null) {
             $url = Envi()->getConfiguration('SYSTEM', 'dispatch_url');
         }
 
         $i18n = EnviRequest::getI18n();
 
-        if ($module === NULL) {
+        if ($module === null) {
             $module = EnviRequest::getThisModule();
         }
         return Envi()->getConfiguration('SYSTEM', 'use_i18n') ? $url.'/'.$i18n.'/'.$module.'/'.$action : $url.'/'.$module.'/'.$action;
@@ -292,8 +292,8 @@ class EnviController
      * @final
      * @access public
      * @static
-     * @param string $kill OPTIONAL:''
-     * @param boolean $is_shutDown OPTIONAL:true
+     * @param  string $kill        OPTIONAL:''
+     * @param  bool   $is_shutDown OPTIONAL:true
      * @return void
      * @see Envi::Kill()
      */
@@ -318,17 +318,17 @@ class EnviController
      * @final
      * @access public
      * @static
-     * @param string $name チェイン名
-     * @param string $action アクション名
-     * @param string $module モジュール名 OPTIONAL:NULL
-     * @param string $data チェイン先に渡すデータ OPTIONAL:NULL
+     * @param  string $name   チェイン名
+     * @param  string $action アクション名
+     * @param  string $module モジュール名 OPTIONAL:NULL
+     * @param  string $data   チェイン先に渡すデータ OPTIONAL:NULL
      * @return void
      * @see EnviController::go()
      * @see EnviController::getActionChainName()
      * @see EnviController::isActionChain ()
      * @see EnviController::unsetActionChain()
      */
-    final public static function setActionChain($name, $action, $module = NULL, $data = NULL)
+    final public static function setActionChain($name, $action, $module = null, $data = null)
     {
         self::$_action_chain[$name]      = array($action, $module);
         self::$_action_chain_data[$name] = $data;
@@ -351,7 +351,7 @@ class EnviController
      * @final
      * @access public
      * @static
-     * @param string $name チェイン名
+     * @param  string $name チェイン名
      * @return void
      * @see EnviController::go()
      * @see EnviController::getActionChainName()
@@ -394,13 +394,13 @@ class EnviController
     final public static function go()
     {
         self::$_is_action_chain = true;
-        $_attribute     = EnviRequest::getAttributeAll();
-        $_error_message = EnviRequest::getErrorsByRef();
-        $_error_code    = EnviRequest::getErrorCodesByRef();
-        $post_data = $_POST;
+        $_attribute             = EnviRequest::getAttributeAll();
+        $_error_message         = EnviRequest::getErrorsByRef();
+        $_error_code            = EnviRequest::getErrorCodesByRef();
+        $post_data              = $_POST;
         foreach (self::$_action_chain as $key => $value) {
             self::$_action_chain_name = $key;
-            if (self::$_action_chain_data[$key] !== NULL) {
+            if (self::$_action_chain_data[$key] !== null) {
                 $_POST = array_merge($_POST, self::$_action_chain_data[$key]);
             }
             ob_start();
@@ -416,7 +416,7 @@ class EnviController
         self::$_action_chain      = array();
         self::$_action_chain_data = array();
         self::$_is_action_chain   = false;
-        self::$_action_chain_name = NULL;
+        self::$_action_chain_name = null;
         return $res;
     }
     /* ----------------------------------------- */
@@ -505,8 +505,8 @@ class EnviController
      * @final
      * @access      public
      * @static
-     * @param string $error_message エラーメッセージ OPTIONAL:''
-     * @return      void
+     * @param  string $error_message エラーメッセージ OPTIONAL:''
+     * @return void
      * @see EnviController::kill()
      * @see EnviController::killBy403Error()
      */
@@ -571,8 +571,8 @@ class EnviController
      * @final
      * @access      public
      * @static
-     * @param string $error_message エラーメッセージ OPTIONAL:''
-     * @return      void
+     * @param  string $error_message エラーメッセージ OPTIONAL:''
+     * @return void
      * @see EnviController::kill()
      * @see EnviController::killBy404Error()
      */

@@ -24,7 +24,6 @@
  * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
  */
-
 ini_set('include_path', ini_get('include_path') . (DIRECTORY_SEPARATOR === '/' ? ':' : ';') . realpath(ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'Smarty'));
 
 require 'ArtisanSmarty.class.php';
@@ -57,7 +56,7 @@ class EnviSmartySecureRenderer
      * +-- コンストラクタ
      *
      * @access      public
-     * @return      void
+     * @return void
      * @doc_ignore
      */
     public function __construct()
@@ -73,17 +72,17 @@ class EnviSmartySecureRenderer
      * +-- 設定を行う
      *
      * @access      public
-     * @param       string $module_dir
-     * @return      void
+     * @param  string $module_dir
+     * @return void
      * @doc_ignore
      */
     public function setting($module_dir)
     {
-        $this->Smarty = new Smarty;
+        $this->Smarty                    = new Smarty;
         $this->Smarty->default_modifiers = array('escape');
-        $this->Smarty->compile_dir  = isset($this->_system_conf['DIRECTORY']['template_compile']) ? $this->_system_conf['DIRECTORY']['template_compile'] : $this->_system_conf['DIRECTORY']['templatec'];
-        $this->Smarty->etc_dir      = isset($this->_system_conf['DIRECTORY']['template_etc']) ? $this->_system_conf['DIRECTORY']['template_etc'] : $this->_system_conf['DIRECTORY']['templateetc'];
-        $this->Smarty->config_dir   = isset($this->_system_conf['DIRECTORY']['template_config']) ? $this->_system_conf['DIRECTORY']['template_config'] : $this->_system_conf['DIRECTORY']['config'];
+        $this->Smarty->compile_dir       = isset($this->_system_conf['DIRECTORY']['template_compile']) ? $this->_system_conf['DIRECTORY']['template_compile'] : $this->_system_conf['DIRECTORY']['templatec'];
+        $this->Smarty->etc_dir           = isset($this->_system_conf['DIRECTORY']['template_etc']) ? $this->_system_conf['DIRECTORY']['template_etc'] : $this->_system_conf['DIRECTORY']['templateetc'];
+        $this->Smarty->config_dir        = isset($this->_system_conf['DIRECTORY']['template_config']) ? $this->_system_conf['DIRECTORY']['template_config'] : $this->_system_conf['DIRECTORY']['config'];
 
 
         // キャッシュ
@@ -91,18 +90,17 @@ class EnviSmartySecureRenderer
             $this->Smarty->cache_dir = $this->_system_conf['DIRECTORY']['template_cache'];
         }
 
-        $this->Smarty->template_dir = $this->_system_conf['DIRECTORY']['modules'].$module_dir.DIRECTORY_SEPARATOR.$this->_system_conf['DIRECTORY']['templates'];
+        $this->Smarty->template_dir      = $this->_system_conf['DIRECTORY']['modules'].$module_dir.DIRECTORY_SEPARATOR.$this->_system_conf['DIRECTORY']['templates'];
         $this->Smarty->default_modifiers = array('escape');
         $this->Smarty->assign('Envi', Envi::singleton());
         $this->Smarty->assign('base_url', Envi::singleton()->getBaseUrl());
-
     }
 
     /**
      * +-- templateに値を格納する
      *
-     * @param string $name 格納する名前
-     * @param mixed $value 値
+     * @param  string $name  格納する名前
+     * @param  mixed  $value 値
      * @return void
      */
     public function setAttribute($name, $value)
@@ -116,12 +114,12 @@ class EnviSmartySecureRenderer
      * 指定されたテンプレートを読み込み、標準出力に出力します。
      *
      * @access      public
-     * @param       string $file_name templateのパス
-     * @param       string $cache_id キャッシュID OPTIONAL:NULL
-     * @param       stiring $dummy2 ダミー変数 OPTIONAL:NULL
-     * @return      void
+     * @param  string  $file_name templateのパス
+     * @param  string  $cache_id  キャッシュID OPTIONAL:NULL
+     * @param  stiring $dummy2    ダミー変数 OPTIONAL:NULL
+     * @return void
      */
-    public function display($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    public function display($file_name, $cache_id  = null, $dummy2 = null)
     {
         $this->Smarty->display($file_name, $cache_id, $this->_compile_id);
     }
@@ -130,12 +128,12 @@ class EnviSmartySecureRenderer
      * +-- キャッシュ済みかどうか確認する
      *
      * @access      public
-     * @param       string $file_name templateのパス
-     * @param       string $cache_id キャッシュID OPTIONAL:NULL
-     * @param       stiring $dummy2 ダミー変数 OPTIONAL:NULL
-     * @return      void
+     * @param  string  $file_name templateのパス
+     * @param  string  $cache_id  キャッシュID OPTIONAL:NULL
+     * @param  stiring $dummy2    ダミー変数 OPTIONAL:NULL
+     * @return void
      */
-    public function is_cached($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    public function is_cached($file_name, $cache_id  = null, $dummy2 = null)
     {
         return $this->Smarty->is_cached($file_name, $cache_id, $this->_compile_id);
     }
@@ -145,12 +143,12 @@ class EnviSmartySecureRenderer
      * +-- キャッシュを削除する
      *
      * @access      public
-     * @param       string $file_name templateのパス
-     * @param       string $cache_id キャッシュID OPTIONAL:NULL
-     * @param       stiring $dummy2 ダミー変数 OPTIONAL:NULL
-     * @return      void
+     * @param  string  $file_name templateのパス
+     * @param  string  $cache_id  キャッシュID OPTIONAL:NULL
+     * @param  stiring $dummy2    ダミー変数 OPTIONAL:NULL
+     * @return void
      */
-    public function clear_cache($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    public function clear_cache($file_name, $cache_id  = null, $dummy2 = null)
     {
         return $this->Smarty->clear_cache($file_name, $cache_id, $this->_compile_id);
     }
@@ -163,12 +161,12 @@ class EnviSmartySecureRenderer
      * 指定されたテンプレートを読み込み、実行結果の文字列を返します。
      *
      * @access      public
-     * @param       string $file_name templateのパス
-     * @param       string $cache_id キャッシュID OPTIONAL:NULL
-     * @param       stiring $dummy2 ダミー変数 OPTIONAL:NULL
-     * @return      stiring
+     * @param  string  $file_name templateのパス
+     * @param  string  $cache_id  キャッシュID OPTIONAL:NULL
+     * @param  stiring $dummy2    ダミー変数 OPTIONAL:NULL
+     * @return stiring
      */
-    public function displayRef($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    public function displayRef($file_name, $cache_id  = null, $dummy2 = null)
     {
         return $this->Smarty->fetch($file_name, $cache_id, $this->_compile_id);
     }

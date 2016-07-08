@@ -24,7 +24,7 @@ if (!isset($argv[3])) {
 }
 
 $project_name = $argv[2];
-$module_name = $argv[3];
+$module_name  = $argv[3];
 if (!preg_match('/^[a-zA-Z0-9.\-_]+$/', $project_name)) {
     eecho('英数と._-以外の文字は使えません。');
     die;
@@ -44,13 +44,13 @@ if (!is_file($project_dir.'envi.prj')) {
     die;
 }
 
-$module_dir = $project_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR;
-$module_test_dir = $project_dir."tests".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modulesTest".DIRECTORY_SEPARATOR;
-$arr[] = $module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR;
-$arr[] = $module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR;
-$arr[] = $module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."templates".DIRECTORY_SEPARATOR;
-$arr[] = $module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."actions".DIRECTORY_SEPARATOR;
-$arr[] = $module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."libs".DIRECTORY_SEPARATOR;
+$module_dir      = $project_dir.'apps'.DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR;
+$module_test_dir = $project_dir.'tests'.DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR.'modulesTest'.DIRECTORY_SEPARATOR;
+$arr[]           = $module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR;
+$arr[]           = $module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR;
+$arr[]           = $module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR;
+$arr[]           = $module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'actions'.DIRECTORY_SEPARATOR;
+$arr[]           = $module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'libs'.DIRECTORY_SEPARATOR;
 
 // テスト用
 $arr[] = $module_test_dir.DIRECTORY_SEPARATOR.$module_name.'Test'.DIRECTORY_SEPARATOR;
@@ -63,14 +63,14 @@ foreach ($arr as $item) {
 
 $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'actions.class.php.snp');
 $text = str_replace(array('%%module_name%%'), array($module_name), $text);
-if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."actions".DIRECTORY_SEPARATOR.'actions.class.php')) {
-    file_put_contents($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."actions".DIRECTORY_SEPARATOR.'actions.class.php', $text);
+if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'actions'.DIRECTORY_SEPARATOR.'actions.class.php')) {
+    file_put_contents($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'actions'.DIRECTORY_SEPARATOR.'actions.class.php', $text);
 }
 
 $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'views.class.php.snp');
 $text = str_replace(array('%%module_name%%'), array($module_name), $text);
-if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR.'views.class.php')) {
-    file_put_contents($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR.'views.class.php', $text);
+if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'views.class.php')) {
+    file_put_contents($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'views.class.php', $text);
 }
 
 $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'config.php.snp');

@@ -22,8 +22,8 @@ if (!is_dir($project_dir.'db'.DIRECTORY_SEPARATOR.'migrate')) {
 if (!is_file($project_dir.'db'.DIRECTORY_SEPARATOR.'env')) {
     copy(dirname(__FILE__).DIRECTORY_SEPARATOR.'migration'.DIRECTORY_SEPARATOR.'env', $project_dir.'db'.DIRECTORY_SEPARATOR.'env');
 }
-$contents = file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'migration'.DIRECTORY_SEPARATOR.'migration.php');
-$contents = strtr($contents, $arr);
+$contents  = file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'migration'.DIRECTORY_SEPARATOR.'migration.php');
+$contents  = strtr($contents, $arr);
 $file_path = $project_dir.'db'.DIRECTORY_SEPARATOR.'migrate'.DIRECTORY_SEPARATOR.$argv[2].'_'.date('YmdHis').'_'.$argv[3].'.php';
 file_put_contents($file_path, $contents);
 

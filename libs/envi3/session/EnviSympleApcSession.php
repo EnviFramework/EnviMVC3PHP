@@ -34,11 +34,11 @@
 class EnviSympleApcSession extends EnviSessionBase implements EnviSessionInterface
 {
 
-    protected static  $_envi_system_value = "__ENVI_USER__";
-    protected static  $_attribute = array();
-    protected static  $_is_login = '_is_login';
+    protected static $_envi_system_value = '__ENVI_USER__';
+    protected static $_attribute         = array();
+    protected static $_is_login          = '_is_login';
 
-    protected static  $_session_id = null;
+    protected static $_session_id = null;
 
     public $_system_conf;
     public $sess_base_save_path;
@@ -79,7 +79,7 @@ class EnviSympleApcSession extends EnviSessionBase implements EnviSessionInterfa
     public function sessionStart()
     {
         $this->sess_base_save_path = $this->_system_conf['SESSION']['sess_base_save_path'];
-        $session_name = $this->_system_conf['SESSION']['cookie_name'];
+        $session_name              = $this->_system_conf['SESSION']['cookie_name'];
         session_name($session_name);
 
         $is_new_session = true;
@@ -106,7 +106,7 @@ class EnviSympleApcSession extends EnviSessionBase implements EnviSessionInterfa
         self::$_session_id = $key;
 
         apc_store($key, $key, $this->_system_conf['SESSION']['cookie_lifetime']);
-        setcookie(session_name(), $key, $_SERVER['REQUEST_TIME']+$this->_system_conf['SESSION']['cookie_lifetime'], '/');
+        setcookie(session_name(), $key, $_SERVER['REQUEST_TIME'] + $this->_system_conf['SESSION']['cookie_lifetime'], '/');
     }
 
     public function getAttribute($key)
@@ -115,7 +115,7 @@ class EnviSympleApcSession extends EnviSessionBase implements EnviSessionInterfa
         if (apc_exists($session_key)) {
             return apc_fetch($session_key);
         }
-        return NULL;
+        return null;
     }
     public function hasAttribute($key)
     {
@@ -137,7 +137,7 @@ class EnviSympleApcSession extends EnviSessionBase implements EnviSessionInterfa
     public function cleanAttributes()
     {
         $session_name = $this->_system_conf['SESSION']['cookie_name'];
-        setcookie ($session_name, '___', $_SERVER['REQUEST_TIME'] - 3600);
+        setcookie($session_name, '___', $_SERVER['REQUEST_TIME'] - 3600);
         return @apc_delete(self::$_session_id);
     }
 

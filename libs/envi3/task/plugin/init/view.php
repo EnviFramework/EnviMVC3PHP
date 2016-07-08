@@ -20,12 +20,11 @@
 umask(0);
 if (!isset($argv[4])) {
     eecho('引数が足りません。');
-
 }
 
 $project_name = $argv[2];
-$module_name = $argv[3];
-$action_name = $argv[4];
+$module_name  = $argv[3];
+$action_name  = $argv[4];
 if (!preg_match('/^[a-zA-Z0-9.\-_]+$/', $project_name)) {
     eecho('英数と._-以外の文字は使えません。');
     die;
@@ -50,24 +49,22 @@ if (!is_file($project_dir.'envi.prj')) {
     die;
 }
 
-$module_dir = $project_dir."apps".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modules".DIRECTORY_SEPARATOR;
-$module_test_dir = $project_dir."tests".DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR."modulesTest".DIRECTORY_SEPARATOR;
+$module_dir      = $project_dir.'apps'.DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR.'modules'.DIRECTORY_SEPARATOR;
+$module_test_dir = $project_dir.'tests'.DIRECTORY_SEPARATOR.$project_name.DIRECTORY_SEPARATOR.'modulesTest'.DIRECTORY_SEPARATOR;
 
 
 
 if (!isset($argv[5])) {
     $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'GroupViews.class.php.snp');
     $text = str_replace(array('%%module_name%%', '%%action_name%%'), array($module_name, $action_name), $text);
-    if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR.$action_name."Views.class.php")) {
-        file_put_contents($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR.$action_name."Views.class.php", $text);
+    if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$action_name.'Views.class.php')) {
+        file_put_contents($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$action_name.'Views.class.php', $text);
     }
-
 } else {
-    $text = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'View.class.php.snp');
-    $text = str_replace(array('%%module_name%%', '%%action_name%%'), array($module_name, $action_name), $text);
+    $text        = file_get_contents($task_plugin_dir.$module.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'View.class.php.snp');
+    $text        = str_replace(array('%%module_name%%', '%%action_name%%'), array($module_name, $action_name), $text);
     $view_suffix = strtolower($argv[5]);
-    if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR.$action_name."View_{$view_suffix}.class.php")) {
-        file_put_contents($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR."views".DIRECTORY_SEPARATOR.$action_name."View_{$view_suffix}.class.php", $text);
+    if (!is_file($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$action_name."View_{$view_suffix}.class.php")) {
+        file_put_contents($module_dir.DIRECTORY_SEPARATOR.$module_name.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$action_name."View_{$view_suffix}.class.php", $text);
     }
 }
-

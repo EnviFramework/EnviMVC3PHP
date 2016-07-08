@@ -2,8 +2,6 @@
 /*%%model_name_space_use%%*/
 
 /**
- *
- *
  * PHP versions 5
  *
  *
@@ -21,8 +19,6 @@
  */
 
 /**
- *
- *
  * @category   %%project_category%%
  * @package    %%project_name%%
  * @subpackage %%subpackage_name%%
@@ -42,7 +38,7 @@ class _____model_pascal_case_name_____ extends /*%%model_base_name_space%%*/Base
      * INSERT INTO時に自動更新される値
      *
      * @access      protected
-     * @var         var_type
+     * @var var_type
      */
     protected $insert_date = 'insert_date';
 
@@ -50,8 +46,7 @@ class _____model_pascal_case_name_____ extends /*%%model_base_name_space%%*/Base
      * INSERT INTOおよびUPDATE時に自動更新される値
      *
      * @access      protected
-     * @var         var_type
+     * @var var_type
      */
     protected $update_date = 'update_date';
-
 }

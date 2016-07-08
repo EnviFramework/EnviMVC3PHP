@@ -45,10 +45,10 @@ function pascalize($string)
 
 $sql = '';
 foreach ($config['SCHEMA'] as $table_name => &$schema) {
-    $index = array();
-    $unique = array();
+    $index   = array();
+    $unique  = array();
     $primary = array();
-    $comma = '';
+    $comma   = '';
     $sql .= "DROP TABLE IF EXISTS `{$table_name}`;\nCREATE TABLE `{$table_name}` (\n";
     foreach ($schema['schema'] as $column => $val) {
         $sql .= $comma;

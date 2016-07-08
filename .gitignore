@@ -4,3 +4,4 @@ document/man/*
 libs/tests/EnviTest/copy/*
 work/
 bundle/temp.yml
+.php_cs.cache

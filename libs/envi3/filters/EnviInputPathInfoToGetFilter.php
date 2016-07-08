@@ -60,5 +60,4 @@ class EnviInputPathInfoToGetFilter extends EnviInputFilterBase
         }
     }
     /* ----------------------------------------- */
-
 }

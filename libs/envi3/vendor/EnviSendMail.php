@@ -244,18 +244,18 @@ class EnviSendMail
     public function __construct($system_conf)
     {
         require_once $system_conf['SETTING']['renderer']['resource'];
-        $this->renderer = new $system_conf['SETTING']['renderer']['class_name'];
-        $this->dev_send = isset($system_conf['SETTING']['dev_send']) ? $system_conf['SETTING']['dev_send'] : false;
-        $this->stg_send = isset($system_conf['SETTING']['stg_send']) ? $system_conf['SETTING']['stg_send'] : false;
-        $this->stg_allow_send  = isset($system_conf['SETTING']['stg_allow_send']) ? $system_conf['SETTING']['stg_allow_send'] : NULL;
-        $this->auto_clean = $system_conf['SETTING']['auto_clean'];
+        $this->renderer        = new $system_conf['SETTING']['renderer']['class_name'];
+        $this->dev_send        = isset($system_conf['SETTING']['dev_send']) ? $system_conf['SETTING']['dev_send'] : false;
+        $this->stg_send        = isset($system_conf['SETTING']['stg_send']) ? $system_conf['SETTING']['stg_send'] : false;
+        $this->stg_allow_send  = isset($system_conf['SETTING']['stg_allow_send']) ? $system_conf['SETTING']['stg_allow_send'] : null;
+        $this->auto_clean      = $system_conf['SETTING']['auto_clean'];
         if (isset($system_conf['SETTING']['from'])) {
             $this->setFrom(
                 $system_conf['SETTING']['from']['email'],
-                isset($system_conf['SETTING']['from']['name']) && $system_conf['SETTING']['from']['name'] ? $system_conf['SETTING']['from']['name'] : NULL
+                isset($system_conf['SETTING']['from']['name']) && $system_conf['SETTING']['from']['name'] ? $system_conf['SETTING']['from']['name'] : null
             );
         }
-        $this->boundary = uniqid('--------EnviSendMail_1.0');
+        $this->boundary    = uniqid('--------EnviSendMail_1.0');
         $this->_ServerInfo = EnviServerStatus();
     }
 
@@ -265,14 +265,15 @@ class EnviSendMail
         $this->_snap_shot = clone $this;
     }
 
-    public function getSnapShot(){
+    public function getSnapShot()
+    {
         return $this->_snap_shot;
     }
 
     /**
      * メールの送信実行
      *
-     * @return boolean
+     * @return bool
      */
     public function sendMailSubmit()
     {
@@ -282,23 +283,23 @@ class EnviSendMail
 
         if ($this->is_attachment) {
             //添付ありの場合
-            $body="--".$this->boundary."\n"
+            $body = '--'.$this->boundary."\n"
                 ."Content-Type: text/plain; charset=\"ISO-2022-JP\"\n"
                 ."Content-Transfer-Encoding: 7bit\n"
                 ."\n"
-                .mb_convert_encoding($this->body, "JIS", "AUTO")
+                .mb_convert_encoding($this->body, 'JIS', 'AUTO')
                 ."\n";
 
             //添付する
             foreach ($this->attachment as $key => $value) {
-                $body .= "--".$this->boundary."\n"
-                    ."Content-Type: ".$value["type"]."; name=\""
-                    .$value["file"]."\"\n"
+                $body .= '--'.$this->boundary."\n"
+                    .'Content-Type: '.$value['type'].'; name="'
+                    .$value['file']."\"\n"
                     ."Content-Transfer-Encoding: base64\n"
-                    ."Content-Disposition: attachment; filename=\"".$value["file"]."\"\n\n"
-                    .chunk_split(base64_encode($value["data"]))
+                    .'Content-Disposition: attachment; filename="'.$value['file']."\"\n\n"
+                    .chunk_split(base64_encode($value['data']))
                     ."\n";
-                    $body.="--".$this->boundary."--\n";
+                $body .= '--'.$this->boundary."--\n";
             }
 
             $result = mail(
@@ -323,7 +324,7 @@ class EnviSendMail
     /**
      * ヘッダを作成
      *
-     * @return boolean
+     * @return bool
      */
     private function _makeHeader()
     {
@@ -339,13 +340,13 @@ class EnviSendMail
             foreach ($this->to_array as $value) {
                 if (in_array($value, $this->stg_allow_send)) {
                     $to_array_tmp[] = $value;
-                } else if ($loop == 1) {
+                } elseif ($loop == 1) {
                     $to_array_tmp[] = $this->stg_send;
                     $loop++;
                 }
             }
             $this->to_array = $to_array_tmp;
-            $this->_to = join(',', (array)$this->to_array);
+            $this->_to      = join(',', (array)$this->to_array);
         } else {
             $this->_to = join(',', (array)$this->to_array);
         }
@@ -362,8 +363,7 @@ class EnviSendMail
                     }
                 }
                 $this->cc_array = $cc_array_tmp;
-                $this->_cc = join(',', (array)$this->cc_array);
-
+                $this->_cc      = join(',', (array)$this->cc_array);
             } else {
                 $this->_cc = join(',', (array)$this->cc_array);
             }
@@ -382,13 +382,13 @@ class EnviSendMail
                 foreach ($this->bcc_array as $value) {
                     if (in_array($value, $this->stg_allow_send)) {
                         $bcc_array_tmp[] = $value;
-                    } else if ($loop == 1) {
+                    } elseif ($loop == 1) {
                         $bcc_array_tmp[] = $this->stg_send;
                         $loop++;
                     }
                 }
                 $this->bcc_array = $bcc_array_tmp;
-                $this->_bcc = join(',', (array)$this->bcc_array);
+                $this->_bcc      = join(',', (array)$this->bcc_array);
             } else {
                 $this->_bcc = join(',', (array)$this->bcc_array);
             }
@@ -412,16 +412,16 @@ class EnviSendMail
             $this->setString($this->_from);
             $this->setString($this->body, true, true);
         }
-        $this->_header = "From: ".$this->_from
+        $this->_header = 'From: '.$this->_from
                         .($this->_cc == false ? '' : "\r\nCc: ".$this->_cc)
                         .($this->_bcc == false ? '' : "\r\nBcc: ".$this->_bcc)
                         .($this->reply == false ? '' : "\r\nReply-To: ".$this->reply)
                         .($this->keyword == false ? '' : "\r\nKeyword: ".$this->keyword);
 
         // 添付ファイル用のヘッダ
-        if($this->is_attachment){
-            $this->_header .="\r\nMIME-Version: 1.0";
-            $this->_header .="\r\nContent-Type: multipart/mixed; boundary=\"".$this->boundary.'"';
+        if ($this->is_attachment) {
+            $this->_header .= "\r\nMIME-Version: 1.0";
+            $this->_header .= "\r\nContent-Type: multipart/mixed; boundary=\"".$this->boundary.'"';
         }
         return $this->_header;
     }
@@ -432,8 +432,8 @@ class EnviSendMail
      *
      * 本文テンプレートを読み込む
      *
-     * @param string $template
-     * @return boolean
+     * @param  string $template
+     * @return bool
      */
     public function setBody($template)
     {
@@ -455,8 +455,8 @@ class EnviSendMail
      * +-- templateにtemplate変数を配列を展開する形で追加
      *
      * @access      public
-     * @param       array $values
-     * @return      void
+     * @param  array $values
+     * @return void
      */
     public function setAttributes(array $values)
     {
@@ -470,11 +470,11 @@ class EnviSendMail
      * 送信者設定
      *
      * @param string $address アドレス
-     * @param string $name 名前
+     * @param string $name    名前
      */
-    public function setFrom($address, $name = NULL)
+    public function setFrom($address, $name = null)
     {
-        if ($name !== NULL) {
+        if ($name !== null) {
             $this->_from = mb_encode_mimeheader($name)."<{$address}>";
         } else {
             $this->_from = $address;
@@ -505,13 +505,13 @@ class EnviSendMail
      * 宛先設定
      *
      * @param string $address アドレス
-     * @param string $name 名前
+     * @param string $name    名前
      */
-    public function setTo($address, $name = NULL)
+    public function setTo($address, $name = null)
     {
         if (is_array($address)) {
             $this->to_array = (array)$this->to_array + $address;
-        } elseif ($name !== NULL) {
+        } elseif ($name !== null) {
             $this->to_array[] = mb_encode_mimeheader($name)."<{$address}>";
         } else {
             $this->to_array[] = $address;
@@ -522,13 +522,13 @@ class EnviSendMail
      * Cc設定
      *
      * @param string $address アドレス
-     * @param string $name 名前
+     * @param string $name    名前
      */
-    public function setCc($address, $name=NULL)
+    public function setCc($address, $name = null)
     {
         if (is_array($address)) {
             $this->cc_array = (array)$this->cc_array + $address;
-        } elseif ($name !== NULL) {
+        } elseif ($name !== null) {
             $this->cc_array[] = mb_encode_mimeheader($name)."<{$address}>";
         } else {
             $this->cc_array[] = $address;
@@ -539,13 +539,13 @@ class EnviSendMail
      * Bcc設定
      *
      * @param string $address アドレス
-     * @param string $name 名前
+     * @param string $name    名前
      */
-    public function setBcc($address, $name = NULL)
+    public function setBcc($address, $name = null)
     {
         if (is_array($address)) {
             $this->bcc_array = (array)$this->bcc_array + $address;
-        } elseif ($name !== NULL) {
+        } elseif ($name !== null) {
             $this->bcc_array[] = mb_encode_mimeheader($name)."<{$address}>";
         } else {
             $this->bcc_array[] = $address;
@@ -559,16 +559,16 @@ class EnviSendMail
      * メールの内容を整える
      *
      * @access public
-     * @param string $msg
-     * @param boolean $is_kana OPTIONAL:false
-     * @param boolean $isPre OPTIONAL:false
+     * @param  string $msg
+     * @param  bool   $is_kana OPTIONAL:false
+     * @param  bool   $isPre   OPTIONAL:false
      * @return string
      */
     public function setString(&$msg, $is_kana = false, $isPre = false)
     {
         if (!$isPre) {
             $msg = str_replace(array("\n", "\r"), '', $msg);
-        } elseif($is_kana) {
+        } elseif ($is_kana) {
             $msg = mb_convert_kana($msg, 'KV');
         }
         return $msg;
@@ -578,18 +578,18 @@ class EnviSendMail
     /**
      * 添付する
      *
-     * @param string $data 添付データ
-     * @param string $Filename 添付ファイルの名前
-     * @param string $Type mimeヘッダ
+     * @param  string $data     添付データ
+     * @param  string $Filename 添付ファイルの名前
+     * @param  string $Type     mimeヘッダ
      * @return void
      */
     public function addAttachment(&$data, $Filename = '', $Type = 'application/octet-stream')
     {
-        $this->is_attachment = TRUE;
-        if($Filename === ''){
+        $this->is_attachment = true;
+        if ($Filename === '') {
             $Filename = uniqid('at');
         }
-        $s = count($this->attachment);
+        $s                            = count($this->attachment);
         $this->attachment[$s]['data'] = $data;
         $this->attachment[$s]['file'] = $Filename;
         $this->attachment[$s]['type'] = $Type;
@@ -599,9 +599,9 @@ class EnviSendMail
     /**
      * ファイルを読み込んで添付する
      *
-     * @param string $file 添付データ
+     * @param string $file   添付データ
      * @param string $rename 添付ファイルの名前
-     * @param string $Type mimeヘッダ
+     * @param string $Type   mimeヘッダ
      */
     public function setAttachment($file, $rename = false, $Type = 'application/octet-stream')
     {
@@ -619,30 +619,30 @@ class EnviSendMail
      *
      * エラーメールを送信します。
      *
-     * @param bool $isError trueの場合にのみメールを送信する
+     * @param  bool $isError trueの場合にのみメールを送信する
      * @return void
      */
     public function sendmailError($isError = true)
     {
         if ($isError) {
             $body = "以下の内容のメールを送信しようとしましたが、エラーの為送信出来ませんでした。\r\n"
-                        ."宛先:".$this->_to."\r\n"
-                        ."送信者:".$this->_from."\r\n"
-                        ."CC:".$this->_cc."\r\n"
-                        ."BCC:".$this->_bcc."\r\n"
-                        ."件名:".$this->subject."\r\n\r\n"
+                        .'宛先:'.$this->_to."\r\n"
+                        .'送信者:'.$this->_from."\r\n"
+                        .'CC:'.$this->_cc."\r\n"
+                        .'BCC:'.$this->_bcc."\r\n"
+                        .'件名:'.$this->subject."\r\n\r\n"
                         ."ヘッダ一覧\r\n\r\n".$this->_header."\r\n\r\n"
-                        .mb_strimwidth($this->body, 0, 12000, "・・・・長いメールの為本文の一部を省略しました。")
-                        ."\r\n\r\n--------\r\n添付ファイル:".($this->is_attachment ? "あり" : "なし");
+                        .mb_strimwidth($this->body, 0, 12000, '・・・・長いメールの為本文の一部を省略しました。')
+                        ."\r\n\r\n--------\r\n添付ファイル:".($this->is_attachment ? 'あり' : 'なし');
             $is_dev = ($this->_ServerInfo->getServerStatus() === EnviServerStatus::DEVELOPER);
             $is_stg = ($this->_ServerInfo->getServerStatus() === EnviServerStatus::STAGE);
 
-            $subject = "EnviSendMail Error Report";
+            $subject = 'EnviSendMail Error Report';
 
             if ($is_dev) {
-                $subject = "【DEV】".$subject;
+                $subject = '【DEV】'.$subject;
             } elseif ($is_stg) {
-                $this->subject = "【STG】".$this->subject;
+                $this->subject = '【STG】'.$this->subject;
             }
 
             mb_send_mail($this->error_to, $subject, $body, 'from: '.$this->_from);

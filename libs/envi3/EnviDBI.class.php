@@ -44,7 +44,7 @@ class EnviDBI
      *
      * @access public
      * @static
-     * @param string $db_key データーベースキー
+     * @param  string $db_key データーベースキー
      * @return void
      */
     public static function getConnection($db_key)

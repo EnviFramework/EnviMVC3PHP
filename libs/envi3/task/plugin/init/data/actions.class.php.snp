@@ -75,11 +75,11 @@ class %%module_name%%Actions extends actionBase
      *
      *
      * @see validate()
-     * @returnEnvi::DEFAULT_ACCESS | Envi::ERROR | Envi::SUCCESS | boolean
+     * @return Envi::DEFAULT_ACCESS | Envi::ERROR | Envi::SUCCESS | boolean
      */
     public function defaultAccess()
     {
-        returnEnvi::DEFAULT_ACCESS_ACCESS;
+        return Envi::DEFAULT_ACCESS_ACCESS;
     }
     /* ----------------------------------------- */
 
@@ -88,7 +88,7 @@ class %%module_name%%Actions extends actionBase
      *
      *
      * @see validate()
-     * @returnEnvi::DEFAULT_ACCESS | Envi::ERROR | Envi::SUCCESS | boolean
+     * @return Envi::DEFAULT_ACCESS | Envi::ERROR | Envi::SUCCESS | boolean
      */
     public function handleError()
     {

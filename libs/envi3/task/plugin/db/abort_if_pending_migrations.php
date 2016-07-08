@@ -17,9 +17,6 @@
  * @see        http://www.enviphp.net/
  * @since      File available since Release 3.4.0
  */
-
-
-
 umask(0);
 
 
@@ -39,7 +36,7 @@ if (!isset($argv[2])) {
 require_once ENVI_BASE_DIR.'util'.DIRECTORY_SEPARATOR.'Migration'.DIRECTORY_SEPARATOR.'EnviMigrationCmd.php';
 
 $EnviMigrationCmd = new EnviMigrationCmd($current_work_dir);
-$res = $EnviMigrationCmd->getMigrationList();
+$res              = $EnviMigrationCmd->getMigrationList();
 foreach ($res as $row) {
     echo "{$row}\n";
 }

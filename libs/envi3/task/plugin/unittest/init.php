@@ -24,4 +24,3 @@ $default_config_dir = dirname(__FILE__)."{$ds}..{$ds}..{$ds}..{$ds}default_confi
 copy($default_config_dir.'main_test.yml', getcwd().$ds.$test_dir.'_test.yml');
 copy(dirname(__FILE__).$ds.'data'.$ds.'scenario.php.snp', getcwd().$ds.$test_dir.$ds.'scenario.php');
 copy(dirname(__FILE__).$ds.'data'.$ds.'testCaseBase.php.snp', getcwd().$ds.$test_dir.$ds.'testCaseBase.php');
-

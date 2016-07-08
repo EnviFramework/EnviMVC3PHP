@@ -17,7 +17,6 @@
  * @see        http://www.enviphp.net/
  * @since      File available since Release v3.4.0.0
  */
-
 umask(0);
 if (!isset($argv[3])) {
     eecho('引数が足りません。');
@@ -67,8 +66,8 @@ class EnviBundle
     {
         $this->bundle_cache_dir = $bundle_cache_dir;
         $this->bundle_temp_file = $bundle_temp_file;
-        $this->install_dir = $install_dir;
-        $this->envi_work_dir  = realpath(ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'work'.DIRECTORY_SEPARATOR;
+        $this->install_dir      = $install_dir;
+        $this->envi_work_dir    = realpath(ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.'work'.DIRECTORY_SEPARATOR;
         if (!is_dir($this->envi_work_dir)) {
             mkdir($this->envi_work_dir);
         }
@@ -78,8 +77,8 @@ class EnviBundle
      * +-- mode new
      *
      * @access      public
-     * @param       array $bundle_config
-     * @return      void
+     * @param  array $bundle_config
+     * @return void
      */
     public function executeNew(array $bundle_config)
     {
@@ -95,8 +94,8 @@ class EnviBundle
      * +-- mode new
      *
      * @access      public
-     * @param       array $bundle_config
-     * @return      void
+     * @param  array $bundle_config
+     * @return void
      */
     public function executeUpdate(array $bundle_config)
     {
@@ -112,8 +111,8 @@ class EnviBundle
      * +-- mode new
      *
      * @access      public
-     * @param       array $bundle_config
-     * @return      void
+     * @param  array $bundle_config
+     * @return void
      */
     public function executeDelete(array $bundle_config)
     {
@@ -129,8 +128,8 @@ class EnviBundle
      * +-- Extensionのインストールを行います
      *
      * @access      public
-     * @param       array $bundle_config
-     * @return      void
+     * @param  array $bundle_config
+     * @return void
      */
     public function extensionInstall(array $bundle_config)
     {
@@ -175,8 +174,8 @@ class EnviBundle
      * +-- Extensionの更新を行います
      *
      * @access      public
-     * @param       array $bundle_config
-     * @return      void
+     * @param  array $bundle_config
+     * @return void
      */
     public function extensionUpdate(array $bundle_config)
     {
@@ -218,8 +217,8 @@ class EnviBundle
      * +-- Extensionの削除を行います
      *
      * @access      public
-     * @param       array $bundle_config
-     * @return      void
+     * @param  array $bundle_config
+     * @return void
      */
     public function extensionDelete(array $bundle_config)
     {
@@ -230,7 +229,6 @@ class EnviBundle
         // クリーン
         is_dir($install_dir) && rename($install_dir, $this->envi_work_dir.$bundle_config['name'].'_bundle_delete_'.date('Ymdhis'));
         is_file($this->bundle_cache_dir.$bundle_config['name'].'.yml') && rename($this->bundle_cache_dir.$bundle_config['name'].'.yml', $this->bundle_cache_dir.$bundle_config['name'].'.yml'.date('Ymdhis'));
-
     }
     /* ----------------------------------------- */
 
@@ -240,10 +238,10 @@ class EnviBundle
      * +-- gitコマンドを利用したインストール
      *
      * @access      public
-     * @param       string $repository
-     * @param       string $install_dir
-     * @param       string $version
-     * @return      string
+     * @param  string $repository
+     * @param  string $install_dir
+     * @param  string $version
+     * @return string
      */
     public function gitInstall($repository, $install_dir, $version)
     {
@@ -254,7 +252,7 @@ class EnviBundle
         $tags = `git for-each-ref --sort=-taggerdate refs/tags`;
         $tags = explode("\n", trim($tags));
         if (count($tags) === 0) {
-            return NULL;
+            return null;
         }
         if ($version === '@new') {
             $last_tag = array_pop($tags);
@@ -272,8 +270,8 @@ class EnviBundle
      * +-- メッセージ
      *
      * @access      public
-     * @param       string $message
-     * @return      boolean
+     * @param  string $message
+     * @return bool
      */
     public function yesOrNo($message)
     {
@@ -281,7 +279,7 @@ class EnviBundle
         echo $message,"\n",'Y/n',"\n";
 
         while ($text = trim(fgets(STDIN))) {
-            switch($text) {
+            switch ($text) {
             case 'Y':
             case 'Yes':
             case 'yes':

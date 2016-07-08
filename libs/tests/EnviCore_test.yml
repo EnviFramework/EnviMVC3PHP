@@ -1,13 +1,27 @@
 all:
   ## <?php $test_dir = dirname(__FILE__); ?>
   ## <?php $app_name = substr(basename(__FILE__), 0, strlen(basename(__FILE__))-9); ?>
+
+  # デフォルトのテストタイムアウト時間
+  default_time_out: 1
+  # グループごとのタイムアウト時間
   time_out:
-    large: 60
-    medium: 10
     small: 1
+    medium: 5
+    large:  10
+    
+  # 色を付けるかどうか
+  no_color: false
+  # テスト毎にPHPプロセスを新規に立ち上げてテストする
+  # segmentation fault とかが出る場合はtrueにしてください
+  multi: true
+  
+  # テストカバレッジ
   code_coverage:
     use: true
+    # テストカバレッジの詳細表示を使用する
     use_coverage_detail: true
+    # カバレッジ100%のメソッドは表示しない
     use_all_covered_filter: true
     save_path: '<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name; ?>_code_coverage.log'
     black_list:
@@ -18,6 +32,7 @@ all:
     white_list:
       - "<?php echo ENVI_BASE_DIR; ?>EnviValidator.php"
       - "<?php echo ENVI_BASE_DIR; ?>EnviMath.php"
+      - <?php echo __DIR__.'/EnviCore/EnviCoreTest/test/Envi.php';?>
       
 
   scenario:
@@ -30,7 +45,6 @@ all:
       EnviCoreTest: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.'EnviCoreTest'.DIRECTORY_SEPARATOR; ?>"
       EnviMathTest: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.'EnviMathTest'.DIRECTORY_SEPARATOR; ?>"
       EnviValidatorTest: "<?php echo $test_dir.DIRECTORY_SEPARATOR.$app_name.DIRECTORY_SEPARATOR.'EnviValidatorTest'.DIRECTORY_SEPARATOR; ?>"
-
 
   app:
     # リクエストURL
@@ -59,15 +73,14 @@ all:
     
     # テストモード
     # dummy => EnviおよびLoggerをダミーのものに置き換えて実行します(デフォルト)
-    # static => EnviUnitのみを使用するモード
     # resist_only => 通常通りEnviを実行します。
     test_mode: "dummy"
 
     # デフォルトのRequestmethod
     request_method: "GET"
   extension:
-    # テスト内で利用するエクステンションの設定
 
+    # テスト内で利用するエクステンションの設定
 #     DBI:
 #       # ここをtrueにすると、リクエストごとにロードされ、オブジェクトが生成されます
 #       constant: false
