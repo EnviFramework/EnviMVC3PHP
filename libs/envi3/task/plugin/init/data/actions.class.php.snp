@@ -79,7 +79,7 @@ class %%module_name%%Actions extends actionBase
      */
     public function defaultAccess()
     {
-        return Envi::DEFAULT_ACCESS_ACCESS;
+        return Envi::DEFAULT_ACCESS;
     }
     /* ----------------------------------------- */
 
