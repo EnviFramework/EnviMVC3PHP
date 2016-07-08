@@ -51,5 +51,4 @@ class EnviInputFilter extends EnviInputFilterBase
     {
     }
     /* ----------------------------------------- */
-
 }

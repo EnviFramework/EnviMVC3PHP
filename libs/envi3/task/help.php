@@ -18,8 +18,6 @@
  * @since      File available since Release 1.0.0
  * @doc_ignore
  */
-
-
 if (isOption('--help') || isOption('-h') || isOption('-?') || !isset($argv[1])) {
     // ヘルプ表示
     cecho('Name:', 33);

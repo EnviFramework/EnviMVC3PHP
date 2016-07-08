@@ -58,7 +58,7 @@ class EnviExtension
             if (isset($v['constant']) && !$v['constant']) {
                 continue;
             }
-            $class_name = $v['class']['class_name'];
+            $class_name              = $v['class']['class_name'];
             $this->extensions[$name] = new $class_name(
                 Envi::singleton()->parseYml(
                     basename($v['router']['resource']),
@@ -129,7 +129,7 @@ class EnviExtension
     }
     /* ----------------------------------------- */
 
-    public static function _singleton($configuration = NULL)
+    public static function _singleton($configuration = null)
     {
         if (!isset(self::$instance)) {
             self::$instance = new EnviExtension($configuration);
@@ -141,7 +141,6 @@ class EnviExtension
     {
         $this->extensions = array();
     }
-
 }
 
 

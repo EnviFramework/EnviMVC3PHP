@@ -17,7 +17,6 @@
  * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
  */
-
 umask(0);
 if (!isset($argv[2])) {
     eecho('引数が足りません。');
@@ -39,24 +38,24 @@ if (!is_file($project_dir.'envi.prj')) {
     die;
 }
 
-$ds = DIRECTORY_SEPARATOR;
-$arr[] = $project_dir."apps".$ds.$project_name.$ds;
-$arr[] = $project_dir."apps".$ds.$project_name.$ds."modules".$ds;
-$arr[] = $project_dir."apps".$ds.$project_name.$ds."libs".$ds;
-$arr[] = $project_dir."apps".$ds.$project_name.$ds."libs".$ds."controller".$ds;
-$arr[] = $project_dir."apps".$ds.$project_name.$ds."libs".$ds."common".$ds;
-$arr[] = $project_dir."apps".$ds.$project_name.$ds."libs".$ds."constant".$ds;
-$arr[] = $project_dir."apps".$ds.$project_name.$ds."libs".$ds."models".$ds;
-$arr[] = $project_dir."apps".$ds.$project_name.$ds."libs".$ds."models".$ds."om";
+$ds    = DIRECTORY_SEPARATOR;
+$arr[] = $project_dir.'apps'.$ds.$project_name.$ds;
+$arr[] = $project_dir.'apps'.$ds.$project_name.$ds.'modules'.$ds;
+$arr[] = $project_dir.'apps'.$ds.$project_name.$ds.'libs'.$ds;
+$arr[] = $project_dir.'apps'.$ds.$project_name.$ds.'libs'.$ds.'controller'.$ds;
+$arr[] = $project_dir.'apps'.$ds.$project_name.$ds.'libs'.$ds.'common'.$ds;
+$arr[] = $project_dir.'apps'.$ds.$project_name.$ds.'libs'.$ds.'constant'.$ds;
+$arr[] = $project_dir.'apps'.$ds.$project_name.$ds.'libs'.$ds.'models'.$ds;
+$arr[] = $project_dir.'apps'.$ds.$project_name.$ds.'libs'.$ds.'models'.$ds.'om';
 
 // テスト用
-$arr[] = $project_dir."tests".$ds.$project_name.$ds;
-$arr[] = $project_dir."tests".$ds.$project_name.$ds."modulesTest".$ds;
-$arr[] = $project_dir."tests".$ds.$project_name.$ds."libsTest".$ds;
-$arr[] = $project_dir."tests".$ds.$project_name.$ds."libsTest".$ds."controllerTest".$ds;
-$arr[] = $project_dir."tests".$ds.$project_name.$ds."libsTest".$ds."commonTest".$ds;
-$arr[] = $project_dir."tests".$ds.$project_name.$ds."libsTest".$ds."constantTest".$ds;
-$arr[] = $project_dir."tests".$ds.$project_name.$ds."libsTest".$ds."modelsTest".$ds;
+$arr[] = $project_dir.'tests'.$ds.$project_name.$ds;
+$arr[] = $project_dir.'tests'.$ds.$project_name.$ds.'modulesTest'.$ds;
+$arr[] = $project_dir.'tests'.$ds.$project_name.$ds.'libsTest'.$ds;
+$arr[] = $project_dir.'tests'.$ds.$project_name.$ds.'libsTest'.$ds.'controllerTest'.$ds;
+$arr[] = $project_dir.'tests'.$ds.$project_name.$ds.'libsTest'.$ds.'commonTest'.$ds;
+$arr[] = $project_dir.'tests'.$ds.$project_name.$ds.'libsTest'.$ds.'constantTest'.$ds;
+$arr[] = $project_dir.'tests'.$ds.$project_name.$ds.'libsTest'.$ds.'modelsTest'.$ds;
 
 
 
@@ -68,10 +67,10 @@ foreach ($arr as $item) {
 }
 
 
-copy($task_plugin_dir.$module.$ds.'data'.$ds.'scenario.php.snp', $project_dir."tests".$ds.$project_name.$ds.'scenario.php');
-copy($task_plugin_dir.$module.$ds.'data'.$ds.'testCaseBase.php.snp', $project_dir."tests".$ds.$project_name.$ds.'testCaseBase.php');
-copy($task_plugin_dir.$module.$ds.'data'.$ds.'actionBase.class.php.snp', $project_dir."apps".$ds.$project_name.$ds."libs".$ds."controller".$ds.'actionBase.class.php');
-copy($task_plugin_dir.$module.$ds.'data'.$ds.'viewBase.class.php.snp', $project_dir."apps".$ds.$project_name.$ds."libs".$ds."controller".$ds.'viewBase.class.php');
+copy($task_plugin_dir.$module.$ds.'data'.$ds.'scenario.php.snp', $project_dir.'tests'.$ds.$project_name.$ds.'scenario.php');
+copy($task_plugin_dir.$module.$ds.'data'.$ds.'testCaseBase.php.snp', $project_dir.'tests'.$ds.$project_name.$ds.'testCaseBase.php');
+copy($task_plugin_dir.$module.$ds.'data'.$ds.'actionBase.class.php.snp', $project_dir.'apps'.$ds.$project_name.$ds.'libs'.$ds.'controller'.$ds.'actionBase.class.php');
+copy($task_plugin_dir.$module.$ds.'data'.$ds.'viewBase.class.php.snp', $project_dir.'apps'.$ds.$project_name.$ds.'libs'.$ds.'controller'.$ds.'viewBase.class.php');
 
 copy($default_config_dir.'main.yml', $project_dir."config{$ds}".$project_name.'.yml');
 copy($default_config_dir.'main_databases.yml', $project_dir."config{$ds}".$project_name.'_databases.yml');
@@ -80,10 +79,10 @@ copy($default_config_dir.'main_web_type.yml', $project_dir."config{$ds}".$projec
 copy($default_config_dir.'main_send_mail.yml', $project_dir."config{$ds}".$project_name.'_send_mail.yml');
 copy($default_config_dir.'main_schema.yml', $project_dir."config{$ds}".$project_name.'_schema.yml');
 
-copy($default_config_dir.'main_test.yml', $project_dir."tests".$ds.$project_name.'_test.yml');
+copy($default_config_dir.'main_test.yml', $project_dir.'tests'.$ds.$project_name.'_test.yml');
 
 
-touch($project_dir."apps".$ds.$project_name.$ds."modules".$ds.'config.php');
+touch($project_dir.'apps'.$ds.$project_name.$ds.'modules'.$ds.'config.php');
 
 
 $text = file_get_contents($task_plugin_dir.$module.$ds.'data'.$ds.'main.php.snp');

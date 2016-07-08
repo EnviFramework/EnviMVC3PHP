@@ -77,12 +77,9 @@ class ___class_name___ extends EnviMigrationBase
 
     public function up()
     {
-
     }
 
     public function down()
     {
-
     }
-
 }

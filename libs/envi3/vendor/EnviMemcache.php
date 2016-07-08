@@ -66,15 +66,15 @@ class EnviMemcache
      *
      * @access      public
      * @static
-     * @param       string $name コネクションキ－ OPTIONAL:'default'
-     * @return      EnviMemcache
+     * @param  string       $name コネクションキ－ OPTIONAL:'default'
+     * @return EnviMemcache
      */
     public static function getConnection($name = 'default')
     {
         if (isset(self::$connection[$name])) {
             return self::$connection[$name];
         }
-        $system_conf = Envi::singleton()->getConfiguration('MEMCACHE');
+        $system_conf             = Envi::singleton()->getConfiguration('MEMCACHE');
         self::$connection[$name] = new Memcache;
         self::$connection[$name]->connect($system_conf["{$name}_host"], $system_conf["{$name}_port"]);
         self::$prefix[$name] = $system_conf["{$name}_prefix"];
@@ -93,18 +93,18 @@ class EnviMemcache
      *
      * @access      public
      * @static
-     * @param       string $key 保存するキー
-     * @param       string $var 保存する値
-     * @param       integer $expire タイムアウト値 OPTIONAL:3600
-     * @param       string $name ネームスペース OPTIONAL:'default'
-     * @param       boolean $flag zlib圧縮の有効/無効 OPTIONAL:false
-     * @return      boolean
+     * @param  string $key    保存するキー
+     * @param  string $var    保存する値
+     * @param  int    $expire タイムアウト値 OPTIONAL:3600
+     * @param  string $name   ネームスペース OPTIONAL:'default'
+     * @param  bool   $flag   zlib圧縮の有効/無効 OPTIONAL:false
+     * @return bool
      * @see EnviMemcache::get()
      */
-    public static function set($key, $var, $expire = 3600, $name= 'default', $flag = false)
+    public static function set($key, $var, $expire = 3600, $name = 'default', $flag = false)
     {
-        $con = self::getConnection($name);
-        $key = self::$prefix[$name].$key;
+        $con                      = self::getConnection($name);
+        $key                      = self::$prefix[$name].$key;
         self::$cache[$name][$key] = $var;
         if ($flag) {
             $flag = MEMCACHE_COMPRESSED;
@@ -118,18 +118,18 @@ class EnviMemcache
      *
      * @access      public
      * @static
-     * @param       string $key 取得するキー
-     * @param       string $name ネームスペース OPTIONAL:'default'
-     * @return      mixed
+     * @param  string $key  取得するキー
+     * @param  string $name ネームスペース OPTIONAL:'default'
+     * @return mixed
      * @see EnviMemcache::set()
      */
-    public static function get($key,  $name= 'default')
+    public static function get($key,  $name = 'default')
     {
         $con = self::getConnection($name);
         $key = self::$prefix[$name].$key;
 
         if (!isset(self::$cache[$name][$key])) {
-            $flags = NULL;
+            $flags                    = null;
             self::$cache[$name][$key] = $con->get($key, $flags);
         }
         return self::$cache[$name][$key];
@@ -141,21 +141,21 @@ class EnviMemcache
      *
      * @access      public
      * @static
-     * @param       string $key 確認するキー
-     * @param       string $name ネームスペース OPTIONAL:'default'
-     * @return      boolean
+     * @param  string $key  確認するキー
+     * @param  string $name ネームスペース OPTIONAL:'default'
+     * @return bool
      * @see EnviMemcache::set()
      */
-    public static function has($key, $name= 'default')
+    public static function has($key, $name = 'default')
     {
         $con = self::getConnection($name);
         $key = self::$prefix[$name].$key;
-        if (isset(self::$cache[$name][$key]) && self::$cache[$name][$key] !== FALSE) {
+        if (isset(self::$cache[$name][$key]) && self::$cache[$name][$key] !== false) {
             return true;
         }
-        $flags = NULL;
+        $flags                    = null;
         self::$cache[$name][$key] = $con->get($key, $flags);
-        return self::$cache[$name][$key] !== FALSE;
+        return self::$cache[$name][$key] !== false;
     }
     /* ----------------------------------------- */
 
@@ -164,16 +164,16 @@ class EnviMemcache
      *
      * @access      public
      * @static
-     * @param       string $key 削除するキー
-     * @param       string $name ネームスペース OPTIONAL:'default'
-     * @return      boolean
+     * @param  string $key  削除するキー
+     * @param  string $name ネームスペース OPTIONAL:'default'
+     * @return bool
      * @see EnviMemcache::set()
      */
-    public static function delete($key, $name= 'default')
+    public static function delete($key, $name = 'default')
     {
         $con = self::getConnection($name);
         $key = self::$prefix[$name].$key;
-        return $con->delete($key) !== FALSE;
+        return $con->delete($key) !== false;
     }
     /* ----------------------------------------- */
 }

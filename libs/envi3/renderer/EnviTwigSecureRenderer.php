@@ -22,7 +22,6 @@
  * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
  */
-
 $ds = DIRECTORY_SEPARATOR;
 require ENVI_BASE_DIR."..{$ds}Twig{$ds}Autoloader.php";
 
@@ -59,7 +58,7 @@ class EnviTwigSecureRenderer
      * +-- コンストラクタ
      *
      * @access      public
-     * @return      void
+     * @return void
      * @doc_ignore
      */
     public function __construct()
@@ -74,8 +73,8 @@ class EnviTwigSecureRenderer
      * +-- 設定を行う
      *
      * @access      public
-     * @param       string $module_dir
-     * @return      void
+     * @param  string $module_dir
+     * @return void
      * @doc_ignore
      */
     public function setting($module_dir)
@@ -125,8 +124,8 @@ class EnviTwigSecureRenderer
      *
      * テンプレート内で使用する変数を格納します
      *
-     * @param string $name 格納する名前
-     * @param mixed $value 値
+     * @param  string $name  格納する名前
+     * @param  mixed  $value 値
      * @return void
      */
     public function setAttribute($name, $value)
@@ -141,12 +140,12 @@ class EnviTwigSecureRenderer
      * 指定されたテンプレートを読み込み、標準出力に出力します。
      *
      * @access      public
-     * @param       string $file_name templateのパス
-     * @param       string $cache_id キャッシュID OPTIONAL:NULL
-     * @param       stiring $dummy2 ダミー変数 OPTIONAL:NULL
-     * @return      void
+     * @param  string  $file_name templateのパス
+     * @param  string  $cache_id  キャッシュID OPTIONAL:NULL
+     * @param  stiring $dummy2    ダミー変数 OPTIONAL:NULL
+     * @return void
      */
-    public function display($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    public function display($file_name, $cache_id  = null, $dummy2 = null)
     {
         echo $this->twig->render($file_name, $this->_attributer);
     }
@@ -158,12 +157,12 @@ class EnviTwigSecureRenderer
      * 指定されたテンプレートを読み込み、実行結果の文字列を返します。
      *
      * @access      public
-     * @param       string $file_name templateのパス
-     * @param       string $cache_id キャッシュID OPTIONAL:NULL
-     * @param       stiring $dummy2 ダミー変数 OPTIONAL:NULL
-     * @return      stiring
+     * @param  string  $file_name templateのパス
+     * @param  string  $cache_id  キャッシュID OPTIONAL:NULL
+     * @param  stiring $dummy2    ダミー変数 OPTIONAL:NULL
+     * @return stiring
      */
-    public function displayRef($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    public function displayRef($file_name, $cache_id  = null, $dummy2 = null)
     {
         return $this->twig->render($file_name, $this->_attributer);
     }

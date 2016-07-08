@@ -40,8 +40,8 @@
  */
 class EnviDefaultRouter extends EnviRouterBase
 {
-    private $_ext_path_info = array();
-    private $_i18n = '';
+    private $_ext_path_info       = array();
+    private $_i18n                = '';
     private $_request_module_name = '';
     private $_request_action_name = '';
 
@@ -49,11 +49,11 @@ class EnviDefaultRouter extends EnviRouterBase
      * +-- 初期化
      *
      * @access      public
-     * @param       string $i18n
-     * @param       string $module_name
-     * @param       string $action_name
-     * @param       array $exp_path_info
-     * @return      void
+     * @param  string $i18n
+     * @param  string $module_name
+     * @param  string $action_name
+     * @param  array  $exp_path_info
+     * @return void
      */
     public function initialize($i18n, $module_name, $action_name, $exp_path_info)
     {
@@ -86,7 +86,7 @@ class EnviDefaultRouter extends EnviRouterBase
         }
         // アクション名
         if (count($exp_path_info) && $exp_path_info[0] !== '') {
-            $this->_request_action_name = preg_replace("/\\.".$_system_conf['SYSTEM']['ext'].'$/', '', array_shift($exp_path_info));
+            $this->_request_action_name = preg_replace('/\\.'.$_system_conf['SYSTEM']['ext'].'$/', '', array_shift($exp_path_info));
         }
         $this->_ext_path_info = $exp_path_info;
         return true;
@@ -97,7 +97,7 @@ class EnviDefaultRouter extends EnviRouterBase
      * +-- リクエストされたモジュールを取得する
      *
      * @access      public
-     * @return      string
+     * @return string
      */
     public function getRequestModule()
     {
@@ -109,7 +109,7 @@ class EnviDefaultRouter extends EnviRouterBase
      * +-- リクエストされたアクションを取得する
      *
      * @access      public
-     * @return      string
+     * @return string
      */
     public function getRequestAction()
     {
@@ -121,7 +121,7 @@ class EnviDefaultRouter extends EnviRouterBase
      * +-- 国際化情報を取得する
      *
      * @access      public
-     * @return      string
+     * @return string
      */
     public function getI18n()
     {
@@ -133,7 +133,7 @@ class EnviDefaultRouter extends EnviRouterBase
      * +-- 残りのpath_infoを取得する
      *
      * @access      public
-     * @return      array
+     * @return array
      */
     public function getPathInfo()
     {

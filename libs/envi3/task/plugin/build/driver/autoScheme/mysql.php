@@ -6,15 +6,15 @@ if ($auto_schema) {
     if (!isset($EnviDBInstance)) {
         $EnviDBInstance = new EnviDBInstance($database_yaml);
     }
-    $dbi = $EnviDBInstance->getInstance($instance_name);
-    $schema_arr = $dbi->getAll('desc '.$table_name);
+    $dbi              = $EnviDBInstance->getInstance($instance_name);
+    $schema_arr       = $dbi->getAll('desc '.$table_name);
     $index_schema_arr = $dbi->getAll('SHOW INDEX FROM '.$table_name);
 
     foreach ($schema_arr as $k => $arr) {
         $schema['schema'][$arr['Field']]['type']    = $arr['Type'];
         switch ($arr['Default']) {
             case 'CURRENT_TIMESTAMP':
-                $arr['Default'] = NULL;
+                $arr['Default'] = null;
                 break;
             default:
                 break;
@@ -38,6 +38,5 @@ if ($auto_schema) {
         if (strtolower($arr['Extra']) === 'auto_increment') {
             $schema['schema'][$arr['Field']]['auto_increment'] = true;
         }
-
     }
 }

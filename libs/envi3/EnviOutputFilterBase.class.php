@@ -86,7 +86,7 @@ abstract class EnviOutputFilterBase
      * falseを返すと、そこで処理が止まります。
      *
      * @access public
-     * @return boolean
+     * @return bool
      */
     public function initialize()
     {
@@ -99,7 +99,7 @@ abstract class EnviOutputFilterBase
      * +-- フィルタの実行
      *
      * @access public
-     * @param staring $contents
+     * @param  staring $contents
      * @return void
      */
     public function execute(&$contents)

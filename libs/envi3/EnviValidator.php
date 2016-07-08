@@ -63,33 +63,33 @@ class validator
     /**
      * timeバリデータで使用。時間のみのチェック
      *
-     * @var         integer
+     * @var int
      */
     const HOUR_ONLY        = 2;
     /**
      * timeバリデータで使用。時間と分のみのチェック
      *
-     * @var         integer
+     * @var int
      */
     const HOUR_TO_MINUTE   = 4;
     /**
      * timeバリデータで使用。時分秒のチェック
      *
-     * @var         integer
+     * @var int
      */
     const HOUR_TO_SECOND   = 6;
 
     /**
      * EnviValidate::autoPrepareで使用。POSTデータ
      *
-     * @var         integer
+     * @var int
      */
     const METHOD_POST      = 1;
 
     /**
      * EnviValidate::autoPrepareで使用。GETデータ
      *
-     * @var         integer
+     * @var int
      */
     const METHOD_GET       = 2;
 
@@ -97,7 +97,7 @@ class validator
      * +-- オブジェクト化させない
      *
      * @access      private
-     * @return      void
+     * @return void
      * @codeCoverageIgnore
      */
     private function __construct()
@@ -244,7 +244,7 @@ class EnviValidator
     const FORM_NAME         = 'form';
 
 
-    private static $_error_object = NULL;
+    private static $_error_object = null;
 
     /**
      * バリデーションチェインのフォーマット
@@ -254,18 +254,18 @@ class EnviValidator
      * 直接配列で指定可能ですが、メソッドを呼び出して簡単に登録することもできます。
      *
      * @var array Format:
-     * <pre>
-     * array(
-     *    "[フォーマット名]" => array(
-     *       "[バリデーションの実行順序]" => array(
-     *          "[バリデータ名(半角小文字)]"=> array(
-     *             self::VALIDATE_MODE   => [バリデートモード],
-     *             self::VALIDATOR_CHAIN => [エラーがおこっても次ぎのバリデータを起動するか],
-     *             )
-     *       )
-     *    )
-     * )
-     * </pre>
+     *            <pre>
+     *            array(
+     *            "[フォーマット名]" => array(
+     *            "[バリデーションの実行順序]" => array(
+     *            "[バリデータ名(半角小文字)]"=> array(
+     *            self::VALIDATE_MODE   => [バリデートモード],
+     *            self::VALIDATOR_CHAIN => [エラーがおこっても次ぎのバリデータを起動するか],
+     *            )
+     *            )
+     *            )
+     *            )
+     *            </pre>
      * @see setChainFormat();
      * @see getChainFormat();
      */
@@ -301,75 +301,75 @@ class EnviValidator
      */
     private $_validator_list = array(
 
-        'equal'             => '_typeEqual',
-        'notequal'          => '_typeNotEqual',
-        'xdigit'            => '_typeXdigit',
-        'digit'             => '_typeDigit',
-        'cntrl'             => '_typeCntrl',
-        'graph'             => '_typeGraph',
-        'lower'             => '_typeLower',
-        'upper'             => '_typeUpper',
-        'print'             => '_typePrint',
-        'punct'             => '_typePunct',
-        'space'             => '_typeSpace',
-        'notxdigit'         => '_typeNotXdigit',
-        'withoutdigit'      => '_typeWithoutDigit',
-        'withoutcntrl'      => '_typeWithoutCntrl',
-        'withoutgraph'      => '_typeWithoutGraph',
-        'withoutlower'      => '_typeWithoutLower',
-        'withoutupper'      => '_typeWithoutUpper',
-        'withoutprint'      => '_typeWithoutPrint',
-        'withoutpunct'      => '_typeWithoutPunct',
-        'withoutspace'      => '_typeWithoutSpace',
+        'equal'                        => '_typeEqual',
+        'notequal'                     => '_typeNotEqual',
+        'xdigit'                       => '_typeXdigit',
+        'digit'                        => '_typeDigit',
+        'cntrl'                        => '_typeCntrl',
+        'graph'                        => '_typeGraph',
+        'lower'                        => '_typeLower',
+        'upper'                        => '_typeUpper',
+        'print'                        => '_typePrint',
+        'punct'                        => '_typePunct',
+        'space'                        => '_typeSpace',
+        'notxdigit'                    => '_typeNotXdigit',
+        'withoutdigit'                 => '_typeWithoutDigit',
+        'withoutcntrl'                 => '_typeWithoutCntrl',
+        'withoutgraph'                 => '_typeWithoutGraph',
+        'withoutlower'                 => '_typeWithoutLower',
+        'withoutupper'                 => '_typeWithoutUpper',
+        'withoutprint'                 => '_typeWithoutPrint',
+        'withoutpunct'                 => '_typeWithoutPunct',
+        'withoutspace'                 => '_typeWithoutSpace',
         'withoutalphabet'              => '_typeWithoutAlphabet',
         'withoutalphabetornumber'      => '_typeWithoutAlphabetOrNumber',
-        'number'           => '_typeNumber',
-        'naturalnumber'    => '_typeNaturalNumber',
-        'integer'          => '_typeInteger',
-        'numbermax'        => '_typeNumberMax',
-        'numbermin'        => '_typeNumberMin',
-        'alphabet'         => '_typeAlphabet',
-        'alphabetornumber' => '_typeAlphabetOrNumber',
-        'rome'             => '_typeRome',
-        'maxlen'           => '_typeMaxLen',
-        'minlen'           => '_typeMinLen',
-        'maxwidth'         => '_typeMaxWidth',
-        'minwidth'         => '_typeMinWidth',
-        'blank'            => '_typeBlank',
-        'noblank'          => '_typeNoBlank',
-        'nosubmit'         => '_typeNoSubmit',
-        'encoding'         => '_typeEncoding',
-        'notags'           => '_typeNoTags',
-        'depend'           => '_typeDepend',
-        'mailformat'       => '_typeMailFormat',
-        'mailsimple'       => '_typeMailFormatSymple',
-        'mail'             => '_typeMail',
-        'hiragana'         => '_typeHiragana',
-        'katakana'         => '_typeKatakana',
-        'hfurigana'        => '_typeHFurigana',
-        'kfurigana'        => '_typeKFurigana',
-        'urlformat'        => '_typeUrlFormat',
-        'url'              => '_typeUrl',
-        'postcodeformat'   => '_typePostcodeFormat',
-        'telephone'        => '_typeTelephoneFormat',
-        'whitelist'        => '_typeWhiteList',
-        'date'             => '_typeDate',
-        'time'             => '_typeTime',
-        'array'            => '_typeArray',
-        'notarray'         => '_typeNotArray',
-        'arraykeyexists'   => '_typeArrayKeyExists',
-        'arraynumber'      => '_typeArrayNumber',
-        'arraynumbermax'   => '_typeArrayNumberMax',
-        'arraynumbermin'   => '_typeArrayNumberMin',
-        'arraycountmax'    => '_typeArrayCountMax',
-        'arraycountmin'    => '_typeArrayCountMin',
-        'arrayunique'      => '_typeArrayUnique',
-        'maxbr'            => '_typeMaxBr',
-        'minbr'            => '_typeMinBr',
-        'dirpath'          => '_typeDirPath',
-        'file'             => '_typeFile',
-        'ereg'             => '_typeEreg',
-        'preg'             => '_typePreg',
+        'number'                       => '_typeNumber',
+        'naturalnumber'                => '_typeNaturalNumber',
+        'integer'                      => '_typeInteger',
+        'numbermax'                    => '_typeNumberMax',
+        'numbermin'                    => '_typeNumberMin',
+        'alphabet'                     => '_typeAlphabet',
+        'alphabetornumber'             => '_typeAlphabetOrNumber',
+        'rome'                         => '_typeRome',
+        'maxlen'                       => '_typeMaxLen',
+        'minlen'                       => '_typeMinLen',
+        'maxwidth'                     => '_typeMaxWidth',
+        'minwidth'                     => '_typeMinWidth',
+        'blank'                        => '_typeBlank',
+        'noblank'                      => '_typeNoBlank',
+        'nosubmit'                     => '_typeNoSubmit',
+        'encoding'                     => '_typeEncoding',
+        'notags'                       => '_typeNoTags',
+        'depend'                       => '_typeDepend',
+        'mailformat'                   => '_typeMailFormat',
+        'mailsimple'                   => '_typeMailFormatSymple',
+        'mail'                         => '_typeMail',
+        'hiragana'                     => '_typeHiragana',
+        'katakana'                     => '_typeKatakana',
+        'hfurigana'                    => '_typeHFurigana',
+        'kfurigana'                    => '_typeKFurigana',
+        'urlformat'                    => '_typeUrlFormat',
+        'url'                          => '_typeUrl',
+        'postcodeformat'               => '_typePostcodeFormat',
+        'telephone'                    => '_typeTelephoneFormat',
+        'whitelist'                    => '_typeWhiteList',
+        'date'                         => '_typeDate',
+        'time'                         => '_typeTime',
+        'array'                        => '_typeArray',
+        'notarray'                     => '_typeNotArray',
+        'arraykeyexists'               => '_typeArrayKeyExists',
+        'arraynumber'                  => '_typeArrayNumber',
+        'arraynumbermax'               => '_typeArrayNumberMax',
+        'arraynumbermin'               => '_typeArrayNumberMin',
+        'arraycountmax'                => '_typeArrayCountMax',
+        'arraycountmin'                => '_typeArrayCountMin',
+        'arrayunique'                  => '_typeArrayUnique',
+        'maxbr'                        => '_typeMaxBr',
+        'minbr'                        => '_typeMinBr',
+        'dirpath'                      => '_typeDirPath',
+        'file'                         => '_typeFile',
+        'ereg'                         => '_typeEreg',
+        'preg'                         => '_typePreg',
         //'' => '',
     );
 
@@ -384,11 +384,11 @@ class EnviValidator
      * +-- エラーオブジェクトを取得する
      *
      * @access      public
-     * @return      EnviValidatorError
+     * @return EnviValidatorError
      */
     public function &error()
     {
-        if(!is_object(self::$_error_object)) {
+        if (!is_object(self::$_error_object)) {
             self::$_error_object = new $this->error_class();
         }
         return self::$_error_object;
@@ -404,8 +404,7 @@ class EnviValidator
      */
     private function __construct()
     {
-        $this->errors =& EnviRequest::getErrorsByRef();
-
+        $this->errors = &EnviRequest::getErrorsByRef();
     }
 
     public static function singleton()
@@ -424,14 +423,14 @@ class EnviValidator
      * 入力検証を実行しエラークラス、もしくは、保証されたデータを受け取ります。
      * isError()メソッドでエラーのチェックを行えます。
      *
-     * @param string|array $validation_name バリデートするフォームデータ名
-     * @param boolean $object_clean エラーオブジェクトを毎回空にするか
+     * @param  string|array $validation_name バリデートするフォームデータ名
+     * @param  bool         $object_clean    エラーオブジェクトを毎回空にするか
      * @return array,object
      * @see EnviValidator::isError()
      * @see EnviValidator::prepare()
      * @see EnviValidator::autoPrepare()
      */
-    public function execute($validation_name, $object_clean = TRUE)
+    public function execute($validation_name, $object_clean = true)
     {
         if (is_array($validation_name)) {
             $validation_name = key($validation_name);
@@ -440,11 +439,11 @@ class EnviValidator
             throw new EnviException('Unknown validator chain selected');
         }
 
-        $validation_datas =& $this->_validation_list[$validation_name];
+        $validation_datas = &$this->_validation_list[$validation_name];
         // error flag
         $is_error         = false;
         foreach ($validation_datas[self::VALIDATOR] as $validator_data) {
-            $each = each ($validator_data);
+            $each      = each($validator_data);
             $validator = $each['key'];
             $option    = $each['value'];
             //foreach ($validator_data as $validator => $option) {
@@ -459,7 +458,7 @@ class EnviValidator
                     $validator, $validation_datas[self::VALIDATE_DATA],
                     $option[self::VALIDATE_MODE]
                 );
-                if($option[self::VALIDATOR_CHAIN] === false){
+                if ($option[self::VALIDATOR_CHAIN] === false) {
                     //連続バリデートが不可なら抜ける
                     break;
                 }
@@ -469,11 +468,11 @@ class EnviValidator
         }
 
         //結果
-        $res[$validation_name] =& $this->_validation_list[$validation_name][self::VALIDATE_DATA];
+        $res[$validation_name] = &$this->_validation_list[$validation_name][self::VALIDATE_DATA];
         if ($is_error) {
             //エラーの場合
             if ($object_clean === true) {
-                $res = self::$_error_object;
+                $res                 = self::$_error_object;
                 self::$_error_object = null;
             } else {
                 return self::$_error_object;
@@ -497,13 +496,13 @@ class EnviValidator
     public function executeAll()
     {
         $is_error = false;
-        $res = array();
+        $res      = array();
         foreach ($this->_validation_list as $validator_name => $validation_datas) {
-            if ($this->isError($this->execute($validator_name, false))){
+            if ($this->isError($this->execute($validator_name, false))) {
                 $is_error = true;
             }
             //結果
-            $res[$validator_name] =& $this->_validation_list[$validator_name][self::VALIDATE_DATA];
+            $res[$validator_name] = &$this->_validation_list[$validator_name][self::VALIDATE_DATA];
         }
 
         if ($is_error) {
@@ -512,7 +511,6 @@ class EnviValidator
         }
         //正常終了
         return $res;
-
     }
     /* ----------------------------------------- */
 
@@ -520,14 +518,14 @@ class EnviValidator
      * +-- バリデーション設定を返します
      *
      * @access      public
-     * @param       string $validator_name バリデーション名
-     * @return      array
+     * @param  string $validator_name バリデーション名
+     * @return array
      * @see EnviValidator::prepare()
      * @see EnviValidator::autoPrepare()
      */
     public function getValidationSetting($validator_name)
     {
-        return isset($this->_validation_list[$validator_name]) ? $this->_validation_list[$validator_name] : NULL;
+        return isset($this->_validation_list[$validator_name]) ? $this->_validation_list[$validator_name] : null;
     }
     /* ----------------------------------------- */
 
@@ -555,11 +553,11 @@ class EnviValidator
      * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      *
      * @param string|array $validation_name バリデートするフォームデータ名。
-     * @param string|array $validator バリデータ名,$this->getChainFormat()の結果
-     * @param boolean $validator_chain エラーがあった場合に確認処理を継続するか OPTIONAL: true
-     * @param boolean $trim 入力検証データをtrimするかどうか OPTIONAL: false
-     * @param integer $post_only validator::METHOD_POST = POSTのみ validator::METHOD_GET = GETのみ validator::METHOD_POST|validator::METHOD_GET = POSTかGETのどちらか。 OPTIONAL: validator::METHOD_POST|validator::METHOD_GET
-     * @param mixed $validate_mode バリデータオプション OPTIONAL: false
+     * @param string|array $validator       バリデータ名,$this->getChainFormat()の結果
+     * @param bool         $validator_chain エラーがあった場合に確認処理を継続するか OPTIONAL: true
+     * @param bool         $trim            入力検証データをtrimするかどうか OPTIONAL: false
+     * @param int          $post_only       validator::METHOD_POST = POSTのみ validator::METHOD_GET = GETのみ validator::METHOD_POST|validator::METHOD_GET = POSTかGETのどちらか。 OPTIONAL: validator::METHOD_POST|validator::METHOD_GET
+     * @param mixed        $validate_mode   バリデータオプション OPTIONAL: false
      * @see EnviValidator::prepare()
      * @return void
      */
@@ -568,7 +566,7 @@ class EnviValidator
         $this->prepare($validation_name,
             $validator,
             $this->_getValidationData(is_array($validation_name) ? key($validation_name) : $validation_name, $trim, $post_only),
-            $validator_chain,$validate_mode
+            $validator_chain, $validate_mode
         );
     }
     /* ----------------------------------------- */
@@ -588,10 +586,10 @@ class EnviValidator
      * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      *
      * @param string|array $validation_name バリデートするフォームデータ名。
-     * @param string|array $validator バリデータ名,$this->getChainFormat()の結果
-     * @param mixed $validation_data バリデートするデータ
-     * @param boolean $validator_chain エラーがあった場合に確認処理を継続するか
-     * @param mixed $validate_mode バリデータオプション
+     * @param string|array $validator       バリデータ名,$this->getChainFormat()の結果
+     * @param mixed        $validation_data バリデートするデータ
+     * @param bool         $validator_chain エラーがあった場合に確認処理を継続するか
+     * @param mixed        $validate_mode   バリデータオプション
      * @see EnviValidator::autoPrepare()
      * @return void
      */
@@ -599,17 +597,17 @@ class EnviValidator
     {
         if (is_array($validation_name)) {
             //配列が渡されたら、要素をバリデータ名に、値をフォーム名に
-            $validation_name_key = key($validation_name);
+            $validation_name_key                                           = key($validation_name);
             $this->_validation_list[$validation_name_key][self::FORM_NAME] = $validation_name[$validation_name_key];
-            $validation_name = $validation_name_key;
-        }else{
+            $validation_name                                               = $validation_name_key;
+        } else {
             $this->_validation_list[$validation_name][self::FORM_NAME] = $validation_name;
         }
 
         $this->_validation_list[$validation_name][self::VALIDATE_DATA] = $validation_data;
         if (is_array($validator)) {
             $this->_validation_list[$validation_name][self::VALIDATOR] = array_values($validator);
-        } elseif(isset($this->_validator_list[strtolower($validator)]) ||
+        } elseif (isset($this->_validator_list[strtolower($validator)]) ||
                 isset($this->_register_validators[strtolower($validator)])) {
             $this->chain($validation_name, $validator, $validator_chain, $validate_mode);
         } else {
@@ -627,9 +625,9 @@ class EnviValidator
      * の形で、指定された関数にわたります。
      * ユーザー定義関数からは、正しい場合true・間違っている場合falseを返してください。
      *
-     * @param string $validator_name 読み出しに使用するバリデータ名
-     * @param string $function_name 関数名
-     * @param string $error_message エラーメッセージ
+     * @param  string $validator_name 読み出しに使用するバリデータ名
+     * @param  string $function_name  関数名
+     * @param  string $error_message  エラーメッセージ
      * @return void
      */
     public function registerValidators($validator_name, $function_name, $error_message = false)
@@ -654,10 +652,10 @@ class EnviValidator
      * ひとつの入力データに対して、複数のバリデータを使いたい場合に使用します。
      * バリデータはchain()で呼び出された順番に、実行されます。
      *
-     * @param string $validation_name バリデートするフォームデータ名
-     * @param string $validator バリデータ名
-     * @param boolean $validator_chain エラーの場合につなげてバリデート処理を行うか
-     * @param bool,string,int,array $validate_mode バリデータオプション
+     * @param  string                $validation_name バリデートするフォームデータ名
+     * @param  string                $validator       バリデータ名
+     * @param  bool                  $validator_chain エラーの場合につなげてバリデート処理を行うか
+     * @param  bool,string,int,array $validate_mode   バリデータオプション
      * @return void
      * @see EnviValidator::prepare()
      * @see EnviValidator::autoPrepare()
@@ -670,7 +668,7 @@ class EnviValidator
         if (isset($this->_validation_list[$validation_name])) {
             $this->_validation_list[$validation_name][self::VALIDATOR][][strtolower($validator)] = array(
                                                                 self::VALIDATE_MODE   => $validate_mode,
-                                                                self::VALIDATOR_CHAIN => $validator_chain,);
+                                                                self::VALIDATOR_CHAIN => $validator_chain, );
         } else {
             $this->autoPrepare($validation_name, $validator, $validator_chain, $validate_mode);
         }
@@ -682,11 +680,11 @@ class EnviValidator
      *
      * 入力検証のフォーマットを作成して、簡単に再利用可能にします。
      *
-     * @param string $group フォーマットグループ名
-     * @param string $validator バリデータ名
-     * @param string,int $order チェインされる順番
-     * @param boolean $validator_chain エラーの場合につなげてバリデート処理を行うか
-     * @param bool,string,int,array $validate_mode バリデータオプション
+     * @param string                $group           フォーマットグループ名
+     * @param string                $validator       バリデータ名
+     * @param string,int            $order           チェインされる順番
+     * @param bool                  $validator_chain エラーの場合につなげてバリデート処理を行うか
+     * @param bool,string,int,array $validate_mode   バリデータオプション
      * @see EnviValidator::getChainFormat()
      * @return void
      */
@@ -695,13 +693,13 @@ class EnviValidator
         if (is_numeric($order)) {
             $this->chain_format[$group][(int)$order][strtolower($validator)] = array(
                                                                 self::VALIDATE_MODE   => $validate_mode,
-                                                                self::VALIDATOR_CHAIN => $validator_chain,);
+                                                                self::VALIDATOR_CHAIN => $validator_chain, );
             ksort($this->chain_format[$group]);
             return $this->chain_format[$group];
         }
         $this->chain_format[$group][][strtolower($validator)] = array(
                                                             self::VALIDATE_MODE   => $validate_mode,
-                                                            self::VALIDATOR_CHAIN => $validator_chain,);
+                                                            self::VALIDATOR_CHAIN => $validator_chain, );
         return $this->chain_format[$group];
     }
     /* ----------------------------------------- */
@@ -729,14 +727,14 @@ class EnviValidator
      * 全てのチェインを消す場合は、free()メソッドが高速です。
      *
      * @param string $validation_name バリデーション名
-     * @param string $validator キャンセルするバリデータ
+     * @param string $validator       キャンセルするバリデータ
      * @see EnviValidator::free()
      * @return void
      */
     public function unchain($validation_name, $validator)
     {
         foreach ($this->_validation_list[$validation_name][self::VALIDATOR] as $key => $value) {
-            if(isset($value[strtolower($validator)])){
+            if (isset($value[strtolower($validator)])) {
                 unset($this->_validation_list[$validation_name][self::VALIDATOR][$key]);
                 break;
             }
@@ -749,8 +747,8 @@ class EnviValidator
      *
      * バリデート結果がエラーかどうかを判断し、実行結果はエラーの場合に、TRUEを返します。
      *
-     * @param object,string,int,array $result execute()・executeAllの結果
-     * @return boolean エラーかどうか
+     * @param  object,string,int,array $result execute()・executeAllの結果
+     * @return bool                    エラーかどうか
      * @see EnviValidator::executeAll()
      * @see EnviValidator::execute()
      */
@@ -772,7 +770,7 @@ class EnviValidator
     public function free()
     {
         $this->_validation_list = array();
-        self::$_error_object = null;
+        self::$_error_object    = null;
     }
     /* ----------------------------------------- */
 
@@ -782,10 +780,10 @@ class EnviValidator
      * 入力データを簡単に検証します。
      * 正しければ、TRUE違っていれば、FALSEを返します。
      *
-     * @param string $validator 使用するバリデータ
-     * @param string,arrray $data バリデータにかけるデータ
-     * @param string|array $option バリデータオプション
-     * @return boolean 正しいかどうか
+     * @param  string        $validator 使用するバリデータ
+     * @param  string,arrray $data      バリデータにかけるデータ
+     * @param  string|array  $option    バリデータオプション
+     * @return bool          正しいかどうか
      */
     public function validation($validator, $data, $option)
     {
@@ -798,20 +796,20 @@ class EnviValidator
     /**
      * +-- エラーオブジェクトを直接指定する
      *
-     * @param object $error_obj
+     * @param  object $error_obj
      * @return void
      */
     public function setErrorObject($error_obj)
     {
-        self::$_error_object =& $error_obj;
-        $this->error_class = get_class($error_obj);
+        self::$_error_object = &$error_obj;
+        $this->error_class   = get_class($error_obj);
     }
     /* ----------------------------------------- */
 
     /**
      * +-- 空欄フォームの標準値を設定する
      *
-     * @param mixed $empty_form_data フォームデータが空欄の場合に使用するデータ
+     * @param  mixed $empty_form_data フォームデータが空欄の場合に使用するデータ
      * @return void
      */
     public function setEmptyFormData($empty_form_data)
@@ -828,9 +826,9 @@ class EnviValidator
     /**
      * +-- バリデートする
      *
-     * @param string & $validator 使用するバリデータ
-     * @param string,arrray & $data バリデータにかけるデータ
-     * @param string|array & $option バリデータオプション
+     * @param string &        $validator 使用するバリデータ
+     * @param string,arrray & $data      バリデータにかけるデータ
+     * @param string|array &  $option    バリデータオプション
      * @access private
      * @return bool
      */
@@ -839,8 +837,8 @@ class EnviValidator
         if (($validator !== 'blank' && $validator !== 'noblank' && $validator !== 'nosubmit' && !is_array($data)) ?
             $this->_typeNoBlank($data, false) : true) {
             if (isset($this->_validator_list[$validator])) {
-                $method =& $this->_validator_list[$validator];
-                $ck = $this->$method($data, $option);
+                $method = &$this->_validator_list[$validator];
+                $ck     = $this->$method($data, $option);
             } elseif (isset($this->_register_validators[$validator])) {
                 if ($this->_register_validators[$validator] instanceof Closure) {
                     $ck = $this->_register_validators[$validator]($data, $option);
@@ -863,9 +861,9 @@ class EnviValidator
     /**
      * +- バリデートするデータを取得
      *
-     * @param string $validation_name バリデーションチェイン名
-     * @param boolean $trim trimするか？
-     * @param boolean $post_only POSTのみ取得
+     * @param  string $validation_name バリデーションチェイン名
+     * @param  bool   $trim            trimするか？
+     * @param  bool   $post_only       POSTのみ取得
      * @return mixed
      */
     protected function _getValidationData($validation_name, &$trim, &$post_only)
@@ -888,10 +886,10 @@ class EnviValidator
                 return $res;
             }
         } else {
-            $regs = array();
+            $regs  = array();
             $regs2 = array();
-            preg_match_all("/([^\\[]+)/", $validation_name, $regs);
-            preg_match_all("/\\[([^\\]]*)\\]/", $validation_name, $regs2);
+            preg_match_all('/([^\\[]+)/', $validation_name, $regs);
+            preg_match_all('/\\[([^\\]]*)\\]/', $validation_name, $regs2);
             if (($post_only === 3 || $post_only === 1 ||  is_bool($post_only)) &&
                 (isset($_POST[$regs[1][0]]) !== false ? $_POST[$regs[1][0]] !== '' : false)) {
                 $res = $_POST[$regs[1][0]];
@@ -931,8 +929,8 @@ class EnviValidator
      * +-- 再帰的にtrimする
      *
      * @access      protected
-     * @param       string|array $validation_data
-     * @return      string|array
+     * @param  string|array $validation_data
+     * @return string|array
      */
     protected function _trimmer($validation_data)
     {
@@ -952,12 +950,12 @@ class EnviValidator
      * +-- エラー処理
      *
      * @access      protected
-     * @param       string $name       バリデータチェイン名
-     * @param       string $form_name  フォーム名
-     * @param       string $validator  バリデータ名
-     * @param       mixed $data        検証データ
-     * @param       mixed $option      バリデータオプション
-     * @return      void
+     * @param  string $name      バリデータチェイン名
+     * @param  string $form_name フォーム名
+     * @param  string $validator バリデータ名
+     * @param  mixed  $data      検証データ
+     * @param  mixed  $option    バリデータオプション
+     * @return void
      */
     protected function _handleError($name, $form_name, $validator, $data, $option)
     {
@@ -982,9 +980,9 @@ class EnviValidator
      * +-- 値が同じであるかどうか
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       mixed $check_data
-     * @return      void
+     * @param  &     $ValidationData
+     * @param  mixed $check_data
+     * @return void
      */
     protected function _typeEqual(&$ValidationData, $check_data)
     {
@@ -996,9 +994,9 @@ class EnviValidator
      * +-- 値が違うかどうか
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       mixed $check_data
-     * @return      void
+     * @param  &     $ValidationData
+     * @param  mixed $check_data
+     * @return void
      */
     protected function _typeNotEqual(&$ValidationData, $check_data)
     {
@@ -1013,9 +1011,9 @@ class EnviValidator
      * +-- 16 進数を表す文字でないかどうかを調べる
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typeNotXdigit(&$ValidationData, $dummy)
     {
@@ -1031,9 +1029,9 @@ class EnviValidator
      * +-- 数字以外の文字が含まれているかどうかを調べる
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typeWithoutDigit(&$ValidationData, $dummy)
     {
@@ -1049,9 +1047,9 @@ class EnviValidator
      * +-- 制御文字以外の文字が含まれているかどうかを調べる
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typeWithoutCntrl(&$ValidationData, $dummy)
     {
@@ -1067,9 +1065,9 @@ class EnviValidator
      * +-- 改行,空白,タブのような印字も制御もできない文字が含まれるかどうか調べる
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typeWithoutGraph(&$ValidationData, $dummy)
     {
@@ -1084,9 +1082,9 @@ class EnviValidator
      * +-- 小文字以外の文字が含まれるかどうかを調べる
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typeWithoutLower(&$ValidationData, $dummy)
     {
@@ -1102,9 +1100,9 @@ class EnviValidator
      * +-- 大文字以外の文字が含まれるかどうかを調べる
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typeWithoutUpper(&$ValidationData, $dummy)
     {
@@ -1119,9 +1117,9 @@ class EnviValidator
      * +-- (改行、タブ、空白、制御文字などの)印字不可能な文字を含むかどうかを調べる
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typeWithoutPrint(&$ValidationData, $dummy)
     {
@@ -1136,9 +1134,9 @@ class EnviValidator
      * +-- 記号文字以外を含むかどうかを調べる
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typeWithoutPunct(&$ValidationData, $dummy)
     {
@@ -1153,9 +1151,9 @@ class EnviValidator
      * +-- 空白文字以外を含むかどうかを調べる
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typeWithoutSpace(&$ValidationData, $dummy)
     {
@@ -1171,9 +1169,9 @@ class EnviValidator
      * +-- 16 進数を表す文字かどうかを調べる
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typeXdigit(&$ValidationData, $dummy)
     {
@@ -1189,9 +1187,9 @@ class EnviValidator
      * +-- すべての文字が数字かどうかを調べる
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typeDigit(&$ValidationData, $dummy)
     {
@@ -1207,9 +1205,9 @@ class EnviValidator
      * +-- すべての文字が制御文字であるかどうかを調べます。
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typeCntrl(&$ValidationData, $dummy)
     {
@@ -1226,9 +1224,9 @@ class EnviValidator
      * +-- すべての文字が空白以外の印字可能な文字かどうかを調べる
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typeGraph(&$ValidationData, $dummy)
     {
@@ -1243,9 +1241,9 @@ class EnviValidator
      * +-- すべての文字が小文字かどうかを調べる
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typeLower(&$ValidationData, $dummy)
     {
@@ -1261,9 +1259,9 @@ class EnviValidator
      * +-- すべての文字が大文字かどうかを調べる
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typeUpper(&$ValidationData, $dummy)
     {
@@ -1278,9 +1276,9 @@ class EnviValidator
      * +-- すべての文字が(改行、タブなどを含まない)印字可能な文字かどうかを調べる
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typePrint(&$ValidationData, $dummy)
     {
@@ -1296,9 +1294,9 @@ class EnviValidator
      * +-- すべての文字が記号文字かどうかを調べる
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typePunct(&$ValidationData, $dummy)
     {
@@ -1313,9 +1311,9 @@ class EnviValidator
      * +-- すべての文字が空白文字かどうか調べる
      *
      * @access      protected
-     * @param       & $ValidationData
-     * @param       boolean $dummy
-     * @return      void
+     * @param  &    $ValidationData
+     * @param  bool $dummy
+     * @return void
      */
     protected function _typeSpace(&$ValidationData, $dummy)
     {
@@ -1330,7 +1328,7 @@ class EnviValidator
      * 数値を表す値かどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $dummy ダミー変数
+     * @param bool         $dummy          ダミー変数
      */
     protected function _typeNumber(&$ValidationData, $dummy)
     {
@@ -1344,7 +1342,7 @@ class EnviValidator
      * X以下の数字かどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param integer $max 最大値
+     * @param int          $max            最大値
      */
     protected function _typeNumberMax(&$ValidationData, &$max)
     {
@@ -1358,7 +1356,7 @@ class EnviValidator
      * X以上の数字かどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param integer $min 最小値
+     * @param int          $min            最小値
      */
     protected function _typeNumberMin(&$ValidationData, &$min)
     {
@@ -1372,7 +1370,7 @@ class EnviValidator
      * 電話番号かどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $kana $ValidationDataを半角英数字に変更
+     * @param bool         $kana           $ValidationDataを半角英数字に変更
      */
     protected function _typeTelephoneFormat(&$ValidationData, &$kana)
     {
@@ -1380,7 +1378,7 @@ class EnviValidator
             return false;
         }
         if ($kana == true) {
-            $ValidationData = mb_convert_kana($ValidationData,'a');
+            $ValidationData = mb_convert_kana($ValidationData, 'a');
         }
         return preg_match('/^\+?[0-9][0-9\-]*[0-9]$/', $ValidationData) === 1;
     }
@@ -1390,7 +1388,7 @@ class EnviValidator
      * アルファベットかどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $dummy ダミー変数
+     * @param bool         $dummy          ダミー変数
      */
     protected function _typeAlphabet(&$ValidationData, $dummy)
     {
@@ -1404,7 +1402,7 @@ class EnviValidator
      * アルファベット以外の文字が含まれるかどうかを調べる
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $dummy ダミー変数
+     * @param bool         $dummy          ダミー変数
      */
     protected function _typeWithoutAlphabet(&$ValidationData, $dummy)
     {
@@ -1418,7 +1416,7 @@ class EnviValidator
      * アルファベットもしくは数字かどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $dummy ダミー変数
+     * @param bool         $dummy          ダミー変数
      */
     protected function _typeAlphabetOrNumber(&$ValidationData, $dummy)
     {
@@ -1433,7 +1431,7 @@ class EnviValidator
      * アルファベットと数字以外の文字が入っているかどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $dummy ダミー変数
+     * @param bool         $dummy          ダミー変数
      */
     protected function _typeWithoutAlphabetOrNumber(&$ValidationData, $dummy)
     {
@@ -1447,7 +1445,7 @@ class EnviValidator
      * ローマ字区域の文字列かどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $convert 半角変換するか？
+     * @param bool         $convert        半角変換するか？
      */
     protected function _typeRome(&$ValidationData, $convert)
     {
@@ -1464,7 +1462,7 @@ class EnviValidator
      * 整数かどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $dummy ダミー変数
+     * @param bool         $dummy          ダミー変数
      */
     protected function _typeInteger(&$ValidationData, $dummy)
     {
@@ -1475,14 +1473,13 @@ class EnviValidator
             return true;
         }
         return preg_match('/^-?[1-9][0-9]*$/', $ValidationData) === 1;
-
     }
 
     /**
      * 自然数かどうか(0も許容)
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $dummy ダミー変数
+     * @param bool         $dummy          ダミー変数
      */
     protected function _typeNaturalNumber(&$ValidationData, $dummy)
     {
@@ -1490,14 +1487,13 @@ class EnviValidator
             return false;
         }
         return ctype_digit($ValidationData) && $ValidationData >= 0;
-
     }
 
     /**
      * 文字数が既定値以内かどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param integer $max 最大値
+     * @param int          $max            最大値
      */
     protected function _typeMaxLen(&$ValidationData, &$max)
     {
@@ -1512,7 +1508,7 @@ class EnviValidator
      * 文字数が既定値以上かどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param integer $min 最小値
+     * @param int          $min            最小値
      */
     protected function _typeMinLen(&$ValidationData, &$min)
     {
@@ -1526,7 +1522,7 @@ class EnviValidator
      * 文字はばが既定値以内かどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param integer $max 最大値
+     * @param int          $max            最大値
      */
     protected function _typeMaxWidth(&$ValidationData, &$max)
     {
@@ -1541,7 +1537,7 @@ class EnviValidator
      * 文字はばが既定値以上かどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param integer $min 最小値
+     * @param int          $min            最小値
      */
     protected function _typeMinWidth(&$ValidationData, &$min)
     {
@@ -1555,7 +1551,7 @@ class EnviValidator
      * 空欄(もしくは送信されていない)かどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $dummy ダミー変数
+     * @param bool         $dummy          ダミー変数
      */
     protected function _typeBlank(&$ValidationData, $dummy)
     {
@@ -1577,7 +1573,7 @@ class EnviValidator
      * 空欄(もしくは送信されていない)になっていないかどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $dummy ダミー変数
+     * @param bool         $dummy          ダミー変数
      */
     protected function _typeNoBlank(&$ValidationData, $dummy)
     {
@@ -1598,7 +1594,7 @@ class EnviValidator
      * 非送信になっていないかどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $dummy ダミー変数
+     * @param bool         $dummy          ダミー変数
      */
     protected function _typeNoSubmit(&$ValidationData, $dummy)
     {
@@ -1609,7 +1605,7 @@ class EnviValidator
      * 文字コードが既定値どおりになっているか？
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param string $encoding エンコード名
+     * @param string       $encoding       エンコード名
      */
     protected function _typeEncoding(&$ValidationData, &$encoding)
     {
@@ -1618,14 +1614,13 @@ class EnviValidator
         }
         $ck = each($ValidationData);
         return mb_detect_encoding($ck[1]) == $encoding;
-
     }
 
     /**
      * タグが含まれていないか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $dummy ダミー変数
+     * @param bool         $dummy          ダミー変数
      */
     protected function _typeNoTags(&$ValidationData, $dummy)
     {
@@ -1639,7 +1634,7 @@ class EnviValidator
      * 機種依存文字
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $kana 半角カナを全角カナに
+     * @param bool         $kana           半角カナを全角カナに
      */
     protected function _typeDepend(&$ValidationData, &$kana)
     {
@@ -1647,15 +1642,15 @@ class EnviValidator
             return false;
         }
         if ($kana == true) {
-            $ValidationData = mb_convert_kana($ValidationData,'KV');
+            $ValidationData = mb_convert_kana($ValidationData, 'KV');
         }
         $ie = mb_internal_encoding();
         mb_internal_encoding('EUC-JP');
         $_DEPEND_CHAR_PRE     = '(?-xism:(?<!\x8F))';
         $_DEPEND_CHAR_PATTERN = '[\xA9\xAA\xAB\xAC\xAD\xF9\xFA\xFB\xFC][\xA1-\xFE]';
         $_DEPEND_CHAR_POST    = '(?x-ism:(?=(?:[\xA1-\xFE][\xA1-\xFE])*(?:[\x00-\x7F\x8E\x8F]|\z)))';
-        $REG_PATTERN  = '/'.$_DEPEND_CHAR_PRE.'('.$_DEPEND_CHAR_PATTERN.')'.$_DEPEND_CHAR_POST.'/';
-        $res =  preg_match($REG_PATTERN, mb_convert_encoding($ValidationData, 'EUCJP-win', $ie)) === 0;
+        $REG_PATTERN          = '/'.$_DEPEND_CHAR_PRE.'('.$_DEPEND_CHAR_PATTERN.')'.$_DEPEND_CHAR_POST.'/';
+        $res                  =  preg_match($REG_PATTERN, mb_convert_encoding($ValidationData, 'EUCJP-win', $ie)) === 0;
         mb_internal_encoding($ie);
         return $res;
     }
@@ -1664,7 +1659,7 @@ class EnviValidator
      * ひらがな
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $kana 全角片カナ・半角片カナを全角平がなに変える
+     * @param bool         $kana           全角片カナ・半角片カナを全角平がなに変える
      */
     protected function _typeHiragana(&$ValidationData, &$kana)
     {
@@ -1672,16 +1667,16 @@ class EnviValidator
             return false;
         }
         if ($kana == true) {
-            $ValidationData = mb_convert_kana($ValidationData,'HVc');
+            $ValidationData = mb_convert_kana($ValidationData, 'HVc');
         }
-        return mb_ereg('^[ぁ-ん]+$',$ValidationData) != false;
+        return mb_ereg('^[ぁ-ん]+$', $ValidationData) != false;
     }
 
     /**
      * カタカナ
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $kana 全角平がな・半角片カナを全角片カナに変える
+     * @param bool         $kana           全角平がな・半角片カナを全角片カナに変える
      */
     protected function _typeKatakana(&$ValidationData, &$kana)
     {
@@ -1689,16 +1684,16 @@ class EnviValidator
             return false;
         }
         if ($kana == true) {
-            $ValidationData = mb_convert_kana($ValidationData,'KVC');
+            $ValidationData = mb_convert_kana($ValidationData, 'KVC');
         }
-        return mb_ereg('^[ァ-ヶ]+$',$ValidationData) != false;
+        return mb_ereg('^[ァ-ヶ]+$', $ValidationData) != false;
     }
 
     /**
      * ひらがなのふりがな
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $kana 全角片カナ・半角片カナを全角平がなに変える
+     * @param bool         $kana           全角片カナ・半角片カナを全角平がなに変える
      */
     protected function _typeHFurigana(&$ValidationData, &$kana)
     {
@@ -1706,16 +1701,16 @@ class EnviValidator
             return false;
         }
         if ($kana == true) {
-            $ValidationData = mb_convert_kana($ValidationData,'HVc');
+            $ValidationData = mb_convert_kana($ValidationData, 'HVc');
         }
-        return mb_ereg('^[ぁ-んー]+$',$ValidationData) != false;
+        return mb_ereg('^[ぁ-んー]+$', $ValidationData) != false;
     }
 
     /**
      * カタカナのフリガナ
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $kana 全角平がな・半角片カナを全角片カナに変える
+     * @param bool         $kana           全角平がな・半角片カナを全角片カナに変える
      */
     protected function _typeKFurigana(&$ValidationData, &$kana)
     {
@@ -1723,16 +1718,16 @@ class EnviValidator
             return false;
         }
         if ($kana == true) {
-            $ValidationData = mb_convert_kana($ValidationData,'KVC');
+            $ValidationData = mb_convert_kana($ValidationData, 'KVC');
         }
-        return mb_ereg('^[ァ-ヶー]+$',$ValidationData) != false;
+        return mb_ereg('^[ァ-ヶー]+$', $ValidationData) != false;
     }
 
     /**
      * メールアドレスフォーマット
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $kana 全角英数字を半角に変換
+     * @param bool         $kana           全角英数字を半角に変換
      * @link http://www.din.or.jp/~ohzaki/perl.htm
      */
     protected function _typeMailFormat(&$ValidationData, &$kana)
@@ -1741,7 +1736,7 @@ class EnviValidator
             return false;
         }
         if ($kana == true) {
-            $ValidationData = mb_convert_kana($ValidationData,'a');
+            $ValidationData = mb_convert_kana($ValidationData, 'a');
         }
         $REG_PATTERN = '/(?:[^(\040)<>@,;:".\\\[\]\000-\037\x80-\xff]+(?![^(\040)<>@,;:".\\\[\]\000-\037\x80-\xff])|"[^\\\x80-\xff\n\015"]*(?:\\[^\x80-\xff][^\\\x80-\xff\n\015"]*)*")(?:\.(?:[^(\040)<>@,;:".\\\[\]\000-\037\x80-\xff]+(?![^(\040)<>@,;:".\\\[\]\000-\037\x80-\xff])|"[^\\\x80-\xff\n\015"]*(?:\\[^\x80-\xff][^\\\x80-\xff\n\015"]*)*"))*@(?:[^(\040)<>@,;:".\\\[\]\000-\037\x80-\xff]+(?![^(\040)<>@,;:".\\\[\]\000-\037\x80-\xff])|\[(?:[^\\\x80-\xff\n\015\[\]]|\\[^\x80-\xff])*\])(?:\.(?:[^(\040)<>@,;:".\\\[\]\000-\037\x80-\xff]+(?![^(\040)<>@,;:".\\\[\]\000-\037\x80-\xff])|\[(?:[^\\\x80-\xff\n\015\[\]]|\\[^\x80-\xff])*\]))+/';
         return preg_match($REG_PATTERN, $ValidationData) === 1;
@@ -1751,7 +1746,7 @@ class EnviValidator
      * シンプルなメールアドレスフォーマット
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $kana 全角英数字を半角に変換
+     * @param bool         $kana           全角英数字を半角に変換
      */
     protected function _typeMailFormatSymple(&$ValidationData, &$kana)
     {
@@ -1759,7 +1754,7 @@ class EnviValidator
             return false;
         }
         if ($kana == true) {
-            $ValidationData = mb_convert_kana($ValidationData,'a');
+            $ValidationData = mb_convert_kana($ValidationData, 'a');
         }
         $REG_PATTERN = '/^[0-9a-zA-Z!#$%&=\-|_\/+\^\~][0-9a-zA-Z!#$%&=\-|_\/+.\^\~]*@[0-9a-zA-Z!#$%&=\-|_\/+\^\~]+\.[0-9a-zA-Z!#$%&=\-|_\/+.\^\~]*[a-zA-Z]$/';
         return preg_match($REG_PATTERN, $ValidationData)  === 1;
@@ -1769,7 +1764,7 @@ class EnviValidator
      * URLフォーマット
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $kana 全角英数字を半角に変換
+     * @param bool         $kana           全角英数字を半角に変換
      * @link http://bakera.jp/hatomaru.aspx/yomoyama/perlnote
      */
     protected function _typeUrlFormat(&$ValidationData, &$kana)
@@ -1778,7 +1773,7 @@ class EnviValidator
             return false;
         }
         if ($kana == true) {
-            $ValidationData = mb_convert_kana($ValidationData,'a');
+            $ValidationData = mb_convert_kana($ValidationData, 'a');
         }
         $REG_PATTERN = "/\b(?:https?|shttp|ftp):\/\/(?:(?:[-_.!~*'()a-zA-Z0-9;:&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*@)?(?:(?:[a-zA-Z0-9](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?\.)*[a-zA-Z](?:[-a-zA-Z0-9]*[a-zA-Z0-9])?\.?|[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)(?::[0-9]*)?(?:\/(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*(?:;(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*)*(?:\/(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*(?:;(?:[-_.!~*'()a-zA-Z0-9:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*)*)*)?(?:\?(?:[-_.!~*'()a-zA-Z0-9;\/?:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*)?(?:#(?:[-_.!~*'()a-zA-Z0-9;\/?:@&=+$,]|%[0-9A-Fa-f][0-9A-Fa-f])*)?/";
         return preg_match($REG_PATTERN, $ValidationData)  === 1;
@@ -1788,7 +1783,7 @@ class EnviValidator
      * 郵便番号フォーマット
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $kana 全角英数字を半角に変換
+     * @param bool         $kana           全角英数字を半角に変換
      */
     protected function _typePostcodeFormat(&$ValidationData, &$kana)
     {
@@ -1797,7 +1792,7 @@ class EnviValidator
         }
 
         if ($kana == true) {
-            $ValidationData = mb_convert_kana($ValidationData,'a');
+            $ValidationData = mb_convert_kana($ValidationData, 'a');
         }
         $REG_PATTERN = "/^\d{3}-\d{4}$|^\d{3}-\d{2}$|^\d{3}$/";
         return preg_match($REG_PATTERN, $ValidationData)  === 1;
@@ -1807,7 +1802,7 @@ class EnviValidator
      * メールアドレス
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $kana 全角英数字を半角に変換
+     * @param bool         $kana           全角英数字を半角に変換
      */
     protected function _typeMail(&$ValidationData, &$kana)
     {
@@ -1827,7 +1822,7 @@ class EnviValidator
      * URL
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $kana 全角英数字を半角に変換
+     * @param bool         $kana           全角英数字を半角に変換
      */
     protected function _typeUrl(&$ValidationData, &$kana)
     {
@@ -1835,7 +1830,7 @@ class EnviValidator
             return false;
         }
         if ($this->_typeUrlFormat($ValidationData, $kana)) {
-            $a = parse_url($ValidationData);
+            $a    = parse_url($ValidationData);
             $host = $a['host'];
             if (gethostbyname($host) !== $host) {
                 return true;
@@ -1848,7 +1843,7 @@ class EnviValidator
      * WhiteListに入っているデータかどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param array $White_list ホワイトリスト
+     * @param array        $White_list     ホワイトリスト
      */
     protected function _typeWhiteList(&$ValidationData, &$WhiteList)
     {
@@ -1856,7 +1851,6 @@ class EnviValidator
             return false;
         }
         return array_search($ValidationData, $WhiteList) !== false;
-
     }
 
     /**
@@ -1867,7 +1861,7 @@ class EnviValidator
      * $DateListに、年月日に対応する配列名を入れる事で日付配列のチェックも出来ます。
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param array,bool $DateList array(month(月の配列名),day(日の配列名),year(年の配列名))
+     * @param array,bool   $DateList       array(month(月の配列名),day(日の配列名),year(年の配列名))
      */
     protected function _typeDate(&$ValidationData, &$DateList)
     {
@@ -1910,7 +1904,7 @@ class EnviValidator
      * $DateListに、時分病秒に対応する配列名を入れる事で時間配列のチェックも出来ます。
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param array,int $TimeFormat array(hour(時の配列名),minute(分の配列名),second(秒の配列名)),VM_HOUR_ONLY,VM_HOUR_TO_MINUTE,VM_HOUR_TO_SECOND
+     * @param array,int    $TimeFormat     array(hour(時の配列名),minute(分の配列名),second(秒の配列名)),VM_HOUR_ONLY,VM_HOUR_TO_MINUTE,VM_HOUR_TO_SECOND
      */
     protected function _typeTime(&$ValidationData, &$TimeFormat)
     {
@@ -1926,14 +1920,14 @@ class EnviValidator
 
         if (!is_array($ValidationData) && !is_array($TimeFormat)) {
             $len = strlen($ValidationData);
-            if($len === $TimeFormat){
+            if ($len === $TimeFormat) {
                 $hour   = (int)substr($ValidationData, 0, 2);
                 $minute = ($len == 4 || $len == 6) ? (int)substr($ValidationData, 2, 2) : 0;
                 $second = $len == 6 ? (int)substr($ValidationData, 4, 2) : 0;
-            } elseif ($len === $format[$TimeFormat]){
-                    $hour   = (int)substr($ValidationData, 0, 2);
-                    $minute = ($len === 5 || $len === 8) ? (int)substr($ValidationData, 3, 2) : 0;
-                    $second = $len === 8 ? (int)substr($ValidationData, 6, 2) : 0;
+            } elseif ($len === $format[$TimeFormat]) {
+                $hour   = (int)substr($ValidationData, 0, 2);
+                $minute = ($len === 5 || $len === 8) ? (int)substr($ValidationData, 3, 2) : 0;
+                $second = $len === 8 ? (int)substr($ValidationData, 6, 2) : 0;
             } else {
                 return false;
             }
@@ -1945,14 +1939,14 @@ class EnviValidator
         } else {
             return false;
         }
-        return ($hour >= 0 && $minute >= 0 && $second >= 0 && $hour <= 24 && $minute < 60 && $second < 60);
+        return $hour >= 0 && $minute >= 0 && $second >= 0 && $hour <= 24 && $minute < 60 && $second < 60;
     }
 
     /**
      * 配列かどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $dummy ダミー変数
+     * @param bool         $dummy          ダミー変数
      */
     protected function _typeArray(&$ValidationData, $dummy)
     {
@@ -1963,7 +1957,7 @@ class EnviValidator
      * 配列で無いかかどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $dummy ダミー変数
+     * @param bool         $dummy          ダミー変数
      */
     protected function _typeNotArray(&$ValidationData, $dummy)
     {
@@ -1973,15 +1967,15 @@ class EnviValidator
     /**
      * 配列で送信されたデータで、指定されたキーが送信されているかどうか
      *
-     * @param string,array $ValidationData 入力検証を行う変数
-     * @param array|string|int $keys キー
+     * @param string,array     $ValidationData 入力検証を行う変数
+     * @param array|string|int $keys           キー
      */
     protected function _typeArrayKeyExists(&$ValidationData, $keys)
     {
         if (!is_array($ValidationData)) {
             return false;
         }
-        if (is_array($keys)){
+        if (is_array($keys)) {
             foreach ($keys as $value) {
                 if (!isset($ValidationData[$value])) {
                     return false;
@@ -1996,7 +1990,7 @@ class EnviValidator
      * 数字のみの配列かどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param boolean $dummy ダミー変数
+     * @param bool         $dummy          ダミー変数
      */
     protected function _typeArrayNumber(&$ValidationData, $dummy)
     {
@@ -2016,7 +2010,7 @@ class EnviValidator
      * 数字のみの配列の合計が既定値以内かどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param integer $max 最大値
+     * @param int          $max            最大値
      */
     protected function _typeArrayNumberMax(&$ValidationData, &$max)
     {
@@ -2030,7 +2024,7 @@ class EnviValidator
      * 数字のみの配列の合計が既定値以上かどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param integer $min 最小値
+     * @param int          $min            最小値
      */
     protected function _typeArrayNumberMin(&$ValidationData, &$min)
     {
@@ -2044,11 +2038,11 @@ class EnviValidator
      * 配列の数が指定より少ないか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param integer $max 最大値
+     * @param int          $max            最大値
      */
     protected function _typeArrayCountMax(&$ValidationData, &$max)
     {
-        if(!$this->_typeArray($ValidationData, $max)){
+        if (!$this->_typeArray($ValidationData, $max)) {
             return false;
         }
         return count($ValidationData) <= $max;
@@ -2058,11 +2052,11 @@ class EnviValidator
      * 配列の数が指定より多いか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param integer $min 最小値
+     * @param int          $min            最小値
      */
     protected function _typeArrayCountMin(&$ValidationData, &$min)
     {
-        if(!$this->_typeArray($ValidationData, $min)){
+        if (!$this->_typeArray($ValidationData, $min)) {
             return false;
         }
         return count($ValidationData) >= $min;
@@ -2072,28 +2066,28 @@ class EnviValidator
      * 改行数が指定より少ないか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param integer $max 最大値
+     * @param int          $max            最大値
      */
     protected function _typeMaxBr(&$ValidationData, &$max)
     {
         if (is_array($ValidationData)) {
             return false;
         }
-        return count(explode("\n", $ValidationData, $max+2)) <= $max;
+        return count(explode("\n", $ValidationData, $max + 2)) <= $max;
     }
 
     /**
      * 改行数が指定より多いか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param integer $min 最小値
+     * @param int          $min            最小値
      */
     protected function _typeMinBr(&$ValidationData, &$min)
     {
         if (is_array($ValidationData)) {
             return false;
         }
-        return count(explode("\n", $ValidationData, $min+2)) >= $min;
+        return count(explode("\n", $ValidationData, $min + 2)) >= $min;
     }
 
     /**
@@ -2114,7 +2108,7 @@ class EnviValidator
      * 指定されたファイルが存在するかどうか
      *
      * @param string $ValidationData 入力検証を行う変数
-     * @param string $dummy ダミー変数
+     * @param string $dummy          ダミー変数
      */
     protected function _typeFile(&$ValidationData, $dummy)
     {
@@ -2129,7 +2123,7 @@ class EnviValidator
      * 正規表現にマッチするかどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param string $regformat 正規表現文字列
+     * @param string       $regformat      正規表現文字列
      */
     protected function _typeEreg(&$ValidationData, &$regformat)
     {
@@ -2143,7 +2137,7 @@ class EnviValidator
      * 正規表現にマッチするかどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param string $regformat 正規表現文字列
+     * @param string       $regformat      正規表現文字列
      */
     protected function _typePreg(&$ValidationData, &$regformat)
     {
@@ -2157,7 +2151,7 @@ class EnviValidator
      * すべての値がユニークな配列かどうか
      *
      * @param string,array $ValidationData 入力検証を行う変数
-     * @param string $skip_blank 空の値をスキップして、ユニークチェックするかどうか (OPTIONAL)
+     * @param string       $skip_blank     空の値をスキップして、ユニークチェックするかどうか (OPTIONAL)
      */
     protected function _typeArrayUnique($ValidationData, $skip_blank = true)
     {
@@ -2171,7 +2165,6 @@ class EnviValidator
         }
         return count($ValidationData) === count(array_unique($ValidationData, SORT_REGULAR));
     }
-
 }
 
 
@@ -2196,20 +2189,20 @@ class ValidatorError
     * @access private
     */
     protected $_error_message;
-    protected $_error_list   = array();
-    protected $_error_user_list   = array();
+    protected $_error_list         = array();
+    protected $_error_user_list    = array();
     protected $_error_default_list = array(
        'equal'      => '{form}が一致しません。',
-       'notequal'  => '{form}が同じです。',
-       'xdigit'   => '{form}は16進数で入力して下さい。',
-       'digit'    => '{form}は全て数字で入力して下さい。',
-       'cntrl'    => '{form}は制御文字以外が含まれています。',
-       'graph'    => '{form}には空白、タブ、改行、制御文字を含めることが出来ません。',
-       'lower'    => '{form}はすべて小文字である必要があります',
-       'upper'    => '{form}はすべて大文字である必要があります',
-       'print'    => '{form}は空白、タブ、改行、制御文字で入力する必要があります。',
-       'punct'    => '{form}は全て記号になっていません。',
-       'space'    => '{form}は空白文字ではありません。',
+       'notequal'   => '{form}が同じです。',
+       'xdigit'     => '{form}は16進数で入力して下さい。',
+       'digit'      => '{form}は全て数字で入力して下さい。',
+       'cntrl'      => '{form}は制御文字以外が含まれています。',
+       'graph'      => '{form}には空白、タブ、改行、制御文字を含めることが出来ません。',
+       'lower'      => '{form}はすべて小文字である必要があります',
+       'upper'      => '{form}はすべて大文字である必要があります',
+       'print'      => '{form}は空白、タブ、改行、制御文字で入力する必要があります。',
+       'punct'      => '{form}は全て記号になっていません。',
+       'space'      => '{form}は空白文字ではありません。',
 
        'notxdigit'       => '{form}は16進数での入力はできません',
        'withoutdigit'    => '{form}には数字以外を含める必要があります。',
@@ -2278,7 +2271,7 @@ class ValidatorError
      */
     public function __construct()
     {
-        $this->_error_message =& EnviRequest::getErrorsByRef();
+        $this->_error_message = &EnviRequest::getErrorsByRef();
 
         if (Envi::singleton()->getConfiguration('SYSTEM', 'use_i18n')) {
             $this->_error_user_list = Envi::singleton()->getI18n('validator');
@@ -2291,9 +2284,9 @@ class ValidatorError
      * +-- デフォルトのエラーメッセージを変更します。
      *
      * @access      public
-     * @param       string $validator 変更するバリデータ
-     * @param       string $error_message エラーメッセージ
-     * @return      void
+     * @param  string $validator     変更するバリデータ
+     * @param  string $error_message エラーメッセージ
+     * @return void
      */
     public function setUserErrorList($validator, $error_message)
     {
@@ -2306,9 +2299,9 @@ class ValidatorError
      * +-- エラーテキストメッセージを出す
      *
      * @access      public
-     * @param       string $name
-     * @param       string $validator
-     * @return      string エラーテキストメッセージ
+     * @param  string $name
+     * @param  string $validator
+     * @return string エラーテキストメッセージ
      */
     public function getErrorText($name, $validator)
     {
@@ -2338,16 +2331,16 @@ class ValidatorError
     /**
      * +-- エラーのセット
      *
-     * @param string $name バリデーションチェイン名
-     * @param string $form_name フォーム名
-     * @param string $validator バリデータ名
-     * @param string|array $data データ
-     * @param mixed $option 渡されたoption
+     * @param  string       $name      バリデーションチェイン名
+     * @param  string       $form_name フォーム名
+     * @param  string       $validator バリデータ名
+     * @param  string|array $data      データ
+     * @param  mixed        $option    渡されたoption
      * @return void
      */
     public function setError($name, $form_name, $validator, $data, $option)
     {
-        $mess = $this->getErrorText($name, $validator);
+        $mess                                    = $this->getErrorText($name, $validator);
         $this->_error_message[$name][$validator] = str_replace(
             array(
                 '{name}',
@@ -2369,9 +2362,9 @@ class ValidatorError
     /**
      * +-- エラーメッセージのセット
      *
-     * @param string $name バリデーションチェイン名
-     * @param string $validator バリデータ名
-     * @param string $message エラーメッセージ
+     * @param  string $name      バリデーションチェイン名
+     * @param  string $validator バリデータ名
+     * @param  string $message   エラーメッセージ
      * @return void
      */
     public function setErrorMess($name, $validator, $message)
@@ -2384,9 +2377,9 @@ class ValidatorError
     /**
      * +-- エラーメッセージのセット
      *
-     * @param string $name バリデーションチェイン名
-     * @param string $validator バリデータ名
-     * @param string $message エラーメッセージ
+     * @param  string $name      バリデーションチェイン名
+     * @param  string $validator バリデータ名
+     * @param  string $message   エラーメッセージ
      * @return void
      */
     public function setErrorList($name, $validator, $message)
@@ -2398,7 +2391,7 @@ class ValidatorError
     /**
      * +-- エラーメッセージを受け取る
      *
-     * @param string,boolean $name エラーを取りたいバリデーションチェイン名。空にすると全て取得
+     * @param  string,boolean $name エラーを取りたいバリデーションチェイン名。空にすると全て取得
      * @return array
      */
     public function getErrorMessage($name = false)
@@ -2418,8 +2411,8 @@ class ValidatorError
         $i = 0;
         foreach ($this->_error_message as $key => $values) {
             foreach ($values as $id => $value) {
-                $res['message'][$i] = $value;
-                $res['code'][$i] = $this->_error_code[$key][$id];
+                $res['message'][$i]  = $value;
+                $res['code'][$i]     = $this->_error_code[$key][$id];
                 $res['keys'][$key][] = $i;
                 $i++;
             }

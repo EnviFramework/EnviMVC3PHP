@@ -44,7 +44,7 @@ class EnviMath
      *
      * @access public
      * @static
-     * @param float $value
+     * @param  float $value
      * @return float
      */
     public static function ceil($value)
@@ -59,7 +59,7 @@ class EnviMath
      *
      * @access public
      * @static
-     * @param float $value
+     * @param  float $value
      * @return float
      */
     public static function floor($value)
@@ -75,9 +75,9 @@ class EnviMath
      *
      * @access public
      * @static
-     * @param float $value
-     * @param integer $precision OPTIONAL:0
-     * @param integer $mode OPTIONAL:PHP_ROUND_HALF_UP
+     * @param  float $value
+     * @param  int   $precision OPTIONAL:0
+     * @param  int   $mode      OPTIONAL:PHP_ROUND_HALF_UP
      * @return float
      */
     public static function round($value, $precision = 0, $mode = PHP_ROUND_HALF_UP)

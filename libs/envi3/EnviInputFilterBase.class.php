@@ -79,7 +79,7 @@ abstract class EnviInputFilterBase
      * falseを返すと、そこで処理が止まります。
      *
      * @access public
-     * @return boolean
+     * @return bool
      */
     public function initialize()
     {
@@ -98,5 +98,4 @@ abstract class EnviInputFilterBase
     {
     }
     /* ----------------------------------------- */
-
 }

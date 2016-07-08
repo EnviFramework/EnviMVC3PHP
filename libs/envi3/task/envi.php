@@ -49,12 +49,13 @@ $fargv = array_flip($argv);
  * $default_paramの値を返す。
  *
  * @param string $name
- * @param mix $default_param (optional:false)
+ * @param mix    $default_param (optional:false)
  */
-function getOption($name, $default_param = false) {
-    GLOBAL $argv,$fargv;
-    if(isset($fargv[$name])){
-        $x = $fargv[$name]+1;
+function getOption($name, $default_param = false)
+{
+    global $argv,$fargv;
+    if (isset($fargv[$name])) {
+        $x = $fargv[$name] + 1;
         return isset($argv[$x]) ? $argv[$x] : false;
     } else {
         return $default_param;
@@ -66,8 +67,9 @@ function getOption($name, $default_param = false) {
  *
  * @param string $name
  */
-function isOption($name) {
-    GLOBAL $argv,$fargv;
+function isOption($name)
+{
+    global $argv,$fargv;
     $fargv = array_flip($argv);
     return isset($fargv[$name]);
 }
@@ -75,11 +77,12 @@ function isOption($name) {
 /**
  * 色付 echo
  */
-function cecho($m, $c = 30, $oth = '') {
+function cecho($m, $c = 30, $oth = '')
+{
     if (DIRECTORY_SEPARATOR === '/') {
         system("echo -e '\e[{$c}m {$m} \e[m{$oth}'");
     } else {
-        echo("{$m} {$oth}");
+        echo "{$m} {$oth}";
     }
 }
 
@@ -88,18 +91,17 @@ function cecho($m, $c = 30, $oth = '') {
  */
 function eecho($err)
 {
-    fwrite(STDERR, "[ERR]".$err."\n");
+    fwrite(STDERR, '[ERR]'.$err."\n");
 }
 
 // debug
-$debug_mode = isOption("--debug");
+$debug_mode = isOption('--debug');
 function debug_msg($msg)
 {
     global $debug_mode,$start_time;
     if ($debug_mode) {
         echo microtime(true) - $start_time." : {$msg}  --  ".memory_get_usage(true)."byte\r\n";
     }
-
 }
 
 require dirname(__FILE__).DIRECTORY_SEPARATOR.'help.php';

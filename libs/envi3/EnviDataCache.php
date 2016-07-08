@@ -43,10 +43,10 @@ class EnviDataCache
      *
      * @access      public
      * @static
-     * @param       var_text $pk
-     * @param       var_text $class_name
-     * @param       var_text $use_apc OPTIONAL:false
-     * @return      void
+     * @param  var_text $pk
+     * @param  var_text $class_name
+     * @param  var_text $use_apc    OPTIONAL:false
+     * @return void
      */
     public static function fetchByPk($pk, $class_name, $use_apc = false)
     {
@@ -55,7 +55,7 @@ class EnviDataCache
             return self::$local_cache[$key];
         }
         if ($use_apc) {
-            $res = apc_fetch($key);
+            $res                     = apc_fetch($key);
             self::$local_cache[$key] = $res;
             return self::$local_cache[$key];
         }
@@ -68,15 +68,15 @@ class EnviDataCache
      *
      * @access      public
      * @static
-     * @param       var_text $pk
-     * @param       var_text $class_name
-     * @param       var_text $data
-     * @param       var_text $use_apc OPTIONAL:false
-     * @return      void
+     * @param  var_text $pk
+     * @param  var_text $class_name
+     * @param  var_text $data
+     * @param  var_text $use_apc    OPTIONAL:false
+     * @return void
      */
     public static function storeByPk($pk, $class_name, $data, $use_apc = false)
     {
-        $key = self::getKey($pk, $class_name);
+        $key                     = self::getKey($pk, $class_name);
         self::$local_cache[$key] = $data;
         if ($use_apc) {
             $ttl = 120;
@@ -94,14 +94,13 @@ class EnviDataCache
      *
      * @access      protected
      * @static
-     * @param       var_text $pk
-     * @param       var_text $class_name
-     * @return      void
+     * @param  var_text $pk
+     * @param  var_text $class_name
+     * @return void
      */
     protected static function getKey($pk, $class_name)
     {
         return 'single_db_cache_'.$class_name.'-'.$pk;
     }
     /* ----------------------------------------- */
-
 }

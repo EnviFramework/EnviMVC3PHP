@@ -1,8 +1,6 @@
 <?php
 /*%%dao_use%%*/
 /**
- *
- *
  * PHP versions 5
  *
  *
@@ -21,8 +19,6 @@
 
 
 /**
- *
- *
  * @category   %%project_category%%
  * @package    %%project_name%%
  * @subpackage %%subpackage_name%%
@@ -56,7 +52,7 @@ class _____action_name_____Action extends _____module_name_____Actions
      * +--Viewに移る前に実行される処理。Killされない限りは、NONEやfalseを返しても実行される
      *
      *
-     * @return boolean
+     * @return bool
      */
     public function shutdown()
     {
@@ -113,7 +109,7 @@ class _____action_name_____Action extends _____module_name_____Actions
      */
     public function execute()
     {
-        $input_data = EnviRequest::getAttribute('input_data');
+        $input_data                        = EnviRequest::getAttribute('input_data');
         $_____model_pascal_case_name_____  = new _____model_pascal_case_name_____;
 /*%%setter_text%%*/
         $_____model_pascal_case_name_____->save();
@@ -165,7 +161,7 @@ class _____action_name_____Action extends _____module_name_____Actions
      * +--セキュアなページかどうか。
      *
      *
-     * @return boolean
+     * @return bool
      */
     public function isSecure()
     {
@@ -177,7 +173,7 @@ class _____action_name_____Action extends _____module_name_____Actions
      * +--Controllerから直接呼ばれるアクションかどうか？
      *
      *
-     * @return boolean
+     * @return bool
      */
     public function isPrivate()
     {
@@ -189,12 +185,11 @@ class _____action_name_____Action extends _____module_name_____Actions
      * +--SSLでのみアクセスされるページかどうか？
      *
      *
-     * @return boolean
+     * @return bool
      */
     public function isSSL()
     {
         return false;
     }
     /* ----------------------------------------- */
-
 }

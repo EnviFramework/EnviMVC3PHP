@@ -51,9 +51,9 @@ class EnviSecureSession extends EnviSessionBase implements EnviSessionInterface
         'e' => 'e/',
         'f' => 'f/',
     );
-    protected static  $_envi_system_value = "__ENVI_USER__";
-    protected static  $_attribute = array();
-    protected static  $_is_login = '_is_login';
+    protected static $_envi_system_value = '__ENVI_USER__';
+    protected static $_attribute         = array();
+    protected static $_is_login          = '_is_login';
 
     public $_system_conf;
     public $sess_base_save_path;
@@ -65,12 +65,12 @@ class EnviSecureSession extends EnviSessionBase implements EnviSessionInterface
 
     public function close()
     {
-        return(true);
+        return true;
     }
 
     public function read($id)
     {
-        $dir = substr($id, 0, 1);
+        $dir       = substr($id, 0, 1);
         $sess_file = session_save_path().DIRECTORY_SEPARATOR.'.sess_'.$id;
         if (is_file($sess_file)) {
             touch($sess_file);
@@ -92,9 +92,9 @@ class EnviSecureSession extends EnviSessionBase implements EnviSessionInterface
 
     public function destroy($id)
     {
-        $dir = substr(sha1(substr($id, 0, 10)), 0, 1);
+        $dir       = substr(sha1(substr($id, 0, 10)), 0, 1);
         $sess_file = session_save_path().DIRECTORY_SEPARATOR.'.sess_'.$id;
-        setcookie (session_name(), $id, $_SERVER['REQUEST_TIME'] - 3600);
+        setcookie(session_name(), $id, $_SERVER['REQUEST_TIME'] - 3600);
         return @unlink($sess_file);
     }
 
@@ -109,7 +109,7 @@ class EnviSecureSession extends EnviSessionBase implements EnviSessionInterface
                 }
 
                 if (is_file($this->sess_base_save_path.$a.DIRECTORY_SEPARATOR.$file)) {
-                    $lifetime = $_SERVER['REQUEST_TIME']-filemtime($this->sess_base_save_path.$a.DIRECTORY_SEPARATOR.$file);
+                    $lifetime = $_SERVER['REQUEST_TIME'] - filemtime($this->sess_base_save_path.$a.DIRECTORY_SEPARATOR.$file);
                     if ($lifetime > $maxlifetime) {
                         if (!@unlink($this->sess_base_save_path.$a.DIRECTORY_SEPARATOR.$file)) {
                             return false;
@@ -127,17 +127,17 @@ class EnviSecureSession extends EnviSessionBase implements EnviSessionInterface
     public function sessionStart()
     {
         $this->sess_base_save_path = $this->_system_conf['SESSION']['sess_base_save_path'];
-        $session_name = $this->_system_conf['SESSION']['cookie_name'];
+        $session_name              = $this->_system_conf['SESSION']['cookie_name'];
         session_name($session_name);
         ini_set('session.gc_maxlifetime', $this->_system_conf['SESSION']['gc_lifetime']);
         ini_set('session.cookie_lifetime', $this->_system_conf['SESSION']['cookie_lifetime']);
-        session_set_save_handler (
+        session_set_save_handler(
             array($this, 'open'),
-            array($this,'close'),
-            array($this,'read'),
-            array($this,'write'),
-            array($this,'destroy'),
-            array($this,'gc')
+            array($this, 'close'),
+            array($this, 'read'),
+            array($this, 'write'),
+            array($this, 'destroy'),
+            array($this, 'gc')
         );
         $is_new_session = true;
         //セッションIDの正誤性をチェックする。
@@ -146,7 +146,7 @@ class EnviSecureSession extends EnviSessionBase implements EnviSessionInterface
             $dir = substr($id, 0, 1);
             if (isset($this->sess_dir_array[$dir])) {
                 $sess_file = $this->sess_base_save_path.$this->sess_dir_array[$dir].'.sess_'.$id;
-                if(is_file($sess_file)){
+                if (is_file($sess_file)) {
                     $is_new_session = false;
                 }
             }
@@ -154,10 +154,10 @@ class EnviSecureSession extends EnviSessionBase implements EnviSessionInterface
 
         if ($is_new_session) {
             while (true) {
-                $id = $this->newSession();
-                $dir = substr($id, 0, 1);
+                $id        = $this->newSession();
+                $dir       = substr($id, 0, 1);
                 $sess_file = $this->sess_base_save_path.$this->sess_dir_array[$dir].'.sess_'.$id;
-                if(!is_file($sess_file)){
+                if (!is_file($sess_file)) {
                     break;
                 }
             }
@@ -170,7 +170,7 @@ class EnviSecureSession extends EnviSessionBase implements EnviSessionInterface
 
     public function getAttribute($key)
     {
-        return isset($_SESSION[self::$_envi_system_value][$key]) ? $_SESSION[self::$_envi_system_value][$key] : NULL;
+        return isset($_SESSION[self::$_envi_system_value][$key]) ? $_SESSION[self::$_envi_system_value][$key] : null;
     }
     public function hasAttribute($key)
     {

@@ -24,8 +24,6 @@
  * @see        http://www.enviphp.net/
  * @since      File available since Release 1.0.0
  */
-
-
 require  realpath(ENVI_BASE_DIR.'..'.DIRECTORY_SEPARATOR.'Smarty3').DIRECTORY_SEPARATOR.'Smarty.class.php';
 
 /**
@@ -56,7 +54,7 @@ class EnviSmarty3SecureRenderer
      * +-- コンストラクタ
      *
      * @access      public
-     * @return      void
+     * @return void
      * @doc_ignore
      */
     public function __construct()
@@ -72,20 +70,19 @@ class EnviSmarty3SecureRenderer
      * +-- 設定を行う
      *
      * @access      public
-     * @param       string $module_dir
-     * @return      void
+     * @param  string $module_dir
+     * @return void
      * @doc_ignore
      */
     public function setting($module_dir)
     {
-
         $this->Smarty = new Smarty;
 
         // エスケープする
         $this->Smarty->setDefaultModifiers(array('escape'));
 
         // デリミタ変更
-        $this->Smarty->left_delimiter = '<%';
+        $this->Smarty->left_delimiter  = '<%';
         $this->Smarty->right_delimiter = '%>';
         $this->Smarty->error_reporting = E_ALL & ~E_NOTICE;
 
@@ -103,7 +100,7 @@ class EnviSmarty3SecureRenderer
         }
 
         // テンプレート
-        $templates = array();
+        $templates   = array();
         $templates[] = $this->_system_conf['DIRECTORY']['modules'].$module_dir.DIRECTORY_SEPARATOR.$this->_system_conf['DIRECTORY']['templates'];
         if (isset($this->_system_conf['DIRECTORY']['common_templates'])) {
             if (!is_array($this->_system_conf['DIRECTORY']['common_templates'])) {
@@ -127,15 +124,13 @@ class EnviSmarty3SecureRenderer
         }
         $this->Smarty->assign('Envi', Envi::singleton());
         $this->Smarty->assign('base_url', Envi::singleton()->getBaseUrl());
-
-
     }
 
     /**
      * +-- templateに値を格納する
      *
-     * @param string $name 格納する名前
-     * @param mixed $value 値
+     * @param  string $name  格納する名前
+     * @param  mixed  $value 値
      * @return void
      */
     public function setAttribute($name, $value)
@@ -149,12 +144,12 @@ class EnviSmarty3SecureRenderer
      * 指定されたテンプレートを読み込み、標準出力に出力します。
      *
      * @access      public
-     * @param       string $file_name templateのパス
-     * @param       string $cache_id キャッシュID OPTIONAL:NULL
-     * @param       stiring $dummy2 ダミー変数 OPTIONAL:NULL
-     * @return      void
+     * @param  string  $file_name templateのパス
+     * @param  string  $cache_id  キャッシュID OPTIONAL:NULL
+     * @param  stiring $dummy2    ダミー変数 OPTIONAL:NULL
+     * @return void
      */
-    public function display($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    public function display($file_name, $cache_id  = null, $dummy2 = null)
     {
         $this->Smarty->display($file_name, $cache_id, $this->_compile_id);
     }
@@ -163,12 +158,12 @@ class EnviSmarty3SecureRenderer
      * +-- キャッシュ済みかどうか確認する
      *
      * @access      public
-     * @param       string $file_name templateのパス
-     * @param       string $cache_id キャッシュID OPTIONAL:NULL
-     * @param       stiring $dummy2 ダミー変数 OPTIONAL:NULL
-     * @return      void
+     * @param  string  $file_name templateのパス
+     * @param  string  $cache_id  キャッシュID OPTIONAL:NULL
+     * @param  stiring $dummy2    ダミー変数 OPTIONAL:NULL
+     * @return void
      */
-    public function is_cached($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    public function is_cached($file_name, $cache_id  = null, $dummy2 = null)
     {
         return $this->Smarty->is_cached($file_name, $cache_id, $this->_compile_id);
     }
@@ -178,12 +173,12 @@ class EnviSmarty3SecureRenderer
      * +-- キャッシュを削除する
      *
      * @access      public
-     * @param       string $file_name templateのパス
-     * @param       string $cache_id キャッシュID OPTIONAL:NULL
-     * @param       stiring $dummy2 ダミー変数 OPTIONAL:NULL
-     * @return      void
+     * @param  string  $file_name templateのパス
+     * @param  string  $cache_id  キャッシュID OPTIONAL:NULL
+     * @param  stiring $dummy2    ダミー変数 OPTIONAL:NULL
+     * @return void
      */
-    public function clear_cache($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    public function clear_cache($file_name, $cache_id  = null, $dummy2 = null)
     {
         return $this->Smarty->clear_cache($file_name, $cache_id, $this->_compile_id);
     }
@@ -196,12 +191,12 @@ class EnviSmarty3SecureRenderer
      * 指定されたテンプレートを読み込み、実行結果の文字列を返します。
      *
      * @access      public
-     * @param       string $file_name templateのパス
-     * @param       string $cache_id キャッシュID OPTIONAL:NULL
-     * @param       stiring $dummy2 ダミー変数 OPTIONAL:NULL
-     * @return      stiring
+     * @param  string  $file_name templateのパス
+     * @param  string  $cache_id  キャッシュID OPTIONAL:NULL
+     * @param  stiring $dummy2    ダミー変数 OPTIONAL:NULL
+     * @return stiring
      */
-    public function displayRef($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    public function displayRef($file_name, $cache_id  = null, $dummy2 = null)
     {
         return $this->Smarty->fetch($file_name, $cache_id, $this->_compile_id);
     }

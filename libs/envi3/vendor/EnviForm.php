@@ -53,7 +53,7 @@ class EnviForm
      * +-- モジュール、アクションに応じたコンフィグ情報を取得する
      *
      * @access      public
-     * @return      array
+     * @return array
      */
     public function getConfiguration()
     {
@@ -68,7 +68,7 @@ class EnviForm
      * +-- YMLに定義されたバリデーションを行う
      *
      * @access      public
-     * @return      array|ValidatorError
+     * @return array|ValidatorError
      */
     public function validate()
     {
@@ -92,7 +92,7 @@ class EnviForm
             if (isset($conf['validation'][$i]['error_message'][$i18n]) && !empty($conf['validation'][$i]['error_message'][$i18n])) {
                 $validate->error()->setErrorList($form_name, $conf['validation'][$i]['type'], $conf['validation'][$i]['error_message'][$i18n]);
             }
-            while(isset($conf['validation'][++$i])) {
+            while (isset($conf['validation'][++$i])) {
                 $validate->chain(
                     $form_name,
                     $conf['validation'][$i]['type'],

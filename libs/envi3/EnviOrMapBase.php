@@ -38,7 +38,7 @@ abstract class EnviOrMapBase
     protected $_from_hydrate, $to_save, $default_data;
     protected $_is_modify  = true;
     protected $_is_hydrate = false;
-    protected $suffix = '';
+    protected $suffix      = '';
     protected $table_name,$pkeys;
 
     protected $insert_date;
@@ -54,7 +54,7 @@ abstract class EnviOrMapBase
      * +-- insertならtrue,updateならfalseを返す
      *
      * @access      public
-     * @return      boolean
+     * @return bool
      * @since       3.4.0
      */
     public function isNew()
@@ -68,7 +68,7 @@ abstract class EnviOrMapBase
      * +-- insertならfalse,updateならtrueを返す
      *
      * @access      public
-     * @return      boolean
+     * @return bool
      * @since       3.4.0
      */
     public function isUpdate()
@@ -81,8 +81,8 @@ abstract class EnviOrMapBase
      * +-- テーブル名のサフィックスをセットする
      *
      * @access      public
-     * @param       string $val
-     * @return      void
+     * @param  string $val
+     * @return void
      */
     public function setSuffix($val)
     {
@@ -94,7 +94,7 @@ abstract class EnviOrMapBase
      * +-- テーブル名を取得する
      *
      * @access      public
-     * @return      string テーブル名
+     * @return string テーブル名
      */
     public function getTableName()
     {
@@ -106,8 +106,8 @@ abstract class EnviOrMapBase
      * +-- 配列から、オブジェクトにセットする
      *
      * @access      public
-     * @param       array $arr
-     * @return      void
+     * @param  array $arr
+     * @return void
      * @since       3.4.0
      */
     public function setByArray(array $arr)
@@ -125,7 +125,7 @@ abstract class EnviOrMapBase
      * このMethodを使用してセットすると、saveがInsertではなくUpdateになります。
      *
      * @access public
-     * @param array $arr
+     * @param  array $arr
      * @return void
      */
     public function hydrate(array $arr)
@@ -153,14 +153,14 @@ abstract class EnviOrMapBase
      * +-- DBに保存します
      *
      * @access public
-     * @param EnviDBIBase $con OPTIONAL:NULL
+     * @param  EnviDBIBase $con OPTIONAL:NULL
      * @return void
      */
-    public function save(EnviDBIBase $con = NULL)
+    public function save(EnviDBIBase $con = null)
     {
         $table_name = $this->getTableName();
         $pkeys      = $this->pkeys;
-        $dbi = $con ? $con : extension()->DBI()->getInstance($this->default_instance_name);
+        $dbi        = $con ? $con : extension()->DBI()->getInstance($this->default_instance_name);
 
         if (!$this->_is_hydrate) {
             if ($this->insert_date) {
@@ -182,7 +182,7 @@ abstract class EnviOrMapBase
                 $this->to_save[$this->auto_increment] = $dbi->lastInsertId();
             }
             $this->_from_hydrate = $this->to_save;
-            $this->_is_modify = false;
+            $this->_is_modify    = false;
             return true;
         }
         if (!$this->_is_modify) {
@@ -215,10 +215,10 @@ abstract class EnviOrMapBase
      * +-- データを削除する
      *
      * @access public
-     * @param EnviDBIBase $con OPTIONAL:NULL
+     * @param  EnviDBIBase $con OPTIONAL:NULL
      * @return void
      */
-    public function delete(EnviDBIBase $con = NULL)
+    public function delete(EnviDBIBase $con = null)
     {
         $arr = array();
         $sql = 'DELETE FROM '.$this->getTableName().' WHERE ';
@@ -248,7 +248,7 @@ abstract class EnviOrMapBase
      */
     public function __set($name, $value)
     {
-        $this->_is_modify = true;
+        $this->_is_modify     = true;
         $this->to_save[$name] = $value;
     }
     /* ----------------------------------------- */
@@ -258,11 +258,11 @@ abstract class EnviOrMapBase
      *
      * @access public
      * @param  $name
-     * @return integer|string
+     * @return int|string
      */
     public function __get($name)
     {
-        return isset($this->to_save[$name]) ? $this->to_save[$name] : NULL;
+        return isset($this->to_save[$name]) ? $this->to_save[$name] : null;
     }
     /* ----------------------------------------- */
 
@@ -277,7 +277,7 @@ abstract class EnviOrMapBase
     public function __clone()
     {
         if ($this->auto_increment && !isset($this->to_save[$this->auto_increment])) {
-            $this->to_save[$this->auto_increment] = NULL;
+            $this->to_save[$this->auto_increment] = null;
         }
         $this->_is_modify  = true;
         $this->_is_hydrate = false;
@@ -292,15 +292,15 @@ abstract class EnviOrMapBase
      * @param  $arguments
      * @return mixed
      */
-    public function __call ($name , $arguments)
+    public function __call($name, $arguments)
     {
         if (strPos($name, 'get') === 0) {
             $name = strtolower(substr(preg_replace('/([A-Z])/', '_\1', $name), 4));
-            return isset($this->to_save[$name]) ? $this->to_save[$name] : NULL;
+            return isset($this->to_save[$name]) ? $this->to_save[$name] : null;
         } elseif (strPos($name, 'set') === 0) {
-            $name = strtolower(substr(preg_replace('/([A-Z])/', '_\1', $name), 4));
+            $name                 = strtolower(substr(preg_replace('/([A-Z])/', '_\1', $name), 4));
             $this->to_save[$name] = $arguments[0];
-            $this->_is_modify = true;
+            $this->_is_modify     = true;
             return $this;
         }
         trigger_error('undefined method:'.$name);
@@ -311,8 +311,8 @@ abstract class EnviOrMapBase
      * +-- パスカライズする
      *
      * @access      protected
-     * @param       string $snake_case
-     * @return      string
+     * @param  string $snake_case
+     * @return string
      * @since       3.0.0
      */
     protected function pascalize($snake_case)
@@ -324,5 +324,4 @@ abstract class EnviOrMapBase
         return $pascal_case;
     }
     /* ----------------------------------------- */
-
 }

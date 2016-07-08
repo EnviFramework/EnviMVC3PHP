@@ -2,8 +2,6 @@
 /*%%model_name_space_use%%*/
 
 /**
- *
- *
  * PHP versions 5
  *
  *
@@ -21,8 +19,6 @@
  */
 
 /**
- *
- *
  * @category   %%project_category%%
  * @package    %%project_name%%
  * @subpackage %%subpackage_name%%
@@ -47,14 +43,14 @@ class _____model_pascal_case_name_____Peer extends /*%%model_base_name_space%%*/
      *
      * @access      public
      * @static
-     * @param       EnviDBIBase $con OPTIONAL:NULL
-     * @return      array
+     * @param  EnviDBIBase $con OPTIONAL:NULL
+     * @return array
      */
-    public static function getAllByArray($con = NULL)
+    public static function getAllByArray($con = null)
     {
         $bind_array = array();
-        $suffix     = NULL;
-        $query_key = 'get_all';
+        $suffix     = null;
+        $query_key  = 'get_all';
 
         $dbi = $con ? $con : extension()->DBI()->getInstance('default_master');
         $sql = self::getReplacedSQL(self::$queries[$query_key], $bind_array, $suffix);

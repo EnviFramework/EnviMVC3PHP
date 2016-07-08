@@ -69,7 +69,7 @@ class EnviUser
      * +-- オブジェクト化させない
      *
      * @access      private
-     * @return      void
+     * @return void
      */
     private function __construct()
     {
@@ -90,7 +90,7 @@ class EnviUser
             $session_manager_path = Envi::singleton()->getConfiguration('SESSION', 'session_manager_path');
             include $session_manager_path;
         }
-        self::$session = new $session_manager;
+        self::$session               = new $session_manager;
         self::$session->_system_conf = Envi::singleton()->getConfigurationAll();
         self::$session->sessionStart();
         self::$_is_session_start = true;
@@ -138,7 +138,7 @@ class EnviUser
      *
      * EnviUser::login() でログインした状態にあるかどうかを確認します。
      *
-     * @return boolean
+     * @return bool
      */
     public static function isLogin()
     {
@@ -158,9 +158,9 @@ class EnviUser
      * PHP の他の多くの仕組みと異なり、 EnviUser::setAttribute() を用いて格納された変数は、
      * ユーザー単位でリクエストを超えて（その値がキャッシュから取り除かれるまで）持続します。
      *
-     * @param string $name この名前を用いて変数を格納します。$name は ユーザーAttribute内で一意です。そのため、同一の $name で新しい値を格納すると、元の値は上書きされます。
-     * @param mixed $value 格納する変数
-     * @param int $ttl     EnviMemcacheSessionを選択したときだけ有効です。有効期間。$value は、キャッシュに ttl 秒間だけ格納されます。 ttl が経過すると、格納されている変数は （次のリクエスト時に）キャッシュから削除されます。 ttl が指定されていない（あるいは ttl が 0 の場合）は、 キャッシュから手動で削除される・あるいはキャッシュに存在できなくなる （clear, delete, sesion time out など）まで値が持続します。
+     * @param  string $name  この名前を用いて変数を格納します。$name は ユーザーAttribute内で一意です。そのため、同一の $name で新しい値を格納すると、元の値は上書きされます。
+     * @param  mixed  $value 格納する変数
+     * @param  int    $ttl   EnviMemcacheSessionを選択したときだけ有効です。有効期間。$value は、キャッシュに ttl 秒間だけ格納されます。 ttl が経過すると、格納されている変数は （次のリクエスト時に）キャッシュから削除されます。 ttl が指定されていない（あるいは ttl が 0 の場合）は、 キャッシュから手動で削除される・あるいはキャッシュに存在できなくなる （clear, delete, sesion time out など）まで値が持続します。
      * @return void
      */
     public static function setAttribute($name, $value)
@@ -178,8 +178,8 @@ class EnviUser
      *
      * ユーザーAttributeにデータがセットされており、それが NULL でないことを調べます。
      *
-     * @param string $name 存在を確認する$name
-     * @return boolean
+     * @param  string $name 存在を確認する$name
+     * @return bool
      */
     public static function hasAttribute($name)
     {
@@ -196,7 +196,7 @@ class EnviUser
      *
      * EnviUser::setAttribute()したデータを削除します。
      *
-     * @param string $name EnviUser::setAttribute()を用いて値を格納する際に 使用された$name
+     * @param  string $name EnviUser::setAttribute()を用いて値を格納する際に 使用された$name
      * @return void
      */
     public static function removeAttribute($name)
@@ -230,7 +230,7 @@ class EnviUser
      *
      * このメソッドはEnviUser::setAttribute()したデータを取得します。
      *
-     * @param string $name 取得するAttribute名
+     * @param  string $name 取得するAttribute名
      * @return mixd
      */
     public static function getAttribute($name)
