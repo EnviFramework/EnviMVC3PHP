@@ -44,8 +44,8 @@ class EnviPHPRenderer
     /**
      * +-- templateに値を格納する
      *
-     * @param string $name 格納する名前
-     * @param mixed $value 値
+     * @param  string $name  格納する名前
+     * @param  mixed  $value 値
      * @return void
      */
     public function setAttribute($name, $value)
@@ -57,8 +57,8 @@ class EnviPHPRenderer
     /**
      * +-- templateに値を格納する
      *
-     * @param string $name 格納する名前
-     * @param mixed $value 値
+     * @param  string $name  格納する名前
+     * @param  mixed  $value 値
      * @return void
      * @see EnviPHPRenderer::setAttribute()
      * @deprecated EnviPHPRenderer::setAttribute()を使用して下さい。
@@ -75,12 +75,12 @@ class EnviPHPRenderer
      * 指定されたテンプレートを読み込み、標準出力に出力します。
      *
      * @access      public
-     * @param       string $file_name templateのパス
-     * @param       string $cache_id キャッシュID OPTIONAL:NULL
-     * @param       stiring $dummy2 ダミー変数 OPTIONAL:NULL
-     * @return      void
+     * @param  string  $file_name templateのパス
+     * @param  string  $cache_id  キャッシュID OPTIONAL:NULL
+     * @param  stiring $dummy2    ダミー変数 OPTIONAL:NULL
+     * @return void
      */
-    public function display($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    public function display($file_name, $cache_id  = null, $dummy2 = null)
     {
         //
         if ($this->parameter) {
@@ -90,12 +90,12 @@ class EnviPHPRenderer
     }
     /* ----------------------------------------- */
 
-    public function is_cached($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    public function is_cached($file_name, $cache_id  = null, $dummy2 = null)
     {
         //
     }
 
-    public function clear_cache($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    public function clear_cache($file_name, $cache_id  = null, $dummy2 = null)
     {
         //
     }
@@ -107,12 +107,12 @@ class EnviPHPRenderer
      * 指定されたテンプレートを読み込み、実行結果の文字列を返します。
      *
      * @access      public
-     * @param       string $file_name templateのパス
-     * @param       string $cache_id キャッシュID OPTIONAL:NULL
-     * @param       stiring $dummy2 ダミー変数 OPTIONAL:NULL
-     * @return      stiring
+     * @param  string  $file_name templateのパス
+     * @param  string  $cache_id  キャッシュID OPTIONAL:NULL
+     * @param  stiring $dummy2    ダミー変数 OPTIONAL:NULL
+     * @return stiring
      */
-    public function displayRef($file_name, $cache_id  = NULL, $dummy2 = NULL)
+    public function displayRef($file_name, $cache_id  = null, $dummy2 = null)
     {
         ob_start();
         if ($this->parameter) {
@@ -124,5 +124,4 @@ class EnviPHPRenderer
         return $this->display_ref;
     }
     /* ----------------------------------------- */
-
 }

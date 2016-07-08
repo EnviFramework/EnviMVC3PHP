@@ -25,8 +25,6 @@
  * @since      File available since Release 1.0.0
  * @subpackage_main
  */
-
-
 if (!defined('ENVI_BASE_DIR')) {
     define('ENVI_BASE_DIR', dirname(__FILE__).DIRECTORY_SEPARATOR);
 }
@@ -93,9 +91,9 @@ class redirectException extends Exception
      * +-- コンストラクタ
      *
      * @access public
-     * @param string $message
-     * @param integer $code OPTIONAL:0
-     * @param Exception $previous OPTIONAL:null
+     * @param  string    $message
+     * @param  int       $code     OPTIONAL:0
+     * @param  Exception $previous OPTIONAL:null
      * @return void
      */
     public function __construct($message, $code = 0, Exception $previous = null)
@@ -109,7 +107,6 @@ class redirectException extends Exception
         parent::__construct($message, $code, $previous);
     }
     /* ----------------------------------------- */
-
 }
 /* ----------------------------------------- */
 
@@ -135,9 +132,9 @@ class killException extends Exception
      * +-- コンストラクタ
      *
      * @access public
-     * @param string $message
-     * @param integer $code OPTIONAL:0
-     * @param Exception $previous OPTIONAL:null
+     * @param  string    $message
+     * @param  int       $code     OPTIONAL:0
+     * @param  Exception $previous OPTIONAL:null
      * @return void
      */
     public function __construct($message, $code = 0, Exception $previous = null)
@@ -170,9 +167,9 @@ class Envi404Exception extends Exception
      * +-- コンストラクタ
      *
      * @access public
-     * @param string $message
-     * @param integer $code OPTIONAL:0
-     * @param Exception $previous OPTIONAL:null
+     * @param  string    $message
+     * @param  int       $code     OPTIONAL:0
+     * @param  Exception $previous OPTIONAL:null
      * @return void
      */
     public function __construct($message, $code = 0, Exception $previous = null)
@@ -209,9 +206,9 @@ class Envi403Exception extends Exception
      * +-- コンストラクタ
      *
      * @access public
-     * @param string $message
-     * @param integer $code OPTIONAL:0
-     * @param Exception $previous OPTIONAL:null
+     * @param  string    $message
+     * @param  int       $code     OPTIONAL:0
+     * @param  Exception $previous OPTIONAL:null
      * @return void
      */
     public function __construct($message, $code = 0, Exception $previous = null)
@@ -249,9 +246,9 @@ class EnviException extends Exception
      * +-- コンストラクタ
      *
      * @access public
-     * @param string $message
-     * @param integer $code OPTIONAL:0
-     * @param Exception $previous OPTIONAL:null
+     * @param  string    $message
+     * @param  int       $code     OPTIONAL:0
+     * @param  Exception $previous OPTIONAL:null
      * @return void
      */
     public function __construct($message, $code = 0, Exception $previous = null)
@@ -312,41 +309,41 @@ class Envi
     /**
      * validate()で返すと、defaultAccess()メソッドに遷移し、execute(),handleError(),defaultAccess()で返すと、defaultビューを呼ぶ。
      *
-     * @var         string
+     * @var string
      */
     const DEFAULT_ACCESS = 'DEFAULT';
 
     /**
      * validate()で返すと、execute()メソッドに遷移し、execute(),handleError(),defaultAccess()で返すと、successビューを呼ぶ。
      *
-     * @var         string
+     * @var string
      */
     const SUCCESS        = 'SUCCESS';
 
     /**
      * validate()で返すと、handleError()メソッドに遷移し、execute(),handleError(),defaultAccess()で返すと、errorビューを呼ぶ。
      *
-     * @var         string
+     * @var string
      */
     const ERROR          = 'ERROR';
     /**
      * execute(),handleError(),defaultAccess()で返すと、confirmビューを呼ぶ。
      *
-     * @var         string
+     * @var string
      */
     const CONFORM        = 'CONFORM';
 
     /**
      * execute(),handleError(),defaultAccess()で返すと、commitビューを呼ぶ。
      *
-     * @var         string
+     * @var string
      */
     const COMMIT         = 'COMMIT';
 
     /**
      * execute(),handleError(),defaultAccess()で返すと、ビューをスキップする。
      *
-     * @var         string
+     * @var string
      */
     const NONE           = 'NONE';
 
@@ -354,35 +351,35 @@ class Envi
     /**
      * バージョン番号を返す
      *
-     * @var         string
+     * @var string
      */
     const VERSION        = '3.4.22.0';
 
     /**
      * メジャーバージョン番号を返す
      *
-     * @var         int
+     * @var int
      */
     const MAJOR_VERSION    = 3;
 
     /**
      * マイナーバージョン番号を返す
      *
-     * @var         int
+     * @var int
      */
     const MINOR_VERSION    = 4;
 
     /**
      * リリースバージョン番号を返す
      *
-     * @var         int
+     * @var int
      */
     const RELEASE_VERSION  = 22;
 
     /**
      * テストバージョン番号を返す
      *
-     * @var         int
+     * @var int
      */
     const ALPHA_VERSION    = 0;
     // ---------------------------
@@ -407,14 +404,14 @@ class Envi
      * +-- コンストラクタ
      *
      * @access protected
-     * @param string $app
-     * @param boolean $debug OPTIONAL:false
+     * @param  string $app
+     * @param  bool   $debug OPTIONAL:false
      * @return void
      */
     protected function __construct($app, $debug = false)
     {
-        self::$debug     = $debug;
-        self::$app_key   = $app;
+        self::$debug             = $debug;
+        self::$app_key           = $app;
         $this->_system_conf      = $this->parseYml($app.'.yml', ENVI_MVC_APPKEY_PATH, true);
         $autoload_constant_cache = ENVI_MVC_CACHE_PATH.$app.'.'.ENVI_ENV.'.autoload_constant.envicc';
         if ($debug || !is_file($autoload_constant_cache)) {
@@ -455,7 +452,7 @@ class Envi
      */
     public static function _free()
     {
-        self::$instance = NULL;
+        self::$instance = null;
     }
     /* ----------------------------------------- */
 
@@ -485,7 +482,7 @@ class Envi
      * デバッグモードで実行されているかを確認し、デバッグモードならtrueそうでないならfalseを返します。
      *
      * @access public
-     * @return boolean デバッグモードならtrueそうでないならfalseを返します。
+     * @return bool デバッグモードならtrueそうでないならfalseを返します。
      */
     public function isDebug()
     {
@@ -514,9 +511,9 @@ class Envi
      * 取得したいコンフィグデータを指定して、返します。
      *
      * @access public
-     * @param string $key 取得したいコンフィグのキー
-     * @param string $key2 可変長引数です。OPTIONAL:....
-     * @return mixed 定義されたコンフィグデータ
+     * @param  string $key  取得したいコンフィグのキー
+     * @param  string $key2 可変長引数です。OPTIONAL:....
+     * @return mixed  定義されたコンフィグデータ
      */
     public function getConfiguration($key)
     {
@@ -539,8 +536,8 @@ class Envi
      * 可変長引数非対応のgetConfiguration
      *
      * @access      public
-     * @param       var_text $key
-     * @return mixed 定義されたコンフィグデータ
+     * @param  var_text $key
+     * @return mixed    定義されたコンフィグデータ
      */
     public function getConfigurationSimple($key)
     {
@@ -566,13 +563,13 @@ class Envi
      * +-- 国際化データを返します
      *
      * @access public
-     * @param string $key
-     * @param string $string_key OPTIONAL:NULL
-     * @return array 国際化設定情報
+     * @param  string $key
+     * @param  string $string_key OPTIONAL:NULL
+     * @return array  国際化設定情報
      */
-    public function getI18n($key, $string_key = NULL)
+    public function getI18n($key, $string_key = null)
     {
-        return $string_key === NULL ? $this->_i18n[$key] : $this->_i18n[$key][$string_key];
+        return $string_key === null ? $this->_i18n[$key] : $this->_i18n[$key][$string_key];
     }
     /* ----------------------------------------- */
 
@@ -580,8 +577,8 @@ class Envi
      * +-- テキスト取得
      *
      * @access public
-     * @param string $string_key
-     * @param array $replace
+     * @param  string $string_key
+     * @param  array  $replace
      * @return string 国際化テキスト
      */
     public function getText($string_key, array $replace)
@@ -704,10 +701,10 @@ class Envi
      * +-- YAMLファイルをパースする
      *
      * @access public
-     * @param string $file YAMLファイルのファイル名
-     * @param string $dir YAMLファイルがあるdirectory OPTIONAL:ENVI_MVC_APPKEY_PATH
-     * @param       var_text $strtoupper OPTIONAL:false
-     * @return array パース後の値
+     * @param  string   $file       YAMLファイルのファイル名
+     * @param  string   $dir        YAMLファイルがあるdirectory OPTIONAL:ENVI_MVC_APPKEY_PATH
+     * @param  var_text $strtoupper OPTIONAL:false
+     * @return array    パース後の値
      */
     public function parseYml($file, $dir = ENVI_MVC_APPKEY_PATH, $strtoupper = false)
     {
@@ -783,8 +780,8 @@ class Envi
      * 例外を使用しているため、try句内では、正常に動作しない可能性があります。
      *
      * @access public
-     * @param string $kill OPTIONAL:''
-     * @param boolean $is_shutDown OPTIONAL:true
+     * @param  string $kill        OPTIONAL:''
+     * @param  bool   $is_shutDown OPTIONAL:true
      * @return void
      * @see EnviController::Kill()
      */
@@ -809,8 +806,8 @@ class Envi
      *
      * @access public
      * @static
-     * @param string $app アプリキー
-     * @param boolean $debug デバッグモードのon/off OPTIONAL:false
+     * @param  string $app   アプリキー
+     * @param  bool   $debug デバッグモードのon/off OPTIONAL:false
      * @return void
      */
     public static function dispatch($app, $debug = false)
@@ -819,9 +816,9 @@ class Envi
             ob_start();
             if (!self::$is_rested) {
                 // オブジェクトの生成
-                $className = __CLASS__;
+                $className      = __CLASS__;
                 self::$instance = new Envi($app, $debug);
-                $envi = self::$instance;
+                $envi           = self::$instance;
 
                 // オートロードレジスト
                 spl_autoload_register(array('Envi', 'autoload'));
@@ -834,7 +831,7 @@ class Envi
                 logger();
             } else {
                 $className = __CLASS__;
-                $envi = self::$instance;
+                $envi      = self::$instance;
             }
 
             $filters = $envi->getConfigurationSimple('FILTER');
@@ -894,7 +891,7 @@ class Envi
      *
      * @final
      * @access public
-     * @param boolean $is_first OPTIONAL:false
+     * @param  bool  $is_first OPTIONAL:false
      * @return mixed
      * @doc_ignore
      */
@@ -969,7 +966,7 @@ class Envi
                 if (!class_exists($action, false)) {
                     include $action_sub_class_path;
                 }
-                $action = new $action;
+                $action        = new $action;
                 $action_sub_sf = ucwords(preg_replace('/^'.$sub_action.'/', '', $this_action));
                 if (!method_exists($action, 'execute'.$action_sub_sf)) {
                     throw new Envi404Exception('execute'.$action_sub_sf.' is not exists', 10003);
@@ -977,7 +974,7 @@ class Envi
             } elseif (is_file($action_dir.'actions.class.php')) {
                 // actions.class.phpにまとめて書くパターン
                 $action_class_path = $action_dir.'actions.class.php';
-                $action = $this_module.'Actions';
+                $action            = $this_module.'Actions';
                 if (!class_exists($action, false)) {
                     include $action_class_path;
                 }
@@ -1092,7 +1089,7 @@ class Envi
             $view = new $view;
         } else {
             $sub_action            = isset($sub_action) ? $sub_action : preg_replace('/^([a-z0-9]+).*$/', '\1', $this_action);
-            $view_sub_class_path = $view_dir.$sub_action.'Views_'.$view_suffix.'.class.php';
+            $view_sub_class_path   = $view_dir.$sub_action.'Views_'.$view_suffix.'.class.php';
 
             if (is_file($view_sub_class_path)) {
                 // 1ファイルに複数ビューがあるパターン
@@ -1103,16 +1100,15 @@ class Envi
                 if (!class_exists($view, false)) {
                     include $view_sub_class_path;
                 }
-                $view = new $view;
+                $view        = new $view;
                 $view_sub_sf = ucwords(preg_replace('/^'.$sub_action.'/', '', $this_action));
                 if (!method_exists($action, 'execute'.$view_sub_sf)) {
                     throw new Envi404Exception('execute'.$view_sub_sf.' is not exists', 10003);
                 }
-
-            }  elseif (is_file($view_dir.'views.class.php')) {
+            } elseif (is_file($view_dir.'views.class.php')) {
                 // views.class.phpから実行する
                 $view_class_path = $view_dir.'views.class.php';
-                $view = $this_module.'Views';
+                $view            = $this_module.'Views';
                 if (!class_exists($view, false)) {
                     include $view_class_path;
                 }
@@ -1176,9 +1172,9 @@ class Envi
      *
      * @access      public
      * @static
-     * @param       strint $app アプリキー
-     * @param       boolean $debug デバッグモードで動作させるかどうか OPTIONAL:false
-     * @return      void
+     * @param  strint $app   アプリキー
+     * @param  bool   $debug デバッグモードで動作させるかどうか OPTIONAL:false
+     * @return void
      * @see Envi::dispatch()
      */
     public static function registerOnly($app, $debug = false)
@@ -1189,7 +1185,7 @@ class Envi
         try {
             // オブジェクトの生成
             self::$instance = new Envi($app, $debug);
-            $envi = self::$instance;
+            $envi           = self::$instance;
 
             // オートロードレジスト
             spl_autoload_register(array('Envi', 'autoload'));
@@ -1199,7 +1195,6 @@ class Envi
             include ENVI_MVC_CACHE_PATH.self::$app_key.'.'.ENVI_ENV.'.autoload_constant.envicc';
             $envi->loadExtension();
             self::$is_rested = true;
-
         } catch (redirectException $e) {
             throw $e;
         } catch (killException $e) {
@@ -1221,7 +1216,7 @@ class Envi
      *
      * @static
      * @access public
-     * @param string $class_name
+     * @param  string $class_name
      * @return void
      * @doc_ignore
      */
@@ -1232,8 +1227,8 @@ class Envi
         if (isset($auto_load_classes[$class_name])) {
             include $auto_load_classes[$class_name];
             return;
-        } elseif (isset($auto_load_classes["\\".$class_name])) {
-            include $auto_load_classes["\\".$class_name];
+        } elseif (isset($auto_load_classes['\\'.$class_name])) {
+            include $auto_load_classes['\\'.$class_name];
             return;
         }
 
@@ -1248,7 +1243,7 @@ class Envi
         // psr-0
         $class_name = ltrim($class_name, '\\');
         $file_name  = '';
-        $namespace = '';
+        $namespace  = '';
         if ($last_ns_pos = strripos($class_name, '\\')) {
             $namespace  = substr($class_name, 0, $last_ns_pos);
             $class_name = substr($class_name, $last_ns_pos + 1);
@@ -1302,9 +1297,9 @@ class Envi
      * +-- コンフィグファイルのシリアライズを行う
      *
      * @access      public
-     * @param       string $file_path
-     * @param       mixed $data
-     * @return      void
+     * @param  string $file_path
+     * @param  mixed  $data
+     * @return void
      * @doc_ignore
      */
     public function configSerialize($file_path, $data)
@@ -1317,8 +1312,8 @@ class Envi
      * +-- コンフィグファイルのアンシリアライズを行う
      *
      * @access      public
-     * @param       string $file_path
-     * @return      mixed
+     * @param  string $file_path
+     * @return mixed
      * @doc_ignore
      */
     public function configUnSerialize($file_path)
@@ -1333,14 +1328,14 @@ class Envi
      * 配列をシリアライズします。
      *
      * @access public
-     * @param mixed $data
+     * @param  mixed  $data
      * @return string
      * @see Envi::unserialize()
      */
     public function serialize($data)
     {
         static $is_message_pack;
-        if ($is_message_pack === NULL) {
+        if ($is_message_pack === null) {
             $is_message_pack = is_callable('msgpack_pack');
         }
         return $is_message_pack ? msgpack_pack($data) : serialize($data);
@@ -1353,14 +1348,14 @@ class Envi
      * Envi::serialize()された、配列をシリアライズします。
      *
      * @access public
-     * @param string $data
+     * @param  string $data
      * @return array
      * @see Envi::serialize()
      */
     public function unserialize($data)
     {
         static $is_message_pack;
-        if ($is_message_pack === NULL) {
+        if ($is_message_pack === null) {
             $is_message_pack = is_callable('msgpack_pack');
         }
         return $is_message_pack ? msgpack_unpack($data) : unserialize($data);
@@ -1373,8 +1368,8 @@ class Envi
      * +-- auto_load_classes_cacheの作成
      *
      * @access      protected
-     * @param       string $auto_load_classes_cache
-     * @return      void
+     * @param  string $auto_load_classes_cache
+     * @return void
      * @doc_ignore
      */
     protected function makeAutoLoadClassesCache($auto_load_classes_cache)
@@ -1384,7 +1379,7 @@ class Envi
             if (!is_array($dir)) {
                 $dir = array(
                     'is_psr' => false,
-                    'path' => $dir,
+                    'path'   => $dir,
                 );
             }
             $dir['path'] = realpath($dir['path']);
@@ -1393,7 +1388,7 @@ class Envi
                 continue;
             }
             $dir['path'] .= DIRECTORY_SEPARATOR;
-            $this->autoload_dirs[$key] = $dir;
+            $this->autoload_dirs[$key]      = $dir;
             $this->autoload_base_dirs[$key] = $dir['path'];
         }
         $use_namespace = version_compare(PHP_VERSION, '5.3.0') >= 0;
@@ -1409,11 +1404,11 @@ class Envi
      * +-- サブモジュールを読み込む
      *
      * @access      protected
-     * @param       string $dir_name
-     * @param       string $name_space
-     * @param       boolean $is_psr OPTIONAL:true
-     * @param       boolean $use_namespace OPTIONAL:false
-     * @return      array
+     * @param  string $dir_name
+     * @param  string $name_space
+     * @param  bool   $is_psr        OPTIONAL:true
+     * @param  bool   $use_namespace OPTIONAL:false
+     * @return array
      * @doc_ignore
      */
     protected function mkAutoLoadSubmodules($dir_name, $name_space, $is_psr = true, $use_namespace = false)
@@ -1434,12 +1429,12 @@ class Envi
                 continue;
             }
             if (is_dir($dir_name.$file) && $is_psr) {
-                $res = array_merge($res, $this->mkAutoLoadSubmodules($dir_name.$file, $name_space."\\".$file, $is_psr, $use_namespace));
+                $res = array_merge($res, $this->mkAutoLoadSubmodules($dir_name.$file, $name_space.'\\'.$file, $is_psr, $use_namespace));
             } elseif (preg_match('/\.php/', $file)) {
-                $class_name = preg_replace("/^(.*)\\.php$/", "\\1", $file);
-                $class_name = preg_replace("/^(.*)\\.class$/", "\\1", $class_name);
+                $class_name = preg_replace('/^(.*)\\.php$/', '\\1', $file);
+                $class_name = preg_replace('/^(.*)\\.class$/', '\\1', $class_name);
                 if ($use_namespace) {
-                    $res[$name_space."\\".$class_name] = $dir_name.$file;
+                    $res[$name_space.'\\'.$class_name] = $dir_name.$file;
                 } else {
                     $res[$class_name] = $dir_name.$file;
                 }
@@ -1455,15 +1450,15 @@ class Envi
      * +-- autoload_constant_cacheの作成
      *
      * @access      protected
-     * @param       string $autoload_constant_cache
-     * @return      void
+     * @param  string $autoload_constant_cache
+     * @return void
      * @doc_ignore
      */
     protected function makeAutoLoadConstantCache($autoload_constant_cache)
     {
         $autoload_constant_dir = $this->_system_conf['AUTOLOAD_CONSTANT'];
-        $autoload_constant = array();
-        $autoload_constant[] = $this->_system_conf['SYSTEM']['renderer'];
+        $autoload_constant     = array();
+        $autoload_constant[]   = $this->_system_conf['SYSTEM']['renderer'];
         if ($autoload_constant_dir) {
             foreach ($autoload_constant_dir as $dir) {
                 if (!is_dir($dir)) {
@@ -1499,7 +1494,7 @@ class Envi
     protected function loadExtension()
     {
         $load_extension_constant = ENVI_MVC_CACHE_PATH.self::$app_key.'.'.ENVI_ENV.'.load_extension_constant.envicc';
-        $load_extension = ENVI_MVC_CACHE_PATH.self::$app_key.'.'.ENVI_ENV.'.load_extension.envicc';
+        $load_extension          = ENVI_MVC_CACHE_PATH.self::$app_key.'.'.ENVI_ENV.'.load_extension.envicc';
         if (self::$debug || !is_file($load_extension_constant) || !is_file($load_extension)) {
             $extension = isset($this->_system_conf['EXTENSION']['extensions']) && count((array)$this->_system_conf['EXTENSION']['extensions']) > 0 ?
                 $this->_system_conf['EXTENSION']['extensions'] : array();
@@ -1536,9 +1531,9 @@ class Envi
      * +-- 再帰的にコンフィグ情報をマージする
      *
      * @access      protected
-     * @param       mixed $all_conf
-     * @param       mixed $env_conf
-     * @return      array
+     * @param  mixed $all_conf
+     * @param  mixed $env_conf
+     * @return array
      * @doc_ignore
      */
     protected function mergeConfiguration($all_conf, $env_conf)
@@ -1559,5 +1554,4 @@ class Envi
     /* ----------------------------------------- */
 
     /* ----------------------------------------- */
-
 }

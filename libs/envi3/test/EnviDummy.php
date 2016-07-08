@@ -132,7 +132,6 @@ function Envi()
  */
 class EnviException extends exception
 {
-
 }
 if (!defined('ENVI_ENV')) {
     define('ENVI_ENV', 'unittest');
@@ -174,7 +173,7 @@ class extension
                 continue;
             }
             include_once $v['class']['resource'];
-            $class_name = $v['class']['class_name'];
+            $class_name              = $v['class']['class_name'];
             $this->extensions[$name] = new $class_name(EnviTest::singleton()->parseYml(basename($v['router']['resource']), dirname($v['router']['resource']).DIRECTORY_SEPARATOR));
         }
     }
@@ -200,7 +199,7 @@ class extension
                 include_once $this->configuration[$name]['class']['resource'];
                 $this->extensions[$name] = array();
             }
-            $c = count($this->extensions[$name]);
+            $c                           = count($this->extensions[$name]);
             $this->extensions[$name][$c] = $class_name(EnviTest::singleton()->parseYml(basename($this->configuration[$name]['router']['resource']), dirname($this->configuration[$name]['router']['resource']).DIRECTORY_SEPARATOR));
             return $this->extensions[$name][$c];
         } elseif (!isset($this->extensions[$name])) {
@@ -238,7 +237,7 @@ class extension
     }
     /* ----------------------------------------- */
 
-    public static function _singleton($configuration = NULL)
+    public static function _singleton($configuration = null)
     {
         if (!isset(self::$instance)) {
             self::$instance = new extension($configuration);
@@ -250,7 +249,6 @@ class extension
     {
         $this->extensions = array();
     }
-
 }
 
 /**

@@ -20,7 +20,6 @@
 if (!isset($envi_cmd)) {
     /**
      * バッチ用の設定
-     *
      */
     set_time_limit(0);
     ini_set('memory_limit', -1);
@@ -28,7 +27,6 @@ if (!isset($envi_cmd)) {
 
     /* ----------------------------------------- */
     $test_key = $argv[1];
-
 } else {
     $test_key = $argv[2];
 }
@@ -43,5 +41,3 @@ $EnviTest = EnviTest::adapter($test_key);
 
 $EnviTest->help();
 $EnviTest->execute();
-
-

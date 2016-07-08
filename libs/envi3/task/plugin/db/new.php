@@ -17,9 +17,6 @@
  * @see        http://www.enviphp.net/
  * @since      File available since Release 3.4.0
  */
-
-
-
 umask(0);
 
 

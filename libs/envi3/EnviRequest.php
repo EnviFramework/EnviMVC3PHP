@@ -62,22 +62,22 @@ class EnviRequest
     private static $_error_message = array();
 
 
-    private static $_i18n = '';
+    private static $_i18n                = '';
     private static $_request_module_name = '';
     private static $_request_action_name = '';
-    public static $_module_name = '';
-    public static $_action_name = '';
+    public static $_module_name          = '';
+    public static $_action_name          = '';
 
     /**
      * EnviRequest::getParameter()、EnviRequest::hasParameter()で使用。POSTデータの取得
      *
-     * @var         var_type
+     * @var var_type
      */
     const POST = 1;
     /**
      * EnviRequest::getParameter()、EnviRequest::hasParameter()で使用。GETデータの取得
      *
-     * @var         var_type
+     * @var var_type
      */
     const GET  = 2;
 
@@ -85,7 +85,7 @@ class EnviRequest
      * +-- オブジェクト化させない
      *
      * @access      private
-     * @return      void
+     * @return void
      * @doc_ignore
      */
     private function __construct()
@@ -208,10 +208,10 @@ class EnviRequest
             $router->run();
             self::$_request_module_name = $router->getRequestModule();
             self::$_request_action_name = $router->getRequestAction();
-            self::$_i18n = $router->getI18n();
-            self::$_ext_path_info = $router->getPathInfo();
-            self::$_module_name = self::$_request_module_name;
-            self::$_action_name = self::$_request_action_name;
+            self::$_i18n                = $router->getI18n();
+            self::$_ext_path_info       = $router->getPathInfo();
+            self::$_module_name         = self::$_request_module_name;
+            self::$_action_name         = self::$_request_action_name;
             return;
         }
 
@@ -219,7 +219,7 @@ class EnviRequest
         // デフォルト指定
         self::$_request_module_name = $_system_conf['SYSTEM']['default_module'];
         self::$_request_action_name = $_system_conf['SYSTEM']['default_action'];
-        self::$_i18n = $_system_conf['SYSTEM']['default_i18n'];
+        self::$_i18n                = $_system_conf['SYSTEM']['default_i18n'];
         if (!isset($_SERVER['PATH_INFO']) || $_SERVER['PATH_INFO'] === '/') {
             self::$_module_name = self::$_request_module_name;
             self::$_action_name = self::$_request_action_name;
@@ -245,7 +245,7 @@ class EnviRequest
         }
         // アクション名
         if (count($exp_pathinfo) && $exp_pathinfo[0] !== '') {
-            self::$_request_action_name = preg_replace("/\\.".$_system_conf['SYSTEM']['ext'].'$/', '', array_shift($exp_pathinfo));
+            self::$_request_action_name = preg_replace('/\\.'.$_system_conf['SYSTEM']['ext'].'$/', '', array_shift($exp_pathinfo));
         }
 
         self::$_ext_path_info = $exp_pathinfo;
@@ -281,8 +281,8 @@ class EnviRequest
      * データコンテナにデータを保存します。
      * 保存されたデータは、どこからでも取り出すことが出来るようになります。
      *
-     * @param string $key Attribute名
-     * @param mixd $data 値
+     * @param  string $key  Attribute名
+     * @param  mixd   $data 値
      * @return void
      * @see EnviRequest::getAttribute()
      * @see EnviRequest::hasAttribute()
@@ -304,7 +304,7 @@ class EnviRequest
      *
      * Fw内部では使用しますが、通常の処理では使用しません。
      *
-     * @param mixd $data 値
+     * @param  mixd $data 値
      * @return void
      * @doc_ignore
      */
@@ -320,8 +320,8 @@ class EnviRequest
      *
      * Attribute名を指定して、データコンテナに保存したしたデータを取り出します
      *
-     * @param string $key Attribute名
-     * @return mixd 保存したデータ
+     * @param  string $key Attribute名
+     * @return mixd   保存したデータ
      * @see EnviRequest::setAttribute()
      * @see EnviRequest::hasAttribute()
      * @see EnviRequest::removeAttribute()
@@ -339,7 +339,7 @@ class EnviRequest
         if (func_num_args() === 1) {
             return isset(self::$_attribute[$key]) ? self::$_attribute[$key] : null;
         }
-        $fga = func_get_args();
+        $fga  = func_get_args();
         $data = self::$_attribute;
         foreach ($fga as $node) {
             if (is_array($data) && isset($data[$node])) {
@@ -377,8 +377,8 @@ class EnviRequest
      *
      * @access public
      * @static
-     * @param string $key 確認するAttribute名
-     * @return boolean 保存されていればtrue
+     * @param  string $key 確認するAttribute名
+     * @return bool   保存されていればtrue
      * @see EnviRequest::getAttribute()
      * @see EnviRequest::setAttribute()
      * @see EnviRequest::removeAttribute()
@@ -400,7 +400,7 @@ class EnviRequest
      *
      * @access public
      * @static
-     * @param string $key 削除するAttribute名
+     * @param  string $key 削除するAttribute名
      * @return void
      * @see EnviRequest::getAttribute()
      * @see EnviRequest::setAttribute()
@@ -457,10 +457,10 @@ class EnviRequest
      *
      * @access public
      * @static
-     * @param string|int $name 取り出すParameterのkey
-     * @param mixed $default_parameter 値が取得できなかった場合のデフォルトの値(OPTIONAL:false)
-     * @param int $post_only 取得するhttp methodを指定する。 EnviRequest::POST,EnviRequest::GETが指定できます。bit演算で、両方指定することも出来ます。
-     * @return mixed ユーザーからのリクエストデータ
+     * @param  string|int $name              取り出すParameterのkey
+     * @param  mixed      $default_parameter 値が取得できなかった場合のデフォルトの値(OPTIONAL:false)
+     * @param  int        $post_only         取得するhttp methodを指定する。 EnviRequest::POST,EnviRequest::GETが指定できます。bit演算で、両方指定することも出来ます。
+     * @return mixed      ユーザーからのリクエストデータ
      * @see EnviRequest::hasParameter()
      */
     public static function getParameter($name, $default_parameter = false, $post_only = 3)
@@ -481,15 +481,15 @@ class EnviRequest
      *
      * @access public
      * @static
-     * @param string|int $name 存在確認を行うParameterのkey
-     * @param int $post_only 存在確認を行うhttp methodを指定する。 EnviRequest::POST,EnviRequest::GETが指定できます。bit演算で、両方指定することも出来ます。
-     * @return boolean パラメータが存在するならtrue
+     * @param  string|int $name      存在確認を行うParameterのkey
+     * @param  int        $post_only 存在確認を行うhttp methodを指定する。 EnviRequest::POST,EnviRequest::GETが指定できます。bit演算で、両方指定することも出来ます。
+     * @return bool       パラメータが存在するならtrue
      * @see EnviRequest::getParameter()
      */
     public static function hasParameter($name, $post_only = 3)
     {
         if ($post_only === 3) {
-            return (isset($_POST[$name]) || isset($_GET[$name]));
+            return isset($_POST[$name]) || isset($_GET[$name]);
         } elseif ($post_only == 1) {
             return isset($_POST[$name]);
         } else {
@@ -510,10 +510,10 @@ class EnviRequest
      *
      * @access public
      * @static
-     * @param string $name エラー名
-     * @param string $validator 引っかかったValidator
-     * @param integer $code エラーコード
-     * @param string $message エラーメッセージ
+     * @param  string $name      エラー名
+     * @param  string $validator 引っかかったValidator
+     * @param  int    $code      エラーコード
+     * @param  string $message   エラーメッセージ
      * @return void
      * @see EnviRequest::getErrors()
      * @see EnviRequest::getErrorsByRef()
@@ -547,13 +547,13 @@ class EnviRequest
      */
     public static function getErrors()
     {
-        $i = 0;
-        $res = array();
+        $i              = 0;
+        $res            = array();
         $res['message'] = array();
-        $res['keys'] = array();
+        $res['keys']    = array();
         foreach (self::$_error_message as $key => $values) {
             foreach ($values as $value) {
-                $res['message'][$i] = $value;
+                $res['message'][$i]  = $value;
                 $res['keys'][$key][] = $i;
                 ++$i;
             }
@@ -631,7 +631,7 @@ class EnviRequest
      *
      * @access public
      * @static
-     * @param array $data
+     * @param  array $data
      * @return void
      * @doc_ignore
      */
@@ -648,7 +648,7 @@ class EnviRequest
      *
      * @access public
      * @static
-     * @param array $data
+     * @param  array $data
      * @return void
      * @doc_ignore
      */
@@ -666,8 +666,8 @@ class EnviRequest
      *
      * @access public
      * @static
-     * @param string $name エラー名
-     * @return array 対応するエラー配列
+     * @param  string $name エラー名
+     * @return array  対応するエラー配列
      * @see EnviRequest::setError()
      * @see EnviRequest::getErrors()
      * @see EnviRequest::getErrorsByRef()
@@ -689,7 +689,7 @@ class EnviRequest
      *
      * @access public
      * @static
-     * @return boolean エラーがあるかどうか
+     * @return bool エラーがあるかどうか
      * @see EnviRequest::setError()
      * @see EnviRequest::getErrors()
      * @see EnviRequest::getErrorsByRef()
@@ -711,8 +711,8 @@ class EnviRequest
      *
      * @access public
      * @static
-     * @param string $name エラー名
-     * @return boolean 指定したエラーがあるかどうか
+     * @param  string $name エラー名
+     * @return bool   指定したエラーがあるかどうか
      * @see EnviRequest::setError()
      * @see EnviRequest::getErrors()
      * @see EnviRequest::getErrorsByRef()
@@ -733,7 +733,7 @@ class EnviRequest
      *
      * @access      public
      * @static
-     * @return      boolean
+     * @return bool
      * @since       3.4.0
      */
     public static function isPost()
@@ -749,7 +749,7 @@ class EnviRequest
      *
      * @access      public
      * @static
-     * @return      boolean
+     * @return bool
      * @since       3.4.0
      */
     public static function isGet()
@@ -764,7 +764,7 @@ class EnviRequest
      *
      * @access      public
      * @static
-     * @return      boolean
+     * @return bool
      * @since       3.4.0
      */
     public static function isPut()
@@ -780,7 +780,7 @@ class EnviRequest
      *
      * @access      public
      * @static
-     * @return      boolean
+     * @return bool
      * @since       3.4.0
      */
     public static function isHead()

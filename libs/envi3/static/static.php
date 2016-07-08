@@ -33,7 +33,7 @@ class ParsePHP
      * +-- コンストラクタ
      *
      * @access      public
-     * @return      void
+     * @return void
      */
     public function __construct()
     {
@@ -42,14 +42,14 @@ class ParsePHP
         $this->highlight_keyword = ini_get('highlight.keyword');
         $this->highlight_html    = ini_get('highlight.html');
         $this->highlight_string  = ini_get('highlight.string');
-        $this->yml_file  = dirname(__FILE__).DIRECTORY_SEPARATOR.'php_static.yml';
+        $this->yml_file          = dirname(__FILE__).DIRECTORY_SEPARATOR.'php_static.yml';
     }
     /* ----------------------------------------- */
     /**
      * +-- デストラクタ
      *
      * @access      public
-     * @return      void
+     * @return void
      */
     public function __destruct()
     {
@@ -63,7 +63,7 @@ class ParsePHP
      *
      * @final
      * @access      public
-     * @return      void
+     * @return void
      */
     final public function spyc_load_file()
     {
@@ -75,8 +75,8 @@ class ParsePHP
      *
      * @final
      * @access      private
-     * @param       string $text
-     * @return      void
+     * @param  string $text
+     * @return void
      */
     final public function echoText($text)
     {
@@ -87,8 +87,8 @@ class ParsePHP
      * +-- 構文解析
      *
      * @access      public
-     * @param       string $contents
-     * @return      string
+     * @param  string $contents
+     * @return string
      */
     final public function parse($contents)
     {
@@ -112,8 +112,8 @@ class ParsePHP
      *
      * @final
      * @access      public
-     * @param       string $contents
-     * @return      void
+     * @param  string $contents
+     * @return void
      */
     final public function parseFile($contents)
     {
@@ -133,12 +133,12 @@ class ParsePHP
      * +-- 使用禁止関数の確認
      *
      * @access      protected
-     * @param       string $highlight_contents
-     * @return      void
+     * @param  string $highlight_contents
+     * @return void
      */
     protected function doVulnerabilityFunction($highlight_contents)
     {
-        $functions = $this->getUseFunction($highlight_contents);
+        $functions   = $this->getUseFunction($highlight_contents);
         $error_count = $this->error_count;
         foreach ($functions as $func) {
             foreach ($this->configuration['vulnerabilityfunction'] as $conf) {
@@ -159,8 +159,8 @@ class ParsePHP
      * +-- コールされている関数の一覧を返す
      *
      * @access      protected
-     * @param       string $contents
-     * @return      array
+     * @param  string $contents
+     * @return array
      */
     protected function getUseFunction($contents)
     {
@@ -196,8 +196,8 @@ class ParsePHP
      * +-- Comment部分を削除して、削除したCommentを返す
      *
      * @access      private
-     * @param       string &$contents
-     * @return      array
+     * @param  string &$contents
+     * @return array
      */
     private function _deleteComment(&$contents)
     {
@@ -216,12 +216,12 @@ class ParsePHP
      * +-- HTML部分を削除する
      *
      * @access      private
-     * @param       string &$contents
-     * @return      void
+     * @param  string &$contents
+     * @return void
      */
     private function _deleteHtml(&$contents)
     {
-        $contents = mb_ereg_replace('(</span>)([^<]|<[^s]).*?(</span>|<span)', "\\1\\3", $contents);
+        $contents = mb_ereg_replace('(</span>)([^<]|<[^s]).*?(</span>|<span)', '\\1\\3', $contents);
     }
     /* ----------------------------------------- */
 }
@@ -235,7 +235,7 @@ class ParsePHP_Executer
      * +-- コンストラクタ
      *
      * @access      public
-     * @return      void
+     * @return void
      */
     public function __construct()
     {
@@ -248,17 +248,17 @@ class ParsePHP_Executer
      * +-- メイン処理
      *
      * @access      public
-     * @return      void
+     * @return void
      */
     public function main()
     {
         $ParsePHP = new ParsePHP;
 
         switch (true) {
-            case (isset($this->argv[1]) ? is_file($this->argv[1]) || is_dir($this->argv[1]) : false):
+            case isset($this->argv[1]) ? is_file($this->argv[1]) || is_dir($this->argv[1]) : false:
                 $this->refDo($this->argv[1], clone $ParsePHP);
                 break;
-            case $buffer = fgets(STDIN):
+            case $buffer  = fgets(STDIN):
                 $contents = $buffer;
                 while (($buffer = fgets(STDIN)) !== false) {
                     $contents .= $buffer;
@@ -275,9 +275,9 @@ class ParsePHP_Executer
      * +-- 再帰的にディレクトリを開いてPHPをチェックする
      *
      * @access      private
-     * @param       string $path
-     * @param       ParsePHP $ParsePHP
-     * @return      void
+     * @param  string   $path
+     * @param  ParsePHP $ParsePHP
+     * @return void
      */
     private function refDo($path, ParsePHP $ParsePHP)
     {

@@ -17,9 +17,6 @@
  * @see        http://www.enviphp.net/
  * @since      File available since Release 3.4.0
  */
-
-
-
 umask(0);
 
 
@@ -44,4 +41,3 @@ if ($argv[3] === 'up') {
 } elseif ($argv[3] === 'down') {
     $EnviMigrationCmd->executeCursorDown();
 }
-

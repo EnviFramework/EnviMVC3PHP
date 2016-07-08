@@ -77,7 +77,7 @@ class EnviDBInstance
      * 別名を使用したい場合は、テンプレートを変更して下さい。
      *
      * @access public
-     * @param string $db_key yamlで設定した接続キー
+     * @param  string  $db_key yamlで設定した接続キー
      * @return DBIBase
      */
     public function getInstance($db_key)
@@ -106,9 +106,9 @@ class EnviDBInstance
  */
 class EnviDB
 {
-    const AUTOQUERY_INSERT = 1;
-    const AUTOQUERY_UPDATE = 2;
-    const AUTOQUERY_REPLACE = 3;
+    const AUTOQUERY_INSERT        = 1;
+    const AUTOQUERY_UPDATE        = 2;
+    const AUTOQUERY_REPLACE       = 3;
     const AUTOQUERY_INSERT_IGNORE = 4;
 
     private static $connections = array();
@@ -126,8 +126,8 @@ class EnviDB
      *
      * @access public
      * @static
-     * @param array $param 接続パラメータ
-     * @param string $instance_name インスタンス名
+     * @param  array       $param         接続パラメータ
+     * @param  string      $instance_name インスタンス名
      * @return EnviDBIBase
      * @see EnviDBInstance::getInstance()
      * @deprecated `extension()->DBI->()->getInstance()`を使用して下さい。
@@ -161,7 +161,7 @@ class EnviDB
     private static function getNewConnection($dsn, array $param)
     {
         parse_str($dsn, $conf);
-        try{
+        try {
             $dbi = self::connect($conf, '', '', $param['connection_pool']);
             if (isset($param['initialize_query']) && !empty($param['initialize_query'])) {
                 $dbi->query($param['initialize_query']);
@@ -181,10 +181,10 @@ class EnviDB
      *
      * @access public
      * @static
-     * @param string|array $dsn DSN
-     * @param string|boolean $user DSNにユーザー名を記述しない場合、ユーザー名を指定する OPTIONAL:false
-     * @param string|boolean $password DSNパスワード名を記述しない場合、ユーザー名を指定する OPTIONAL:false
-     * @param boolean $is_pool コネクションプールの使用 OPTIONAL:false
+     * @param  string|array $dsn      DSN
+     * @param  string|bool  $user     DSNにユーザー名を記述しない場合、ユーザー名を指定する OPTIONAL:false
+     * @param  string|bool  $password DSNパスワード名を記述しない場合、ユーザー名を指定する OPTIONAL:false
+     * @param  bool         $is_pool  コネクションプールの使用 OPTIONAL:false
      * @return EnviDBIBase
      * @deprecated `extension()->DBI->()->getInstance()`を使用して下さい。
      * @see EnviDBInstance::getInstance()
@@ -216,13 +216,13 @@ class EnviDB
      * EnviDBでは、例外を使用するため、このメソッドを使用する意味はありません。
      *
      * @static
-     * @param mixed $obj チェックする変数
-     * @return boolean
+     * @param  mixed $obj チェックする変数
+     * @return bool
      * @deprecated ダミークラスです。
      */
     public static function isError(&$obj)
     {
-        if ($obj === NULL) {
+        if ($obj === null) {
             return true;
         } elseif (is_object($obj)) {
             return false;
@@ -276,16 +276,16 @@ class EnviDBIBase
      * $valueをクオートして返します。
      *
      * @access public
-     * @param mixied $value クオートするデータ
+     * @param  mixied $value クオートするデータ
      * @return string クオートされた文字列
      */
     public function quotesmart($value)
     {
         if (is_int($value)) {
             $pdo_param_type = PDO::PARAM_INT;
-        } elseif(is_bool($value)){
+        } elseif (is_bool($value)) {
             $pdo_param_type = PDO::PARAM_BOOL;
-        } elseif ($value === NULL){
+        } elseif ($value === null) {
             $pdo_param_type = PDO::PARAM_NULL;
         } else {
             $pdo_param_type = PDO::PARAM_STR;
@@ -300,7 +300,7 @@ class EnviDBIBase
      * EnviDBIBase::quotesmart()と等価です。
      *
      * @access public
-     * @param mixied $str クオートするデータ
+     * @param  mixied $str クオートするデータ
      * @return string クオートされた文字列
      * @see EnviDBIBase::quotesmart()
      */
@@ -388,7 +388,7 @@ class EnviDBIBase
      *
      *
      * @access public
-     * @param integer $fetch_mode フェッチモード
+     * @param  int  $fetch_mode フェッチモード
      * @return void
      */
     public function setFetchMode($fetch_mode)
@@ -408,10 +408,10 @@ class EnviDBIBase
      * もし name パラメータにシーケンス名が指定された場合、 PDO::lastInsertId() は指定されたシーケンスオブジェクトから取得した最後の値に相当する 文字列を返します。
      *
      * @access public
-     * @param string  $name ID が返されるべきシーケンスオブジェクト名を指定します。 OPTIONAL:NULL
-     * @return integer|boolean データベースに挿入された行IDに相当する文字列
+     * @param  string   $name ID が返されるべきシーケンスオブジェクト名を指定します。 OPTIONAL:NULL
+     * @return int|bool データベースに挿入された行IDに相当する文字列
      */
-    public function lastInsertId($name = NULL)
+    public function lastInsertId($name = null)
     {
         return $this->PDO->lastInsertId($name);
     }
@@ -446,8 +446,8 @@ class EnviDBIBase
      * このため、ある形式をサポートしているがその他の形式をサポートしていない ドライバの場合、名前もしくは疑問符形式のパラメータを他の適当な値に 書き換えることも可能です。
      *
      * @access public
-     * @param string $statement sql
-     * @param array $driver_options OPTIONAL:array
+     * @param  string       $statement      sql
+     * @param  array        $driver_options OPTIONAL:array
      * @return PDOStatement 結果オブジェクト
      */
     public function &prepare($statement, array $driver_options = array())
@@ -472,39 +472,39 @@ class EnviDBIBase
      * * あるいは、$driver_optionsに入力専用のパラメータ値の配列を渡す
      *
      * @access public
-     * @param PDOStatement $pdos
-     * @param array $driver_options OPTIONAL:array
+     * @param  PDOStatement $pdos
+     * @param  array        $driver_options OPTIONAL:array
      * @return PDOStatement 結果オブジェクト
      */
     public function &execute(PDOStatement $pdos, $driver_options = array())
     {
-        $is_string_key = NULL;
-        $last_parameters = array();
+        $is_string_key    = null;
+        $last_parameters  = array();
         $this->last_query = $pdos->queryString;
         foreach ($driver_options as $key => $value) {
-            if ($is_string_key === NULL) {
+            if ($is_string_key === null) {
                 $is_string_key = !is_numeric($key);
             }
             if (is_int($value)) {
                 $pdo_param_type = PDO::PARAM_INT;
-            } elseif (is_bool($value)){
+            } elseif (is_bool($value)) {
                 $pdo_param_type = PDO::PARAM_BOOL;
-            } elseif ($value === NULL){
+            } elseif ($value === null) {
                 $pdo_param_type = PDO::PARAM_NULL;
             } else {
                 $pdo_param_type = PDO::PARAM_STR;
             }
             if ($is_string_key) {
-                $pdos->bindValue (':'.$key, $value, $pdo_param_type);
+                $pdos->bindValue(':'.$key, $value, $pdo_param_type);
                 $last_parameters[':'.$key] = $value;
             } else {
-                $pdos->bindValue ($key+1, $value, $pdo_param_type);
+                $pdos->bindValue($key + 1, $value, $pdo_param_type);
                 $last_parameters[$key] = $value;
             }
         }
         $this->_stopwatch();
         $pdos->execute();
-        $this->last_query = $pdos->queryString;
+        $this->last_query      = $pdos->queryString;
         $this->last_parameters = $last_parameters;
         $this->_queryLog($this);
         return $pdos;
@@ -529,18 +529,18 @@ class EnviDBIBase
      * PDOStatement::closeCursor() をコールし、 次に EnviDBIBase::query() をコールする前に PDOStatement オブジェクトに関連付けられたリソースを解放してください。
      *
      * @access public
-     * @param string $statement 実行するSQL
-     * @param array $bind バインドする配列 OPTIONAL:array
+     * @param  string       $statement 実行するSQL
+     * @param  array        $bind      バインドする配列 OPTIONAL:array
      * @return PDOStatement 結果オブジェクト
      * @see EnviDBIBase::prepare()
      * @see EnviDBIBase::execute()
      */
-    public function &query($statement, $bind = NULL)
+    public function &query($statement, $bind = null)
     {
-        if ($bind === NULL) {
+        if ($bind === null) {
             $this->last_query = $statement;
             $this->_stopwatch();
-            $pdos = $this->PDO->query($statement);
+            $pdos             = $this->PDO->query($statement);
             $this->last_query = $pdos->queryString;
             $this->_queryLog($this);
             $pdos->setFetchMode($this->default_fetch_mode);
@@ -556,13 +556,13 @@ class EnviDBIBase
      * +-- ストップウォッチ起動
      *
      * @access      private
-     * @return      void
+     * @return void
      * @doc_ignore
      */
     private function _stopwatch()
     {
         static $is_console;
-        if ($is_console === NULL) {
+        if ($is_console === null) {
             $is_console = function_exists('console');
             if ($is_console) {
                 $is_console = Envi()->isDebug();
@@ -578,14 +578,14 @@ class EnviDBIBase
      * +-- クエリログ記録
      *
      * @access      private
-     * @param       string $log
-     * @return      void
+     * @param  string $log
+     * @return void
      * @doc_ignore
      */
     private function _queryLog($log)
     {
         static $is_console;
-        if ($is_console === NULL) {
+        if ($is_console === null) {
             $is_console = function_exists('console');
             if ($is_console) {
                 $is_console = Envi()->isDebug();
@@ -607,10 +607,10 @@ class EnviDBIBase
      * とほぼ等価の処理を行います。
      *
      * @access public
-     * @param string $statement 実行するSQL
-     * @param array $bind バインドする配列 OPTIONAL:array
-     * @param integer $fetch_mode フェッチモード OPTIONAL:false
-     * @return array 結果配列
+     * @param  string $statement  実行するSQL
+     * @param  array  $bind       バインドする配列 OPTIONAL:array
+     * @param  int    $fetch_mode フェッチモード OPTIONAL:false
+     * @return array  結果配列
      * @see EnviDBIBase::prepare()
      * @see EnviDBIBase::execute()
      * @see EnviDBIBase::query()
@@ -618,7 +618,7 @@ class EnviDBIBase
      */
     public function getAll($statement, array $bind = array(), $fetch_mode = false)
     {
-        $pdos = $this->query($statement, $bind);
+        $pdos       = $this->query($statement, $bind);
         $fetch_mode = $fetch_mode === false ? $this->default_fetch_mode : $fetch_mode;
         return $pdos->fetchAll($fetch_mode);
     }
@@ -634,10 +634,10 @@ class EnviDBIBase
      * とほぼ等価の処理を行います。
      *
      * @access public
-     * @param string $statement 実行するSQL
-     * @param array $bind バインドする配列 OPTIONAL:array
-     * @param integer $fetch_mode フェッチモード OPTIONAL:false
-     * @return mixed fetch_modeに合わせた結果
+     * @param  string $statement  実行するSQL
+     * @param  array  $bind       バインドする配列 OPTIONAL:array
+     * @param  int    $fetch_mode フェッチモード OPTIONAL:false
+     * @return mixed  fetch_modeに合わせた結果
      * @see EnviDBIBase::prepare()
      * @see EnviDBIBase::execute()
      * @see EnviDBIBase::query()
@@ -645,7 +645,7 @@ class EnviDBIBase
      */
     public function getRow($statement, array $bind = array(), $fetch_mode = false)
     {
-        $pdos = $this->query($statement, $bind);
+        $pdos       = $this->query($statement, $bind);
         $fetch_mode = $fetch_mode === false ? $this->default_fetch_mode : $fetch_mode;
         return $pdos->fetch($fetch_mode);
     }
@@ -662,8 +662,8 @@ class EnviDBIBase
      * とほぼ等価の処理を行います。
      *
      * @access public
-     * @param string $statement 実行するSQL
-     * @param array $bind バインドする配列 OPTIONAL:array
+     * @param  string $statement 実行するSQL
+     * @param  array  $bind      バインドする配列 OPTIONAL:array
      * @return string SQLの実行結果
      * @see EnviDBIBase::prepare()
      * @see EnviDBIBase::execute()
@@ -686,10 +686,10 @@ class EnviDBIBase
      * $colで指定する場所は、一番最初の列が0となります。
      *
      * @access public
-     * @param string $statement 実行するSQL
-     * @param integer $col 取得列 OPTIONAL:0
-     * @param array $bind バインドする配列 OPTIONAL:array
-     * @return array 結果配列
+     * @param  string $statement 実行するSQL
+     * @param  int    $col       取得列 OPTIONAL:0
+     * @param  array  $bind      バインドする配列 OPTIONAL:array
+     * @return array  結果配列
      * @see EnviDBIBase::prepare()
      * @see EnviDBIBase::execute()
      * @see EnviDBIBase::query()
@@ -698,7 +698,7 @@ class EnviDBIBase
     public function getCol($statement, $col = 0, array $bind = array())
     {
         $pdos = $this->query($statement, $bind);
-        $res = array();
+        $res  = array();
         while (($row = $pdos->fetchColumn($col)) !== false) {
             $res[] = $row;
         }
@@ -716,9 +716,9 @@ class EnviDBIBase
      * とほぼ等価の処理です。
      *
      * @access public
-     * @param string $statement 実行するSQL
-     * @param array $bind バインドする配列 OPTIONAL:array
-     * @return integer 結果行数
+     * @param  string $statement 実行するSQL
+     * @param  array  $bind      バインドする配列 OPTIONAL:array
+     * @return int    結果行数
      * @see EnviDBIBase::prepare()
      * @see EnviDBIBase::execute()
      * @see EnviDBIBase::query()
@@ -726,7 +726,7 @@ class EnviDBIBase
      */
     public function count($statement, array $bind = array())
     {
-        $pdos = $this->query($statement, $bind);
+        $pdos       = $this->query($statement, $bind);
         $fetch_mode = $fetch_mode === false ? $this->default_fetch_mode : $fetch_mode;
         return $pdos->rowCount();
     }
@@ -747,7 +747,7 @@ class EnviDBIBase
      * [EnviDBIBase::rollback()](/c/man/v3/reference/vendor/EnviDB/EnviDBIBase/rollback)はネストを解除して、すべて元に戻します。
      *
      * @access public
-     * @return boolean 成功すればtrue
+     * @return bool 成功すればtrue
      * @see EnviDBIBase::rollback()
      * @see EnviDBIBase::commit()
      */
@@ -775,13 +775,13 @@ class EnviDBIBase
      *
      *
      * @access public
-     * @return boolean 成功すればtrue
+     * @return bool 成功すればtrue
      * @see EnviDBIBase::beginTransaction()
      * @see EnviDBIBase::commit()
      */
     public function rollback()
     {
-        $this->is_tran = false;
+        $this->is_tran    = false;
         $this->tran_count = 0;
         return $this->PDO->rollback();
     }
@@ -793,7 +793,7 @@ class EnviDBIBase
      * トランザクションをコミットし、 次に [EnviDBIBase::beginTransaction()](/c/man/v3/reference/vendor/EnviDB/EnviDBIBase/beginTransaction) で新たなトランザクションが開始されるまで、 データベース接続をオートコミットモードに戻します。
      *
      * @access public
-     * @return boolean 成功すればtrue
+     * @return bool 成功すればtrue
      * @see EnviDBIBase::beginTransaction()
      * @see EnviDBIBase::rollback()
      */
@@ -815,10 +815,10 @@ class EnviDBIBase
      * INSERT文やREPLACE文、UPDATE文を配列から実行し、結果オブジェクトを返します。
      *
      * @access public
-     * @param string $table テーブル名
-     * @param array $table_fields フィールドの配列
-     * @param integer $mode OPTIONAL:EnviDB::AUTOQUERY_INSERT
-     * @param string $where UPDATE時のWHERE文 OPTIONAL:false
+     * @param  string       $table        テーブル名
+     * @param  array        $table_fields フィールドの配列
+     * @param  int          $mode         OPTIONAL:EnviDB::AUTOQUERY_INSERT
+     * @param  string       $where        UPDATE時のWHERE文 OPTIONAL:false
      * @return PDOStatement 結果オブジェクト
      * @see EnviDBIBase::query()
      */
@@ -837,7 +837,7 @@ class EnviDBIBase
      * 現在 [EnviDBIBase::beginTransaction()](/c/man/v3/reference/vendor/EnviDB/EnviDBIBase/beginTransaction)でオートコミットがoffになっているかどうかを確認します。
      *
      * @access public
-     * @return boolean トランザクション中ならTRUE
+     * @return bool トランザクション中ならTRUE
      * @see EnviDBIBase::beginTransaction()
      */
     public function isTran()
@@ -853,7 +853,7 @@ class EnviDBIBase
      * 現在 [EnviDBIBase::beginTransaction()](/c/man/v3/reference/vendor/EnviDB/EnviDBIBase/beginTransaction)でオートコミットがoffになっているかどうかを確認します。
      *
      * @access public
-     * @return boolean トランザクション中ならTRUE
+     * @return bool トランザクション中ならTRUE
      * @see EnviDBIBase::beginTransaction()
      */
     public function inTransaction()
@@ -868,7 +868,7 @@ class EnviDBIBase
      * 現在のトランザクションのネスト回数を返します。
      *
      * @access public
-     * @return integer トランザクションのネスト回数
+     * @return int トランザクションのネスト回数
      * @see EnviDBIBase::beginTransaction()
      */
     public function transactionCount()
@@ -904,7 +904,7 @@ class EnviDBIBase
             return $this->raiseError(DB_ERROR_NEED_MORE_DATA);
         }
         $first = true;
-        $arr = array();
+        $arr   = array();
         if ($mode === EnviDB::AUTOQUERY_UPDATE) {
             $set = '';
             foreach ($table_fields as $key => $value) {
@@ -926,7 +926,7 @@ class EnviDBIBase
             return $sql;
         }
         $values = '';
-        $names = '';
+        $names  = '';
         foreach ($table_fields as $key => $value) {
             $key = trim($key);
             if ($first) {
@@ -1015,13 +1015,13 @@ class EnviDBIBase
      * DB自体の機能を利用する場合と違い、取得単位はオブジェクト単位となります。
      *
      * @access      public
-     * @return      string 最後に実行したSQL
+     * @return string 最後に実行したSQL
      */
     public function getLastQuery()
     {
-        $sql     = $this->last_query;
-        $values  = $this->last_parameters;
-        $res = '';
+        $sql         = $this->last_query;
+        $values      = $this->last_parameters;
+        $res         = '';
         $prepare_sql = explode('?', $sql);
         if (isset($values[0])) {
             $values = array_values($values);

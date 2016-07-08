@@ -45,12 +45,11 @@ class EnviOutputFilter extends EnviOutputFilterBase
      *
      *
      * @access public
-     * @param string $contents 出力データ
+     * @param  string $contents 出力データ
      * @return void
      */
     public function execute(&$contents)
     {
     }
     /* ----------------------------------------- */
-
 }

@@ -6,13 +6,13 @@ if (!isset($argv[3])) {
 umask(0);
 
 
-$get = !isset($argv[4]) ? explode(':', 'system:console:query:included_files') : explode(':', $argv[4]);
-$filter = !isset($argv[5]) ? false : explode(':', $argv[5]);
-$dir = realpath($argv[2]).DIRECTORY_SEPARATOR;
-$app_key = $argv[3];
-$console_log = $dir.$app_key.'console.log';
-$query_log = $dir.$app_key.'query.log';
-$system_log = $dir.$app_key.'system.log';
+$get                = !isset($argv[4]) ? explode(':', 'system:console:query:included_files') : explode(':', $argv[4]);
+$filter             = !isset($argv[5]) ? false : explode(':', $argv[5]);
+$dir                = realpath($argv[2]).DIRECTORY_SEPARATOR;
+$app_key            = $argv[3];
+$console_log        = $dir.$app_key.'console.log';
+$query_log          = $dir.$app_key.'query.log';
+$system_log         = $dir.$app_key.'system.log';
 $included_files_log = $dir.$app_key.'included_files.log';
 
 $cmd = 'tail -f';
@@ -36,7 +36,7 @@ foreach ($get as $file) {
 }
 $f = popen($cmd, 'r');
 while ($res = fgets($f)) {
-    $res = trim($res);
+    $res  = trim($res);
     $mode = $get[0];
     if (strpos($res, '==>') === 0) {
         switch (true) {
@@ -77,5 +77,4 @@ while ($res = fgets($f)) {
         $res = $tmp;
     }
     var_dump($res);
-
 }

@@ -64,7 +64,7 @@ abstract class EnviActionBase
      * @abstract
      * @access public
      * @return void
-    */
+     */
     public function __construct()
     {
     }
@@ -97,7 +97,7 @@ abstract class EnviActionBase
      * Viewに移る前に実行される処理。Killされない限りは、NONEやfalseを返しても実行される
      *
      * @abstract
-     * @return boolean
+     * @return bool
      */
     public function shutdown()
     {
@@ -150,7 +150,7 @@ abstract class EnviActionBase
      * 制限に引っかかった場合は、Envi403Exceptionを発行し、403ヘッダを出力します。
      *
      * @abstract
-     * @return boolean
+     * @return bool
      */
     public function isSecure()
     {
@@ -168,7 +168,7 @@ abstract class EnviActionBase
      *
      *
      * @abstract
-     * @return boolean
+     * @return bool
      */
     public function isPrivate()
     {
@@ -179,11 +179,10 @@ abstract class EnviActionBase
      * SSLでのみアクセスされるページかどうか？
      *
      * @abstract
-     * @return boolean
+     * @return bool
      */
     public function isSSL()
     {
         return false;
     }
-
 }

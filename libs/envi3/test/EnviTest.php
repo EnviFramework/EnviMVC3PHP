@@ -21,7 +21,6 @@
  * @since      File available since Release 1.0.0
  * @doc_ignore
  */
-
 require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'util'.DIRECTORY_SEPARATOR.'EnviUnitTest'.DIRECTORY_SEPARATOR.'EnviUnitTest.php';
 
 
@@ -55,14 +54,14 @@ class EnviTest extends EnviUnitTest
      *
      * @access public
      * @static
-     * @param boolean $yml_path OPTIONAL:false
+     * @param  bool     $yml_path OPTIONAL:false
      * @return EnviTest
      */
     public static function adapter($yml_path = false)
     {
         if (!is_object(self::$envi_test_instance)) {
-            self::$yml_path = $yml_path;
-            $class_name = 'EnviTest';
+            self::$yml_path           = $yml_path;
+            $class_name               = 'EnviTest';
             self::$envi_test_instance = new $class_name();
         }
         return self::$envi_test_instance;
@@ -110,4 +109,3 @@ class EnviTest extends EnviUnitTest
         }
     }
 }
-

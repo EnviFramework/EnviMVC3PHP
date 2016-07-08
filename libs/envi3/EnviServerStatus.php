@@ -17,7 +17,6 @@
  * @since      File available since Release 1.0.0
  * @subpackage_main
  */
-
 if (!defined('ENVI_SERVER_STATUS_CONF')) {
     define('ENVI_SERVER_STATUS_CONF',
         realpath(dirname(__FILE__)
@@ -65,7 +64,7 @@ class EnviServerStatus
     const PRODUCTION = 'prod';
 
     private $_stutus_conf;
-    private static  $instance;
+    private static $instance;
     /**
      * +-- コンストラクタ
      *
@@ -105,6 +104,4 @@ class EnviServerStatus
         return $this->_stutus_conf;
     }
     /* ----------------------------------------- */
-
 }
-

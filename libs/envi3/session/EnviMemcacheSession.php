@@ -36,15 +36,15 @@
 class EnviMemcacheSession extends EnviSessionBase implements EnviSessionInterface
 {
 
-    protected static  $_is_login = '_is_login';
-    protected static  $_is_gzip = true;
-    protected static  $_session_id = null;
+    protected static $_is_login   = '_is_login';
+    protected static $_is_gzip    = true;
+    protected static $_session_id = null;
 
 
     public function sessionStart()
     {
         $this->sess_base_save_path = $this->_system_conf['SESSION']['sess_base_save_path'];
-        $session_name = $this->_system_conf['SESSION']['cookie_name'];
+        $session_name              = $this->_system_conf['SESSION']['cookie_name'];
         session_name($session_name);
 
         $is_new_session = true;
@@ -70,7 +70,7 @@ class EnviMemcacheSession extends EnviSessionBase implements EnviSessionInterfac
         //セッション開始
         self::$_session_id = $key;
         EnviMemcache::set($key, serialize(array()), $this->_system_conf['SESSION']['cookie_lifetime'], 'session', self::$_is_gzip);
-        setcookie(session_name(), $key, $_SERVER['REQUEST_TIME']+$this->_system_conf['SESSION']['cookie_lifetime'], '/');
+        setcookie(session_name(), $key, $_SERVER['REQUEST_TIME'] + $this->_system_conf['SESSION']['cookie_lifetime'], '/');
     }
 
     public function open($save_path, $session_name)
@@ -80,7 +80,7 @@ class EnviMemcacheSession extends EnviSessionBase implements EnviSessionInterfac
 
     public function close()
     {
-        return(true);
+        return true;
     }
 
     public function read($key)
@@ -141,7 +141,8 @@ class EnviMemcacheSession extends EnviSessionBase implements EnviSessionInterfac
         return EnviMemcache::get($key, 'session', self::$_is_gzip);
     }
 
-    public function removeAttribute($key){
+    public function removeAttribute($key)
+    {
         $key = self::generateKey($key);
         return EnviMemcache::delete($key, 'session');
     }
@@ -158,5 +159,4 @@ class EnviMemcacheSession extends EnviSessionBase implements EnviSessionInterfac
         }
         return $key_gen.'-'.$key;
     }
-
 }

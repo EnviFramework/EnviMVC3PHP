@@ -44,8 +44,8 @@
  */
 class EnviRouting
 {
-    private $_ext_path_info = array();
-    private $_i18n = '';
+    private $_ext_path_info       = array();
+    private $_i18n                = '';
     private $_request_module_name = '';
     private $_request_action_name = '';
 
@@ -53,7 +53,7 @@ class EnviRouting
      * +-- Routingの実行
      *
      * @access      public
-     * @return      void
+     * @return void
      */
     public function run()
     {
@@ -63,17 +63,17 @@ class EnviRouting
                 if (!class_exists($item['class_name'], false)) {
                     include $item['resource'];
                 }
-                $class_name = $item['class_name'];
-                $router = new $class_name;
+                $class_name     = $item['class_name'];
+                $router         = new $class_name;
                 $initialize_res = $router->initialize($this->_i18n, $this->_request_module_name, $this->_request_action_name, $this->_ext_path_info);
                 if ($initialize_res === false) {
                     return;
                 }
-                $this->_i18n = $router->getI18n();
+                $this->_i18n                = $router->getI18n();
                 $this->_request_module_name = $router->getRequestModule();
                 $this->_request_action_name = $router->getRequestAction();
-                $this->_ext_path_info = $router->getPathInfo();
-                $shutdown_res = $router->shutdown($this->_i18n, $this->_request_module_name, $this->_request_action_name, $this->_ext_path_info);
+                $this->_ext_path_info       = $router->getPathInfo();
+                $shutdown_res               = $router->shutdown($this->_i18n, $this->_request_module_name, $this->_request_action_name, $this->_ext_path_info);
                 if (!$shutdown_res === false) {
                     return;
                 }
@@ -86,7 +86,7 @@ class EnviRouting
      * +-- リクエストされたモジュールを取得する
      *
      * @access      public
-     * @return      string
+     * @return string
      */
     public function getRequestModule()
     {
@@ -98,7 +98,7 @@ class EnviRouting
      * +-- リクエストされたアクションを取得する
      *
      * @access      public
-     * @return      string
+     * @return string
      */
     public function getRequestAction()
     {
@@ -110,7 +110,7 @@ class EnviRouting
      * +-- 国際化情報を取得する
      *
      * @access      public
-     * @return      string
+     * @return string
      */
     public function getI18n()
     {
@@ -122,7 +122,7 @@ class EnviRouting
      * +-- 残りのpath_infoを取得する
      *
      * @access      public
-     * @return      array
+     * @return array
      */
     public function getPathInfo()
     {
@@ -157,11 +157,11 @@ abstract class EnviRouterBase
      * falseを返すと、ルーティングを終了する
      *
      * @access      public
-     * @param       string $i18n          現在のi18n
-     * @param       string $module_name   現在のmodule_name
-     * @param       string $action_name   現在のaction_name
-     * @param       string $exp_path_info 現在のexp_path_info
-     * @return      boolean
+     * @param  string $i18n          現在のi18n
+     * @param  string $module_name   現在のmodule_name
+     * @param  string $action_name   現在のaction_name
+     * @param  string $exp_path_info 現在のexp_path_info
+     * @return bool
      */
     public function initialize($i18n, $module_name, $action_name, $exp_path_info)
     {
@@ -175,11 +175,11 @@ abstract class EnviRouterBase
      * falseを返すと、ルーティングを終了する
      *
      * @access      public
-     * @param       string $i18n          現在のi18n
-     * @param       string $module_name   現在のmodule_name
-     * @param       string $action_name   現在のaction_name
-     * @param       string $exp_path_info 現在のexp_path_info
-     * @return      boolean
+     * @param  string $i18n          現在のi18n
+     * @param  string $module_name   現在のmodule_name
+     * @param  string $action_name   現在のaction_name
+     * @param  string $exp_path_info 現在のexp_path_info
+     * @return bool
      */
     public function shutdown($i18n, $module_name, $action_name, $exp_path_info)
     {
@@ -191,7 +191,7 @@ abstract class EnviRouterBase
      * +-- リクエストされたモジュールを取得する
      *
      * @access      public
-     * @return      string
+     * @return string
      */
     abstract public function getRequestModule();
     /* ----------------------------------------- */
@@ -200,7 +200,7 @@ abstract class EnviRouterBase
      * +-- リクエストされたアクションを取得する
      *
      * @access      public
-     * @return      string
+     * @return string
      */
     abstract public function getRequestAction();
     /* ----------------------------------------- */
@@ -209,7 +209,7 @@ abstract class EnviRouterBase
      * +-- 国際化情報を取得する
      *
      * @access      public
-     * @return      string
+     * @return string
      */
     abstract public function getI18n();
     /* ----------------------------------------- */
@@ -218,7 +218,7 @@ abstract class EnviRouterBase
      * +-- 残りのpath_infoを取得する
      *
      * @access      public
-     * @return      array
+     * @return array
      */
     abstract public function getPathInfo();
     /* ----------------------------------------- */

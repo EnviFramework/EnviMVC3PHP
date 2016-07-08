@@ -18,7 +18,6 @@
  * @since      File available since Release 1.0.0
  * @doc_ignore
  */
-
 interface EnviTask
 {
     public function execute();
