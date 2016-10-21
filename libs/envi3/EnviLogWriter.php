@@ -1627,7 +1627,10 @@ class EnviLogWriterConsoleLog extends EnviLogWriterConsole
         $this->console_log_get_hash = microtime(true).sha1(microtime(true));
         mkdir($this->console_log_dir.DIRECTORY_SEPARATOR.$this->console_log_get_hash, 0777, true);
         umask($umask);
-        setcookie($this->console_log_get_key, $this->console_log_get_hash, $_SERVER['REQUEST_TIME'] + 36000, '/');
+
+        if (PHP_SAPI !== 'cli') {
+            setcookie($this->console_log_get_key, $this->console_log_get_hash, $_SERVER['REQUEST_TIME']+36000, '/');
+        }
 
         $this->console_log_write_dir = $this->console_log_dir.DIRECTORY_SEPARATOR.$this->console_log_get_hash.DIRECTORY_SEPARATOR;
     }
